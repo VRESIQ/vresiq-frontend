@@ -1,0 +1,296 @@
+/* ── AiRefinePanel ───────────────────────────────────────────────────────── */
+.refine-panel {
+  display: grid;
+  gap: 1.4rem;
+}
+
+/* ── Run button ──────────────────────────────────────────────────────────── */
+.refine-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.refine-trigger p {
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.5;
+  flex: 1;
+  min-width: 180px;
+}
+
+.btn-refine {
+  min-height: 44px;
+  padding: 0.65rem 1.1rem;
+  cursor: pointer;
+  font-weight: 680;
+  font-size: 0.9rem;
+  background: var(--ink);
+  color: #fff;
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  transition: transform 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+.btn-refine:hover:not(:disabled) {
+  background: #242820;
+  transform: translateY(-1px);
+}
+.btn-refine:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+/* ── Score ring ──────────────────────────────────────────────────────────── */
+.refine-score-block {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  background: var(--wash);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.2rem 1.4rem;
+}
+
+.score-ring-wrap {
+  flex-shrink: 0;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.score-ring-svg {
+  width: 80px;
+  height: 80px;
+  transform: rotate(-90deg);
+}
+
+.score-ring-track {
+  fill: none;
+  stroke: var(--wash-2);
+  stroke-width: 7;
+}
+
+.score-ring-fill {
+  fill: none;
+  stroke-width: 7;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              stroke 0.4s ease;
+}
+
+.score-ring-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.18rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.score-ring-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.score-ring-meta strong {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 680;
+  margin-bottom: 0.25rem;
+}
+
+.score-ring-meta span {
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+/* ── Category badge ──────────────────────────────────────────────────────── */
+.refine-category {
+  font-size: 0.72rem;
+  font-weight: 760;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-dark);
+  margin-top: 0.25rem;
+}
+
+/* ── Issue list ──────────────────────────────────────────────────────────── */
+.refine-issues-label {
+  font-size: 0.78rem;
+  font-weight: 760;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+
+.refine-issues {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.refine-issue {
+  border-radius: var(--radius);
+  padding: 0.85rem 1rem;
+  border-left: 3px solid transparent;
+  background: var(--wash);
+  border: 1px solid var(--line);
+  border-left-width: 3px;
+}
+
+.refine-issue.severity-error {
+  border-left-color: #ba2b2b;
+  background: rgba(186, 43, 43, 0.04);
+}
+
+.refine-issue.severity-warning {
+  border-left-color: #c07000;
+  background: rgba(192, 112, 0, 0.04);
+}
+
+.refine-issue.severity-tip {
+  border-left-color: var(--accent-dark);
+  background: rgba(100, 140, 0, 0.04);
+}
+
+.issue-header {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 0.4rem;
+}
+
+.issue-badge {
+  font-size: 0.66rem;
+  font-weight: 760;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 7px;
+  border-radius: 99px;
+}
+
+.issue-badge.error   { background: rgba(186, 43, 43, 0.12); color: #ba2b2b; }
+.issue-badge.warning { background: rgba(192, 112, 0, 0.12); color: #c07000; }
+.issue-badge.tip     { background: rgba(100, 140, 0, 0.12); color: var(--accent-dark); }
+
+.issue-points {
+  font-size: 0.66rem;
+  font-weight: 760;
+  color: var(--danger);
+  white-space: nowrap;
+}
+
+.issue-section {
+  font-size: 0.76rem;
+  color: var(--muted);
+  font-weight: 560;
+}
+
+.issue-suggestion {
+  font-size: 0.84rem;
+  color: var(--ink);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.issue-original {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-style: italic;
+  margin-top: 0.3rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Loading state ───────────────────────────────────────────────────────── */
+.refine-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--muted);
+  font-size: 0.88rem;
+  padding: 0.75rem 0;
+}
+
+.refine-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--line);
+  border-top-color: var(--accent-dark);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Error state ─────────────────────────────────────────────────────────── */
+.refine-error {
+  font-size: 0.86rem;
+  color: var(--danger);
+  padding: 0.65rem 0;
+}
+
+/* ── Empty (no issues) ───────────────────────────────────────────────────── */
+.refine-clean {
+  text-align: center;
+  padding: 1rem 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.refine-clean span {
+  display: block;
+  font-size: 1.6rem;
+  margin-bottom: 0.4rem;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   DARK MODE — AiRefinePanel overrides
+   ══════════════════════════════════════════════════════════════════ */
+
+[data-theme="dark"] .btn-refine {
+  background: var(--ink) !important;
+  color: #111 !important;
+  border-color: rgba(232, 230, 220, 0.25) !important;
+}
+[data-theme="dark"] .btn-refine:hover:not(:disabled) {
+  background: #fff !important;
+  color: #111 !important;
+}
+
+[data-theme="dark"] .refine-score-block {
+  background: var(--wash) !important;
+  border-color: rgba(232, 230, 220, 0.08) !important;
+}
+
+[data-theme="dark"] .score-ring-track {
+  stroke: var(--wash-2);
+}
+
+[data-theme="dark"] .refine-issue {
+  background: var(--wash) !important;
+  border-color: rgba(232, 230, 220, 0.1) !important;
+}
+[data-theme="dark"] .refine-issue.severity-error {
+  background: rgba(186, 43, 43, 0.08) !important;
+}
+[data-theme="dark"] .refine-issue.severity-warning {
+  background: rgba(192, 112, 0, 0.08) !important;
+}
+[data-theme="dark"] .refine-issue.severity-tip {
+  background: rgba(100, 140, 0, 0.06) !important;
+}
+
+[data-theme="dark"] .refine-category { color: #b8ff2c; }
+[data-theme="dark"] .refine-spinner  { border-top-color: #b8ff2c; }

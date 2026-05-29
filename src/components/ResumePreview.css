@@ -1,0 +1,2013 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   ResumePreview.css — 13-template ATS-safe resume styles
+   CSS custom properties: --accent, --rp-font-heading, --rp-font-body, --rp-font-mono
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Base ────────────────────────────────────────────────────────────────── */
+.resume-preview {
+  position: relative;
+  width: min(100%, 816px);
+  min-height: 1056px;
+  margin: 0 auto;
+  background: #fff;
+  color: #1a1a1a;
+  font-family: var(--rp-font-body, 'Inter', sans-serif);
+  box-shadow: 0 18px 50px rgba(0,0,0,0.1);
+  border: var(--page-border, none);
+  overflow: hidden;
+
+  /* Global Design-Token System */
+  --rp-space-xs: 4px;
+  --rp-space-sm: 8px;
+  --rp-space-md: 12px;
+  --rp-space-lg: 16px;
+  --rp-space-xl: 24px;
+
+  --rp-section-margin-bottom: 22px;
+  --rp-item-margin-bottom: 14px;
+  --rp-divider-spacing-bottom: 6px;
+  --rp-border-thin: 1.5px;
+  --rp-border-thick: 3px;
+
+  /* Typographic Design System Scale */
+  --rp-fs-base: 12px;
+  --rp-fs-name: 26px;
+  --rp-fs-role: 13px;
+  --rp-fs-stitle: 13.5px;
+  --rp-fs-item-title: 12.5px;
+  --rp-fs-item-sub: 11.5px;
+  --rp-fs-body: 11.5px;
+  --rp-fs-meta: 10.5px;
+
+  --rp-lh-body: 1.55;
+  --rp-lh-summary: 1.6;
+
+  font-size: var(--rp-fs-base);
+  line-height: var(--rp-lh-body);
+}
+
+/* ── Text selection inside preview — soft blue, never browser-default black */
+.resume-preview ::selection {
+  background: rgba(26, 95, 180, 0.18);
+  color: inherit;
+}
+.resume-preview ::-moz-selection {
+  background: rgba(26, 95, 180, 0.18);
+  color: inherit;
+}
+
+/* ─── Hyperlink visual behavior — scoped semantic selectors ──────────────── */
+
+/* 1. CONTACT / HEADER LINKS
+   email, phone, LinkedIn, GitHub, website inside the header/contact area.
+   These inherit surrounding text color — NO blue, NO default underline.
+   Only a subtle underline appears on hover. */
+.rp-contact a,
+.rp-ats-contact a {
+  color: #1a5fb4 !important;            /* Professional hyperlink blue in header */
+  text-decoration: underline !important;
+  text-decoration-thickness: 0.5px !important;
+  text-underline-offset: 1.5px;
+  transition: color 0.15s ease;
+}
+
+.rp-contact a:hover,
+.rp-ats-contact a:hover {
+  color: #0b3d7a !important;
+  text-decoration: underline !important;
+}
+
+/* 2. BODY / CONTENT LINKS
+   Project links, live demos, publication URLs, custom section URLs.
+   Explicit class selectors only — does NOT bleed into generic section text. */
+a.rp-project-link,
+a.rp-custom-link,
+.rp-links a {
+  color: #1a5fb4 !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 0.5px !important;
+  text-underline-offset: 1.5px;
+  transition: color 0.15s ease;
+}
+
+a.rp-project-link:hover,
+a.rp-custom-link:hover,
+.rp-links a:hover {
+  color: #0b3d7a !important;
+  text-decoration: underline !important;
+}
+
+/* Hyperlink Style overrides */
+.resume-preview[data-lstyle="professional"] a {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+.resume-preview[data-lstyle="professional"] a:hover {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+@media print {
+  /* Hyperlink Style overrides for print */
+  .resume-preview[data-lstyle="professional"] a {
+    color: inherit !important;
+    text-decoration: none !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Contact/header links: blue + underline preserved in print/PDF */
+  .rp-contact a,
+  .rp-ats-contact a {
+    color: #1a5fb4 !important;
+    text-decoration: underline !important;
+    text-decoration-thickness: 0.5px !important;
+    text-underline-offset: 1.5px;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Body content links: blue + underline preserved in print/PDF */
+  a.rp-project-link,
+  a.rp-custom-link,
+  .rp-links a {
+    color: #1a5fb4 !important;
+    text-decoration: underline !important;
+    text-decoration-thickness: 0.5px !important;
+    text-underline-offset: 1.5px;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
+/* ── Typography base ─────────────────────────────────────────────────────── */
+.resume-preview h1, .resume-preview h2, .resume-preview h3 {
+  font-family: var(--rp-font-heading, 'Inter', sans-serif);
+}
+
+/* ── Header style override via [data-hstyle] on root article ───────────────
+   These rules override each template's header when the user picks a non-default
+   headerStyle in the Decoratives panel. Works on every template without touching
+   per-template CSS — just target the root article attribute.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+[data-hstyle="card"] .rp-header,
+[data-hstyle="card"] .rp-header-classic,
+[data-hstyle="card"] .rp-header-accentbar,
+[data-hstyle="card"] .rp-header-compact,
+[data-hstyle="card"] .rp-header-sig,
+[data-hstyle="card"] .rp-header-executive,
+[data-hstyle="card"] .rp-header-centered,
+[data-hstyle="card"] .rp-header-tech {
+  margin: 20px 24px 10px !important;
+  border: 1.5px solid var(--accent) !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  color: #111410 !important;
+  padding: 30px 40px !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06) !important;
+  position: relative;
+  z-index: 10;
+}
+
+[data-hstyle="card"] .rp-ats-header,
+[data-hstyle="card"] .rp-ats-header-left {
+  border: 1.5px solid var(--accent) !important;
+  border-radius: 10px !important;
+  padding: 18px 16px !important;
+  margin-bottom: 14px !important;
+  background: #fff !important;
+}
+
+[data-hstyle="card"] .rp-header h1,
+[data-hstyle="card"] .rp-header-classic h1,
+[data-hstyle="card"] .rp-header-accentbar h1,
+[data-hstyle="card"] .rp-header-compact h1,
+[data-hstyle="card"] .rp-sig-name,
+[data-hstyle="card"] .rp-header-executive .rp-executive-name,
+[data-hstyle="card"] .rp-header-centered .rp-centered-name,
+[data-hstyle="card"] .rp-header-tech h1 {
+  color: #111410 !important;
+}
+
+[data-hstyle="card"] .rp-role,
+[data-hstyle="card"] .rp-executive-role,
+[data-hstyle="card"] .rp-sig-role,
+[data-hstyle="card"] .rp-centered-role {
+  color: var(--accent-readable) !important;
+}
+
+[data-hstyle="card"] .rp-contact,
+[data-hstyle="card"] .rp-sig-contact .rp-contact {
+  color: #555 !important;
+}
+
+/* full-bleed: forces accent background color across the entire header */
+[data-hstyle="full-bleed"] .rp-header,
+[data-hstyle="full-bleed"] .rp-header-classic,
+[data-hstyle="full-bleed"] .rp-header-accentbar,
+[data-hstyle="full-bleed"] .rp-header-compact,
+[data-hstyle="full-bleed"] .rp-header-sig,
+[data-hstyle="full-bleed"] .rp-header-executive,
+[data-hstyle="full-bleed"] .rp-header-centered,
+[data-hstyle="full-bleed"] .rp-header-tech {
+  background: var(--accent) !important;
+  color: var(--on-accent) !important;
+  margin: 0 !important;
+  padding: 40px 48px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  width: 100% !important;
+}
+
+[data-hstyle="full-bleed"] .rp-ats-header,
+[data-hstyle="full-bleed"] .rp-ats-header-left {
+  background: var(--accent) !important;
+  color: var(--on-accent) !important;
+  padding: 20px 18px !important;
+  margin: -8px -8px 14px !important;
+}
+
+[data-hstyle="full-bleed"] .rp-ats-header .rp-ats-name,
+[data-hstyle="full-bleed"] .rp-ats-header-left .rp-ats-name,
+[data-hstyle="full-bleed"] .rp-ats-header .rp-ats-name-serif,
+[data-hstyle="full-bleed"] .rp-ats-header-left .rp-ats-name-serif {
+  color: var(--on-accent) !important;
+}
+
+[data-hstyle="full-bleed"] .rp-ats-header .rp-ats-role,
+[data-hstyle="full-bleed"] .rp-ats-header-left .rp-ats-role-left,
+[data-hstyle="full-bleed"] .rp-ats-header .rp-ats-role-serif,
+[data-hstyle="full-bleed"] .rp-ats-header .rp-ats-contact,
+[data-hstyle="full-bleed"] .rp-ats-header-left .rp-ats-contact {
+  color: var(--on-accent-soft) !important;
+}
+
+[data-hstyle="full-bleed"] .rp-header h1,
+[data-hstyle="full-bleed"] .rp-header-classic h1,
+[data-hstyle="full-bleed"] .rp-header-accentbar h1,
+[data-hstyle="full-bleed"] .rp-header-compact h1,
+[data-hstyle="full-bleed"] .rp-sig-name,
+[data-hstyle="full-bleed"] .rp-header-executive .rp-executive-name,
+[data-hstyle="full-bleed"] .rp-header-centered .rp-centered-name,
+[data-hstyle="full-bleed"] .rp-header-tech h1 {
+  color: var(--on-accent) !important;
+}
+
+[data-hstyle="full-bleed"] .rp-role,
+[data-hstyle="full-bleed"] .rp-executive-role,
+[data-hstyle="full-bleed"] .rp-sig-role,
+[data-hstyle="full-bleed"] .rp-centered-role {
+  color: var(--on-accent-muted) !important;
+}
+
+[data-hstyle="full-bleed"] .rp-contact,
+[data-hstyle="full-bleed"] .rp-sig-contact .rp-contact {
+  color: var(--on-accent-soft) !important;
+}
+
+/* full-bleed on Signature template: also make the rule white */
+[data-hstyle="full-bleed"] .rp-sig-rule {
+  background: var(--on-accent-line) !important;
+}
+
+/* ─── Sidebar templates: card & full-bleed header-style behaviour ──────────
+   For sidebar layouts (template2/Sidebar, premium6/SplitDark, premium8/Infographic)
+   the "header" equivalent is the top identity block inside the aside panel.
+   We target .rp-sidebar-header (the wrapper we added in JSX) to apply the styles.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* rp-sidebar-header: default = no visual treatment, just a layout wrapper */
+.rp-sidebar-header {
+  margin-bottom: 12px;
+}
+
+/* CARD on light sidebar (template2) — white card inset with accent border */
+[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header {
+  background: rgba(255,255,255,0.85);
+  border: 1.5px solid var(--accent);
+  border-radius: 8px;
+  padding: 12px;
+  margin: -4px -4px 14px;
+}
+
+/* CARD on infographic sidebar — same white card inset */
+[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header {
+  background: rgba(255,255,255,0.78);
+  border: 1.5px solid var(--accent);
+  border-radius: 8px;
+  padding: 12px;
+  margin: -4px -4px 14px;
+}
+
+/* CARD on dark sidebar (premium6) — lighter card to contrast the dark panel */
+[data-hstyle="card"] .rp-sidebar-dark .rp-sidebar-header {
+  background: rgba(255,255,255,0.12);
+  border: 1.5px solid rgba(255,255,255,0.28);
+  border-radius: 8px;
+  padding: 12px;
+  margin: -4px -4px 14px;
+}
+
+/* FULL-BLEED on sidebar templates — only the top identity block gets accent background.
+   We deliberately DON'T color the whole sidebar because progress bars + skill section
+   titles use var(--accent) and would become invisible against an accent background.
+   Instead, .rp-sidebar-header (the wrapper div we added in JSX) bleeds to sidebar edges. */
+
+/* Bleed the header block to the sidebar's left/right/top edges */
+[data-hstyle="full-bleed"] .rp-sidebar-light .rp-sidebar-header,
+[data-hstyle="full-bleed"] .rp-sidebar-infographic .rp-sidebar-header {
+  background: var(--accent) !important;
+  margin: -28px -18px 14px;   /* perfectly matches .rp-sidebar padding */
+  padding: 32px 18px 24px;
+  border-bottom: none;
+}
+
+/* Light sidebar: dark text on (usually bright) accent — good contrast */
+[data-hstyle="full-bleed"] .rp-sidebar-light .rp-sidebar-header .rp-sidebar-name,
+[data-hstyle="full-bleed"] .rp-sidebar-infographic .rp-sidebar-header .rp-sidebar-name {
+  color: var(--on-accent) !important;
+}
+[data-hstyle="full-bleed"] .rp-sidebar-light .rp-sidebar-header .rp-sidebar-role,
+[data-hstyle="full-bleed"] .rp-sidebar-infographic .rp-sidebar-header .rp-sidebar-role {
+  color: var(--on-accent-muted) !important;
+}
+[data-hstyle="full-bleed"] .rp-sidebar-light .rp-sidebar-header .rp-sidebar-contact,
+[data-hstyle="full-bleed"] .rp-sidebar-light .rp-sidebar-header .rp-contact,
+[data-hstyle="full-bleed"] .rp-sidebar-infographic .rp-sidebar-header .rp-sidebar-contact,
+[data-hstyle="full-bleed"] .rp-sidebar-infographic .rp-sidebar-header .rp-contact {
+  color: var(--on-accent-soft) !important;
+}
+
+/* Dark sidebar (premium6): accent header block, keep WHITE text — it was already white,
+   and the accent background is typically bright so white may clash.
+   But dark-on-accent is also valid. We use white to maintain contrast with ANY accent. */
+[data-hstyle="full-bleed"] .rp-sidebar-dark .rp-sidebar-header {
+  background: var(--accent) !important;
+  margin: -28px -18px 14px;
+  padding: 32px 18px 24px;
+}
+[data-hstyle="full-bleed"] .rp-sidebar-dark .rp-sidebar-header .rp-sidebar-name {
+  color: var(--on-accent) !important;
+}
+[data-hstyle="full-bleed"] .rp-sidebar-dark .rp-sidebar-header .rp-sidebar-role {
+  color: var(--on-accent-muted) !important;
+}
+[data-hstyle="full-bleed"] .rp-sidebar-dark .rp-sidebar-header .rp-sidebar-contact,
+[data-hstyle="full-bleed"] .rp-sidebar-dark .rp-sidebar-header .rp-contact {
+  color: var(--on-accent-soft) !important;
+}
+
+
+/* ── Common header base ──────────────────────────────────────────────────── */
+.rp-header {
+  padding: 28px 36px;
+}
+
+
+.rp-header h1 {
+  font-size: var(--rp-fs-name);
+  font-weight: 800;
+  margin: 0 0 4px;
+  line-height: 1.1;
+  color: #111;
+}
+
+.rp-role {
+  font-size: var(--rp-fs-role);
+  font-weight: 600;
+  color: var(--accent-readable);
+  margin: 0 0 10px;
+}
+
+.rp-body {
+  padding: 0 36px 36px;
+}
+
+/* ── Contact row ─────────────────────────────────────────────────────────── */
+.rp-contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  font-size: var(--rp-fs-meta);
+  color: #444;
+  margin-top: 6px;
+}
+
+.rp-contact-inline .rp-contact {
+  margin-top: 8px;
+}
+
+/* ── Section title ───────────────────────────────────────────────────────── */
+.rp-stitle {
+  font-family: var(--rp-font-heading, 'Inter', sans-serif);
+  font-size: var(--rp-fs-stitle);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent-readable);
+  margin: 0 0 12px;
+  padding-bottom: 6px;
+}
+
+/* Divider variants */
+.rp-stitle[data-divider="line"] {
+  border-bottom: 1.5px solid var(--accent);
+}
+.rp-stitle[data-divider="thick"] {
+  border-bottom: 3px solid var(--accent);
+}
+.rp-stitle[data-divider="dots"] {
+  border-bottom: 2px dotted var(--accent);
+}
+.rp-stitle[data-divider="gradient"] {
+  border-bottom: 2px solid transparent;
+  border-image: linear-gradient(90deg, var(--accent), transparent) 1;
+}
+
+/* Section numbering */
+.rp-stitle-num {
+  opacity: 0.4;
+  font-size: var(--rp-fs-meta);
+  margin-right: 6px;
+}
+.rp-stitle-num::before {
+  content: attr(data-number);
+}
+
+/* ── Section block ───────────────────────────────────────────────────────── */
+.rp-section {
+  display: flow-root !important;
+  clear: both !important;
+  width: 100% !important;
+  margin-bottom: 22px;
+}
+
+/* ── Item ────────────────────────────────────────────────────────────────── */
+/* All content body elements share a consistent font size, weight, and color
+   hierarchy. No section should look visually different from another. */
+.rp-item {
+  display: flow-root !important;
+  clear: both !important;
+  width: 100% !important;
+  margin-bottom: 14px;
+  font-size: var(--rp-fs-body);     /* Consistent base for every item block */
+  font-weight: 400;                  /* Normal weight — only titles are bold */
+}
+
+.rp-item-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 2px;
+}
+
+.rp-item-head strong {
+  font-size: var(--rp-fs-item-title); /* 12.5px — ONE tick above body */
+  font-weight: 600;                    /* Semi-bold, not heavy-bold, for harmony */
+  color: #111;
+}
+
+.rp-item-head span {
+  font-size: var(--rp-fs-body);       /* Same as body — dates don't shrink */
+  color: #555;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-weight: 400;
+}
+
+.rp-item-sub {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: var(--rp-fs-body);       /* Consistent with item body */
+  color: #555;
+  margin: 2px 0 5px;
+  font-weight: 400;
+}
+
+.rp-item-desc {
+  font-size: var(--rp-fs-body);       /* Same scale — no shrinkage vs other fields */
+  margin: 5px 0 0;
+  color: #333;
+  font-weight: 400;
+}
+
+/* Compact rows (certs, languages, interests, memberships) */
+.rp-compact {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: var(--rp-fs-body);       /* Consistent — not smaller than items */
+  font-weight: 400;
+  color: #111;
+}
+
+.rp-compact span {
+  color: #555;
+  font-size: var(--rp-fs-body);       /* Dates/meta in compact rows same scale */
+  font-weight: 400;
+}
+
+/* Certification/compact title — must match rp-item-head strong exactly */
+.rp-compact strong {
+  font-size: var(--rp-fs-item-title); /* 12.5px — same as experience/education titles */
+  font-weight: 600;
+  color: #111;
+}
+
+.rp-links { font-size: var(--rp-fs-body); color: #444; margin: 3px 0 0; }
+.rp-summary { font-size: var(--rp-fs-body); color: #333; line-height: var(--rp-lh-summary); }
+
+/* Inline description text (single paragraph, not bulleted) */
+.rp-desc-text {
+  font-size: var(--rp-fs-body);
+  color: #333;
+  font-weight: 400;
+  line-height: var(--rp-lh-body);
+}
+
+/* Education GPA — same body scale, not shrunken */
+.rp-education-gpa {
+  margin: 2px 0 0;
+  font-size: var(--rp-fs-body);
+  color: #333;
+  font-weight: 400;
+}
+
+/* Location metadata — stays on body scale, same as subtitle */
+.rp-item-location {
+  font-size: var(--rp-fs-body);
+  color: #555;
+  font-weight: 400;
+}
+
+/* Membership/compact section layout consistency */
+.rp-compact-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: var(--rp-fs-body);
+}
+
+.rp-compact-subtitle {
+  font-size: var(--rp-fs-body);
+  color: #555;
+  font-weight: 400;
+}
+
+.rp-compact-date {
+  font-size: var(--rp-fs-body);
+  color: #555;
+  font-weight: 400;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── Skills ──────────────────────────────────────────────────────────────── */
+.rp-skill-list { display: grid; gap: 6px; }
+ul.rp-skill-list { display: block; }
+ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
+
+.rp-skill-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--rp-fs-body);        /* Consistent with all other body content */
+  font-weight: 400;
+  color: #111;
+}
+
+.rp-skill-name { flex: 1; font-weight: 400; color: #111; }
+.rp-skill-level { font-size: var(--rp-fs-body); color: #555; font-weight: 400; }
+
+.rp-skill-bar-wrap { display: grid; gap: 3px; }
+
+.rp-bar {
+  height: 5px;
+  background: #e8e8e8;
+  border-radius: 99px;
+  overflow: hidden;
+}
+.rp-bar span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  border-radius: 99px;
+}
+
+/* Dot-style skills */
+.rp-dots { display: flex; gap: 4px; }
+.rp-dots .dot {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  border: 1.5px solid var(--accent);
+}
+.rp-dots .dot.filled { background: var(--accent); }
+
+/* ── Tags (Interests) ───────────────────────────────────────────────── */
+/* Interests rendered as plain comma text — no pills, consistent with Skills/Languages */
+.rp-tags {
+  font-size: var(--rp-fs-body);
+  color: #111;
+  line-height: var(--rp-lh-body);
+}
+.rp-tag {
+  display: inline;
+  font-size: var(--rp-fs-body);
+  font-weight: 400;
+  color: #111;
+  background: none;
+  border-radius: 0;
+  padding: 0;
+}
+.rp-tag::after {
+  content: ', ';
+}
+.rp-tag:last-child::after {
+  content: '';
+}
+
+/* ── Photo shapes ────────────────────────────────────────────────────────── */
+.rp-photo { width: 72px; height: 72px; object-fit: cover; flex-shrink: 0; }
+.rp-photo-circle { border-radius: 50%; }
+.rp-photo-rounded { border-radius: 10px; }
+.rp-photo-square { border-radius: 0; }
+.rp-photo-none { display: none; }
+
+/* ── Watermark ───────────────────────────────────────────────────────────── */
+.rp-watermark {
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 8px;
+  color: #c8c6be;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TEMPLATE 1 — Classic
+   Single column, black/white, clean, maximum ATS compatibility
+   ═══════════════════════════════════════════════════════════════════════════ */
+.rp-template1 .rp-header-classic {
+  border-bottom: 2.5px solid var(--accent);
+  padding: 28px 36px 20px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.rp-template1 h1 { font-size: 30px; }
+.rp-template1 .rp-role { color: #555; font-weight: 600; }
+.rp-template1 .rp-stitle { color: #111; border-bottom-color: #111; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TEMPLATE 2 — Sidebar
+   Narrow left sidebar (light) + wide right main content
+   ═══════════════════════════════════════════════════════════════════════════ */
+.rp-layout-sidebar {
+  display: grid;
+  grid-template-columns: 210px 1fr;
+  min-height: inherit;
+}
+
+.rp-sidebar {
+  padding: 28px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  /* Scale down variables to fit the sidebar narrow panel */
+  --rp-fs-stitle: 11.5px;
+  --rp-fs-body: 11px;
+  --rp-fs-meta: 10px;
+  --rp-fs-item-title: 11.5px;
+  --rp-fs-item-sub: 10.5px;
+}
+
+.rp-sidebar-light {
+  background: #f6f6f2;
+  border-right: 1px solid #e4e2dc;
+}
+
+.rp-sidebar-name {
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.15;
+  margin: 8px 0 2px;
+}
+
+.rp-sidebar-role {
+  font-size: 11.5px;
+  color: var(--accent-readable);
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+
+.rp-sidebar-contact .rp-contact {
+  flex-direction: column;
+  gap: 5px;
+  font-size: 11px;
+}
+
+.rp-main-col { padding: 28px 28px 28px 24px; }
+
+.rp-template2 .rp-photo { width: 80px; height: 80px; border: 3px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+.rp-template2 .rp-sidebar-name { color: #111; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TEMPLATE 3 — Header (Full-Bleed)
+   Bold full-width colored header, single column body
+   ═══════════════════════════════════════════════════════════════════════════ */
+.rp-template3 .rp-header-bleed {
+  background: #fff;
+  color: #111410;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding: 32px 36px;
+  border-bottom: 6px solid var(--accent);
+}
+
+.rp-template3 .rp-header-bleed h1 { color: #111410; font-size: 28px; }
+.rp-template3 .rp-header-bleed .rp-role { color: var(--accent-readable); }
+.rp-template3 .rp-header-bleed .rp-contact { color: #555; }
+.rp-template3 .rp-photo { border: 3px solid rgba(0,0,0,0.08); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PREMIUM1 — Timeline
+   Vertical timeline for experience, clean single column
+   ═══════════════════════════════════════════════════════════════════════════ */
+.rp-timeline {
+  position: relative;
+  padding-left: 22px;
+}
+.rp-timeline::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+}
+.rp-timeline-item {
+  position: relative;
+  margin-bottom: 16px;
+}
+.rp-timeline-dot {
+  position: absolute;
+  left: -22px;
+  top: 6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.rp-premium1 .rp-header-classic {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  border-bottom: 2px solid var(--accent);
+  padding: 28px 36px 20px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PREMIUM2 — Executive
+   Centered name, serif, thin rules, formal
+   ═══════════════════════════════════════════════════════════════════════════ */
+.rp-premium2 .rp-header-executive {
+  text-align: center;
+  padding: 32px 36px 18px;
+  border-bottom: 0;
+}
+
+.rp-header-executive .rp-photo {
+  margin-bottom: 12px;
+}
+
+.rp-executive-name {
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 0 0 6px;
+  color: #111;
+}
+
+.rp-executive-role {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-readable);
+  margin: 0 0 12px;
+  font-weight: 500;
+}
+
+.rp-rule {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 10px 0;
+}
+
+.rp-premium2 .rp-contact { justify-content: center; }
+.rp-premium2 .rp-stitle {
+  text-align: left;
+  letter-spacing: 0.12em;
+  font-size: var(--rp-fs-stitle);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PREMIUM3 — Compact (Two Column)
+   Maximum information density, perfect for 1-page
+   ═══════════════════════════════════════════════════════════════════════════ */
+.rp-premium3 {
+  --rp-fs-base: 11px;
+  --rp-fs-stitle: 11.5px;
+  --rp-fs-item-title: 11.5px;
+  --rp-fs-item-sub: 10.5px;
+  --rp-fs-body: 10.5px;
+  --rp-fs-meta: 10.5px;
+
+  --rp-lh-body: 1.45;
+  --rp-lh-summary: 1.45;
+}
+
+.rp-premium3 .rp-header-compact {
+  background: #f7f9f7;
+  color: #111410;
+  padding: 18px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  border-top: 5px solid var(--accent);
+  border-bottom: 1px solid #e5e7e2;
+}
+
+.rp-premium3 .rp-header-compact h1 { font-size: 22px; color: #111410; }
+.rp-premium3 .rp-header-compact .rp-role { color: var(--accent-readable); font-size: 11px; margin: 2px 0 0; }
+.rp-premium3 .rp-header-compact .rp-contact { color: #555; margin: 0; justify-content: flex-end; }
+
+.rp-compact-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 0.9fr;
+  gap: 0;
+}
+
+.rp-layout-twocol .rp-main-col { padding: 16px 16px 16px 24px; }
+.rp-layout-twocol .rp-aside-col {
+  padding: 16px 20px 16px 14px;
+  border-left: 1px solid #eee;
+}
+
+.rp-premium3 .rp-stitle { letter-spacing: 0.12em; }
+.rp-premium3 .rp-section { margin-bottom: 12px; }
+.rp-premium3 .rp-item { margin-bottom: 8px; }
+.rp-premium3 .rp-item-head strong { font-size: var(--rp-fs-item-title); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PREMIUM4 — Minimal ("Signature")
+   Concept: split-column header, pure typographic body, no decorative lines.
+   Name + role on left, contact stacked on right. Most font-agnostic layout.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* The header is a two-column flex row — name/role fills left, contact fills right */
+.rp-premium4 .rp-header-sig {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 28px 36px 20px;
+  border-bottom: 2px solid var(--accent);
+  gap: 24px;
+}
+
+.rp-sig-left {
+  flex: 1;
+}
+
+/* Bold, readable name — NOT ultralight (300 was invisible on screen) */
+.rp-sig-name {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin: 0 0 6px;
+  color: #111;
+}
+
+.rp-sig-role {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--accent-readable);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin: 0 0 14px;
+}
+
+/* Short colored underline beneath role — acts as a visual signature */
+.rp-sig-rule {
+  width: 36px;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+/* Right side: photo (optional) + contact stacked vertically, right-aligned */
+.rp-sig-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  min-width: 140px;
+  text-align: right;
+}
+
+.rp-sig-contact .rp-contact {
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  font-size: 10.5px;
+  color: #444;
+  margin: 0;
+}
+
+/* Body: generous but not extreme padding */
+.rp-sig-body {
+  padding: 22px 36px 36px;
+  line-height: 1.65;
+}
+
+/* Section titles: ultra-small ALL CAPS with strong contrast — no border at all.
+   True minimalism means letting whitespace do the separating work, not lines. */
+.rp-premium4 {
+  --rp-fs-stitle: 11.5px;
+  --rp-fs-item-sub: 11px;
+}
+
+/* Section titles: ultra-small ALL CAPS with strong contrast — no border at all.
+   True minimalism means letting whitespace do the separating work, not lines. */
+.rp-premium4 .rp-stitle {
+  font-size: var(--rp-fs-stitle);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--accent-readable);
+  border-bottom: none !important;  /* override all [data-divider] styles */
+  padding-bottom: 0;
+  margin-bottom: 10px;
+  margin-top: 6px;
+}
+
+/* Override any divider style set globally — minimal = no borders */
+.rp-premium4 .rp-stitle[data-divider] {
+  border-bottom: none !important;
+}
+
+.rp-premium4 .rp-section {
+  margin-bottom: 22px;
+}
+
+/* Items slightly more spread out — the whitespace IS the design */
+.rp-premium4 .rp-item {
+  margin-bottom: 14px;
+}
+
+.rp-premium4 .rp-item-head strong {
+  font-weight: 700;
+  font-size: var(--rp-fs-item-title);
+}
+
+.rp-premium4 .rp-item-sub {
+  font-size: var(--rp-fs-item-sub);
+  color: var(--accent-readable);
+  font-weight: 500;
+}
+
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PREMIUM5 — Accent Lines
+   Thick colored left-border accent on each section
+   ═══════════════════════════════════════════════════════════════════════════ */
+.rp-premium5 .rp-header-accentbar {
+  padding: 24px 36px 16px;
+  border-top: 6px solid var(--accent);
+}
+
+.rp-accentbar-name-block h1 { font-size: 30px; margin: 0 0 4px; }
+
+.rp-accentlines .rp-section {
+  padding-left: 14px;
+  border-left: 4px solid var(--accent);
+  margin-bottom: 20px;
+}
+
+.rp-premium5 .rp-stitle {
+  border-bottom: none;
+  color: var(--accent-readable);
+  font-size: var(--rp-fs-stitle);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PREMIUM6 — Split Dark
+   Dark sidebar with white text (IBM Plex)
+   ═══════════════════════════════════════════════════════════════════════════ */
+.rp-sidebar-dark {
+  background: #111827;
+  padding: 28px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.rp-sidebar-dark .rp-sidebar-name { color: #fff; font-size: 17px; }
+.rp-sidebar-dark .rp-sidebar-role { color: rgba(255,255,255,0.65); }
+.rp-sidebar-dark .rp-contact { color: rgba(255,255,255,0.72); flex-direction: column; font-size: 10.5px; gap: 4px; }
+.rp-sidebar-dark .rp-stitle { color: rgba(255,255,255,0.55); border-bottom-color: rgba(255,255,255,0.2); }
+.rp-sidebar-dark .rp-skill-name { color: rgba(255,255,255,0.9); }
+.rp-sidebar-dark .rp-bar { background: rgba(255,255,255,0.15); }
+.rp-sidebar-dark .rp-bar span { background: rgba(255,255,255,0.8); }
+.rp-sidebar-dark .rp-dots .dot { border-color: rgba(255,255,255,0.6); background: transparent; }
+.rp-sidebar-dark .rp-dots .dot.filled { background: rgba(255,255,255,0.85); }
+.rp-premium6 .rp-photo { border: 3px solid rgba(255,255,255,0.3); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PREMIUM7 — Card Sections
+   Each section in a bordered card
+   ═══════════════════════════════════════════════════════════════════════════ */
+.rp-premium7 .rp-header-classic {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  border-bottom: 2px solid var(--accent);
+  padding: 24px 28px 18px;
+}
+
+.rp-card-sections .rp-section {
+  background: #fafaf8;
+  border: 1px solid #ebebeb;
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+}
+
+.rp-premium7 .rp-body { padding: 16px 28px 28px; }
+.rp-premium7 .rp-stitle { border-bottom: 2px solid var(--accent); font-size: var(--rp-fs-stitle); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PREMIUM8 — Infographic
+   Dot-circle skills, visual sidebar
+   ═══════════════════════════════════════════════════════════════════════════ */
+.rp-sidebar-infographic {
+  background: #f2f0ea;
+  border-right: 1px solid #e0ddd4;
+  padding: 28px 16px;
+}
+
+.rp-premium8 .rp-sidebar-name { color: #111; font-size: 17px; }
+.rp-premium8 .rp-sidebar-role { color: var(--accent-readable); }
+.rp-premium8 .rp-contact { color: #666; flex-direction: column; gap: 4px; font-size: 10.5px; }
+.rp-premium8 .rp-dots .dot { width: 11px; height: 11px; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PREMIUM9 — Centered
+   Editorial centered header
+   ═══════════════════════════════════════════════════════════════════════════ */
+.rp-premium9 .rp-header-centered {
+  text-align: center;
+  padding: 36px 36px 20px;
+  border-bottom: 1px solid var(--accent);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.rp-centered-name {
+  font-size: 36px;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  margin: 12px 0 6px;
+}
+
+.rp-centered-role {
+  font-size: 12px;
+  color: var(--accent-readable);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin: 0 0 10px;
+}
+
+.rp-premium9 .rp-contact { justify-content: center; }
+.rp-premium9 .rp-photo { width: 80px; height: 80px; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PREMIUM10 — Tech
+   Monospace contact, bracket section labels, code aesthetic
+   ═══════════════════════════════════════════════════════════════════════════ */
+.rp-premium10 .rp-header-tech {
+  padding: 24px 36px 18px;
+  border-left: 5px solid var(--accent);
+  background: #f7f9f7;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.rp-tech-name-block h1 { font-size: 26px; font-weight: 700; }
+
+.rp-mono {
+  font-family: var(--rp-font-mono, 'Source Code Pro', monospace) !important;
+}
+
+.rp-tech-contact .rp-contact {
+  font-family: var(--rp-font-mono, monospace);
+  font-size: 10px;
+  color: #555;
+  flex-direction: column;
+  gap: 3px;
+  text-align: right;
+  margin: 0;
+}
+
+.rp-tech-body .rp-stitle {
+  font-family: var(--rp-font-mono, monospace);
+  font-size: var(--rp-fs-stitle);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--accent-readable);
+  border-bottom: none;
+}
+.rp-tech-body .rp-stitle::before { content: "["; }
+.rp-tech-body .rp-stitle::after { content: "]"; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Responsive
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .resume-preview { min-height: auto; font-size: 12px; }
+  .rp-layout-sidebar,
+  .rp-compact-grid,
+  .rp-layout-twocol { grid-template-columns: 1fr; }
+  .rp-sidebar { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.08); }
+  .rp-sidebar-dark { border-bottom: none; }
+  .rp-tech-contact .rp-contact { text-align: left; }
+  .rp-premium10 .rp-header-tech { flex-direction: column; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PRINT STYLES (ATS-SAFE, SELECTABLE VECTOR TEXT)
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media print {
+  @page {
+    size: letter;
+    margin-top: 40px !important;
+    margin-bottom: 40px !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  @page :first {
+    margin-top: 0 !important;
+  }
+
+  /* Hide editor chrome, sidebars, buttons, headers, context */
+  html, body, #root, .editor-page, .editor-body, .editor-sidebar, .editor-main, .editor-topbar, .editor-preview-panel, .preview-actions {
+    background: #fff !important;
+  }
+  
+  body * {
+    visibility: hidden !important;
+  }
+  
+  /* Make only the resume-preview and its children visible, disable ligatures, and reset spacing to prevent PDF text fragmentation */
+  #resume-preview,
+  #resume-preview * {
+    visibility: visible !important;
+    font-variant-ligatures: none !important;
+    font-feature-settings: "liga" 0, "clig" 0, "calt" 0 !important;
+    font-kerning: none !important;
+    text-rendering: optimizeSpeed !important;
+    letter-spacing: 0 !important;
+    word-spacing: 0 !important;
+  }
+  
+  /* Targeted override for Fraunces font in print to resolve Chromium PDF text-layer word splitting */
+  #resume-preview[style*="fraunces" i] h1,
+  #resume-preview[style*="fraunces" i] h2,
+  #resume-preview[style*="fraunces" i] h3,
+  #resume-preview[style*="fraunces" i] h4,
+  #resume-preview[style*="fraunces" i] .rp-ats-name,
+  #resume-preview[style*="fraunces" i] .rp-ats-name-serif,
+  #resume-preview[style*="fraunces" i] .rp-sidebar-name,
+  #resume-preview[style*="fraunces" i] .rp-executive-name,
+  #resume-preview[style*="fraunces" i] .rp-sig-name,
+  #resume-preview[style*="fraunces" i] .rp-centered-name,
+  #resume-preview[style*="fraunces" i] .rp-stitle {
+    font-family: Georgia, 'Times New Roman', serif !important;
+  }
+  
+  /* Positioning the resume preview perfectly at the top-left of the print page */
+  #resume-preview {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: #fff !important;
+    color: #000 !important;
+    print-color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+  }
+  
+  /* Force grid and column spacing in templates */
+  /* Enforce proper text contrast */
+  h1, h2, h3, h4, strong, p, span, li, a,
+  .rp-ats-name,
+  .rp-ats-name-serif,
+  .rp-sidebar-name,
+  .rp-executive-name,
+  .rp-sig-name,
+  .rp-centered-name {
+    text-shadow: none !important;
+    letter-spacing: 0 !important;
+    word-spacing: 0 !important;
+    font-variant-ligatures: none !important;
+    font-feature-settings: "liga" 0, "clig" 0, "calt" 0 !important;
+    font-kerning: none !important;
+    text-rendering: optimizeSpeed !important;
+  }
+  
+  .resume-preview {
+    color: #000000 !important;
+  }
+  
+  h1, h2, h3, h4, strong {
+    color: #000000 !important;
+  }
+  
+  .rp-item-sub {
+    color: #333333 !important;
+  }
+  
+  .rp-item-desc, .rp-summary {
+    color: #222222 !important;
+  }
+  
+  .rp-contact, 
+  .rp-item-head span, 
+  .rp-compact span, 
+  .rp-links,
+  .rp-ats-contact,
+  .rp-ats-bullet {
+    color: #444444 !important;
+  }
+
+  .rp-contact,
+  .rp-ats-contact {
+    display: block !important;
+    width: 100% !important;
+    clear: both !important;
+    margin-bottom: 12px !important;
+  }
+
+  .rp-contact span,
+  .rp-ats-contact-item {
+    display: inline !important;
+    float: none !important;
+    margin-right: 14px !important;
+    white-space: normal !important;
+  }
+
+  .rp-contact a,
+  .rp-ats-contact a,
+  .rp-links a,
+  a.rp-project-link,
+  a.rp-custom-link {
+    display: inline !important;
+    position: static !important;
+    float: none !important;
+    white-space: normal !important;
+  }
+
+  .rp-ats-contact-item {
+    margin-right: 6px !important;
+  }
+
+  .rp-contact span:last-child,
+  .rp-ats-contact-item:last-child {
+    margin-right: 0 !important;
+  }
+  
+  /* Isolate all headers and establish block/flex isolation to prevent semantic leakage */
+  .rp-header,
+  .rp-sidebar-header,
+  .rp-ats-header,
+  .rp-ats-header-left,
+  .rp-academic-header {
+    clear: both !important;
+    width: 100% !important;
+    margin-bottom: 20px !important;
+  }
+
+  .rp-ats-header,
+  .rp-ats-header-left,
+  .rp-academic-header,
+  .rp-sidebar-header,
+  .rp-header-executive,
+  .rp-header-centered {
+    display: flow-root !important;
+  }
+
+  .rp-header-classic,
+  .rp-header-bleed,
+  .rp-header-compact,
+  .rp-header-sig,
+  .rp-header-accentbar,
+  .rp-header-tech {
+    display: flex !important;
+  }
+
+  /* Prevent page breaks inside critical items and layouts */
+  .rp-stitle-num,
+  .rp-header,
+  .rp-sidebar-header,
+  .rp-ats-header,
+  .rp-ats-header-left,
+  .rp-academic-header,
+  .rp-skill-bar-wrap,
+  .rp-skill-row,
+  .rp-compact,
+  .rp-contact,
+  .rp-ats-contact {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Prevent headings from being orphaned at the bottom of the page */
+  .rp-stitle,
+  h1, h2, h3, h4 {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Keep experience/project metadata together and with its content */
+  .rp-item-head,
+  .rp-item-sub {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  /* Prevent single list items (bullet points) from splitting across pages */
+  .rp-item-desc li {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Allow experience/project containers to split naturally, preventing massive gaps */
+  .rp-item {
+    page-break-inside: auto !important;
+    break-inside: auto !important;
+  }
+
+  /* Allow sections to break across pages */
+  .rp-section, section {
+    page-break-inside: auto !important;
+    break-inside: auto !important;
+  }
+
+  /* Force block layout instead of CSS grid/flex/table to prevent multi-page column collapse and whitespace gaps in Chromium */
+  .rp-layout-sidebar,
+  .rp-compact-grid,
+  .rp-layout-twocol,
+  .rp-ats-twocol,
+  .rp-ats-twocol-alt,
+  .rp-body,
+  .rp-ats-body,
+  main,
+  section {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    box-sizing: border-box !important;
+    float: none !important;
+    clear: both !important;
+  }
+
+  .rp-layout-sidebar::after,
+  .rp-compact-grid::after,
+  .rp-layout-twocol::after,
+  .rp-ats-twocol::after,
+  .rp-ats-twocol-alt::after {
+    content: "" !important;
+    display: table !important;
+    clear: both !important;
+  }
+
+  .rp-sidebar,
+  .rp-aside-col {
+    display: block !important;
+    float: left !important;
+    height: auto !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+  }
+
+  .rp-main-col {
+    display: block !important;
+    float: left !important;
+    height: auto !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+  }
+
+  .rp-layout-sidebar > .rp-sidebar,
+  .rp-layout-sidebar > .rp-main-col,
+  .rp-compact-grid > .rp-main-col,
+  .rp-compact-grid > .rp-aside-col,
+  .rp-layout-twocol > .rp-main-col,
+  .rp-layout-twocol > .rp-aside-col,
+  .rp-ats-twocol > .rp-main-col,
+  .rp-ats-twocol > .rp-aside-col,
+  .rp-ats-twocol-alt > .rp-aside-col,
+  .rp-ats-twocol-alt > .rp-main-col {
+    width: 100% !important;
+    float: none !important;
+    clear: both !important;
+    display: block !important;
+    margin: 0 0 16px 0 !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+}
+
+/* Recruiter Scan Mode Overlay & Highlights */
+.rp-scan-mode-active .rp-item-desc,
+.rp-scan-mode-active .rp-summary,
+.rp-scan-mode-active .rp-item-head strong {
+  position: relative;
+}
+
+/* Eye tracking scan path - dotted line overlay */
+.rp-scan-mode-overlay-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0.75;
+}
+
+/* Highlighting numbers/metrics */
+.rp-scan-mode-active .rp-metric-highlight {
+  background: rgba(184, 255, 44, 0.35); /* Lime green highlighter */
+  border-bottom: 2px solid rgba(100, 140, 0, 0.6);
+  border-radius: 2px;
+  padding: 0 2px;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+/* Highlighting strong action verbs */
+.rp-scan-mode-active .rp-verb-highlight {
+  background: rgba(59, 130, 246, 0.15); /* Light blue highlight */
+  border-bottom: 2px solid rgba(59, 130, 246, 0.4);
+  border-radius: 2px;
+  padding: 0 2px;
+  font-weight: 700;
+  color: #1e3a8a;
+}
+
+/* Target Role Styling in Preview */
+.rp-target-role-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: var(--accent);
+  color: var(--on-accent);
+  padding: 3px 10px;
+  border-radius: 4px;
+  margin-top: 6px;
+  font-family: var(--rp-font-heading, sans-serif);
+}
+
+/* Let's style the badge for other header styles too */
+[data-hstyle="card"] .rp-target-role-badge {
+  background: var(--accent) !important;
+  color: #111410 !important;
+}
+
+[data-hstyle="full-bleed"] .rp-target-role-badge {
+  background: var(--on-accent) !important;
+  color: var(--accent-readable) !important;
+}
+
+/* Pulse animation for key scanning landmarks */
+@keyframes rp-scan-pulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.8; }
+}
+
+.rp-scan-landmark {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent-readable, #ba2b2b);
+  border: 2.5px solid #fff;
+  box-shadow: 0 0 0 3px var(--accent, #b8ff2c);
+  z-index: 101;
+  pointer-events: none;
+  animation: rp-scan-pulse 1.8s infinite ease-in-out;
+}
+
+@media print {
+  .rp-scan-mode-overlay-svg,
+  .rp-scan-landmark {
+    display: none !important;
+  }
+  .rp-scan-mode-active .rp-metric-highlight,
+  .rp-scan-mode-active .rp-verb-highlight {
+    background: transparent !important;
+    border-bottom: none !important;
+    padding: 0 !important;
+    font-weight: inherit !important;
+    color: inherit !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ATS PROFESSIONAL CERTIFIED TEMPLATES (Resume Worded Style)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Base container for all ATS layouts to enforce proper font and spacing constraints */
+.rp-ats-container {
+  padding: 32px 40px;
+  background-color: #ffffff;
+  color: #111111;
+  font-family: var(--rp-font-body, "Inter", sans-serif);
+  
+  /* ATS Typographic Design System Scale */
+  --rp-fs-base: 11px;
+  --rp-fs-name: 22px;
+  --rp-fs-role: 12px;
+  --rp-fs-stitle: 12.5px;
+  --rp-fs-item-title: 11.5px;
+  --rp-fs-item-sub: 11px;
+  --rp-fs-body: 11px;
+  --rp-fs-meta: 10.5px;
+
+  --rp-lh-body: 1.5;
+  --rp-lh-summary: 1.5;
+
+  font-size: var(--rp-fs-base);
+  line-height: var(--rp-lh-body);
+}
+
+.rp-ats-container .rp-photo {
+  width: 56px;
+  height: 56px;
+  margin-bottom: 8px;
+  border: 2px solid var(--accent);
+}
+
+/* ATS headers */
+.rp-ats-header {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.rp-ats-header-left {
+  text-align: left;
+  margin-bottom: 18px;
+}
+
+.rp-ats-name {
+  font-family: var(--rp-font-heading, "Inter", sans-serif);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent-readable);
+  margin: 0 0 4px;
+  letter-spacing: -0.02em;
+}
+
+.rp-ats-name-serif {
+  font-family: var(--rp-font-heading, 'Playfair Display', 'Georgia', serif);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--accent-readable);
+  margin: 0 0 4px;
+}
+
+.rp-ats-role {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-readable);
+  margin: 0 0 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.rp-ats-role-left {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-readable);
+  margin: 0 0 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.rp-ats-role-serif {
+  font-family: var(--rp-font-heading, 'Playfair Display', 'Georgia', serif);
+  font-size: 13px;
+  font-style: italic;
+  color: var(--accent-readable);
+  margin: 0 0 6px;
+}
+
+/* ATS Contact line styling */
+.rp-ats-contact {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: inherit;
+  gap: 6px;
+  font-size: 10.5px;
+  color: #444444;
+  margin: 6px 0 0;
+}
+
+.rp-ats-header .rp-ats-contact {
+  justify-content: center;
+}
+
+.rp-ats-header-left .rp-ats-contact {
+  justify-content: flex-start;
+}
+
+.rp-ats-contact-item {
+  white-space: nowrap;
+}
+
+.rp-ats-bullet {
+  font-weight: bold;
+  color: #888888;
+  padding: 0 4px;
+}
+
+/* Badge styling for ATS */
+.rp-ats-badge, .rp-ats-badge-left {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  background: color-mix(in srgb, var(--accent) 14%, white);
+  color: var(--accent-readable);
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin: 4px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, #dee2e6);
+}
+
+/* Sections for ATS */
+.rp-ats-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Enforce uppercase bold section titles with thin bottom borders */
+.rp-ats-classic .rp-stitle,
+.rp-ats-entry .rp-stitle,
+.rp-ats-senior .rp-stitle,
+.rp-ats-lead .rp-stitle,
+.rp-ats-intern .rp-stitle,
+.rp-ats-experienced .rp-stitle {
+  font-family: var(--rp-font-heading, "Inter", sans-serif);
+  font-size: var(--rp-fs-stitle);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent-readable);
+  border-bottom-color: var(--accent) !important;
+  padding-bottom: 2px;
+  margin-top: 4px;
+  margin-bottom: 12px;
+}
+
+.rp-ats-classic { border-top: 4px solid var(--accent); }
+.rp-ats-classic .rp-ats-header { text-align: center; }
+
+.rp-ats-entry { border-left: 5px solid var(--accent); padding-left: 32px; }
+.rp-ats-entry .rp-ats-header-left { border-bottom: 1px solid rgba(0,0,0,0.12); padding-bottom: 8px; }
+
+.rp-ats-senior { border-top: 2px solid var(--accent); border-bottom: 2px solid var(--accent); }
+.rp-ats-senior .rp-ats-header { border-bottom: 2px double rgba(0,0,0,0.18); padding-bottom: 10px; }
+
+.rp-ats-lead .rp-ats-body { border-left: 2px dashed var(--accent); padding-left: 12px; }
+.rp-ats-lead .rp-ats-header-left { display: grid; gap: 4px; }
+
+.rp-ats-intern .rp-ats-body { background: linear-gradient(180deg, rgba(0,0,0,0.015), transparent); padding: 8px 10px; }
+.rp-ats-intern .rp-ats-header { border-top: 3px solid var(--accent); padding-top: 8px; }
+
+.rp-ats-experienced .rp-ats-body .rp-section { border-bottom: 1px solid rgba(0,0,0,0.09); padding-bottom: 8px; }
+.rp-ats-experienced .rp-ats-header-left { border: 1px dashed rgba(0,0,0,0.2); padding: 10px 12px; }
+
+.rp-ats-twocol {
+  display: grid;
+  grid-template-columns: 1.45fr 0.85fr;
+  gap: 14px;
+}
+
+.rp-ats-twocol-alt {
+  display: grid;
+  grid-template-columns: 0.9fr 1.4fr;
+  gap: 14px;
+}
+
+.rp-ats-twocol .rp-aside-col,
+.rp-ats-twocol-alt .rp-aside-col {
+  border-left: 1px solid rgba(0,0,0,0.12);
+  padding-left: 10px;
+}
+
+/* For ATS Senior, use serif headings */
+.rp-ats-senior .rp-stitle {
+  font-family: var(--rp-font-heading, 'Playfair Display', 'Georgia', serif);
+  font-size: var(--rp-fs-stitle);
+  letter-spacing: 0.05em;
+}
+
+/* Clean list representation for items in ATS */
+.rp-ats-container .rp-item {
+  margin-bottom: 12px;
+}
+
+.rp-ats-container .rp-item-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 2px;
+}
+
+.rp-ats-container .rp-item-head strong {
+  font-size: var(--rp-fs-item-title);
+  font-weight: 700;
+  color: #000000;
+}
+
+.rp-ats-container .rp-item-date {
+  font-size: var(--rp-fs-meta);
+  font-weight: 600;
+  color: #444444;
+  white-space: nowrap;
+}
+
+.rp-ats-container .rp-item-sub {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--rp-fs-item-sub);
+  color: #333333;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.rp-ats-container .rp-item-sub em {
+  font-style: normal;
+  color: #444444;
+  font-weight: 500;
+}
+
+/* ── Academic CV Template Family ────────────────────────────────────────── */
+.rp-academic_cv {
+  padding: 40px 48px;
+}
+
+.rp-academic-header {
+  text-align: center;
+  margin-bottom: 18px;
+  page-break-inside: avoid !important;
+  break-inside: avoid !important;
+}
+
+.rp-academic-name {
+  font-family: var(--rp-font-heading, serif);
+  font-size: var(--rp-fs-name);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin: 0 0 6px;
+  color: #111;
+}
+
+.rp-academic-role {
+  font-family: var(--rp-font-heading, serif);
+  font-size: var(--rp-fs-role);
+  font-style: italic;
+  margin: 0 0 8px;
+  color: #333;
+}
+
+.rp-academic-body {
+  width: 100% !important;
+}
+
+.rp-academic_cv .rp-stitle {
+  font-family: var(--rp-font-heading, serif);
+  font-size: var(--rp-fs-stitle);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 2px solid #222;
+  padding-bottom: 3px;
+  margin-top: 18px;
+  margin-bottom: 12px;
+}
+
+/* ── High-Density Spacing Compression Engine ────────────────────────────── */
+.resume-preview.rp-high-density {
+  --rp-fs-base: 11px;
+  --rp-fs-name: 22px;
+  --rp-fs-role: 12px;
+  --rp-fs-stitle: 12px;
+  --rp-fs-item-title: 11px;
+  --rp-fs-item-sub: 10px;
+  --rp-fs-body: 10px;
+  --rp-fs-meta: 9.5px;
+  --rp-lh-body: 1.35;
+  --rp-lh-summary: 1.4;
+}
+
+.rp-high-density .rp-section {
+  margin-bottom: 12px !important;
+}
+
+.rp-high-density .rp-item {
+  margin-bottom: 6px !important;
+}
+
+.rp-high-density .rp-stitle {
+  margin-top: 10px !important;
+  margin-bottom: 8px !important;
+}
+
+.rp-high-density .rp-item-desc {
+  margin-top: 3px !important;
+}
+
+.rp-high-density .rp-desc-list li {
+  margin-bottom: 2px !important;
+}
+
+/* ── Bullet/Description List ─────────────────────────────────────────────── */
+/* list-style-type is overridden by data-bullet-style attribute on .resume-preview */
+.rp-desc-list {
+  padding-left: 18px;
+  margin: 4px 0 0;
+  list-style-type: disc;       /* default — overridden by [data-bullet] on root */
+  font-size: var(--rp-fs-body);
+  color: #333;
+  font-weight: 400;
+}
+
+.rp-desc-list li {
+  margin-bottom: 4px;
+  line-height: var(--rp-lh-body);
+  font-size: var(--rp-fs-body);
+  color: #333;
+  font-weight: 400;
+}
+
+/* ── Bullet style overrides via data-bullet attribute on .resume-preview ────── */
+/* Uses !important to beat any template-specific or ATS list-style-type rules.  */
+/* Targets both .rp-desc-list (all templates) and plain ul inside .rp-item-desc */
+
+.resume-preview[data-bullet="disc"]   .rp-desc-list,
+.resume-preview[data-bullet="disc"]   .rp-item-desc ul { list-style-type: disc !important; }
+
+.resume-preview[data-bullet="circle"] .rp-desc-list,
+.resume-preview[data-bullet="circle"] .rp-item-desc ul { list-style-type: circle !important; }
+
+.resume-preview[data-bullet="square"] .rp-desc-list,
+.resume-preview[data-bullet="square"] .rp-item-desc ul { list-style-type: square !important; }
+
+.resume-preview[data-bullet="decimal"] .rp-desc-list,
+.resume-preview[data-bullet="decimal"] .rp-item-desc ul { list-style-type: decimal !important; }
+
+.resume-preview[data-bullet="lower-roman"] .rp-desc-list,
+.resume-preview[data-bullet="lower-roman"] .rp-item-desc ul { list-style-type: lower-roman !important; }
+
+.resume-preview[data-bullet="upper-roman"] .rp-desc-list,
+.resume-preview[data-bullet="upper-roman"] .rp-item-desc ul { list-style-type: upper-roman !important; }
+
+.resume-preview[data-bullet="lower-alpha"] .rp-desc-list,
+.resume-preview[data-bullet="lower-alpha"] .rp-item-desc ul { list-style-type: lower-alpha !important; }
+
+/* Dash: suppress default marker, inject – via ::before */
+.resume-preview[data-bullet="dash"] .rp-desc-list,
+.resume-preview[data-bullet="dash"] .rp-item-desc ul { list-style-type: none !important; padding-left: 18px !important; }
+.resume-preview[data-bullet="dash"] .rp-desc-list li,
+.resume-preview[data-bullet="dash"] .rp-item-desc ul li { position: relative; }
+.resume-preview[data-bullet="dash"] .rp-desc-list li::before,
+.resume-preview[data-bullet="dash"] .rp-item-desc ul li::before { content: '–'; position: absolute; left: -14px; top: 0; color: #555; }
+
+/* Arrow: suppress default marker, inject accent-colored › via ::before */
+.resume-preview[data-bullet="arrow"] .rp-desc-list,
+.resume-preview[data-bullet="arrow"] .rp-item-desc ul { list-style-type: none !important; padding-left: 18px !important; }
+.resume-preview[data-bullet="arrow"] .rp-desc-list li,
+.resume-preview[data-bullet="arrow"] .rp-item-desc ul li { position: relative; }
+.resume-preview[data-bullet="arrow"] .rp-desc-list li::before,
+.resume-preview[data-bullet="arrow"] .rp-item-desc ul li::before { content: '›'; position: absolute; left: -14px; top: 0; color: var(--accent); font-weight: 700; }
+
+/* None: suppress default marker and remove padding */
+.resume-preview[data-bullet="none"] .rp-desc-list,
+.resume-preview[data-bullet="none"] .rp-item-desc ul { list-style-type: none !important; padding-left: 0 !important; }
+.resume-preview[data-bullet="none"] .rp-desc-list li::before,
+.resume-preview[data-bullet="none"] .rp-item-desc ul li::before { display: none !important; }
+
+/* rp-education-gpa and rp-item-location — defined globally above; no override here */
+
+/* Descriptions with bullet points for professional ATS templates */
+.rp-ats-container .rp-item-desc {
+  font-size: var(--rp-fs-body);
+  color: #333333;
+  margin-top: 5px;
+  line-height: var(--rp-lh-body);
+}
+
+.rp-ats-container .rp-item-desc ul {
+  padding-left: 16px;
+  margin: 4px 0;
+}
+
+.rp-ats-container .rp-item-desc li {
+  margin-bottom: 4px;
+  /* list-style-type deliberately omitted — controlled by [data-bullet] on .resume-preview */
+}
+
+/* ATS Skills block spacing */
+.rp-ats-skills-list {
+  font-size: var(--rp-fs-body);
+  color: #333333;
+  line-height: 1.5;
+}
+
+/* Header BFC container to contain all floated details on screen */
+.rp-header,
+.rp-sidebar-header,
+.rp-ats-header,
+.rp-ats-header-left,
+.rp-academic-header {
+  clear: both;
+}
+
+.rp-ats-header,
+.rp-ats-header-left,
+.rp-academic-header,
+.rp-sidebar-header,
+.rp-header-executive,
+.rp-header-centered {
+  display: flow-root;
+}
+
+.rp-header-classic,
+.rp-header-bleed,
+.rp-header-compact,
+.rp-header-sig,
+.rp-header-accentbar,
+.rp-header-tech {
+  display: flex;
+}

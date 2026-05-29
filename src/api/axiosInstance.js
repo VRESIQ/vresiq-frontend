@@ -1,0 +1,66 @@
+import axios from "axios";
+
+const resolveBaseUrl = () => {
+  const raw = (import.meta.env.VITE_API_BASE_URL || "").trim();
+
+  // Prefer same-origin in browser by default so Vite proxy (dev)
+  // and same-host deployments (prod) work without extra env setup.
+  if (!raw) return "";
+
+  // If env value is clearly malformed, ignore it instead of hard-failing all API calls.
+  try {
+    // Accept absolute URLs only (http/https). Relative values fall back to same-origin.
+    const url = new URL(raw);
+    if (url.protocol === "http:" || url.protocol === "https:") return raw;
+    return "";
+  } catch {
+    return "";
+  }
+};
+
+const axiosInstance = axios.create({
+  baseURL: resolveBaseUrl(),
+  headers: { "Content-Type": "application/json" },
+});
+
+// Attach JWT token on every request
+axiosInstance.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+let isLoggingOut = false;
+
+// Handle errors: on 401 clear stale token and redirect to login
+axiosInstance.interceptors.response.use(
+  (res) => res,
+  (error) => {
+    const isUnauthorized = error.response?.status === 401;
+
+    if (isUnauthorized) {
+      if (!isLoggingOut) {
+        isLoggingOut = true;
+        localStorage.removeItem("token");
+        
+        // Redirect cleanly to login page with expired flag
+        if (!window.location.pathname.startsWith("/login")) {
+          window.location.href = "/login?expired=1";
+        }
+        
+        // Reset flag after a delay to ensure future valid logins can proceed
+        setTimeout(() => {
+          isLoggingOut = false;
+        }, 3000);
+      }
+    } else {
+      console.error("API ERROR:", error.response?.status, error.response?.data || error.message);
+    }
+
+    return Promise.reject(error);
+  }
+);
+
+export default axiosInstance;

@@ -1,0 +1,128 @@
+/* ── Decoratives Panel ──────────────────────────────────── */
+.dec-panel {
+  display: grid;
+  gap: 1.4rem;
+}
+
+.dec-group {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.dec-label {
+  font-size: 0.82rem;
+  font-weight: 650;
+  color: var(--muted);
+}
+
+.dec-color-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.dec-color-input {
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 2px;
+  cursor: pointer;
+  background: none;
+}
+
+.dec-color-hex {
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-family: monospace;
+}
+
+.dec-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.dec-chip {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.dec-chip:hover {
+  background: var(--wash);
+  color: var(--ink);
+}
+
+.dec-chip.active {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+
+.dec-toggles {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.dec-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  cursor: pointer;
+  font-size: 0.88rem;
+  color: var(--ink);
+}
+
+.dec-toggle input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent-dark);
+  cursor: pointer;
+}
+
+/* ════════════════════════════════════════════════
+   DARK MODE — Decoratives Panel overrides
+   ════════════════════════════════════════════════ */
+
+/* Inactive chip — subtle dark border, muted text */
+[data-theme="dark"] .dec-chip {
+  background: rgba(255, 254, 249, 0.03) !important;
+  border-color: var(--line) !important;
+  color: var(--muted) !important;
+}
+[data-theme="dark"] .dec-chip:hover {
+  background: rgba(184, 255, 44, 0.05) !important;
+  border-color: var(--accent) !important;
+  color: var(--ink) !important;
+}
+
+/* Active chip — lime-accent treatment with glow */
+[data-theme="dark"] .dec-chip.active {
+  background: rgba(184, 255, 44, 0.1) !important;
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+  box-shadow: 0 0 15px rgba(184, 255, 44, 0.2) !important;
+  font-weight: 700;
+}
+
+/* Color hex code label */
+[data-theme="dark"] .dec-color-hex {
+  color: var(--muted) !important;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Color swatch border */
+[data-theme="dark"] .dec-color-input {
+  border-color: var(--line) !important;
+  background: rgba(255, 254, 249, 0.05) !important;
+}
+
+[data-theme="dark"] .dec-toggle {
+  color: var(--ink) !important;
+}

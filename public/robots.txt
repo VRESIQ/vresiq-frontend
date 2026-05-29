@@ -1,0 +1,10 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Exclude protected/auth routes
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /verify-email
+
+Sitemap: https://vresiq.app/sitemap.xml

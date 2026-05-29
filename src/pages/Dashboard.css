@@ -1,0 +1,621 @@
+.dashboard {
+  min-height: 100vh;
+}
+
+.dash-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  height: 72px;
+  padding: 0 clamp(1.25rem, 4vw, 4rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dash-logo {
+  text-decoration: none;
+  font-size: 1.05rem;
+}
+
+.dash-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-plan {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.35rem 0.65rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 680;
+}
+
+.btn-logout {
+  min-height: 38px;
+  padding: 0.45rem 0.75rem;
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 620;
+}
+
+.dash-content {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 4.5rem) clamp(1.25rem, 4vw, 3rem);
+}
+
+.dash-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.dash-kicker {
+  color: var(--accent-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  font-weight: 760;
+  margin-bottom: 1rem;
+}
+
+.dash-hero h1 {
+  max-width: 820px;
+  font-size: clamp(2.6rem, 6vw, 5.4rem);
+  line-height: 0.96;
+  letter-spacing: 0;
+  margin-bottom: 1rem;
+}
+
+.dash-hero span {
+  display: block;
+  max-width: 700px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.btn-create {
+  min-height: 46px;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-weight: 680;
+  white-space: nowrap;
+}
+
+.btn-create:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.dash-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 2rem 0 1rem;
+}
+
+.stat-card {
+  min-height: 140px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 254, 249, 0.76);
+  padding: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.stat-card span {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.stat-card strong {
+  font-size: clamp(1.7rem, 3vw, 2.8rem);
+  line-height: 1;
+}
+
+.upgrade-strip {
+  border: 1px solid rgba(100, 140, 0, 0.22);
+  background: rgba(184, 255, 44, 0.14);
+  border-radius: var(--radius);
+  padding: 0.9rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.upgrade-strip span {
+  color: var(--muted);
+}
+
+.upgrade-strip a {
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.dash-empty {
+  min-height: 320px;
+  border: 1px dashed rgba(17, 20, 16, 0.16);
+  border-radius: var(--radius);
+  display: grid;
+  place-items: center;
+  gap: 1rem;
+  color: var(--muted);
+  text-align: center;
+  padding: 2rem;
+}
+
+/* Glassmorphism nav — matches landing page */
+.dash-nav {
+  background: rgba(255, 254, 249, 0.82) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(17, 20, 16, 0.08);
+}
+
+.resume-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+/* 3D card hover — lifts with perspective tilt + gloss overlay */
+.resume-card {
+  overflow: hidden;
+  position: relative;
+  transition:
+    transform 0.28s cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 0.28s ease,
+    border-color 0.2s;
+  transform-style: preserve-3d;
+}
+
+/* Gloss shimmer layer — slides in from top-left on hover */
+.resume-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0)    50%
+  );
+  opacity: 0;
+  z-index: 1;
+  transition: opacity 0.25s;
+  pointer-events: none;
+}
+
+.resume-card:hover {
+  transform: perspective(700px) rotateX(2deg) rotateY(-2deg) translateY(-4px);
+  box-shadow:
+    0 6px 18px rgba(17, 20, 16, 0.08),
+    0 18px 48px rgba(17, 20, 16, 0.06);
+  border-color: rgba(17, 20, 16, 0.18);
+}
+
+.resume-card:hover::before {
+  opacity: 1;
+}
+
+
+
+.resume-thumb-wrap {
+  height: 210px;
+  background: #f0eee4;
+  border-bottom: 1px solid var(--line);
+}
+
+.resume-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.resume-thumb-placeholder {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  background:
+    linear-gradient(135deg, rgba(184, 255, 44, 0.2), transparent 42%),
+    var(--wash);
+}
+
+.resume-thumb-placeholder span {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--paper);   /* adapts to theme */
+  color: var(--muted);
+  font-weight: 760;
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+  border: 1.5px solid var(--line);
+}
+
+.resume-card-info {
+  padding: 1rem;
+}
+
+.resume-card-info > span {
+  color: var(--accent-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.68rem;
+  font-weight: 760;
+}
+
+.resume-card-info h3 {
+  margin: 0.55rem 0 0.25rem;
+  font-size: 1.1rem;
+}
+
+.resume-card-info p {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.resume-card-actions {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.btn-edit,
+.btn-del {
+  flex: 1;
+  min-height: 40px;
+  padding: 0.5rem 0.8rem;
+  cursor: pointer;
+  font-weight: 650;
+}
+
+.btn-del {
+  border: 1px solid rgba(186, 43, 43, 0.18);
+  border-radius: var(--radius);
+  color: var(--danger);
+  background: transparent;
+}
+
+.btn-del:hover {
+  background: #fff1f1;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 20, 16, 0.38);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  z-index: 200;
+}
+
+.modal {
+  width: min(100%, 620px);
+  max-height: min(760px, calc(100vh - 2rem));
+  overflow-y: auto;
+  padding: clamp(1.25rem, 3vw, 2rem);
+}
+
+.modal-head p,
+.template-picker p {
+  color: var(--accent-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  font-weight: 760;
+  margin-bottom: 0.7rem;
+}
+
+.modal-head h2 {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  line-height: 1;
+  margin-bottom: 1.3rem;
+}
+
+.modal input[type="text"] {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.75rem 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.template-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(116px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.template-mini {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.7rem;
+  background: #fffef9;
+  text-align: left;
+  cursor: pointer;
+}
+
+.template-mini.selected {
+  border-color: var(--accent-dark);
+  box-shadow: 0 0 0 3px rgba(184, 255, 44, 0.18);
+}
+
+.template-mini.locked {
+  opacity: 0.48;
+  cursor: not-allowed;
+}
+
+.mini-art {
+  height: 54px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--wash);
+  display: grid;
+  gap: 4px;
+  padding: 8px;
+  margin-bottom: 0.55rem;
+}
+
+.mini-art span {
+  display: block;
+  height: 5px;
+  border-radius: 99px;
+  background: #d8d5ca;
+}
+
+.mini-art span:first-child {
+  width: 60%;
+  background: var(--ink);
+}
+
+.template-mini > span:last-of-type {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 680;
+}
+
+.template-mini small {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: var(--accent-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(100, 140, 0, 0.12);
+  border: 1px solid rgba(100, 140, 0, 0.25);
+  padding: 1px 5px;
+  border-radius: 3px;
+  line-height: 1;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.btn-cancel {
+  min-height: 46px;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-weight: 650;
+}
+
+@media (max-width: 760px) {
+  .dash-nav {
+    height: auto;
+    min-height: 64px;
+  }
+
+  .dash-nav-right {
+    gap: 0.65rem;
+  }
+
+  .dash-nav-right .nav-link:first-child {
+    display: none;
+  }
+
+  .dash-hero,
+  .dash-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .dash-hero {
+    align-items: start;
+  }
+}
+
+/* ── Skeleton loading ──────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+
+.skeleton {
+  pointer-events: none;
+}
+
+.skeleton-thumb {
+  background:
+    linear-gradient(90deg, #ebe8dd 25%, #f4f2ea 50%, #ebe8dd 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+
+.skeleton-line {
+  height: 12px;
+  border-radius: 99px;
+  margin: 10px 0;
+  background:
+    linear-gradient(90deg, #ebe8dd 25%, #f4f2ea 50%, #ebe8dd 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+
+/* ── Template badge on card ────────────────────────────── */
+.card-template-badge {
+  display: inline-block;
+  color: var(--accent-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.68rem;
+  font-weight: 760;
+}
+
+/* ── Inline errors ─────────────────────────────────────── */
+.field-error {
+  color: var(--danger);
+  font-size: 0.86rem;
+  margin: 0.5rem 0 0;
+}
+
+.dash-inline-error {
+  color: var(--danger);
+  font-size: 0.9rem;
+  margin: 0.75rem 0;
+}
+
+
+/* ════════════════════════════════════════════════════════════════════════════
+   DARK MODE — Dashboard overrides
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* Nav — dark glass */
+[data-theme="dark"] .dash-nav {
+  background: rgba(12, 14, 10, 0.9) !important;
+  border-bottom-color: rgba(184, 255, 44, 0.07) !important;
+}
+
+[data-theme="dark"] .dash-logo { color: var(--ink); }
+
+/* Stat cards — deep dark with green accent on hover */
+[data-theme="dark"] .stat-card {
+  background: rgba(24, 27, 22, 0.95) !important;
+  border-color: rgba(232, 230, 220, 0.07) !important;
+}
+
+[data-theme="dark"] .stat-card:hover {
+  border-color: rgba(184, 255, 44, 0.22) !important;
+  box-shadow: 0 0 24px rgba(184, 255, 44, 0.06) !important;
+}
+
+/* Resume cards — dark thumbnail */
+[data-theme="dark"] .resume-thumb-placeholder {
+  background:
+    linear-gradient(135deg, rgba(184, 255, 44, 0.08), transparent 50%),
+    var(--wash) !important;
+}
+
+/* Initials circle inside dark-mode placeholder — subtle glass look */
+[data-theme="dark"] .resume-thumb-placeholder span {
+  background: rgba(30, 34, 28, 0.95) !important;
+  border-color: rgba(232, 230, 220, 0.14) !important;
+  color: var(--muted) !important;
+  box-shadow: 0 0 0 4px rgba(184, 255, 44, 0.06);
+}
+
+/* Skeleton shimmer — dark adapted */
+[data-theme="dark"] .skeleton-thumb,
+[data-theme="dark"] .skeleton-line {
+  background: linear-gradient(
+    90deg,
+    #1c1e1a 25%, #242720 50%, #1c1e1a 75%
+  ) !important;
+  background-size: 600px 100% !important;
+}
+
+/* Upgrade strip — dark tint with lime border */
+[data-theme="dark"] .upgrade-strip {
+  background: rgba(184, 255, 44, 0.06) !important;
+  border-color: rgba(184, 255, 44, 0.18) !important;
+}
+
+/* Empty state border */
+[data-theme="dark"] .dash-empty {
+  border-color: rgba(232, 230, 220, 0.1) !important;
+}
+
+/* Resume card gloss — green tint in dark */
+[data-theme="dark"] .resume-card:hover {
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.4),
+    0 18px 48px rgba(0, 0, 0, 0.3),
+    0 0 32px rgba(184, 255, 44, 0.06) !important;
+  border-color: rgba(184, 255, 44, 0.18) !important;
+}
+
+/* Template badge */
+[data-theme="dark"] .card-template-badge {
+  color: #b8ff2c;
+}
+
+/* Nav plan badge */
+[data-theme="dark"] .nav-plan {
+  background: rgba(184, 255, 44, 0.1);
+  border-color: rgba(184, 255, 44, 0.22);
+  color: #b8ff2c;
+}
+
+/* Template mini picker cards — fix hardcoded #fffef9 white bg */
+[data-theme="dark"] .template-mini {
+  background: var(--wash) !important;
+  border-color: rgba(232, 230, 220, 0.1) !important;
+  color: var(--ink) !important;
+}
+
+[data-theme="dark"] .template-mini.selected {
+  border-color: rgba(184, 255, 44, 0.5) !important;
+  box-shadow: 0 0 0 3px rgba(184, 255, 44, 0.12) !important;
+}
+
+[data-theme="dark"] .mini-art {
+  background: var(--wash-2) !important;
+  border-color: rgba(232, 230, 220, 0.08) !important;
+}
+
+[data-theme="dark"] .mini-art span {
+  background: rgba(232, 230, 220, 0.2) !important;
+}
+
+[data-theme="dark"] .mini-art span:first-child {
+  background: var(--muted) !important;
+}
+
+/* Template group headings */
+[data-theme="dark"] .tmpl-group-label {
+  color: var(--muted);
+}
+
+/* Modal in dark mode */
+[data-theme="dark"] .modal {
+  background: rgba(22, 24, 20, 0.98) !important;
+  border-color: rgba(232, 230, 220, 0.08) !important;
+}
+
+[data-theme="dark"] .modal input[type="text"] {
+  background: var(--wash) !important;
+  color: var(--ink) !important;
+  border-color: rgba(232, 230, 220, 0.12) !important;
+}
+
+/* Template mini lock badge dark mode contrast fix */
+[data-theme="dark"] .template-mini small {
+  background: rgba(184, 255, 44, 0.12) !important;
+  border: 1px solid rgba(184, 255, 44, 0.3) !important;
+  color: #b8ff2c !important;
+  box-shadow: 0 0 8px rgba(184, 255, 44, 0.05) !important;
+}

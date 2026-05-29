@@ -1,0 +1,348 @@
+:root {
+  --ink: #111410;
+  --muted: #697067;
+  --line: rgba(17, 20, 16, 0.1);
+  --paper: #fffef9;
+  --wash: #f4f2ea;
+  --wash-2: #ebe8dd;
+  --accent: #b8ff2c;
+  --accent-dark: #648c00;
+  --danger: #ba2b2b;
+  --radius: 8px;
+  --shadow: 0 18px 60px rgba(17, 20, 16, 0.08);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--paper);
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  letter-spacing: 0;
+}
+
+.app-loading {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  background: var(--paper);
+}
+
+.premium-shell {
+  min-height: 100vh;
+  background:
+    linear-gradient(180deg, rgba(184, 255, 44, 0.14), rgba(255, 254, 249, 0) 24rem),
+    var(--paper);
+  color: var(--ink);
+}
+
+/* ── Dark Mode ──────────────────────────────────────────────────────────────
+   All CSS variables are redefined here. Every component that uses var(--ink),
+   var(--paper), etc. automatically adapts — no component-level changes needed.
+   The resume preview (.resume-preview) is deliberately excluded from dark mode
+   because resumes are printed documents and should always render on white.
+   ─────────────────────────────────────────────────────────────────────────── */
+[data-theme="dark"] {
+  --ink:       #f0f1ee;
+  --muted:     #8a8f87;
+  --line:      rgba(184, 255, 44, 0.12);
+  --paper:     #0a0b09;
+  --wash:      #121410;
+  --wash-2:    #181b14;
+  /* --accent and --accent-dark are kept the same — lime green works on dark */
+  --shadow: 0 20px 80px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dark"] html,
+[data-theme="dark"] body {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+[data-theme="dark"] .premium-shell {
+  background:
+    radial-gradient(circle at top right, rgba(184, 255, 44, 0.08), transparent 40%),
+    radial-gradient(circle at bottom left, rgba(100, 140, 0, 0.05), transparent 40%),
+    var(--paper);
+}
+
+/* Nav glass in dark mode */
+[data-theme="dark"] .home-nav,
+[data-theme="dark"] .pricing-nav,
+[data-theme="dark"] .dash-nav,
+[data-theme="dark"] .editor-topbar {
+  background: rgba(10, 11, 9, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(184, 255, 44, 0.15);
+}
+
+/* Cards in dark mode */
+[data-theme="dark"] .auth-card,
+[data-theme="dark"] .resume-card,
+[data-theme="dark"] .modal,
+[data-theme="dark"] .plan,
+[data-theme="dark"] .profile-card,
+[data-theme="dark"] .list-card {
+  background: rgba(18, 20, 16, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(184, 255, 44, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .field input,
+[data-theme="dark"] .field textarea,
+[data-theme="dark"] .form-group input,
+[data-theme="dark"] .modal input[type="text"] {
+  background: var(--wash-2) !important;
+  border: 1px solid rgba(184, 255, 44, 0.28) !important;
+  color: var(--ink);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] .field input:focus,
+[data-theme="dark"] .field textarea:focus {
+  background: var(--wash) !important;
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 4px rgba(184, 255, 44, 0.24) !important;
+}
+
+/* Features/stats sections */
+[data-theme="dark"] .features-section,
+[data-theme="dark"] .dash-stats .stat-card {
+  background: var(--wash);
+  border: 1px solid var(--line);
+}
+
+/* Feature cards dark mode */
+[data-theme="dark"] .feature-card {
+  background: rgba(24, 27, 20, 0.4);
+  border: 1px solid rgba(184, 255, 44, 0.1);
+}
+
+/* Resume preview is ALWAYS light — it's a printed document */
+[data-theme="dark"] .resume-preview,
+[data-theme="dark"] #resume-preview,
+[data-theme="dark"] article.resume-preview {
+  background: #fff !important;
+  color: #111 !important;
+  box-shadow: 0 0 40px rgba(0,0,0,0.4) !important;
+}
+
+/* Selection highlight stays branded */
+[data-theme="dark"] ::selection {
+  background: var(--accent);
+  color: #000;
+}
+
+/* ── Dark mode button fixes ─────────────────────────────────────────────────
+   These buttons use background: var(--ink) which in dark mode = #e8e6dc (light cream).
+   That makes a light button with white text = near-invisible.
+   Fix: override to a fixed dark tone (#1c1e1a) that works regardless of theme.
+   ─────────────────────────────────────────────────────────────────────────── */
+[data-theme="dark"] .nav-btn.primary,
+[data-theme="dark"] .btn-create,
+[data-theme="dark"] .btn-edit,
+[data-theme="dark"] .auth-btn,
+[data-theme="dark"] .plan-btn.primary,
+[data-theme="dark"] .btn-save,
+[data-theme="dark"] .save-btn {
+  background: var(--ink) !important;   /* var(--ink) in dark = #e8e6dc = a readable cream */
+  color: #111 !important;              /* dark text ON the cream background */
+  border-color: rgba(232, 230, 220, 0.25) !important;
+}
+
+[data-theme="dark"] .nav-btn.primary:hover,
+[data-theme="dark"] .btn-create:hover:not(:disabled),
+[data-theme="dark"] .btn-edit:hover,
+[data-theme="dark"] .auth-btn:hover:not(:disabled),
+[data-theme="dark"] .plan-btn.primary:hover:not(:disabled),
+[data-theme="dark"] .btn-save:hover:not(:disabled),
+[data-theme="dark"] .save-btn:hover:not(:disabled) {
+  background: #fff !important;
+  color: #111 !important;
+  border-color: rgba(232, 230, 220, 0.4) !important;
+  transform: translateY(-1px);
+}
+
+/* Secondary buttons adapt fine via var(--ink) text color */
+[data-theme="dark"] .btn-cancel,
+[data-theme="dark"] .btn-logout {
+  border-color: rgba(232, 230, 220, 0.15);
+}
+[data-theme="dark"] .btn-cancel:hover,
+[data-theme="dark"] .btn-logout:hover {
+  background: rgba(232, 230, 220, 0.06);
+  border-color: rgba(232, 230, 220, 0.28);
+}
+
+/* Nav links + back buttons */
+[data-theme="dark"] .nav-link,
+[data-theme="dark"] .btn-back,
+[data-theme="dark"] .editor-back {
+  color: var(--muted);
+}
+[data-theme="dark"] .nav-link:hover,
+[data-theme="dark"] .btn-back:hover,
+[data-theme="dark"] .editor-back:hover {
+  color: var(--ink);
+}
+
+
+.home-nav,
+.pricing-nav,
+.dash-nav,
+.editor-topbar {
+  background: rgba(255, 254, 249, 0.82);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--line);
+}
+
+.nav-logo,
+.dash-logo,
+.pricing-logo,
+.auth-logo,
+.footer-brand {
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-weight: 760;
+  letter-spacing: 0;
+  color: var(--ink);
+}
+
+/* Segmented VRESIQ logo styling */
+.logo-v,
+.logo-res {
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 0.95em;
+  color: var(--ink);
+}
+.logo-iq {
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 0.95em;
+  color: var(--accent-dark); /* IQ retains green */
+  letter-spacing: 0.5px;
+}
+
+/* Dark mode overrides to make green accents pop */
+[data-theme="dark"] .logo-v,
+[data-theme="dark"] .logo-res {
+  color: var(--ink);
+}
+[data-theme="dark"] .logo-iq {
+  color: var(--accent); /* Pop lime green on dark background */
+}
+
+.nav-btn.primary,
+.hero-btn.primary-lg,
+.btn-create,
+.btn-edit,
+.auth-btn,
+.plan-btn.primary,
+.btn-save,
+.save-btn {
+  border-radius: var(--radius);
+  background: var(--ink);
+  color: #fff;
+  border: 1px solid var(--ink);
+  box-shadow: none;
+  transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+}
+
+.nav-btn.primary:hover,
+.hero-btn.primary-lg:hover,
+.btn-create:hover:not(:disabled),
+.btn-edit:hover,
+.auth-btn:hover:not(:disabled),
+.plan-btn.primary:hover:not(:disabled),
+.btn-save:hover:not(:disabled),
+.save-btn:hover:not(:disabled) {
+  background: #242820;
+  border-color: #242820;
+  transform: translateY(-1px);
+  box-shadow: none;
+}
+
+.hero-btn.secondary-lg,
+.btn-cancel,
+.btn-logout,
+.plan-btn {
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+
+.hero-btn.secondary-lg:hover,
+.btn-cancel:hover,
+.btn-logout:hover,
+.plan-btn:hover:not(.disabled) {
+  background: var(--wash);
+  border-color: rgba(17, 20, 16, 0.18);
+}
+
+.auth-card,
+.resume-card,
+.modal,
+.plan,
+.profile-card,
+.list-card {
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: rgba(255, 254, 249, 0.92);
+  box-shadow: none;
+}
+
+.nav-link,
+.btn-back,
+.editor-back,
+.auth-footer a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.nav-link:hover,
+.btn-back:hover,
+.editor-back:hover,
+.auth-footer a:hover {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.field input,
+.field textarea,
+.form-group input,
+.modal input[type="text"] {
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: rgba(255, 254, 249, 0.72);
+  color: var(--ink);
+}
+
+.field input:focus,
+.field textarea:focus,
+.form-group input:focus,
+.modal input[type="text"]:focus {
+  border-color: rgba(100, 140, 0, 0.62);
+  box-shadow: 0 0 0 3px rgba(184, 255, 44, 0.18);
+  outline: none;
+}

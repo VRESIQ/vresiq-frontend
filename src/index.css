@@ -1,0 +1,55 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Page enter animation — every route gets a clean fade-in */
+#root > * {
+  animation: pageEnter 0.35s ease both;
+}
+
+@keyframes pageEnter {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Spinner */
+.spinner {
+  width: 28px; height: 28px;
+  border: 2px solid rgba(0,0,0,0.08);
+  border-top-color: #111;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Global micro-hover on all buttons — subtle lift + shadow */
+button:not(:disabled),
+a[class*="btn"],
+a[class*="nav-btn"] {
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+
+button:not(:disabled):hover,
+a[class*="btn"]:hover {
+  transform: translateY(-1px);
+}
+
+/* Selection highlight uses brand accent */
+::selection {
+  background: rgba(184, 255, 44, 0.38);
+  color: #111;
+}
+
+/* Focus ring using brand color — accessibility */
+:focus-visible {
+  outline: 2px solid #648c00;
+  outline-offset: 3px;
+  border-radius: 3px;
+}

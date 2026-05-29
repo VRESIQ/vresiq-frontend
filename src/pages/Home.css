@@ -1,0 +1,875 @@
+/* ════════════════════════════════════════════════════════════════════════════
+   Home.css — Premium UI/UX for VRESIQ landing page
+   Principles: 3D transforms, stagger animations, gradient text, micro-hovers
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* ── Page shell ─────────────────────────────────────────────────────────── */
+.home-container {
+  min-height: 100vh;
+  color: var(--ink);
+  overflow-x: hidden;
+}
+
+/* ── Navigation ─────────────────────────────────────────────────────────── */
+.home-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+  padding: 0 clamp(1.25rem, 4vw, 4rem);
+  /* Glassmorphism nav — blurs whatever is behind it */
+  background: rgba(255, 254, 249, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(17, 20, 16, 0.08);
+  transition: box-shadow 0.3s;
+}
+
+.home-nav:hover {
+  box-shadow: 0 4px 32px rgba(17, 20, 16, 0.06);
+}
+
+/* Logo: bold "R" in accent color, rest in ink */
+.nav-logo {
+  text-decoration: none;
+  font-size: 1.15rem;
+  font-weight: 760;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  transition: opacity 0.2s;
+}
+.nav-logo:hover { opacity: 0.72; }
+
+.nav-logo-r {
+  color: var(--accent-dark);
+  font-style: italic;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.8rem, 2vw, 1.5rem);
+}
+
+.nav-link {
+  font-size: 0.9rem;
+  font-weight: 560;
+  color: var(--ink);
+  text-decoration: none;
+  position: relative;
+  padding-bottom: 2px;
+  transition: color 0.2s;
+}
+
+/* Animated underline on nav links */
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--accent-dark);
+  transition: width 0.22s ease;
+}
+.nav-link:hover::after { width: 100%; }
+
+.nav-btn {
+  padding: 0.6rem 1.1rem;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 650;
+  border-radius: var(--radius);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.nav-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(17, 20, 16, 0.12);
+}
+
+/* ── Hero section ───────────────────────────────────────────────────────── */
+.hero-section {
+  min-height: calc(100vh - 72px);
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 5rem);
+  padding: clamp(3rem, 8vw, 7rem) clamp(1.25rem, 5vw, 5rem);
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.hero-content {
+  max-width: 680px;
+  /* Stagger children into view on load */
+  animation: heroFadeUp 0.7s ease both;
+}
+
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-kicker {
+  color: var(--accent-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  font-weight: 780;
+  margin-bottom: 1.2rem;
+}
+
+.hero-title {
+  color: var(--ink);
+  font-size: clamp(2.8rem, 6.5vw, 6.4rem);
+  line-height: 0.96;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.4rem;
+}
+
+/* Gradient animated text — high-contrast so it's unmistakably visible */
+.hero-title-gradient {
+  background: linear-gradient(
+    115deg,
+    #111 0%,
+    #3a7000 30%,
+    #b8ff2c 55%,
+    #3a7000 75%,
+    #111 100%
+  );
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 4s linear infinite;
+  /* Fallback for browsers that don't support background-clip:text */
+  color: #3a7000;
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+.hero-subtitle {
+  max-width: 560px;
+  color: var(--muted);
+  font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.6rem;
+}
+
+/* Shared button styles */
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0.75rem 1.4rem;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 680;
+  border-radius: var(--radius);
+  border: 1.5px solid transparent;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ripple layer */
+.hero-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.12);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.hero-btn:hover::before { opacity: 1; }
+
+.hero-btn.primary-lg {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+.hero-btn.primary-lg:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(17, 20, 16, 0.22);
+}
+
+.hero-btn.secondary-lg {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--ink);
+}
+.hero-btn.secondary-lg:hover {
+  transform: translateY(-2px);
+  background: rgba(17, 20, 16, 0.04);
+}
+
+/* Proof badges */
+.hero-proof {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.hero-proof span {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+  color: var(--muted);
+  background: rgba(255, 254, 249, 0.7);
+  font-size: 0.76rem;
+  font-weight: 560;
+  transition: border-color 0.2s;
+}
+.hero-proof span:hover { border-color: var(--accent-dark); }
+
+/* ── Hero visual / Tilt card ────────────────────────────────────────────── */
+.hero-visual {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+}
+
+.resume-product-frame {
+  position: relative;
+  width: min(100%, 480px);
+  aspect-ratio: 0.78;
+  display: grid;
+  place-items: center;
+  /* Smooth 3D transition on mouse leave */
+  transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* Green glow blob — moves with the card tilt */
+.card-glow {
+  position: absolute;
+  inset: 5% -6% 8% 18%;
+  background: var(--accent);
+  border-radius: 999px;
+  filter: blur(55px);
+  opacity: 0.28;
+  z-index: 0;
+  animation: glowPulse 6s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.28; transform: scale(1); }
+  50%       { opacity: 0.36; transform: scale(1.04); }
+}
+
+.resume-paper {
+  position: relative;
+  z-index: 1;
+  width: 87%;
+  min-height: 86%;
+  padding: clamp(1.2rem, 3vw, 1.8rem);
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.04),
+    0 8px 32px rgba(0,0,0,0.08),
+    0 24px 64px rgba(0,0,0,0.05);
+  /* Card floats in on load */
+  animation: cardFloat 0.9s 0.15s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+@keyframes cardFloat {
+  from { opacity: 0; transform: translateY(36px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.resume-paper-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1.2rem;
+}
+
+.paper-name {
+  font-size: clamp(1.2rem, 2.4vw, 1.85rem);  /* smaller so Venugopal fits on one line */
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.paper-role {
+  margin-top: 0.5rem;
+  color: var(--accent-dark);
+  font-size: 0.82rem;
+  font-weight: 660;
+  letter-spacing: 0.04em;
+}
+
+.paper-avatar {
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+/* Placeholder content lines */
+.paper-line {
+  width: 100%;
+  height: 7px;
+  border-radius: 99px;
+  background: #e8e7df;
+  margin-bottom: 0.65rem;
+}
+
+.paper-line.strong {
+  height: 10px;
+  background: var(--ink);
+  width: 64%;
+  margin: 1rem 0 1.6rem;
+}
+
+.paper-line.short { width: 68%; }
+
+.paper-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 0.9fr;
+  gap: 1.2rem;
+}
+
+.paper-label {
+  margin-bottom: 0.65rem;
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  font-weight: 780;
+}
+
+.skill-bar {
+  height: 7px;
+  background: var(--wash);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 0.65rem;
+}
+
+.skill-bar span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  /* Bars animate in */
+  animation: barGrow 1.2s 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  transform-origin: left;
+}
+
+@keyframes barGrow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* ── Dark mode: pin hero card internals to light-mode colours ────────────────
+   The .resume-paper card itself stays white (correct — it's a paper document).
+   BUT all its children use CSS variables that flip to dark values in dark mode:
+   var(--ink) = #e8e6dc (light cream), var(--wash) = #1c1e1a (dark), etc.
+   This causes invisible text and dark skill-bar tracks on a white background.
+   Solution: hardcode all card interior colours to the light-mode values.
+   ─────────────────────────────────────────────────────────────────────────── */
+[data-theme="dark"] .resume-paper {
+  background: #fff !important;
+  border-color: rgba(17, 20, 16, 0.1) !important;
+}
+
+/* Name and role text — dark ink on white */
+[data-theme="dark"] .paper-name {
+  color: #111410 !important;
+}
+
+[data-theme="dark"] .paper-role {
+  color: #648c00 !important;   /* accent-dark, unchanged */
+}
+
+/* Avatar circle — dark ink background with white initials */
+[data-theme="dark"] .paper-avatar {
+  background: #111410 !important;
+  color: #fff !important;
+}
+
+/* Divider line — dark on white */
+[data-theme="dark"] .paper-line.strong {
+  background: #111410 !important;
+}
+
+/* Placeholder lines — light gray on white */
+[data-theme="dark"] .paper-line {
+  background: #e8e7df !important;
+}
+
+/* Section labels */
+[data-theme="dark"] .paper-label {
+  color: rgba(17, 20, 16, 0.55) !important;
+}
+
+/* Skill bar track — light gray, NOT dark */
+[data-theme="dark"] .skill-bar {
+  background: #e8e7df !important;
+}
+
+/* Skill bar fill — stays lime green (correct) */
+[data-theme="dark"] .skill-bar span {
+  background: #b8ff2c !important;
+}
+
+/* Floating badge bottom-right */
+.floating-stat {
+  position: absolute;
+  z-index: 2;
+  right: -2%;
+  bottom: 14%;
+  min-width: 108px;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 254, 249, 0.94);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+  animation: badgeIn 0.8s 0.7s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+/* Second floating badge — center-left, never overlaps the paper name */
+.floating-stat-2 {
+  right: auto;
+  left: -6%;
+  bottom: 38%;   /* vertically centred on the card */
+  top: auto;
+  min-width: 96px;
+  animation-delay: 0.9s;
+}
+
+@keyframes badgeIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.9); }
+  to   { opacity: 1; transform: translateY(0)   scale(1); }
+}
+
+.floating-stat span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 560;
+  margin-bottom: 0.2rem;
+}
+
+.floating-stat strong {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+/* ── Features section ───────────────────────────────────────────────────── */
+.features-section {
+  padding: clamp(5rem, 9vw, 8rem) clamp(1.25rem, 5vw, 5rem);
+  border-top: 1px solid var(--line);
+  background: #fffdf5;
+}
+
+.section-heading {
+  max-width: 900px;
+  margin: 0 auto clamp(2.5rem, 5vw, 4.5rem);
+  text-align: center;
+}
+
+.section-heading p {
+  color: var(--accent-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  font-weight: 780;
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  color: var(--ink);
+  font-size: clamp(1.9rem, 4.5vw, 4rem);
+  line-height: 1.02;
+  font-weight: 780;
+  letter-spacing: -0.02em;
+}
+
+.features-grid {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+/* Feature cards start invisible; scroll triggers .card-visible */
+.feature-card {
+  min-height: 240px;
+  padding: 1.6rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+  display: flex;
+  flex-direction: column;
+  cursor: default;
+  /* Start state: hidden below */
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease,
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.feature-card.card-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.feature-card:hover {
+  border-color: var(--accent-dark);
+  box-shadow: 0 6px 28px rgba(17, 20, 16, 0.07);
+  transform: translateY(-3px);
+}
+
+.feature-index {
+  color: var(--accent-dark);
+  font-size: 0.72rem;
+  font-weight: 780;
+  letter-spacing: 0.08em;
+  margin-bottom: auto;
+}
+
+.feature-card h3 {
+  font-size: 1.2rem;
+  font-weight: 740;
+  margin: 2.5rem 0 0.6rem;
+  letter-spacing: -0.01em;
+}
+
+.feature-card p {
+  color: var(--muted);
+  line-height: 1.65;
+  font-size: 0.92rem;
+}
+
+/* Scroll fade-in for the section heading itself */
+.fade-in-up {
+  animation: heroFadeUp 0.6s ease both;
+}
+
+/* ── CTA section ────────────────────────────────────────────────────────── */
+.cta-section {
+  padding: clamp(5rem, 9vw, 8rem) clamp(1.25rem, 5vw, 5rem);
+  background: var(--ink);
+  color: #fff;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated background grid */
+.cta-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 60px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 60px);
+  pointer-events: none;
+}
+
+.cta-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.cta-kicker {
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  font-weight: 780;
+  margin-bottom: 1.2rem;
+}
+
+.cta-section h2 {
+  max-width: 800px;
+  margin: 0 auto 1rem;
+  font-size: clamp(1.9rem, 4.5vw, 4rem);
+  line-height: 1.02;
+  font-weight: 780;
+  letter-spacing: -0.02em;
+}
+
+.cta-section p {
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+.cta-btn {
+  background: var(--accent) !important;
+  color: #111410 !important;  /* always dark ink — lime bg needs dark text in any mode */
+  border-color: var(--accent) !important;
+  font-size: 1rem !important;
+  font-weight: 720;
+}
+
+.cta-btn:hover {
+  transform: translateY(-2px) !important;
+  background: #caff52 !important; /* slightly lighter lime on hover for feedback */
+  box-shadow: 0 8px 28px rgba(184, 255, 44, 0.35) !important;
+}
+
+/* ── Footer ─────────────────────────────────────────────────────────────── */
+.home-footer {
+  padding: 1.5rem clamp(1.25rem, 5vw, 5rem);
+  background: var(--ink);
+  color: rgba(255, 255, 255, 0.72);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-brand { color: #fff; font-weight: 680; }
+.home-footer .footer-brand .logo-v,
+.home-footer .footer-brand .logo-res {
+  color: #ffffff;
+}
+.home-footer .footer-brand .logo-iq {
+  color: var(--accent-dark);
+}
+
+.footer-links {
+  display: flex;
+  gap: 1.2rem;
+}
+
+.footer-links a {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.88rem;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: #fff; }
+
+.footer-bottom {
+  padding-top: 1rem;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.8rem;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 960px) {
+  .hero-section {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding-top: 3rem;
+  }
+
+  .hero-visual {
+    max-width: 380px;
+    margin: 0 auto;
+  }
+
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .home-nav { height: auto; min-height: 60px; padding-block: 0.75rem; }
+  .nav-link  { display: none; }
+  .features-grid { grid-template-columns: 1fr; }
+  .hero-title { font-size: 2.6rem; }
+  .paper-grid { grid-template-columns: 1fr; }
+  .floating-stat { display: none; }
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   DARK MODE — Home page overrides
+   Problem: .cta-section and .home-footer use background: var(--ink).
+   In dark mode, var(--ink) flips to #e8e6dc (light cream) = broken.
+   We override them here with a near-black dark background.
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* ── Nav glassmorphism — dark tint ─────────────────────────────────────────── */
+[data-theme="dark"] .home-nav {
+  background: rgba(14, 17, 12, 0.88) !important;
+  border-bottom-color: rgba(184, 255, 44, 0.08) !important;
+}
+
+/* ── Hero: richer glow + deeper gradient ───────────────────────────────────── */
+[data-theme="dark"] .hero-section {
+  background: none; /* let premium-shell dark gradient show through */
+}
+
+[data-theme="dark"] .card-glow {
+  opacity: 0.5;    /* stronger lime glow in dark mode */
+  filter: blur(60px);
+}
+
+[data-theme="dark"] .resume-paper {
+  box-shadow:
+    0 0 0 1px rgba(232, 230, 220, 0.06),
+    0 8px 40px rgba(0, 0, 0, 0.5),
+    0 0 80px rgba(184, 255, 44, 0.06); /* subtle green aura */
+}
+
+[data-theme="dark"] .floating-stat {
+  background: rgba(20, 22, 18, 0.96);
+  border-color: rgba(232, 230, 220, 0.1);
+  color: var(--ink);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4), 0 0 20px rgba(184,255,44,0.08);
+}
+
+[data-theme="dark"] .floating-stat span { color: var(--muted); }
+[data-theme="dark"] .floating-stat strong { color: var(--ink); }
+
+/* ── Proof badges ──────────────────────────────────────────────────────────── */
+[data-theme="dark"] .hero-proof span {
+  background: rgba(184, 255, 44, 0.07);
+  border-color: rgba(184, 255, 44, 0.18);
+  color: var(--muted);
+}
+[data-theme="dark"] .hero-proof span:hover {
+  border-color: rgba(184, 255, 44, 0.4);
+  color: var(--ink);
+}
+
+/* ── Features section — fixes hardcoded #fffdf5 ───────────────────────────── */
+[data-theme="dark"] .features-section {
+  background: var(--wash) !important;
+  border-top-color: rgba(232, 230, 220, 0.06) !important;
+}
+
+[data-theme="dark"] .section-heading p {
+  color: #b8ff2c; /* bright lime kicker in dark mode */
+}
+
+[data-theme="dark"] .feature-card {
+  background: var(--wash-2);
+  border-color: rgba(232, 230, 220, 0.06);
+}
+
+[data-theme="dark"] .feature-card:hover {
+  border-color: rgba(184, 255, 44, 0.3);
+  box-shadow: 0 6px 32px rgba(0, 0, 0, 0.35), 0 0 24px rgba(184, 255, 44, 0.06);
+  transform: translateY(-4px);
+}
+
+[data-theme="dark"] .feature-index { color: #b8ff2c; }
+
+/* ── CTA section — CRITICAL FIX ───────────────────────────────────────────── */
+/* In light mode: background: var(--ink) (#111) works fine.
+   In dark mode:  var(--ink) = #e8e6dc (light cream) — WRONG. Override to deep dark. */
+[data-theme="dark"] .cta-section {
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 100%, rgba(184, 255, 44, 0.08), transparent),
+    #080b07 !important;
+  border-top: 1px solid rgba(184, 255, 44, 0.08);
+}
+
+[data-theme="dark"] .cta-section h2 {
+  color: var(--ink); /* light cream text on near-black bg */
+}
+
+[data-theme="dark"] .cta-section > .cta-inner > p {
+  color: var(--muted);
+}
+
+[data-theme="dark"] .cta-kicker {
+  color: #b8ff2c !important;
+}
+
+[data-theme="dark"] .cta-btn {
+  background: var(--accent) !important;  /* lime stays lime */
+  color: #111410 !important;             /* dark text on lime — always readable */
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 24px rgba(184, 255, 44, 0.25);
+}
+[data-theme="dark"] .cta-btn:hover {
+  background: #caff52 !important;
+  color: #111410 !important;
+  box-shadow: 0 8px 36px rgba(184, 255, 44, 0.4) !important;
+}
+
+/* ── Footer — CRITICAL FIX ────────────────────────────────────────────────── */
+/* Same bug: background: var(--ink) becomes light cream in dark mode */
+[data-theme="dark"] .home-footer {
+  background: #080b07 !important;
+  border-top-color: rgba(232, 230, 220, 0.06) !important;
+}
+
+[data-theme="dark"] .footer-brand { color: var(--ink); }
+[data-theme="dark"] .home-footer .footer-brand .logo-v,
+[data-theme="dark"] .home-footer .footer-brand .logo-res {
+  color: var(--ink);
+}
+[data-theme="dark"] .footer-links a { color: var(--muted); }
+[data-theme="dark"] .footer-links a:hover { color: var(--ink); }
+[data-theme="dark"] .footer-bottom { color: rgba(232, 230, 220, 0.28); }
+
+/* ── Gradient headline — pops more on dark ─────────────────────────────────── */
+[data-theme="dark"] .hero-title-gradient {
+  background: linear-gradient(
+    115deg,
+    #e8e6dc 0%,
+    #b8ff2c 40%,
+    #3a7000 70%,
+    #b8ff2c 100%
+  );
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 4s linear infinite;
+}
+
+/* ── Buttons — accent glow in dark ─────────────────────────────────────────── */
+[data-theme="dark"] .hero-btn.primary-lg {
+  background: #b8ff2c;
+  color: #111;
+  border-color: #b8ff2c;
+  box-shadow: 0 0 20px rgba(184, 255, 44, 0.2);
+}
+[data-theme="dark"] .hero-btn.primary-lg:hover {
+  box-shadow: 0 8px 32px rgba(184, 255, 44, 0.35);
+  transform: translateY(-2px);
+}
+
+[data-theme="dark"] .hero-btn.secondary-lg {
+  color: var(--ink);
+  border-color: rgba(232, 230, 220, 0.2);
+}
+[data-theme="dark"] .hero-btn.secondary-lg:hover {
+  background: rgba(232, 230, 220, 0.06);
+  border-color: rgba(232, 230, 220, 0.35);
+}

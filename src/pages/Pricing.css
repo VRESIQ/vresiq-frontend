@@ -1,0 +1,243 @@
+.pricing-page {
+  min-height: 100vh;
+}
+
+.pricing-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  height: 72px;
+  padding: 0 clamp(1.25rem, 4vw, 4rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pricing-logo {
+  text-decoration: none;
+  font-size: 1.05rem;
+}
+
+.pricing-nav-links {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.btn-back {
+  font-size: 0.9rem;
+  font-weight: 560;
+}
+
+.pricing-content {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: clamp(3rem, 8vw, 7rem) clamp(1.25rem, 4vw, 3rem);
+}
+
+.pricing-heading {
+  max-width: 760px;
+  margin-bottom: clamp(2rem, 5vw, 4rem);
+}
+
+.pricing-heading p {
+  color: var(--accent-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  font-weight: 760;
+  margin-bottom: 1rem;
+}
+
+.pricing-heading h1 {
+  color: var(--ink);
+  font-size: clamp(2.4rem, 6vw, 5.6rem);
+  line-height: 0.96;
+  font-weight: 760;
+  letter-spacing: 0;
+  margin-bottom: 1rem;
+}
+
+.pricing-heading span {
+  display: block;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.pricing-msg {
+  margin-bottom: 1.2rem;
+  border: 1px solid rgba(100, 140, 0, 0.22);
+  background: rgba(184, 255, 44, 0.14);
+  color: var(--ink);
+  padding: 0.9rem 1rem;
+  border-radius: var(--radius);
+  font-size: 0.92rem;
+}
+
+.plans {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.plan {
+  position: relative;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  display: flex;
+  flex-direction: column;
+  min-height: 470px;
+}
+
+.plan.featured {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+
+.plan-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.plan-name {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  font-weight: 760;
+  margin-bottom: 0.7rem;
+}
+
+.featured .plan-name {
+  color: rgba(255, 255, 255, 0.58);
+}
+
+.plan-price {
+  font-size: clamp(2.1rem, 4vw, 3.4rem);
+  line-height: 1;
+  font-weight: 760;
+}
+
+.plan-chip,
+.plan-badge {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.35rem 0.65rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 680;
+  white-space: nowrap;
+}
+
+.plan-corner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+}
+
+.plan-chip.dark,
+.featured .plan-chip {
+  border-color: rgba(255, 255, 255, 0.18);
+  color: var(--accent);
+}
+
+.plan-badge {
+  border-color: rgba(184, 255, 44, 0.38);
+  color: var(--accent);
+  background: rgba(184, 255, 44, 0.08);
+}
+
+.plan-copy {
+  color: var(--muted);
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+  max-width: 420px;
+}
+
+.featured .plan-copy {
+  color: rgba(255, 255, 255, 0.66);
+}
+
+.plan-features {
+  list-style: none;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.plan-feature {
+  display: flex;
+  gap: 0.65rem;
+  align-items: baseline;
+  color: var(--ink);
+  font-size: 0.94rem;
+}
+
+.plan-feature::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex: 0 0 7px;
+}
+
+.plan-feature.muted {
+  color: var(--muted);
+}
+
+.plan-feature.muted::before {
+  background: var(--wash-2);
+}
+
+.featured .plan-feature {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.plan-btn {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  font-size: 0.94rem;
+  font-weight: 680;
+  cursor: pointer;
+}
+
+.featured .plan-btn.primary {
+  background: var(--accent);
+  color: var(--ink);
+  border-color: var(--accent);
+}
+
+.plan-btn.disabled {
+  opacity: 0.62;
+  cursor: default;
+}
+
+.featured .plan-btn.disabled {
+  opacity: 1;
+  color: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 760px) {
+  .plans {
+    grid-template-columns: 1fr;
+  }
+
+  .pricing-nav {
+    height: 64px;
+  }
+}

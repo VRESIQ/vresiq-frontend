@@ -1,0 +1,297 @@
+/* ═══════════════════════════════════════════════════════════════
+   SmartInputs.css — shared styles for PhoneInput, DateRangePicker,
+   and ContactField components
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Phone Input ─────────────────────────────────────────────── */
+.phone-input-wrap {
+  position: relative;
+  display: flex;
+  gap: 0;
+  margin-top: 0.4rem;
+}
+
+.phone-country-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 46px;
+  padding: 0 0.75rem;
+  border: 1px solid var(--line);
+  border-right: none;
+  border-radius: var(--radius) 0 0 var(--radius);
+  background: var(--wash);
+  cursor: pointer;
+  font-size: 0.88rem;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.phone-country-btn:hover { background: #ebebdf; }
+
+.phone-dial { color: var(--muted); font-size: 0.8rem; }
+.phone-chevron { font-size: 0.65rem; color: var(--muted); }
+
+.phone-number-input {
+  flex: 1;
+  min-height: 46px;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: rgba(255,254,249,0.72);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.9rem;
+}
+
+.phone-number-input:focus {
+  outline: none;
+  border-color: rgba(100,140,0,0.6);
+  box-shadow: 0 0 0 3px rgba(184,255,44,0.16);
+}
+
+.phone-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 120;
+  width: 280px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+  overflow: hidden;
+}
+
+.phone-search {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border: none;
+  border-bottom: 1px solid var(--line);
+  font: inherit;
+  font-size: 0.88rem;
+  background: var(--wash);
+  color: var(--ink);
+}
+
+.phone-search:focus { outline: none; }
+
+.phone-country-list {
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.phone-country-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 0.55rem 0.85rem;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.86rem;
+  color: var(--ink);
+  transition: background 0.1s;
+}
+
+.phone-country-option:hover { background: var(--wash); }
+.phone-country-option.active { background: #f0eed6; font-weight: 650; }
+.phone-country-option .phone-dial { margin-left: auto; color: var(--muted); font-size: 0.78rem; }
+
+/* ── Date Range Picker ───────────────────────────────────────── */
+.date-range-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 0.4rem;
+}
+
+.date-group {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.date-label {
+  font-size: 0.8rem;
+  font-weight: 650;
+  color: var(--muted);
+}
+
+.date-selects {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.date-selects select,
+.date-selects input {
+  flex: 1;
+  min-height: 42px;
+  padding: 0.5rem 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255,254,249,0.72);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.86rem;
+  cursor: pointer;
+}
+
+.date-selects select:focus,
+.date-selects input:focus {
+  outline: none;
+  border-color: rgba(100,140,0,0.6);
+}
+
+.date-present-text {
+  font-size: 0.88rem;
+  color: var(--accent-dark);
+  font-weight: 650;
+  margin: 0;
+  padding-top: 0.55rem;
+}
+
+.date-present-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.45rem;
+  cursor: pointer;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.date-present-check input[type="checkbox"] {
+  accent-color: var(--accent-dark);
+  width: 14px;
+  height: 14px;
+}
+
+/* ── Contact Field ───────────────────────────────────────────── */
+.contact-field {
+  margin-bottom: 1rem;
+}
+
+.contact-label {
+  font-size: 0.82rem;
+  font-weight: 650;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.contact-input-wrap {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255,254,249,0.72);
+  overflow: hidden;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.contact-input-wrap:focus-within {
+  border-color: rgba(100,140,0,0.6);
+  box-shadow: 0 0 0 3px rgba(184,255,44,0.16);
+}
+
+.contact-icon {
+  padding: 0 0.75rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+  background: var(--wash);
+  border-right: 1px solid var(--line);
+  height: 46px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.contact-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 0.7rem 0.85rem;
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--ink);
+  min-height: 46px;
+}
+
+.contact-input:focus { outline: none; }
+
+/* ═══════════════════════════════════════════════════════════════
+   DARK MODE — SmartInputs overrides
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Phone country button */
+[data-theme="dark"] .phone-country-btn {
+  background: var(--wash-2) !important;
+  border-color: rgba(232, 230, 220, 0.14) !important;
+  color: var(--ink) !important;
+}
+[data-theme="dark"] .phone-country-btn:hover {
+  background: var(--wash) !important;
+}
+
+/* Phone number input */
+[data-theme="dark"] .phone-number-input {
+  background: var(--wash) !important;
+  border-color: rgba(232, 230, 220, 0.14) !important;
+  color: var(--ink) !important;
+}
+
+/* Phone dropdown */
+[data-theme="dark"] .phone-dropdown {
+  background: var(--wash) !important;
+  border-color: rgba(232, 230, 220, 0.14) !important;
+}
+[data-theme="dark"] .phone-search {
+  background: var(--wash-2) !important;
+  border-color: rgba(232, 230, 220, 0.1) !important;
+  color: var(--ink) !important;
+}
+[data-theme="dark"] .phone-country-option {
+  color: var(--ink) !important;
+}
+[data-theme="dark"] .phone-country-option:hover {
+  background: var(--wash-2) !important;
+}
+[data-theme="dark"] .phone-country-option.active {
+  background: rgba(184, 255, 44, 0.1) !important;
+}
+
+/* Date range selects */
+[data-theme="dark"] .date-selects select,
+[data-theme="dark"] .date-selects input {
+  background: var(--wash) !important;
+  border-color: rgba(232, 230, 220, 0.14) !important;
+  color: var(--ink) !important;
+}
+[data-theme="dark"] .date-selects select:focus,
+[data-theme="dark"] .date-selects input:focus {
+  border-color: rgba(184, 255, 44, 0.4) !important;
+  box-shadow: 0 0 0 3px rgba(184, 255, 44, 0.1) !important;
+  outline: none;
+}
+
+/* Contact field */
+[data-theme="dark"] .contact-input-wrap {
+  background: var(--wash) !important;
+  border-color: rgba(232, 230, 220, 0.14) !important;
+}
+[data-theme="dark"] .contact-input-wrap:focus-within {
+  border-color: rgba(184, 255, 44, 0.4) !important;
+  box-shadow: 0 0 0 3px rgba(184, 255, 44, 0.1) !important;
+}
+[data-theme="dark"] .contact-icon {
+  background: var(--wash-2) !important;
+  border-color: rgba(232, 230, 220, 0.1) !important;
+  color: var(--muted) !important;
+}
+[data-theme="dark"] .contact-input {
+  color: var(--ink) !important;
+  background: transparent !important;
+}
