@@ -531,7 +531,7 @@ const ResumeEditor = () => {
       `;
     }
 
-    const isFullBleed = element.getAttribute("data-hstyle") === "full-bleed";
+    const isFullBleed = element.getAttribute("data-hstyle") === "full-bleed" || element.classList.contains("rp-template3");
     const fullBleedPageStyle = isFullBleed ? `
       @page :first {
         margin-top: 0 !important;

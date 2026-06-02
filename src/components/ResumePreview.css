@@ -38,8 +38,9 @@
   padding-bottom: 48px;
 }
 
-/* Remove padding-top when header is full-bleed to let it touch the page top edge */
-.resume-preview[data-hstyle="full-bleed"] {
+/* Remove padding-top when header is full-bleed or has native bleed to let it touch the page top edge */
+.resume-preview[data-hstyle="full-bleed"],
+.resume-preview.rp-template3 {
   padding-top: 0 !important;
 }
 
