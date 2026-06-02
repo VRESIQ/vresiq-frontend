@@ -108,13 +108,10 @@ const buildWatermarkImage = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   // Position text 28px from the bottom, horizontally centred
   ctx.font = "700 13px Inter, Arial, sans-serif";
-  ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
-  ctx.strokeStyle = "rgba(0, 0, 0, 0.12)";
-  ctx.lineWidth = 0.8;
+  ctx.fillStyle = "rgba(15, 23, 42, 0.08)";
   ctx.textAlign = "center";
   ctx.textBaseline = "bottom";
   ctx.fillText(WATERMARK_TEXT, canvas.width / 2, canvas.height - 20);
-  ctx.strokeText(WATERMARK_TEXT, canvas.width / 2, canvas.height - 20);
   return canvas.toDataURL("image/png");
 };
 
