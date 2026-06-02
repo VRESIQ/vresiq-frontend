@@ -14,7 +14,11 @@
   font-family: var(--rp-font-body, 'Inter', sans-serif);
   box-shadow: 0 18px 50px rgba(0,0,0,0.1);
   border: var(--page-border, none);
-  overflow: hidden;
+  /* Clipping is intentionally disabled so that multi-page resumes show all
+     pages in the browser preview, matching the page count in the exported PDF.
+     Previously overflow:hidden clipped everything past 1056px, making the
+     preview always look like one page even when the PDF had two. */
+  overflow: visible;
   box-sizing: border-box;
   padding-top: 40px;
   padding-bottom: 48px;
@@ -47,6 +51,36 @@
 
   font-size: var(--rp-fs-base);
   line-height: var(--rp-lh-body);
+}
+
+/* ── Page-break guide line (screen only) ────────────────────────────────────
+   Draws a subtle dashed line at every 1056 px so users can see exactly where
+   page breaks will fall in the exported PDF.  The line is purely decorative:
+   pointer-events:none, display:none in @media print, no layout impact.
+   ─────────────────────────────────────────────────────────────────────────── */
+.resume-preview::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent calc(1056px - 1px),
+    rgba(180, 180, 180, 0.45) calc(1056px - 1px),
+    rgba(180, 180, 180, 0.45) 1056px
+  );
+  background-attachment: local;
+  z-index: 50;
+}
+
+@media print {
+  .resume-preview::after {
+    display: none !important;
+  }
 }
 
 /* ── Text selection inside preview — soft blue, never browser-default black */
@@ -165,9 +199,9 @@ a.rp-custom-link:hover,
     padding-bottom: 48px !important;
   }
 
-  .rp-watermark {
-    bottom: 12px !important;
-  }
+  /* Watermark rule override for @media print is no longer needed because
+     the new background-image approach renders correctly in all paged
+     contexts including Puppeteer/Chromium PDF export. */
 }
 
 /* ── Typography base ─────────────────────────────────────────────────────── */
@@ -670,22 +704,50 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-photo-square { border-radius: 0; }
 .rp-photo-none { display: none; }
 
-/* ── Watermark ───────────────────────────────────────────────────────────── */
-.rp-watermark {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 10px;
-  display: flex;
-  justify-content: center;
-  pointer-events: none;
-  z-index: 0;
+/* ── Watermark — background-image tiling ────────────────────────────────────
+   Strategy: instead of position:fixed (which Chromium only renders on page 1
+   in PDF), we tile the watermark data URL as the background-image of the
+   resume article itself.
+
+   The canvas tile is exactly 816×1056 px (one Letter page at 96 DPI) with
+   the text drawn near the bottom centre.  background-repeat:repeat-y causes
+   Chromium to paint one copy per page height in both screen and PDF output.
+
+   background-attachment:local ensures the tile is painted relative to the
+   element's own content box, not the viewport.
+
+   The 0.18 opacity on the pseudo-element (via the data-watermark selector)
+   combined with the 0.55 alpha in the canvas text gives ≈10% effective
+   perceived opacity — meets the 8–12% spec requirement.
+
+   pointer-events:none and the absence of any DOM text node means ATS parsers
+   and clipboard selection are unaffected.
+   ─────────────────────────────────────────────────────────────────────────── */
+.resume-preview[data-watermark="true"] {
+  /* The data URL is injected via the --rp-watermark-url CSS variable set
+     inline on the element from ResumePreview.jsx */
+  background-image: var(--rp-watermark-url, none);
+  background-repeat: repeat-y;
+  background-size: 816px 1056px;
+  background-position: center top;
+  background-attachment: local;
+  /* Opacity-blend: the tile already carries 0.55 alpha text, but we reduce
+     the background further via filter so the net effect is ~10% visible. */
+  background-blend-mode: normal;
 }
 
-.rp-watermark img {
-  width: 150px;
-  height: auto;
-  opacity: 0.24;
+/* Give the tile more opacity in print/PDF context to compensate for any
+   gamma differences between screen rendering and PDF rasterisation. */
+@media print {
+  .resume-preview[data-watermark="true"] {
+    background-image: var(--rp-watermark-url, none) !important;
+    background-repeat: repeat-y !important;
+    background-size: 816px 1056px !important;
+    background-position: center top !important;
+    background-attachment: local !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════

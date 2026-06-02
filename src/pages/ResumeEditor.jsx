@@ -532,15 +532,18 @@ const ResumeEditor = () => {
             }
 
             @page {
-              size: letter;
-              margin-top: 40px !important;
-              margin-bottom: 40px !important;
-              margin-left: 0 !important;
-              margin-right: 0 !important;
-            }
+              /* Zero margins on all pages so the PDF printable height exactly
+                 matches the screen preview's 1056px tile.
 
-            @page :first {
-              margin-top: 0 !important;
+                 Previously margin-top/bottom 40px on pages 2+ reduced the
+                 usable height to ~976px, causing content that fit in the
+                 browser (1056px) to spill onto page 2 in the PDF.
+
+                 The template's own padding-top / padding-bottom (40px / 48px)
+                 is preserved inside the content box and provides the visual
+                 breathing room at the top of the first page. */
+              size: letter;
+              margin: 0 !important;
             }
             
             /* Ensure all contents are visible in the print view */

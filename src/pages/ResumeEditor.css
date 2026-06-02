@@ -1303,17 +1303,12 @@
     color: #000000 !important;
   }
 
-  /* Configure page margins and print scaling rules */
+  /* Configure page margins — zero on all pages to match screen preview height.
+     Previously margin-top:40px / margin-bottom:48px on pages 2+ reduced the
+     printable area and caused the page count to differ from the preview. */
   @page {
     size: letter;
-    margin-top: 40px !important;
-    margin-bottom: 48px !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-  }
-
-  @page :first {
-    margin-top: 0 !important;
+    margin: 0 !important;
   }
 
   /* Prevent headings from being orphaned at the bottom of the page */
