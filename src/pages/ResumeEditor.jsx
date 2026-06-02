@@ -531,6 +531,13 @@ const ResumeEditor = () => {
       `;
     }
 
+    const isFullBleed = element.getAttribute("data-hstyle") === "full-bleed";
+    const fullBleedPageStyle = isFullBleed ? `
+      @page :first {
+        margin-top: 0 !important;
+      }
+    ` : "";
+
     const htmlContent = `
       <!DOCTYPE html>
       <html>
@@ -561,6 +568,8 @@ const ResumeEditor = () => {
               margin-left: 0 !important;
               margin-right: 0 !important;
             }
+
+            ${fullBleedPageStyle}
             
             /* Ensure all contents are visible in the print view */
             body * {

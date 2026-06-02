@@ -36,6 +36,17 @@
   box-sizing: border-box;
   padding-top: 40px;
   padding-bottom: 48px;
+}
+
+/* Remove padding-top when header is full-bleed to let it touch the page top edge */
+.resume-preview[data-hstyle="full-bleed"] {
+  padding-top: 0 !important;
+}
+
+/* Prevent trailing section margins from overflowing onto a new page */
+.rp-section:last-child {
+  margin-bottom: 0 !important;
+}
 
   /* Global Design-Token System */
   --rp-space-xs: 4px;
