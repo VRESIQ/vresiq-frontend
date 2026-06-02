@@ -66,14 +66,12 @@
   right: 0;
   bottom: 0;
   pointer-events: none;
-  background-image: repeating-linear-gradient(
-    to bottom,
-    transparent 0px,
-    transparent calc(1056px - 1px),
-    rgba(180, 180, 180, 0.45) calc(1056px - 1px),
-    rgba(180, 180, 180, 0.45) 1056px
-  );
-  background-attachment: local;
+  background-image: 
+    linear-gradient(to bottom, transparent 1007px, rgba(180, 180, 180, 0.45) 1007px, rgba(180, 180, 180, 0.45) 1008px, transparent 1008px),
+    linear-gradient(to bottom, transparent 1975px, rgba(180, 180, 180, 0.45) 1975px, rgba(180, 180, 180, 0.45) 1976px, transparent 1976px),
+    linear-gradient(to bottom, transparent 2943px, rgba(180, 180, 180, 0.45) 2943px, rgba(180, 180, 180, 0.45) 2944px, transparent 2944px),
+    linear-gradient(to bottom, transparent 3911px, rgba(180, 180, 180, 0.45) 3911px, rgba(180, 180, 180, 0.45) 3912px, transparent 3912px);
+  background-repeat: no-repeat;
   z-index: 50;
 }
 
