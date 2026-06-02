@@ -574,10 +574,6 @@ const ResumeEditor = () => {
 
             .resume-preview {
               background-color: #ffffff !important;
-              background-image: var(--rp-watermark-layer, none) !important;
-              background-repeat: repeat-y !important;
-              background-size: 816px 1056px !important;
-              background-position: top left !important;
               color: #000000 !important;
             }
             
@@ -653,10 +649,6 @@ const ResumeEditor = () => {
               visibility: visible !important;
               box-sizing: border-box !important;
               background-color: #ffffff !important;
-              background-image: var(--rp-watermark-layer, none) !important;
-              background-repeat: repeat-y !important;
-              background-size: 816px 1056px !important;
-              background-position: top left !important;
             }
             
             /* Ensure headers, icons, and text are visible and retain their template display behaviors (flex, grid, etc.) */

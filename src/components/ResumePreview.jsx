@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { loadTemplateFont, getFontVars, FONT_MAP } from "../utils/fonts";
 import "./ResumePreview.css";
 
@@ -86,21 +86,22 @@ const renderLinkOrText = (text, className) => {
 };
 
 const WATERMARK_TEXT = "Made with VRESIQ";
-const WATERMARK_SVG = `
-  <svg xmlns="http://www.w3.org/2000/svg" width="816" height="1056" viewBox="0 0 816 1056">
-    <text
-      x="774"
-      y="1018"
-      text-anchor="end"
-      font-family="Inter, Arial, sans-serif"
-      font-size="15"
-      font-weight="700"
-      fill="#6b7280"
-      fill-opacity="0.28"
-    >${WATERMARK_TEXT}</text>
-  </svg>
-`.trim();
-const WATERMARK_LAYER = `url("data:image/svg+xml;charset=UTF-8,${encodeURIComponent(WATERMARK_SVG)}")`;
+
+const buildWatermarkImage = () => {
+  if (typeof document === "undefined") return "";
+  const canvas = document.createElement("canvas");
+  canvas.width = 240;
+  canvas.height = 28;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return "";
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.font = "700 13px Inter, Arial, sans-serif";
+  ctx.fillStyle = "rgba(107, 114, 128, 0.26)";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(WATERMARK_TEXT, canvas.width / 2, canvas.height / 2);
+  return canvas.toDataURL("image/png");
+};
 
 const icon = (section) => ({
   Experience: "", Education: "", Skills: "",
@@ -737,6 +738,7 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
   const progressStyle = dec.progressStyle || "bar";
   const showIcons = false;
   const pageBorder = dec.pageBorder === "true";
+  const watermarkDataUrl = useMemo(() => (isFreePlan ? buildWatermarkImage() : ""), [isFreePlan]);
 
   const profileInfo = resume.profileInfo || {};
   const contactInfo = resume.contactInfo || {};
@@ -905,7 +907,6 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
         "--on-accent-soft": accentText.soft,
         "--on-accent-line": accentText.line,
         "--page-border": pageBorder ? `1px solid ${accent}` : "none",
-        "--rp-watermark-layer": WATERMARK_LAYER,
         ...fontVars,
       }}
       data-template={templateId}
@@ -944,6 +945,12 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
           <div className="rp-scan-landmark" style={{ top: "443px", left: "543px" }} />
           <div className="rp-scan-landmark" style={{ top: "893px", left: "43px" }} />
         </>
+      )}
+
+      {isFreePlan && watermarkDataUrl && (
+        <div className="rp-watermark" aria-hidden="true">
+          <img src={watermarkDataUrl} alt="" />
+        </div>
       )}
 
     </article>

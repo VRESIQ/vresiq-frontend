@@ -10,15 +10,14 @@
   min-height: 1056px;
   margin: 0 auto;
   background: #fff;
-  background-image: var(--rp-watermark-layer, none);
-  background-repeat: repeat-y;
-  background-size: 816px 1056px;
-  background-position: top left;
   color: #1a1a1a;
   font-family: var(--rp-font-body, 'Inter', sans-serif);
   box-shadow: 0 18px 50px rgba(0,0,0,0.1);
   border: var(--page-border, none);
   overflow: hidden;
+  box-sizing: border-box;
+  padding-top: 40px;
+  padding-bottom: 48px;
 
   /* Global Design-Token System */
   --rp-space-xs: 4px;
@@ -160,6 +159,14 @@ a.rp-custom-link:hover,
     text-underline-offset: 1.5px;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+  }
+
+  .resume-preview {
+    padding-bottom: 48px !important;
+  }
+
+  .rp-watermark {
+    bottom: 12px !important;
   }
 }
 
@@ -665,15 +672,20 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 
 /* ── Watermark ───────────────────────────────────────────────────────────── */
 .rp-watermark {
-  position: absolute;
-  bottom: 6px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 8px;
-  color: #c8c6be;
-  letter-spacing: 0.05em;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 10px;
+  display: flex;
+  justify-content: center;
   pointer-events: none;
-  white-space: nowrap;
+  z-index: 0;
+}
+
+.rp-watermark img {
+  width: 150px;
+  height: auto;
+  opacity: 0.24;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -1260,10 +1272,6 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
     border: none !important;
     box-shadow: none !important;
     background-color: #fff !important;
-    background-image: var(--rp-watermark-layer, none) !important;
-    background-repeat: repeat-y !important;
-    background-size: 816px 1056px !important;
-    background-position: top left !important;
     color: #000 !important;
     print-color-adjust: exact !important;
     -webkit-print-color-adjust: exact !important;
@@ -1627,10 +1635,8 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 
 @media print {
   .resume-preview {
-    background-image: var(--rp-watermark-layer, none) !important;
-    background-repeat: repeat-y !important;
-    background-size: 816px 1056px !important;
-    background-position: top left !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
