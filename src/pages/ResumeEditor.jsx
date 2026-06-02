@@ -510,6 +510,27 @@ const ResumeEditor = () => {
       `;
     }
 
+    const watermarkUrl = element.style.getPropertyValue("--rp-watermark-url");
+    let watermarkStyles = "";
+    if (isFreePlan && watermarkUrl) {
+      watermarkStyles = `
+            html, body {
+              background-image: ${watermarkUrl} !important;
+              background-repeat: repeat-y !important;
+              background-size: 816px 1056px !important;
+              background-position: center top !important;
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
+              overflow: visible !important;
+              height: auto !important;
+            }
+            #resume-preview, .resume-preview {
+              background-color: transparent !important;
+              background-image: none !important;
+            }
+      `;
+    }
+
     const htmlContent = `
       <!DOCTYPE html>
       <html>
@@ -530,6 +551,8 @@ const ResumeEditor = () => {
               overflow: hidden !important; /* Hide scrollbars to prevent viewport width reductions */
               visibility: visible !important;
             }
+
+            ${watermarkStyles}
 
             @page {
               size: letter;
