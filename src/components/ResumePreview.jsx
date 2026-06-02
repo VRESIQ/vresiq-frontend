@@ -67,6 +67,11 @@ const isUrl = (str) => {
   return /^https?:\/\//i.test(trimmed) || /^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,6}(:[0-9]{1,5})?(\/.*)?$/i.test(trimmed);
 };
 
+const getLocationUrl = (location) => {
+  if (!location) return "";
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.trim())}`;
+};
+
 const renderLinkOrText = (text, className) => {
   if (!text) return null;
   const trimmed = text.trim();
@@ -79,6 +84,23 @@ const renderLinkOrText = (text, className) => {
   }
   return text;
 };
+
+const WATERMARK_TEXT = "Made with VRESIQ";
+const WATERMARK_SVG = `
+  <svg xmlns="http://www.w3.org/2000/svg" width="816" height="1056" viewBox="0 0 816 1056">
+    <text
+      x="774"
+      y="1018"
+      text-anchor="end"
+      font-family="Inter, Arial, sans-serif"
+      font-size="13"
+      font-weight="700"
+      fill="#6b7280"
+      fill-opacity="0.16"
+    >${WATERMARK_TEXT}</text>
+  </svg>
+`.trim();
+const WATERMARK_LAYER = `url("data:image/svg+xml;charset=UTF-8,${encodeURIComponent(WATERMARK_SVG)}")`;
 
 const icon = (section) => ({
   Experience: "", Education: "", Skills: "",
@@ -105,103 +127,101 @@ const handleContactClick = (e) => {
   }
 };
 
-const ContactRow = ({ c = {} }) => {
-  const parts = [];
+const buildContactEntries = (c = {}) => {
+  const entries = [];
+
   if (hasText(c.email)) {
     const cleaned = cleanEmail(c.email);
-    parts.push(
-      <span key="email">
-        <a href={`mailto:${cleaned}`} onClick={handleContactClick}>{cleaned}</a>
-      </span>
-    );
-  }
-  if (hasText(c.phone)) {
-    const cleaned = cleanPhone(c.phone);
-    parts.push(
-      <span key="phone">
-        <a href={`tel:${formatPhone(c.phone)}`} onClick={handleContactClick}>{cleaned}</a>
-      </span>
-    );
-  }
-  if (hasText(c.location)) {
-    parts.push(<span key="location">{c.location.trim()}</span>);
-  }
-  if (hasText(c.linkedIn)) {
-    parts.push(
-      <span key="linkedin">
-        <a href={getLinkedInUrl(c.linkedIn)} target="_blank" rel="noopener noreferrer">
-          {c.linkedIn.replace(/^(https?:\/\/)?(www\.)?linkedin\.com\/in\//i, "").replace(/^(https?:\/\/)?(www\.)?linkedin\.com\//i, "")}
-        </a>
-      </span>
-    );
-  }
-  if (hasText(c.github)) {
-    parts.push(
-      <span key="github">
-        <a href={getGithubUrl(c.github)} target="_blank" rel="noopener noreferrer">
-          {c.github.replace(/^(https?:\/\/)?(www\.)?github\.com\//i, "")}
-        </a>
-      </span>
-    );
-  }
-  if (hasText(c.website)) {
-    parts.push(
-      <span key="website">
-        <a href={formatUrl(c.website)} target="_blank" rel="noopener noreferrer">
-          {c.website.replace(/^(https?:\/\/)?(www\.)?/, "")}
-        </a>
-      </span>
-    );
+    entries.push({
+      key: "email",
+      href: `mailto:${cleaned}`,
+      text: cleaned,
+      className: "rp-contact-link rp-contact-link-email",
+      target: undefined,
+    });
   }
 
-  if (!parts.length) return null;
-  return <div className="rp-contact">{parts}</div>;
+  if (hasText(c.phone)) {
+    const cleaned = cleanPhone(c.phone);
+    entries.push({
+      key: "phone",
+      href: `tel:${formatPhone(c.phone)}`,
+      text: cleaned,
+      className: "rp-contact-link rp-contact-link-phone",
+      target: undefined,
+    });
+  }
+
+  if (hasText(c.location)) {
+    const location = c.location.trim();
+    entries.push({
+      key: "location",
+      href: getLocationUrl(location),
+      text: location,
+      className: "rp-contact-link rp-contact-link-location",
+      target: "_blank",
+    });
+  }
+
+  if (hasText(c.linkedIn)) {
+    const text = c.linkedIn.replace(/^(https?:\/\/)?(www\.)?linkedin\.com\/in\//i, "").replace(/^(https?:\/\/)?(www\.)?linkedin\.com\//i, "");
+    entries.push({
+      key: "linkedin",
+      href: getLinkedInUrl(c.linkedIn),
+      text,
+      className: "rp-contact-link rp-contact-link-linkedin",
+      target: "_blank",
+    });
+  }
+
+  if (hasText(c.github)) {
+    entries.push({
+      key: "github",
+      href: getGithubUrl(c.github),
+      text: c.github.replace(/^(https?:\/\/)?(www\.)?github\.com\//i, ""),
+      className: "rp-contact-link rp-contact-link-github",
+      target: "_blank",
+    });
+  }
+
+  if (hasText(c.website)) {
+    entries.push({
+      key: "website",
+      href: formatUrl(c.website),
+      text: c.website.replace(/^(https?:\/\/)?(www\.)?/, ""),
+      className: "rp-contact-link rp-contact-link-website",
+      target: "_blank",
+    });
+  }
+
+  return entries;
+};
+
+const ContactRow = ({ c = {} }) => {
+  const entries = buildContactEntries(c);
+  if (!entries.length) return null;
+  return (
+    <div className="rp-contact">
+      {entries.map((entry, idx) => (
+        <span key={entry.key} className="rp-contact-item">
+          <a
+            href={entry.href}
+            className={entry.className}
+            target={entry.target}
+            rel={entry.target === "_blank" ? "noopener noreferrer" : undefined}
+            onClick={entry.href.startsWith("mailto:") || entry.href.startsWith("tel:") ? handleContactClick : undefined}
+          >
+            {entry.text}
+          </a>
+          {idx < entries.length - 1 && <span className="rp-contact-sep" aria-hidden="true"> · </span>}
+        </span>
+      ))}
+    </div>
+  );
 };
 
 const AtsContactRow = ({ c = {} }) => {
-  const links = [];
-  if (hasText(c.email)) {
-    const cleaned = cleanEmail(c.email);
-    links.push({
-      href: `mailto:${cleaned}`,
-      text: cleaned
-    });
-  }
-  if (hasText(c.phone)) {
-    const cleaned = cleanPhone(c.phone);
-    links.push({
-      href: `tel:${formatPhone(c.phone)}`,
-      text: cleaned
-    });
-  }
-  if (hasText(c.location)) {
-    links.push({
-      href: null,
-      text: c.location.trim()
-    });
-  }
-  if (hasText(c.linkedIn)) {
-    links.push({
-      href: getLinkedInUrl(c.linkedIn),
-      text: c.linkedIn.replace(/^(https?:\/\/)?(www\.)?linkedin\.com\/in\//i, "").replace(/^(https?:\/\/)?(www\.)?linkedin\.com\//i, ""),
-      target: "_blank"
-    });
-  }
-  if (hasText(c.github)) {
-    links.push({
-      href: getGithubUrl(c.github),
-      text: c.github.replace(/^(https?:\/\/)?(www\.)?github\.com\//i, ""),
-      target: "_blank"
-    });
-  }
-  if (hasText(c.website)) {
-    links.push({
-      href: formatUrl(c.website),
-      text: c.website.replace(/^(https?:\/\/)?(www\.)?/, ""),
-      target: "_blank"
-    });
-  }
-
+  const links = buildContactEntries(c);
   if (!links.length) return null;
   return (
     <div className="rp-ats-contact">
@@ -213,6 +233,7 @@ const AtsContactRow = ({ c = {} }) => {
               target={link.target}
               rel={link.target === "_blank" ? "noopener noreferrer" : undefined}
               onClick={link.href.startsWith("mailto:") || link.href.startsWith("tel:") ? handleContactClick : undefined}
+              className={link.className}
             >
               {link.text}
             </a>
@@ -884,6 +905,7 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
         "--on-accent-soft": accentText.soft,
         "--on-accent-line": accentText.line,
         "--page-border": pageBorder ? `1px solid ${accent}` : "none",
+        "--rp-watermark-layer": WATERMARK_LAYER,
         ...fontVars,
       }}
       data-template={templateId}
@@ -924,10 +946,6 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
         </>
       )}
 
-      {/* Watermark — free tier only */}
-      {isFreePlan && (
-        <div className="rp-watermark">Made with VRESIQ</div>
-      )}
     </article>
   );
 };

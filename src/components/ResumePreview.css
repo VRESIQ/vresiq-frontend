@@ -10,6 +10,10 @@
   min-height: 1056px;
   margin: 0 auto;
   background: #fff;
+  background-image: var(--rp-watermark-layer, none);
+  background-repeat: repeat-y;
+  background-size: 816px 1056px;
+  background-position: top left;
   color: #1a1a1a;
   font-family: var(--rp-font-body, 'Inter', sans-serif);
   box-shadow: 0 18px 50px rgba(0,0,0,0.1);
@@ -75,6 +79,25 @@
 .rp-ats-contact a:hover {
   color: #0b3d7a !important;
   text-decoration: underline !important;
+}
+
+.rp-contact-item,
+.rp-ats-contact-item {
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.rp-contact-link {
+  color: #1a5fb4 !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 0.5px !important;
+  text-underline-offset: 1.5px;
+  white-space: nowrap;
+}
+
+.rp-contact-sep {
+  color: #6b7280;
+  padding: 0 4px;
 }
 
 /* 2. BODY / CONTENT LINKS
@@ -1236,10 +1259,26 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
     padding: 0 !important;
     border: none !important;
     box-shadow: none !important;
-    background: #fff !important;
+    background-color: #fff !important;
+    background-image: var(--rp-watermark-layer, none) !important;
+    background-repeat: repeat-y !important;
+    background-size: 816px 1056px !important;
+    background-position: top left !important;
     color: #000 !important;
     print-color-adjust: exact !important;
     -webkit-print-color-adjust: exact !important;
+  }
+
+  .rp-contact-item,
+  .rp-ats-contact-item {
+    white-space: nowrap !important;
+  }
+
+  .rp-contact-link {
+    color: #1a5fb4 !important;
+    text-decoration: underline !important;
+    text-decoration-thickness: 0.5px !important;
+    text-underline-offset: 1.5px;
   }
   
   /* Force grid and column spacing in templates */
@@ -1320,6 +1359,19 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   .rp-ats-contact-item:last-child {
     margin-right: 0 !important;
   }
+
+  .rp-item-desc,
+  .rp-item-desc ul,
+  .rp-item-desc li,
+  .rp-summary,
+  .rp-contact,
+  .rp-ats-contact,
+  .rp-compact,
+  .rp-item-head,
+  .rp-item-sub {
+    orphans: 3 !important;
+    widows: 3 !important;
+  }
   
   /* Isolate all headers and establish block/flex isolation to prevent semantic leakage */
   .rp-header,
@@ -1392,14 +1444,28 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 
   /* Allow experience/project containers to split naturally, preventing massive gaps */
   .rp-item {
-    page-break-inside: auto !important;
-    break-inside: auto !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid-page !important;
   }
 
-  /* Allow sections to break across pages */
+  /* Keep sections together whenever possible */
   .rp-section, section {
-    page-break-inside: auto !important;
-    break-inside: auto !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid-page !important;
+  }
+
+  .rp-desc-list,
+  .rp-item-desc ul {
+    padding-left: 18px !important;
+    margin-top: 4px !important;
+    margin-bottom: 0 !important;
+  }
+
+  .rp-desc-list li,
+  .rp-item-desc li {
+    margin-bottom: 4px !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
   }
 
   /* Force block layout instead of CSS grid/flex/table to prevent multi-page column collapse and whitespace gaps in Chromium */
@@ -1555,6 +1621,15 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 }
 
 @media print {
+  .resume-preview {
+    background-image: var(--rp-watermark-layer, none) !important;
+    background-repeat: repeat-y !important;
+    background-size: 816px 1056px !important;
+    background-position: top left !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
   .rp-scan-mode-overlay-svg,
   .rp-scan-landmark {
     display: none !important;
@@ -1901,6 +1976,8 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   font-size: var(--rp-fs-body);
   color: #333;
   font-weight: 400;
+  orphans: 3;
+  widows: 3;
 }
 
 .rp-desc-list li {
