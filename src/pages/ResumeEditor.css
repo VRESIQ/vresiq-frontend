@@ -1347,13 +1347,13 @@
   /* Allow experience/project containers to split naturally, preventing massive gaps */
   .rp-item {
     page-break-inside: avoid !important;
-    break-inside: avoid-page !important;
+    break-inside: avoid !important;
   }
 
   /* Keep sections together whenever possible */
   .rp-section, section {
     page-break-inside: avoid !important;
-    break-inside: avoid-page !important;
+    break-inside: avoid !important;
   }
 
   /* Prevent page break inside editor input cards */

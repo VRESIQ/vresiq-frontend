@@ -391,7 +391,7 @@ a.rp-custom-link:hover,
 
 .rp-header h1 {
   font-size: var(--rp-fs-name);
-  font-weight: 800;
+  font-weight: 700;
   margin: 0 0 4px;
   line-height: 1.1;
   color: #111;
@@ -1445,13 +1445,13 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   /* Allow experience/project containers to split naturally, preventing massive gaps */
   .rp-item {
     page-break-inside: avoid !important;
-    break-inside: avoid-page !important;
+    break-inside: avoid !important;
   }
 
   /* Keep sections together whenever possible */
   .rp-section, section {
     page-break-inside: avoid !important;
-    break-inside: avoid-page !important;
+    break-inside: avoid !important;
   }
 
   .rp-desc-list,
@@ -1466,6 +1466,11 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
     margin-bottom: 4px !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
+  }
+
+  .resume-preview:not([data-bullet="none"]) .rp-desc-list > li,
+  .resume-preview:not([data-bullet="none"]) .rp-item-desc ul > li {
+    display: list-item !important;
   }
 
   /* Force block layout instead of CSS grid/flex/table to prevent multi-page column collapse and whitespace gaps in Chromium */
@@ -1986,6 +1991,11 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   font-size: var(--rp-fs-body);
   color: #333;
   font-weight: 400;
+}
+
+.resume-preview:not([data-bullet="none"]) .rp-desc-list > li,
+.resume-preview:not([data-bullet="none"]) .rp-item-desc ul > li {
+  display: list-item !important;
 }
 
 /* ── Bullet style overrides via data-bullet attribute on .resume-preview ────── */

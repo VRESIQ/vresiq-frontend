@@ -573,6 +573,11 @@ const ResumeEditor = () => {
             }
 
             .resume-preview {
+              background-color: #ffffff !important;
+              background-image: var(--rp-watermark-layer, none) !important;
+              background-repeat: repeat-y !important;
+              background-size: 816px 1056px !important;
+              background-position: top left !important;
               color: #000000 !important;
             }
             
@@ -647,6 +652,11 @@ const ResumeEditor = () => {
               overflow: visible !important;
               visibility: visible !important;
               box-sizing: border-box !important;
+              background-color: #ffffff !important;
+              background-image: var(--rp-watermark-layer, none) !important;
+              background-repeat: repeat-y !important;
+              background-size: 816px 1056px !important;
+              background-position: top left !important;
             }
             
             /* Ensure headers, icons, and text are visible and retain their template display behaviors (flex, grid, etc.) */
@@ -726,14 +736,14 @@ const ResumeEditor = () => {
 
             /* Allow experience/project containers to split naturally, preventing massive gaps */
             .rp-item {
-              page-break-inside: auto !important;
-              break-inside: auto !important;
+              page-break-inside: avoid !important;
+              break-inside: avoid !important;
             }
 
-            /* Allow sections to break across pages */
+            /* Keep sections together whenever possible */
             .rp-section, section {
-              page-break-inside: auto !important;
-              break-inside: auto !important;
+              page-break-inside: avoid !important;
+              break-inside: avoid !important;
             }
 
             /* Force float layout instead of CSS grid/flex/table to prevent multi-page column collapse in Chromium */

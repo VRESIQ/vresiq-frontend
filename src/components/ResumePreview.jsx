@@ -93,10 +93,10 @@ const WATERMARK_SVG = `
       y="1018"
       text-anchor="end"
       font-family="Inter, Arial, sans-serif"
-      font-size="13"
+      font-size="15"
       font-weight="700"
       fill="#6b7280"
-      fill-opacity="0.16"
+      fill-opacity="0.28"
     >${WATERMARK_TEXT}</text>
   </svg>
 `.trim();
