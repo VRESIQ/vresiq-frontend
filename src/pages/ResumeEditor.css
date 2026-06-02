@@ -1284,7 +1284,6 @@
     border: none !important;
   }
 
-  /* Force the resume preview component to take full width and remove drop shadows */
   #resume-preview,
   .resume-preview {
     position: absolute !important;
@@ -1295,11 +1294,12 @@
     min-height: 0 !important;
     height: auto !important;
     margin: 0 !important;
-    padding: 0 !important;
+    padding-top: 40px !important;
+    padding-bottom: 48px !important;
     box-shadow: none !important;
     border: none !important;
     overflow: visible !important;
-    background-color: #ffffff !important;
+    background-color: transparent !important;
     color: #000000 !important;
   }
 

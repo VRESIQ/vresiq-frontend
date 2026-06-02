@@ -453,6 +453,24 @@ const ResumeEditor = () => {
       throw new Error("Resume preview element not found. Please try again.");
     }
 
+    const watermarkUrl = element.style.getPropertyValue("--rp-watermark-url");
+    let watermarkPrintCSS = "";
+    if (watermarkUrl) {
+      watermarkPrintCSS = `
+        body {
+          background-image: ${watermarkUrl} !important;
+          background-repeat: repeat-y !important;
+          background-size: 816px 1056px !important;
+          background-position: center top !important;
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+        #resume-preview, .resume-preview {
+          background-color: transparent !important;
+        }
+      `;
+    }
+
     // 1. Serialize all CSS rules from document.styleSheets
     // This resolves all dynamic Vite CSS, Tailwind, page styles, and dynamic font links.
     let importRules = "";
@@ -568,6 +586,7 @@ const ResumeEditor = () => {
             }
 
             ${extraPrintStyles}
+            ${watermarkPrintCSS}
 
             /* Professional link style overrides for exported PDF */
             .resume-preview[data-lstyle="professional"] a {
@@ -645,7 +664,8 @@ const ResumeEditor = () => {
               height: auto !important;
               min-height: 1056px !important; /* Maintain standard Letter sheet aspect ratio */
               margin: 0 auto !important;
-              padding: 0 !important; /* Retain only the template's internal spacing to align text & photos */
+              padding-top: 40px !important;
+              padding-bottom: 48px !important;
               box-shadow: none !important;
               border: var(--page-border, none) !important;
               overflow: visible !important;
