@@ -664,7 +664,7 @@ const ResumeEditor = () => {
 
             #resume-preview, .resume-preview {
               position: static !important; /* Restore normal flow to prevent layout collapse */
-              display: block !important;
+              display: flow-root !important;
               width: 816px !important; /* Force exact same width as desktop live preview */
               max-width: 816px !important;
               height: auto !important;
