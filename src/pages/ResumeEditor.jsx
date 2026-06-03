@@ -563,10 +563,10 @@ const ResumeEditor = () => {
 
             @page {
               size: letter;
-              margin-top: 40px !important;
-              margin-bottom: 48px !important;
-              margin-left: 0 !important;
-              margin-right: 0 !important;
+              margin-top: 40px;
+              margin-bottom: 48px;
+              margin-left: 0;
+              margin-right: 0;
             }
 
             ${fullBleedPageStyle}
