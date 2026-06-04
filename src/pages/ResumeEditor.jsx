@@ -323,6 +323,19 @@ const ResumeEditor = () => {
 
   const isFreePlan = user?.subscriptionPlan?.toLowerCase() !== "premium";
 
+  const activeTabRef = useRef(null);
+
+  useEffect(() => {
+    if (window.innerWidth < 768 && activeTabRef.current) {
+      activeTabRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
+  }, [activeSection]);
+
+
   useEffect(() => {
     getResumeById(id)
       .then((res) => {
@@ -1018,11 +1031,13 @@ const ResumeEditor = () => {
 
           <div className="editor-body">
             <aside className="editor-sidebar">
+              <span className="swipe-sections-hint">Swipe sections →</span>
               {activeSections.map((section) => (
                 <button
                   key={section}
                   className={`sidebar-btn ${activeSection === section ? "active" : ""}`}
                   onClick={() => setActiveSection(section)}
+                  ref={activeSection === section ? activeTabRef : null}
                 >
                   {section}
                 </button>
