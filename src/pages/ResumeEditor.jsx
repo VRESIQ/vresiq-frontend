@@ -976,7 +976,7 @@ const ResumeEditor = () => {
               {saveError && <span className="topbar-error">{saveError}</span>}
               <button
                 type="button"
-                className={`btn-outline-sm ${resume.decoratives?.fresherMode === "true" ? "fresher-active" : ""}`}
+                className={`btn-outline-sm btn-fresher ${resume.decoratives?.fresherMode === "true" ? "fresher-active" : ""}`}
                 style={{
                   background: resume.decoratives?.fresherMode === "true" ? "rgba(184, 255, 44, 0.15)" : "transparent",
                   borderColor: resume.decoratives?.fresherMode === "true" ? "var(--accent-dark)" : "var(--line)",
@@ -999,14 +999,14 @@ const ResumeEditor = () => {
               {/* Email send is a Pro feature — free users get a tooltip nudge instead */}
               {isFreePlan ? (
                 <button
-                  className="btn-outline-sm"
+                  className="btn-outline-sm btn-email"
                   onClick={() => alert("Email sharing is a Pro feature. Upgrade to send your resume directly.")}
                   title="Upgrade to Pro to send by email"
                 >
                   Send email (Pro)
                 </button>
               ) : (
-                <button className="btn-outline-sm" onClick={() => setShowEmailModal(true)}>
+                <button className="btn-outline-sm btn-email" onClick={() => setShowEmailModal(true)}>
                   Send email
                 </button>
               )}
@@ -1051,32 +1051,31 @@ const ResumeEditor = () => {
                   onChange={handleImageUpload}
                   className="editor-photo-input"
                 />
-                {uploadingImage && <small className="field-hint">Uploading…</small>}
-                {imageError && <small className="field-error">{imageError}</small>}
-                {resume.profileInfo.ProfilePreviewUrl && (
-                  <div className="editor-photo-control">
-                    <img src={resume.profileInfo.ProfilePreviewUrl} alt="" className="editor-photo-preview" />
-                  </div>
-                )}
-                <div className="editor-photo-actions">
-                  <button
-                    type="button"
-                    className="btn-outline-sm"
-                    onClick={() => photoInputRef.current?.click()}
-                    disabled={uploadingImage}
-                  >
-                    {resume.profileInfo.ProfilePreviewUrl ? "Change Photo" : "Upload Photo"}
-                  </button>
+                <div className="editor-photo-control">
                   {resume.profileInfo.ProfilePreviewUrl && (
+                    <img src={resume.profileInfo.ProfilePreviewUrl} alt="" className="editor-photo-preview" />
+                  )}
+                  <div className="editor-photo-actions">
                     <button
                       type="button"
-                      className="btn-remove"
-                      onClick={removePhoto}
+                      className="btn-outline-sm"
+                      onClick={() => photoInputRef.current?.click()}
+                      disabled={uploadingImage}
                     >
-                      Remove Photo
+                      {resume.profileInfo.ProfilePreviewUrl ? "Change Photo" : "Upload Photo"}
                     </button>
-                  )}
+                    {resume.profileInfo.ProfilePreviewUrl && (
+                      <button
+                        type="button"
+                        className="btn-remove"
+                        onClick={removePhoto}
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
                 </div>
+                {imageError && <p className="field-error">{imageError}</p>}
               </div>
               <Field 
                 label="Summary" 
@@ -1904,6 +1903,9 @@ const ResumeEditor = () => {
         </main>
 
         <section className="editor-preview-panel" style={{ position: "relative" }}>
+          <div className="mobile-preview-header">
+            <h2>Resume Preview</h2>
+          </div>
           <div className="preview-actions" style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: "1rem" }}>
             <button onClick={downloadPDF} className="btn-save" disabled={downloadingPdf}>
               {downloadingPdf ? "Downloading..." : "Download PDF"}
