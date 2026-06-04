@@ -895,3 +895,118 @@
   background: rgba(232, 230, 220, 0.06);
   border-color: rgba(232, 230, 220, 0.35);
 }
+
+/* ── Mobile Hamburger Menu and Navigation Drawer ── */
+.nav-mobile-hamburger {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .nav-mobile-hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 24px;
+    height: 18px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 110;
+  }
+
+  .hamburger-line {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: var(--ink);
+    border-radius: 99px;
+  }
+
+  .nav-links {
+    display: none !important;
+  }
+  
+  .nav-mobile-drawer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(17, 20, 16, 0.4);
+    backdrop-filter: blur(4px);
+    z-index: 100;
+  }
+
+  .nav-mobile-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(80vw, 320px);
+    background: var(--paper);
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.15);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    z-index: 105;
+  }
+
+  .drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .drawer-close {
+    font-size: 2rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--muted);
+    padding: 0.5rem;
+    line-height: 1;
+  }
+
+  .drawer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .drawer-link {
+    font-size: 1.1rem;
+    font-weight: 650;
+    color: var(--ink);
+    text-decoration: none;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .drawer-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    width: 100%;
+    font-size: 0.95rem;
+    font-weight: 680;
+    border-radius: var(--radius);
+    text-decoration: none;
+    text-align: center;
+  }
+
+  .drawer-btn.primary {
+    background: var(--ink);
+    color: #fff;
+  }
+
+  .drawer-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: var(--muted);
+    font-weight: 600;
+  }
+}
+

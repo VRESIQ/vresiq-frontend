@@ -64,6 +64,8 @@ const Dashboard = () => {
   const [showModal, setShowModal] = useState(false);
   const [deleteError, setDeleteError] = useState("");
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const isFreePlan = user?.subscriptionPlan?.toLowerCase() !== "premium";
   const hasReachedLimit = isFreePlan && resumes.length >= 1;
 
@@ -125,6 +127,8 @@ const Dashboard = () => {
     <div className="dashboard premium-shell">
       <nav className="dash-nav">
         <NavLogo className="dash-logo" />
+        
+        {/* Desktop Navigation */}
         <div className="dash-nav-right">
           {user?.role === "ADMIN" && (
             <Link to="/admin" className="nav-link admin-glow" style={{ color: "var(--color-primary, #6366f1)", fontWeight: "600" }}>Admin Console</Link>
@@ -135,6 +139,42 @@ const Dashboard = () => {
           <ThemeToggle />
           <button onClick={logoutUser} className="btn-logout">Log out</button>
         </div>
+
+        {/* Mobile Hamburger Button */}
+        <button 
+          className="nav-mobile-hamburger" 
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label="Toggle navigation menu"
+          aria-expanded={isMenuOpen}
+        >
+          <span className="hamburger-line"></span>
+          <span className="hamburger-line"></span>
+          <span className="hamburger-line"></span>
+        </button>
+
+        {/* Mobile Navigation Drawer */}
+        {isMenuOpen && (
+          <div className="nav-mobile-drawer-overlay" onClick={() => setIsMenuOpen(false)}>
+            <div className="nav-mobile-drawer" onClick={(e) => e.stopPropagation()}>
+              <div className="drawer-header">
+                <NavLogo className="nav-logo" />
+                <button className="drawer-close" onClick={() => setIsMenuOpen(false)}>×</button>
+              </div>
+              <div className="drawer-links">
+                {user?.role === "ADMIN" && (
+                  <Link to="/admin" className="drawer-link admin-glow" style={{ color: "var(--color-primary, #6366f1)", fontWeight: "600" }} onClick={() => setIsMenuOpen(false)}>Admin Console</Link>
+                )}
+                <Link to="/pricing" className="drawer-link" onClick={() => setIsMenuOpen(false)}>Pricing</Link>
+                <Link to="/profile" className="drawer-link" onClick={() => setIsMenuOpen(false)}>Profile</Link>
+                <div className="drawer-toggle-row">
+                  <span>Theme Mode</span>
+                  <ThemeToggle />
+                </div>
+                <button onClick={() => { logoutUser(); setIsMenuOpen(false); }} className="drawer-btn btn-logout-drawer">Log out</button>
+              </div>
+            </div>
+          </div>
+        )}
       </nav>
 
       <main className="dash-content">
