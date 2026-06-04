@@ -687,31 +687,53 @@
 }
 
 /* ── Responsive ─────────────────────────────────────────────────────────── */
-@media (max-width: 960px) {
+@media (min-width: 768px) and (max-width: 1024px) {
+  .hero-section {
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 1.5rem;
+    padding: 3rem 2rem;
+  }
+  .resume-product-frame {
+    transform: scale(0.8);
+  }
+  .floating-stat-2 {
+    left: -2%;
+  }
+}
+
+@media (max-width: 767px) {
   .hero-section {
     grid-template-columns: 1fr;
     min-height: auto;
-    padding-top: 3rem;
+    padding-top: 2rem;
+    gap: 2rem;
   }
 
   .hero-visual {
-    max-width: 380px;
+    max-width: 100%;
+    margin: 2rem auto 0;
+  }
+
+  .resume-product-frame {
+    transform: scale(0.9);
     margin: 0 auto;
   }
 
-  .features-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .floating-stat,
+  .floating-stat-2,
+  .card-glow {
+    display: none !important;
   }
-}
 
-@media (max-width: 600px) {
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
   .home-nav { height: auto; min-height: 60px; padding-block: 0.75rem; }
   .nav-link  { display: none; }
-  .features-grid { grid-template-columns: 1fr; }
   .hero-title { font-size: 2.6rem; }
   .paper-grid { grid-template-columns: 1fr; }
-  .floating-stat { display: none; }
 }
+
 
 /* ════════════════════════════════════════════════════════════════════════════
    DARK MODE — Home page overrides
