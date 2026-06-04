@@ -1459,6 +1459,7 @@
     padding-top: 1.5rem;
     margin-top: 1.5rem;
     margin-bottom: 1rem;
+    position: relative;
   }
   .mobile-preview-header h2 {
     font-size: 1.4rem;
@@ -1466,5 +1467,15 @@
     color: var(--ink);
     margin: 0;
   }
+  .ats-score-badge-floating-wrap {
+    position: absolute !important;
+    top: 1.5rem !important;
+    right: 1rem !important;
+    left: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    z-index: 10 !important;
+  }
 }
+
 
