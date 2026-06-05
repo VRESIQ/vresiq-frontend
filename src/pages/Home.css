@@ -97,12 +97,12 @@
   grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
   align-items: center;
   gap: clamp(2rem, 5vw, 5rem);
-  padding: clamp(3rem, 8vw, 7rem) clamp(1.25rem, 5vw, 5rem);
+  padding: clamp(5.5rem, 8vw, 8.5rem) clamp(1.25rem, 5vw, 5rem);
   max-width: 1440px;
   margin: 0 auto;
 }
 
-@media (max-height: 800px) {
+@media (max-height: 800px) and (max-width: 767px) {
   .hero-section {
     min-height: auto;
     padding-top: clamp(2rem, 4vw, 4rem);

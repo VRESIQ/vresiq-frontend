@@ -158,37 +158,37 @@ const Home = () => {
           <span className="hamburger-line"></span>
           <span className="hamburger-line"></span>
         </button>
+      </nav>
 
-        {/* Mobile Navigation Drawer */}
-        {isMenuOpen && (
-          <div className="nav-mobile-drawer-overlay" onClick={() => setIsMenuOpen(false)}>
-            <div className="nav-mobile-drawer" onClick={(e) => e.stopPropagation()}>
-              <div className="drawer-header">
-                <NavLogo className="nav-logo" />
-                <button className="drawer-close" onClick={() => setIsMenuOpen(false)}>×</button>
-              </div>
-              <div className="drawer-links">
-                <Link to="/pricing" className="drawer-link" onClick={() => setIsMenuOpen(false)}>Pricing</Link>
-                {user ? (
-                  <>
-                    <Link to="/dashboard" className="drawer-link" onClick={() => setIsMenuOpen(false)}>Dashboard</Link>
-                    <Link to="/profile" className="drawer-link" onClick={() => setIsMenuOpen(false)}>Profile</Link>
-                  </>
-                ) : (
-                  <>
-                    <Link to="/login" className="drawer-link" onClick={() => setIsMenuOpen(false)}>Sign in</Link>
-                    <Link to="/register" className="drawer-btn primary" onClick={() => setIsMenuOpen(false)}>Get started →</Link>
-                  </>
-                )}
-                <div className="drawer-toggle-row">
-                  <span>Theme Mode</span>
-                  <ThemeToggle />
-                </div>
+      {/* Mobile Navigation Drawer */}
+      {isMenuOpen && (
+        <div className="nav-mobile-drawer-overlay" onClick={() => setIsMenuOpen(false)}>
+          <div className="nav-mobile-drawer" onClick={(e) => e.stopPropagation()}>
+            <div className="drawer-header">
+              <NavLogo className="nav-logo" />
+              <button className="drawer-close" onClick={() => setIsMenuOpen(false)}>×</button>
+            </div>
+            <div className="drawer-links">
+              <Link to="/pricing" className="drawer-link" onClick={() => setIsMenuOpen(false)}>Pricing</Link>
+              {user ? (
+                <>
+                  <Link to="/dashboard" className="drawer-link" onClick={() => setIsMenuOpen(false)}>Dashboard</Link>
+                  <Link to="/profile" className="drawer-link" onClick={() => setIsMenuOpen(false)}>Profile</Link>
+                </>
+              ) : (
+                <>
+                  <Link to="/login" className="drawer-link" onClick={() => setIsMenuOpen(false)}>Sign in</Link>
+                  <Link to="/register" className="drawer-btn primary" onClick={() => setIsMenuOpen(false)}>Get started →</Link>
+                </>
+              )}
+              <div className="drawer-toggle-row">
+                <span>Theme Mode</span>
+                <ThemeToggle />
               </div>
             </div>
           </div>
-        )}
-      </nav>
+        </div>
+      )}
 
       {/* ── Hero ── */}
       <header className="hero-section">

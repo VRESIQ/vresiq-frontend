@@ -163,30 +163,30 @@ const Dashboard = () => {
           <span className="hamburger-line"></span>
         </button>
 
-        {/* Mobile Navigation Drawer */}
-        {isMenuOpen && (
-          <div className="nav-mobile-drawer-overlay" onClick={() => setIsMenuOpen(false)}>
-            <div className="nav-mobile-drawer" onClick={(e) => e.stopPropagation()}>
-              <div className="drawer-header">
-                <NavLogo className="nav-logo" />
-                <button className="drawer-close" onClick={() => setIsMenuOpen(false)}>×</button>
+      </nav>
+      {/* Mobile Navigation Drawer */}
+      {isMenuOpen && (
+        <div className="nav-mobile-drawer-overlay" onClick={() => setIsMenuOpen(false)}>
+          <div className="nav-mobile-drawer" onClick={(e) => e.stopPropagation()}>
+            <div className="drawer-header">
+              <NavLogo className="nav-logo" />
+              <button className="drawer-close" onClick={() => setIsMenuOpen(false)}>×</button>
+            </div>
+            <div className="drawer-links">
+              {user?.role === "ADMIN" && (
+                <Link to="/admin" className="drawer-link admin-glow" style={{ color: "var(--color-primary, #6366f1)", fontWeight: "600" }} onClick={() => setIsMenuOpen(false)}>Admin Console</Link>
+              )}
+              <Link to="/pricing" className="drawer-link" onClick={() => setIsMenuOpen(false)}>Pricing</Link>
+              <Link to="/profile" className="drawer-link" onClick={() => setIsMenuOpen(false)}>Profile</Link>
+              <div className="drawer-toggle-row">
+                <span>Theme Mode</span>
+                <ThemeToggle />
               </div>
-              <div className="drawer-links">
-                {user?.role === "ADMIN" && (
-                  <Link to="/admin" className="drawer-link admin-glow" style={{ color: "var(--color-primary, #6366f1)", fontWeight: "600" }} onClick={() => setIsMenuOpen(false)}>Admin Console</Link>
-                )}
-                <Link to="/pricing" className="drawer-link" onClick={() => setIsMenuOpen(false)}>Pricing</Link>
-                <Link to="/profile" className="drawer-link" onClick={() => setIsMenuOpen(false)}>Profile</Link>
-                <div className="drawer-toggle-row">
-                  <span>Theme Mode</span>
-                  <ThemeToggle />
-                </div>
-                <button onClick={() => { logoutUser(); setIsMenuOpen(false); }} className="drawer-btn btn-logout-drawer">Log out</button>
-              </div>
+              <button onClick={() => { logoutUser(); setIsMenuOpen(false); }} className="drawer-btn btn-logout-drawer">Log out</button>
             </div>
           </div>
-        )}
-      </nav>
+        </div>
+      )}
 
       <main className="dash-content">
         <section className="dash-hero">
