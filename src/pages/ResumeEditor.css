@@ -1500,7 +1500,11 @@
   }
   
   .editor-main {
-    padding: 1rem !important;
+    padding: 0.75rem !important;
+  }
+  .list-card {
+    padding: 0.75rem !important;
+    margin-bottom: 0.75rem !important;
   }
   .field input,
   .field textarea {
@@ -1512,6 +1516,15 @@
     display: inline-flex;
     align-items: center;
   }
+  @media (max-width: 360px) {
+    .editor-main {
+      padding: 0.5rem !important;
+    }
+    .list-card {
+      padding: 0.5rem !important;
+    }
+  }
+
   
   .mobile-preview-header {
     display: block;
@@ -1609,6 +1622,15 @@
     min-height: 40px !important;
     padding: 0.25rem 0.65rem !important;
     font-size: 0.8rem !important;
+  }
+  
+  .editor-main {
+    padding: 0.6rem !important;
+  }
+  
+  .list-card {
+    padding: 0.6rem !important;
+    margin-bottom: 0.6rem !important;
   }
   
   .field input, .field textarea {

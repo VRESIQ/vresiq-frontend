@@ -301,5 +301,14 @@
     grid-template-columns: 1fr;
     gap: 1.25rem;
   }
+  .date-selects select,
+  .date-selects input {
+    padding: 0.5rem 0.35rem !important;
+  }
+  .phone-dropdown {
+    width: 100% !important;
+    max-width: calc(100vw - 2.5rem) !important;
+  }
 }
+
 
