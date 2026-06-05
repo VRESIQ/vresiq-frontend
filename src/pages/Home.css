@@ -1030,6 +1030,17 @@
     color: #fff;
   }
 
+  [data-theme="dark"] .drawer-btn.primary {
+    background: var(--ink) !important;
+    color: #111 !important;
+    border: 1px solid rgba(232, 230, 220, 0.25) !important;
+  }
+
+  [data-theme="dark"] .drawer-btn.primary:hover {
+    background: #fff !important;
+    color: #111 !important;
+  }
+
   .drawer-toggle-row {
     display: flex;
     align-items: center;
