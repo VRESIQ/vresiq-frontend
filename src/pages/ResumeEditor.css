@@ -1536,6 +1536,13 @@
     transform: none !important;
     z-index: 190 !important;
   }
+  .ats-heatmap-panel {
+    right: 1rem !important;
+    left: 1rem !important;
+    width: auto !important;
+    bottom: 5rem !important;
+    max-height: 60vh !important;
+  }
 }
 
 /* ── Landscape Mobile Layout ── */
