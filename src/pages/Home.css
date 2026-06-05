@@ -102,6 +102,14 @@
   margin: 0 auto;
 }
 
+@media (max-height: 800px) {
+  .hero-section {
+    min-height: auto;
+    padding-top: clamp(2rem, 4vw, 4rem);
+    padding-bottom: clamp(2rem, 4vw, 4rem);
+  }
+}
+
 .hero-content {
   max-width: 680px;
   /* Stagger children into view on load */
@@ -704,9 +712,25 @@
 @media (max-width: 767px) {
   .hero-section {
     grid-template-columns: 1fr;
-    min-height: auto;
-    padding-top: 2rem;
-    gap: 2rem;
+    min-height: auto !important;
+    padding: 2.5rem 1.25rem 1.5rem !important;
+    gap: 1.5rem !important;
+  }
+
+  .hero-kicker {
+    margin-bottom: 0.75rem !important;
+  }
+
+  .hero-title {
+    margin-bottom: 0.75rem !important;
+  }
+
+  .hero-subtitle {
+    margin-bottom: 1.25rem !important;
+  }
+
+  .hero-actions {
+    margin-bottom: 1.25rem !important;
   }
 
   .hero-visual {
@@ -930,9 +954,10 @@
   .nav-mobile-drawer-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(17, 20, 16, 0.4);
-    backdrop-filter: blur(4px);
-    z-index: 100;
+    background: rgba(17, 20, 16, 0.6) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    z-index: 1000 !important;
   }
 
   .nav-mobile-drawer {
@@ -940,14 +965,20 @@
     top: 0;
     right: 0;
     bottom: 0;
-    width: min(80vw, 320px);
-    background: var(--paper);
-    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.15);
+    width: min(380px, 85vw) !important;
+    background: var(--paper) !important;
+    box-shadow: -4px 0 32px rgba(0, 0, 0, 0.25) !important;
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    z-index: 105;
+    z-index: 1005 !important;
+    overflow-y: auto;
+  }
+
+  body.drawer-open {
+    overflow: hidden !important;
+    touch-action: none;
   }
 
   .drawer-header {
@@ -1007,6 +1038,68 @@
     font-size: 0.9rem;
     color: var(--muted);
     font-weight: 600;
+  }
+}
+
+/* ── Landscape Mobile Layout ── */
+@media (max-height: 480px) and (orientation: landscape) {
+  .home-nav {
+    height: 60px !important;
+    padding: 0 1.5rem !important;
+  }
+  .hero-section {
+    grid-template-columns: 1.1fr 0.9fr !important;
+    min-height: auto !important;
+    padding: 1.5rem 1rem !important;
+    gap: 1.5rem !important;
+  }
+  .hero-content {
+    max-width: 100% !important;
+  }
+  .hero-title {
+    font-size: 2rem !important;
+    line-height: 1.1 !important;
+    margin-bottom: 0.5rem !important;
+  }
+  .hero-subtitle {
+    font-size: 0.85rem !important;
+    line-height: 1.5 !important;
+    margin-bottom: 1rem !important;
+  }
+  .hero-actions {
+    gap: 0.5rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+  .hero-btn {
+    min-height: 40px !important;
+    font-size: 0.85rem !important;
+    padding: 0.5rem 1rem !important;
+  }
+  .hero-proof {
+    display: none !important;
+  }
+  .resume-product-frame {
+    transform: scale(0.6) !important;
+    margin: 0 auto !important;
+  }
+  .floating-stat, .floating-stat-2, .card-glow {
+    display: none !important;
+  }
+  .features-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.75rem !important;
+  }
+  .feature-card {
+    min-height: 180px !important;
+    padding: 1rem !important;
+  }
+  .feature-card h3 {
+    margin: 1rem 0 0.4rem !important;
+    font-size: 1rem !important;
+  }
+  .feature-card p {
+    font-size: 0.8rem !important;
+    line-height: 1.4 !important;
   }
 }
 

@@ -66,6 +66,17 @@ const Dashboard = () => {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.classList.add("drawer-open");
+    } else {
+      document.body.classList.remove("drawer-open");
+    }
+    return () => {
+      document.body.classList.remove("drawer-open");
+    };
+  }, [isMenuOpen]);
+
   const isFreePlan = user?.subscriptionPlan?.toLowerCase() !== "premium";
   const hasReachedLimit = isFreePlan && resumes.length >= 1;
 

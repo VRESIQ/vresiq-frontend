@@ -654,9 +654,10 @@
   .nav-mobile-drawer-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(17, 20, 16, 0.4);
-    backdrop-filter: blur(4px);
-    z-index: 100;
+    background: rgba(17, 20, 16, 0.6) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    z-index: 1000 !important;
   }
 
   .nav-mobile-drawer {
@@ -664,14 +665,15 @@
     top: 0;
     right: 0;
     bottom: 0;
-    width: min(80vw, 320px);
-    background: var(--paper);
-    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.15);
+    width: min(380px, 85vw) !important;
+    background: var(--paper) !important;
+    box-shadow: -4px 0 32px rgba(0, 0, 0, 0.25) !important;
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    z-index: 105;
+    z-index: 1005 !important;
+    overflow-y: auto;
   }
 
   .drawer-header {
@@ -736,6 +738,37 @@
     font-size: 0.9rem;
     color: var(--muted);
     font-weight: 600;
+  }
+}
+
+/* ── Landscape Mobile Layout ── */
+@media (max-height: 480px) and (orientation: landscape) {
+  .dash-nav {
+    height: 60px !important;
+    min-height: 60px !important;
+  }
+  .dash-content {
+    padding: 1.5rem 1rem !important;
+  }
+  .dash-hero h1 {
+    font-size: 2.2rem !important;
+    line-height: 1.1 !important;
+  }
+  .dash-hero {
+    grid-template-columns: 1fr auto !important;
+    gap: 1rem !important;
+  }
+  .dash-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 0.75rem !important;
+    margin: 1rem 0 !important;
+  }
+  .stat-card {
+    min-height: 90px !important;
+    padding: 0.75rem !important;
+  }
+  .stat-card strong {
+    font-size: 1.6rem !important;
   }
 }
 
