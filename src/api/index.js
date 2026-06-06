@@ -24,6 +24,12 @@ export const verifyEmail = (token, email) => {
 export const resendVerification = (email) =>
   axiosInstance.post("/api/auth/resend-verification", { email });
 
+export const forgotPassword = (email) =>
+  axiosInstance.post("/api/auth/forgot-password", { email });
+
+export const resetPassword = (token, password) =>
+  axiosInstance.post("/api/auth/reset-password", { token, password });
+
 export const uploadProfileImage = (file) => {
   const form = new FormData();
   form.append("image", file);
