@@ -95,7 +95,7 @@ const Pricing = () => {
             <div className="plan-top">
               <div>
                 <p className="plan-name">Pro</p>
-                <div className="plan-price">INR 299</div>
+                <div className="plan-price">INR 1</div>
               </div>
               <div className="plan-corner">
                 <div className="plan-badge">Recommended</div>
