@@ -1,0 +1,20 @@
+{
+  "name": "VRESIQ",
+  "short_name": "VRESIQ",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#111410",
+  "background_color": "#0a0b09",
+  "display": "standalone",
+  "start_url": "/"
+}
