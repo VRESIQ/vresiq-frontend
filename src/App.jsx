@@ -18,6 +18,7 @@ import Profile from "./pages/Profile";
 // Lazy load heavy pages
 import { lazy, Suspense } from "react";
 import AdminRoute from "./components/common/AdminRoute";
+import GlobalLoader from "./components/common/GlobalLoader";
 const ResumeEditor = lazy(() => import("./pages/ResumeEditor"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 import "./styles/brand.css";
@@ -27,8 +28,10 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
+        <GlobalLoader />
         <Suspense fallback={<div className="app-loading">Loading…</div>}>
           <Routes>
+
             {/* Public */}
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />

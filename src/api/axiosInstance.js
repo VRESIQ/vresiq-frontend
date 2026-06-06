@@ -1,4 +1,5 @@
 import axios from "axios";
+import { loadingService } from "../utils/loadingService";
 
 const resolveBaseUrl = () => {
   const raw = (import.meta.env.VITE_API_BASE_URL || "").trim();
@@ -24,20 +25,39 @@ const axiosInstance = axios.create({
 });
 
 // Attach JWT token on every request
-axiosInstance.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    if (!config.skipLoader) {
+      loadingService.start(config.url, config.method);
+    }
+    return config;
+  },
+  (error) => {
+    if (!error.config?.skipLoader) {
+      loadingService.stop(error.config?.url, error.config?.method);
+    }
+    return Promise.reject(error);
   }
-  return config;
-});
+);
 
 let isLoggingOut = false;
 
 // Handle errors: on 401 clear stale token and redirect to login
 axiosInstance.interceptors.response.use(
-  (res) => res,
+  (res) => {
+    if (!res.config?.skipLoader) {
+      loadingService.stop(res.config?.url, res.config?.method);
+    }
+    return res;
+  },
   (error) => {
+    if (!error.config?.skipLoader) {
+      loadingService.stop(error.config?.url, error.config?.method);
+    }
     const isUnauthorized = error.response?.status === 401;
 
     if (isUnauthorized) {
@@ -64,3 +84,4 @@ axiosInstance.interceptors.response.use(
 );
 
 export default axiosInstance;
+

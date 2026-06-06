@@ -907,7 +907,42 @@ const ResumeEditor = () => {
     setResume((prev) => ({ ...prev, template: templateId }));
   };
 
-  if (loading) return <div className="editor-loading">Loading resume…</div>;
+  if (loading) {
+    return (
+      <div className="editor-page premium-shell skeleton">
+        <header className="editor-topbar">
+          <Link to="/dashboard" className="editor-back">← Back</Link>
+          <div className="skeleton-line" style={{ width: "200px", height: "24px", marginLeft: "1rem" }} />
+          <div className="editor-topbar-actions">
+            <div className="skeleton-line" style={{ width: "100px", height: "38px" }} />
+            <div className="skeleton-line" style={{ width: "80px", height: "38px" }} />
+          </div>
+        </header>
+        <div className="editor-body">
+          <aside className="editor-sidebar">
+            {[1, 2, 3, 4, 5, 6].map((n) => (
+              <div key={n} className="skeleton-line" style={{ width: "80%", height: "40px", margin: "10px auto" }} />
+            ))}
+          </aside>
+          <main className="editor-main">
+            <div className="editor-section">
+              <div className="skeleton-line" style={{ width: "150px", height: "28px", marginBottom: "20px" }} />
+              {[1, 2, 3].map((n) => (
+                <div key={n} className="field" style={{ marginBottom: "15px" }}>
+                  <div className="skeleton-line" style={{ width: "100px", height: "14px", marginBottom: "8px" }} />
+                  <div className="skeleton-line" style={{ width: "100%", height: "40px" }} />
+                </div>
+              ))}
+            </div>
+          </main>
+          <section className="editor-preview-panel">
+            <div className="skeleton-line" style={{ width: "120px", height: "20px", marginBottom: "15px" }} />
+            <div className="skeleton-thumb" style={{ height: "600px", borderRadius: "4px" }} />
+          </section>
+        </div>
+      </div>
+    );
+  }
 
       const visibility = {
         summary: true, education: true, skills: true, experience: true,

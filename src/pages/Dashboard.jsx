@@ -209,12 +209,21 @@ const Dashboard = () => {
         </section>
 
         <section className="dash-stats">
-          {stats.map((item) => (
-            <div className="stat-card" key={item.label}>
-              <span>{item.label}</span>
-              <strong>{item.value}</strong>
-            </div>
-          ))}
+          {loading ? (
+            [1, 2, 3].map((n) => (
+              <div key={n} className="stat-card skeleton">
+                <div className="skeleton-line" style={{ width: "50%", height: "14px" }} />
+                <div className="skeleton-line" style={{ width: "30%", height: "36px", marginTop: "8px" }} />
+              </div>
+            ))
+          ) : (
+            stats.map((item) => (
+              <div className="stat-card" key={item.label}>
+                <span>{item.label}</span>
+                <strong>{item.value}</strong>
+              </div>
+            ))
+          )}
         </section>
 
         {hasReachedLimit && (
