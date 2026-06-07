@@ -32,6 +32,25 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (e.key === "token") {
+        const newToken = e.newValue;
+        if (!newToken) {
+          setUser(null);
+          if (!window.location.pathname.startsWith("/login")) {
+            window.location.href = "/login?expired=1";
+          }
+        } else {
+          window.location.reload();
+        }
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
   const loginUser = (userData) => {
     localStorage.setItem("token", userData.token);
     setUser(userData);
