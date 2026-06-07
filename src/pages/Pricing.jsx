@@ -6,6 +6,13 @@ import NavLogo from "../components/NavLogo";
 import ThemeToggle from "../components/ThemeToggle";
 import "./Pricing.css";
 
+/*
+Purpose: Pricing page showing free and premium SaaS tiers, features matrix, and triggering Razorpay upgrades.
+Used By: App.jsx (Routes)
+Request Flow: Pricing upgrade clicked -> useRazorpay hook -> Razorpay SDK checkout -> Verification API
+Data Flow: User Status -> plan flags -> Razorpay window triggers
+Learn: Third-party SDK integration, payment verify callbacks, CSS grid structures
+*/
 const included = "plan-feature included";
 const muted = "plan-feature muted";
 
@@ -119,6 +126,10 @@ const Pricing = () => {
             )}
           </section>
         </div>
+
+        <p className="pricing-support">
+          For payment questions, billing issues, or receipt support, contact Support: <a href="mailto:vresiq.app@gmail.com" className="support-link">vresiq.app@gmail.com</a>
+        </p>
       </main>
     </div>
   );

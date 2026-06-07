@@ -3,6 +3,13 @@ import { getProfile } from "../api";
 
 const AuthContext = createContext(null);
 
+/*
+Purpose: Manages global React user authentication states, login/logout actions, and token storage.
+Used By: Profile.jsx, Dashboard.jsx, PrivateRoute.jsx
+Request Flow: React Components -> useAuth context -> API methods -> Storage updates
+Data Flow: API login token -> AuthProvider state -> LocalStorage / React Context consumers
+Learn: createContext, useContext hook, Global React session management
+*/
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);

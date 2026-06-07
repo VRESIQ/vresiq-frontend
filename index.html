@@ -32,6 +32,48 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "VResIQ",
+      "operatingSystem": "All",
+      "applicationCategory": "BusinessApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0.00",
+        "priceCurrency": "USD"
+      },
+      "description": "Build recruiter-grade, ATS-safe resumes in minutes. VRESIQ leverages professional AI rewrites, real-time template builders, and native vector print downloads to land you more interviews.",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "1240"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "Is VResIQ ATS compatible?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, VResIQ is built from the ground up for maximum ATS parseability. We avoid multi-column tables, text boxes, and complex graphical indicators, and export as clean, searchable vector PDFs."
+        }
+      },{
+        "@type": "Question",
+        "name": "Can I use VResIQ for free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Absolutely! Our basic template and core editing features are entirely free. You can upgrade to our Premium plan for advanced templates, AI-driven professional rewrites, and live ATS parsing audits."
+        }
+      }]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>

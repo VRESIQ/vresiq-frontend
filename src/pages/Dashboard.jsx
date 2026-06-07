@@ -6,6 +6,13 @@ import ThemeToggle from "../components/ThemeToggle";
 import NavLogo from "../components/NavLogo";
 import "./Dashboard.css";
 
+/*
+Purpose: Dashboard panel displaying user resume versions, creation options, account stats, and subscription status.
+Used By: App.jsx (Routes)
+Request Flow: Dashboard (Mount) -> getUserResumes() API -> Response -> State rendering
+Data Flow: User Profile details -> Template selectors -> createResume payload
+Learn: React hooks (useMemo, useEffect), conditional component locking, UI Skeleton loaders
+*/
 const FREE_TEMPLATES = [
   { id: "template1", name: "Classic" },
 ];

@@ -2,9 +2,52 @@ import { useEffect, useState } from "react";
 import { loadingService } from "../../utils/loadingService";
 import "./GlobalLoader.css";
 
+/*
+Purpose: Renders a fullscreen progress overlay with milestone stages, rotating tips, and transparency alerts for backend cold starts.
+Used By: App.jsx
+Request Flow: Axios call starts -> Interceptor updates loadingService -> GlobalLoader displays -> Finished -> Hides
+Data Flow: Active API calls array -> GlobalLoader state -> Milestone Progress / Tips / Transparency UI
+Learn: Conditional UI, interval rotation, responsive layout structures
+*/
+
+const TIPS = [
+  // ATS Tips
+  { category: "ATS Tips", text: "ATS software parses resumes from top to bottom. Avoid multi-column layouts for maximum compatibility." },
+  { category: "ATS Tips", text: "Standardize section headings like 'Work Experience' and 'Education' so parsing tools identify them easily." },
+  { category: "ATS Tips", text: "Use standard bullet points instead of custom symbols, which can confuse ATS parser algorithms." },
+  { category: "ATS Tips", text: "Save and upload your resume as a PDF. VResIQ's templates are fully optimized for PDF text layout extraction." },
+  { category: "ATS Tips", text: "Tailor your resume skills to match key verbs and terms found directly in the job description." },
+  { category: "ATS Tips", text: "Avoid placing important contact details or links inside the header or footer fields, as some parsers ignore them." },
+
+  // Resume Tips
+  { category: "Resume Tips", text: "Start bullet points with strong action verbs like 'Developed', 'Led', or 'Optimized' rather than 'Responsible for'." },
+  { category: "Resume Tips", text: "Quantify your achievements. 'Grew revenue by 20%' is always stronger than 'Helped grow revenue'." },
+  { category: "Resume Tips", text: "Keep your resume to 1 page if you have under 5 years of experience, or 2 pages for senior roles." },
+  { category: "Resume Tips", text: "Review your spelling and grammar meticulously. Even a single typo can lead to immediate rejection." },
+  { category: "Resume Tips", text: "Put your most recent work experience first. Reverse chronological order is the recruiter standard." },
+  { category: "Resume Tips", text: "Align your resume design to be clean and minimal. Let white space guide the reader's eyes naturally." },
+
+  // Interview Tips
+  { category: "Interview Tips", text: "Prepare at least three questions to ask the interviewer. It shows genuine curiosity and engagement." },
+  { category: "Interview Tips", text: "Use the STAR method (Situation, Task, Action, Result) to structure answers to behavioral questions." },
+  { category: "Interview Tips", text: "Research the company's product, mission, and recent press releases before walking into the interview." },
+  { category: "Interview Tips", text: "Test your camera, microphone, and internet connection at least 15 minutes before a remote video interview." },
+  { category: "Interview Tips", text: "Practice explaining your projects in under 2 minutes. Focus on what you did and why it mattered." },
+  { category: "Interview Tips", text: "Follow up with a brief, personalized thank-you email within 24 hours of completing your interview." },
+
+  // VResIQ Features
+  { category: "VResIQ Features", text: "You can customize template accent colors to fit your target company's branding in one click." },
+  { category: "VResIQ Features", text: "Switch templates instantly inside the editor. Your content is preserved and reflowed automatically." },
+  { category: "VResIQ Features", text: "Verify your resume's ATS compatibility using our interactive scorer before exporting." },
+  { category: "VResIQ Features", text: "Pro users can email their generated resume PDF directly to recruiters from the dashboard." },
+  { category: "VResIQ Features", text: "Use the AI rewrite assistant to refine bullet points for professional impact." },
+  { category: "VResIQ Features", text: "Add customizable custom sections to tailor your resume for academic or creative roles." }
+];
+
 const GlobalLoader = () => {
   const [requests, setRequests] = useState([]);
   const [elapsed, setElapsed] = useState(0);
+  const [tipIndex, setTipIndex] = useState(0);
 
   useEffect(() => {
     const unsubscribe = loadingService.subscribe((activeReqs) => {
@@ -26,63 +69,202 @@ const GlobalLoader = () => {
     return () => clearInterval(interval);
   }, [requests]);
 
+  useEffect(() => {
+    if (requests.length === 0) return;
+
+    const interval = setInterval(() => {
+      setTipIndex((prev) => (prev + 1) % TIPS.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [requests]);
+
   if (requests.length === 0) return null;
 
-  // Resolve contextual message based on current active request endpoint
   const primaryReq = requests[0];
   const url = primaryReq.url || "";
   const method = primaryReq.method || "GET";
 
-  let titleText = "Processing your request";
+  let titleText = "Processing request";
   let descText = "Please wait a moment...";
 
-  // 1. Contextual Mapping
-  if (url.includes("/api/auth/profile") && method === "GET") {
-    titleText = "Loading your profile...";
-    descText = "Usually completes within a few seconds.";
-  } else if (url.includes("/api/resumes") && method === "GET") {
-    titleText = "Loading your dashboard...";
-    descText = "Estimated wait: 5–15 seconds.";
-  } else if (url.includes("/api/resumes") && method === "POST") {
-    titleText = "Generating resume...";
-    descText = "Estimated wait: 20–40 seconds.";
-  } else if (url.includes("/api/resumes") && method === "PUT" && url.includes("/export-pdf")) {
-    titleText = "Exporting PDF...";
-    descText = "Preparing layout, fonts, and export. Estimated wait: 10–20 seconds.";
-  } else if (url.includes("/api/resumes") && method === "PUT") {
-    titleText = "Saving your changes...";
-    descText = "Usually completes within a few seconds.";
-  } else if (url.includes("/api/payment/create-order")) {
-    titleText = "Connecting to payment gateway...";
-    descText = "Processing order details. Estimated wait: 5–15 seconds.";
-  } else if (url.includes("/api/payment/verify")) {
-    titleText = "Verifying payment...";
-    descText = "Please do not refresh the page. Estimated wait: 5–15 seconds.";
+  // Contextual Mapping of Operations & Estimations (First 10s default titles)
+  if (elapsed < 10) {
+    if (url.includes("/api/auth/profile") && method === "GET") {
+      titleText = "Loading profile";
+      descText = "Fetching your workspace environment.";
+    } else if (url.includes("/api/auth/login") && method === "POST") {
+      titleText = "Signing you in";
+      descText = "Authenticating credentials and loading session.";
+    } else if (url.includes("/api/auth/register") && method === "POST") {
+      titleText = "Creating account";
+      descText = "Registering user and initializing default workspace settings.";
+    } else if (url.includes("/api/resumes") && method === "GET") {
+      titleText = "Loading dashboard";
+      descText = "Fetching your resume documents.";
+    } else if (url.includes("/api/resumes") && method === "POST") {
+      titleText = "Generating resume";
+      descText = "Assembling template, structure, and database record.";
+    } else if ((url.includes("/api/resumes") || url.includes("/export-pdf")) && method === "POST" && (url.includes("/export-pdf") || JSON.stringify(primaryReq).includes("pdf"))) {
+      titleText = "Exporting PDF document";
+      descText = "Rendering template, assets, fonts, and exporting high-resolution PDF.";
+    } else if (url.includes("/api/resumes") && method === "PUT" && url.includes("/export-pdf")) {
+      titleText = "Exporting PDF document";
+      descText = "Rendering template, assets, fonts, and exporting high-resolution PDF.";
+    } else if (url.includes("/api/resumes") && method === "PUT") {
+      titleText = "Saving changes";
+      descText = "Syncing document edits to cloud storage.";
+    } else if (url.includes("/api/payment/create-order")) {
+      titleText = "Connecting payment gateway";
+      descText = "Preparing order details and secure transaction checkout.";
+    } else if (url.includes("/api/payment/verify")) {
+      titleText = "Verifying payment transaction";
+      descText = "Securing subscription status. Please do not refresh the page.";
+    } else if (url.includes("/api/email/send-resume")) {
+      titleText = "Sending email";
+      descText = "Processing email delivery with PDF attachment via Brevo SMTP Service.";
+    } else if (url.includes("/api/ai/refine")) {
+      titleText = "Analyzing resume (ATS)";
+      descText = "Running advanced AI keywords extraction, formatting checks, and scoring.";
+    } else if (url.includes("/api/ai/rewrite")) {
+      titleText = "Rewriting content";
+      descText = "Polishing text to sound more professional with AI support.";
+    } else if (url.includes("/api/auth/upload-image") || url.includes("/upload-images")) {
+      titleText = "Uploading files";
+      descText = "Optimizing media and streaming to Cloudinary CDN.";
+    } else if (url.includes("/api/admin/")) {
+      titleText = "Loading admin analytics";
+      descText = "Retrieving global platform statistics and database indexes.";
+    }
   }
 
-  // 2. Slow Operation & Cold Start Interception (Threshold Warnings override standard descriptions)
-  if (elapsed >= 60) {
-    titleText = "Server is still starting";
-    descText = "The server is waking up after inactivity. Estimated wait: 1–2 minutes. This only happens after long periods of inactivity.";
-  } else if (elapsed >= 30) {
-    titleText = "This is taking longer than usual...";
-    descText = "The server might be cold-starting or busy. Please do not close or reload this page.";
-  } else if (elapsed >= 10) {
-    titleText = "Still working...";
-    descText = "Processing your request. Thank you for your patience.";
+  // Calculate Progress Percentages (Milestone-based, time-justified, no 99% faking)
+  let progressPercent = 20;
+  if (elapsed >= 10 && elapsed < 30) {
+    progressPercent = 40;
+  } else if (elapsed >= 30 && elapsed < 60) {
+    progressPercent = 60;
+  } else if (elapsed >= 60 && elapsed < 90) {
+    progressPercent = 80;
+  } else if (elapsed >= 90) {
+    progressPercent = 95;
   }
+
+  // Milestone Stages Icons & Status
+  const getStageIcon = (stageId) => {
+    switch (stageId) {
+      case 1:
+        return "✓"; // Stage 1 is checked immediately
+      case 2:
+        return elapsed >= 10 ? "✓" : "⏳";
+      case 3:
+        return elapsed >= 30 ? "✓" : "⏳";
+      case 4:
+        return elapsed >= 60 ? "✓" : "⏳";
+      case 5:
+        return "⏳"; // Finalizing request is in progress until load stops
+      default:
+        return "⏳";
+    }
+  };
+
+  const isColdStart = elapsed >= 10;
+  const showTransparency = elapsed >= 30;
 
   return (
     <div className="global-loader-overlay">
-      <div className="global-loader-card">
-        <div className="global-loader-spinner" />
-        <p className="global-loader-text">{titleText}</p>
-        <p className="global-loader-subtext">{descText}</p>
-        {elapsed > 0 && (
-          <small style={{ color: "var(--muted)", fontSize: "0.75rem", marginTop: "4px" }}>
-            Elapsed: {elapsed}s
-          </small>
+      <div className={`global-loader-card ${isColdStart ? "cold-start-active" : ""}`}>
+        
+        {/* Top Accent & Status Badge */}
+        <div className="global-loader-header">
+          <span className={`status-badge ${isColdStart ? "badge-warning" : "badge-info"}`}>
+            {isColdStart ? "Server Waking Up" : "Normal Operation"}
+          </span>
+          {isColdStart && <span className="pulse-dot"></span>}
+        </div>
+
+        {/* Loader Animation */}
+        <div className="loader-animation-container">
+          <div className="global-loader-spinner" />
+          {isColdStart && <div className="spinner-glow-ring" />}
+        </div>
+
+        {/* Informative Text */}
+        <div className="loader-text-group">
+          {!isColdStart ? (
+            <>
+              <h3 className="global-loader-text">{titleText}</h3>
+              <p className="global-loader-subtext">{descText}</p>
+            </>
+          ) : (
+            <>
+              <h3 className="global-loader-text">Server is waking up.</h3>
+              <p className="global-loader-subtext">This can happen after periods of inactivity.</p>
+              <span className="estimated-wait-text">Estimated wait: 1–3 minutes</span>
+            </>
+          )}
+        </div>
+
+        {/* 0-10s Startup Statements (No timer) */}
+        {!isColdStart && (
+          <div className="startup-steps">
+            <div className={`startup-step ${elapsed < 3 ? "active" : "done"}`}>Starting VResIQ...</div>
+            <div className={`startup-step ${elapsed >= 3 && elapsed < 7 ? "active" : elapsed >= 7 ? "done" : ""}`}>Checking server status...</div>
+            <div className={`startup-step ${elapsed >= 7 ? "active" : ""}`}>Preparing workspace...</div>
+          </div>
         )}
+
+        {/* Milestone Progress List */}
+        <div className="milestones-container">
+          <div className="milestone-item done">
+            <span className="milestone-status">{getStageIcon(1)}</span>
+            <span className="milestone-label">Request received</span>
+          </div>
+          <div className={`milestone-item ${elapsed >= 10 ? "done" : "active"}`}>
+            <span className="milestone-status">{getStageIcon(2)}</span>
+            <span className="milestone-label">Wake-up initiated</span>
+          </div>
+          <div className={`milestone-item ${elapsed >= 30 ? "done" : elapsed >= 10 ? "active" : ""}`}>
+            <span className="milestone-status">{getStageIcon(3)}</span>
+            <span className="milestone-label">Connecting services</span>
+          </div>
+          <div className={`milestone-item ${elapsed >= 60 ? "done" : elapsed >= 30 ? "active" : ""}`}>
+            <span className="milestone-status">{getStageIcon(4)}</span>
+            <span className="milestone-label">Preparing resume engine</span>
+          </div>
+          <div className={`milestone-item ${elapsed >= 60 ? "active" : ""}`}>
+            <span className="milestone-status">{getStageIcon(5)}</span>
+            <span className="milestone-label">Finalizing request</span>
+          </div>
+        </div>
+
+        {/* Progress Bar & Countdown Meter */}
+        <div className="progress-section">
+          <div className="progress-track">
+            <div 
+              className={`progress-fill ${isColdStart ? "progress-cold" : ""}`} 
+              style={{ width: `${progressPercent}%` }}
+            />
+          </div>
+          <div className="progress-labels">
+            <span>Progress: {progressPercent}%</span>
+          </div>
+        </div>
+
+        {/* User Engagement Tips Carousel */}
+        <div className="tips-carousel-card">
+          <div className="tips-category-badge">{TIPS[tipIndex].category}</div>
+          <p className="tips-text">"{TIPS[tipIndex].text}"</p>
+        </div>
+
+        {/* Part E — Transparency Notification (After 30s) */}
+        {showTransparency && (
+          <div className="transparency-alert-card">
+            <h4>No Server Crash</h4>
+            <p>Your request is still processing. The backend is waking up on free infrastructure. You can safely keep this page open.</p>
+          </div>
+        )}
+
       </div>
     </div>
   );

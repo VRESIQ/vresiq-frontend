@@ -56,7 +56,7 @@ const COUNTRIES = [
   { code: "ET", dial: "+251", flag: "🇪🇹", name: "Ethiopia" },
 ];
 
-const PhoneInput = ({ value = "", onChange }) => {
+const PhoneInput = ({ value = "", onChange, placeholder, hint }) => {
   // Parse the stored value — it's in "+91-9876543210" format
   // Split on the first hyphen to get code and number separately
   const parseStored = (stored) => {
@@ -98,51 +98,54 @@ const PhoneInput = ({ value = "", onChange }) => {
   );
 
   return (
-    <div className="phone-input-wrap">
-      <button
-        type="button"
-        className="phone-country-btn"
-        onClick={() => setDropdownOpen((o) => !o)}
-      >
-        <span style={{ fontSize: "0.8rem", fontWeight: "bold", opacity: 0.7 }}>{selectedCountry.code}</span>
-        <span className="phone-dial">{selectedCountry.dial}</span>
-        <span className="phone-chevron">▾</span>
-      </button>
+    <div className="phone-input-container">
+      <div className="phone-input-wrap">
+        <button
+          type="button"
+          className="phone-country-btn"
+          onClick={() => setDropdownOpen((o) => !o)}
+        >
+          <span style={{ fontSize: "0.8rem", fontWeight: "bold", opacity: 0.7 }}>{selectedCountry.code}</span>
+          <span className="phone-dial">{selectedCountry.dial}</span>
+          <span className="phone-chevron">▾</span>
+        </button>
 
-      <input
-        type="tel"
-        className="phone-number-input"
-        value={rawNumber || ""}
-        onChange={handleNumberChange}
-        placeholder="Phone number"
-      />
+        <input
+          type="tel"
+          className="phone-number-input"
+          value={rawNumber || ""}
+          onChange={handleNumberChange}
+          placeholder={placeholder || "Phone number"}
+        />
 
-      {dropdownOpen && (
-        <div className="phone-dropdown">
-          <input
-            type="text"
-            placeholder="Search country..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="phone-search"
-            autoFocus
-          />
-          <div className="phone-country-list">
-            {filtered.map((c) => (
-              <button
-                key={c.code}
-                type="button"
-                className={`phone-country-option ${c.code === selectedCountry.code ? "active" : ""}`}
-                onClick={() => handleCountrySelect(c)}
-              >
-                <span style={{ opacity: 0.6, fontSize: "0.8rem", width: "24px", display: "inline-block", fontWeight: "600" }}>{c.code}</span>
-                <span>{c.name}</span>
-                <span className="phone-dial">{c.dial}</span>
-              </button>
-            ))}
+        {dropdownOpen && (
+          <div className="phone-dropdown">
+            <input
+              type="text"
+              placeholder="Search country..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="phone-search"
+              autoFocus
+            />
+            <div className="phone-country-list">
+              {filtered.map((c) => (
+                <button
+                  key={c.code}
+                  type="button"
+                  className={`phone-country-option ${c.code === selectedCountry.code ? "active" : ""}`}
+                  onClick={() => handleCountrySelect(c)}
+                >
+                  <span style={{ opacity: 0.6, fontSize: "0.8rem", width: "24px", display: "inline-block", fontWeight: "600" }}>{c.code}</span>
+                  <span>{c.name}</span>
+                  <span className="phone-dial">{c.dial}</span>
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
+      {hint && <small className="field-hint" style={{ marginTop: "0.25rem", color: "var(--muted)", display: "block" }}>{hint}</small>}
     </div>
   );
 };

@@ -241,3 +241,30 @@
     height: 64px;
   }
 }
+
+.pricing-support {
+  margin-top: 3.5rem;
+  font-size: 0.88rem;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.5;
+}
+
+.support-link {
+  color: var(--accent-dark);
+  text-decoration: underline;
+  font-weight: 600;
+  transition: color 0.15s ease;
+}
+
+.support-link:hover {
+  color: var(--ink);
+}
+
+[data-theme="dark"] .support-link {
+  color: var(--accent);
+}
+
+[data-theme="dark"] .support-link:hover {
+  color: #fff;
+}

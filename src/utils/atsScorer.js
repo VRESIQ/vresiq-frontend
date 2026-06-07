@@ -1,3 +1,10 @@
+/*
+Purpose: Calculates resume completeness, contact info validity, keyword gaps, and parser formatting risks.
+Used By: ResumeEditor.jsx, Dashboard.jsx
+Request Flow: Frontend editor state changes -> computeAtsReport() evaluation
+Data Flow: Resume state object -> atsScorer validation rules -> Evaluation score JSON output
+Learn: Regular expressions matching, rule score aggregation, keyword matching matrices
+*/
 export const CATEGORY_KEYWORDS = {
   "software engineer": [
     "Java", "Python", "JavaScript", "TypeScript", "React", "Spring Boot",

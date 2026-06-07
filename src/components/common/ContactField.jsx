@@ -1,4 +1,4 @@
-import { sanitizeEmail, sanitizeURL, sanitizeLocation } from "../../utils/inputSanitizers";
+import { sanitizeEmail, sanitizeURL, sanitizeLocation, smartNormalizeUrl } from "../../utils/inputSanitizers";
 import "./SmartInputs.css";
 
 // Normalizes common contact URLs so users don't need to type the full URL every time
@@ -16,34 +16,7 @@ const normalize = (platform, raw) => {
     return val;
   }
 
-  if (platform === "linkedin") {
-    if (/^http:\/\//i.test(val)) {
-      val = val.replace(/^http:\/\//i, "https://");
-    }
-    if (val.startsWith("https://")) return val;
-    if (val.startsWith("linkedin.com")) return `https://${val}`;
-    if (val.startsWith("in/")) return `https://linkedin.com/${val}`;
-    return `https://linkedin.com/in/${val}`;
-  }
-
-  if (platform === "github") {
-    if (/^http:\/\//i.test(val)) {
-      val = val.replace(/^http:\/\//i, "https://");
-    }
-    if (val.startsWith("https://")) return val;
-    if (val.startsWith("github.com")) return `https://${val}`;
-    return `https://github.com/${val}`;
-  }
-
-  if (platform === "website") {
-    if (/^http:\/\//i.test(val)) {
-      val = val.replace(/^http:\/\//i, "https://");
-    }
-    if (val.startsWith("https://")) return val;
-    return `https://${val}`;
-  }
-
-  return val;
+  return smartNormalizeUrl(platform, val);
 };
 
 const icons = {
@@ -62,7 +35,7 @@ const placeholders = {
   location: "City, Country",
 };
 
-const ContactField = ({ platform, label, value = "", onChange }) => {
+const ContactField = ({ platform, label, value = "", onChange, placeholder, hint }) => {
   const handleBlur = (e) => {
     const normalized = normalize(platform, e.target.value);
     if (normalized !== e.target.value) {
@@ -94,10 +67,11 @@ const ContactField = ({ platform, label, value = "", onChange }) => {
           value={value || ""}
           onChange={handleInputChange}
           onBlur={handleBlur}
-          placeholder={placeholders[platform] || label}
+          placeholder={placeholder || placeholders[platform] || label}
           className="contact-input"
         />
       </div>
+      {hint && <small className="field-hint" style={{ marginTop: "0.25rem", color: "var(--muted)", display: "block" }}>{hint}</small>}
     </div>
   );
 };

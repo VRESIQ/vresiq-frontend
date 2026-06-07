@@ -16,6 +16,9 @@ export const getProfile = () =>
 export const updateProfile = (data) =>
   axiosInstance.put("/api/auth/profile", data);
 
+export const deleteProfile = () =>
+  axiosInstance.delete("/api/auth/profile");
+
 export const verifyEmail = (token, email) => {
   const url = `/api/auth/verify-email?token=${encodeURIComponent(token)}${email ? `&email=${encodeURIComponent(email)}` : ""}`;
   return axiosInstance.get(url);

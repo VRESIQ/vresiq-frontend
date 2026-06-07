@@ -1,20 +1,32 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { updateProfile, uploadProfileImage } from "../api";
+import { Link, useNavigate } from "react-router-dom";
+import { updateProfile, uploadProfileImage, deleteProfile } from "../api";
 import { useAuth } from "../context/AuthContext";
 import NavLogo from "../components/NavLogo";
 import ThemeToggle from "../components/ThemeToggle";
 import { sanitizeStrictText } from "../utils/inputSanitizers";
 import "./Profile.css";
 
+/*
+Purpose: Manages user account profiles, details updates, profile photo uploads, and self-serve deletion.
+Used By: App.jsx (Routes)
+Request Flow: User Profile interactions -> API helpers -> AuthController -> DB write / delete
+Data Flow: Form inputs -> sanitizers -> updateProfile JSON payload -> AuthContext state synchronization
+Learn: State variables (useState), custom verification dialogs, data sanitization
+*/
 const Profile = () => {
-  const { user, loginUser } = useAuth();
+  const { user, loginUser, logoutUser } = useAuth();
+  const navigate = useNavigate();
   const [name, setName] = useState(user?.name || "");
   const [profileImage, setProfileImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(user?.profileImageUrl || "");
   const [loading, setLoading] = useState(false);
   const [removing, setRemoving] = useState(false);
   const [message, setMessage] = useState({ text: "", type: "" });
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [confirmEmail, setConfirmEmail] = useState("");
+  const [deleting, setDeleting] = useState(false);
 
   const plan = user?.subscriptionPlan || "Basic";
   const initials = (name || user?.email || "U").slice(0, 2).toUpperCase();
@@ -68,6 +80,23 @@ const Profile = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    if (confirmEmail !== user?.email) return;
+    setDeleting(true);
+    try {
+      await deleteProfile();
+      logoutUser();
+      navigate("/");
+    } catch (err) {
+      setMessage({
+        text: err.response?.data?.message || "Failed to delete account. Please try again.",
+        type: "error",
+      });
+      setDeleting(false);
+      setShowDeleteModal(false);
     }
   };
 
@@ -160,8 +189,69 @@ const Profile = () => {
               </button>
             </div>
           </form>
+
+          <div className="danger-zone-card">
+            <h3>Danger Zone</h3>
+            <p>
+              Once you delete your account, all your resumes, payments, and stats will be permanently removed. This action is irreversible.
+            </p>
+            <p className="danger-zone-support">
+              Need assistance? Contact Support: <a href="mailto:vresiq.app@gmail.com" className="support-link">vresiq.app@gmail.com</a>
+            </p>
+            <button
+              type="button"
+              className="danger-zone-btn"
+              onClick={() => setShowDeleteModal(true)}
+            >
+              Delete Account
+            </button>
+          </div>
         </section>
       </main>
+
+      {showDeleteModal && (
+        <div className="modal-overlay" onClick={() => setShowDeleteModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3>Delete Account</h3>
+            <p>
+              Are you absolutely sure you want to delete your account? This will permanently erase your resumes and all related data.
+            </p>
+            <div className="warning-box">
+              <p>Warning: This action cannot be undone.</p>
+            </div>
+            <div className="modal-input-group">
+              <label>Please type <strong>{user?.email}</strong> to confirm:</label>
+              <input
+                type="text"
+                placeholder={user?.email}
+                value={confirmEmail}
+                onChange={(e) => setConfirmEmail(e.target.value)}
+              />
+            </div>
+            <div className="modal-actions">
+              <button
+                type="button"
+                className="modal-cancel-btn"
+                onClick={() => {
+                  setShowDeleteModal(false);
+                  setConfirmEmail("");
+                }}
+                disabled={deleting}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="modal-delete-btn"
+                onClick={handleDeleteAccount}
+                disabled={deleting || confirmEmail !== user?.email}
+              >
+                {deleting ? "Deleting..." : "Permanently Delete"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

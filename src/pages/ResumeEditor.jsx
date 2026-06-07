@@ -9,7 +9,7 @@ import PhoneInput from "../components/common/PhoneInput";
 import DateRangePicker from "../components/common/DateRangePicker";
 import ContactField from "../components/common/ContactField";
 import { useAuth } from "../context/AuthContext";
-import { sanitizeStrictText, sanitizeYear, sanitizeName, sanitizeRole, sanitizeURL, sanitizeUsername, sanitizeDigits, sanitizeFlexibleDate, isNumericPattern } from "../utils/inputSanitizers";
+import { sanitizeStrictText, sanitizeYear, sanitizeName, sanitizeRole, sanitizeURL, sanitizeUsername, sanitizeDigits, sanitizeFlexibleDate, isNumericPattern, sanitizeTextOnly, sanitizeDecimal, smartNormalizeUrl, sanitizeRawText } from "../utils/inputSanitizers";
 import { computeAtsReport } from "../utils/atsScorer";
 import "./ResumeEditor.css";
 
@@ -104,29 +104,7 @@ const cleanURL = (url) => {
   }
 };
 
-const normalizeUrl = (platform, raw) => {
-  if (!raw || !raw.trim()) return "";
-  let val = raw.trim();
-
-  if (platform === "github") {
-    if (/^http:\/\//i.test(val)) {
-      val = val.replace(/^http:\/\//i, "https://");
-    }
-    if (val.startsWith("https://")) return val;
-    if (val.startsWith("github.com")) return `https://${val}`;
-    return `https://github.com/${val}`;
-  }
-
-  if (platform === "website") {
-    if (/^http:\/\//i.test(val)) {
-      val = val.replace(/^http:\/\//i, "https://");
-    }
-    if (val.startsWith("https://")) return val;
-    return `https://${val}`;
-  }
-
-  return val;
-};
+const normalizeUrl = smartNormalizeUrl;
 
 const allPossibleOptionalIds = [
   "achievements", "publications", "volunteering", "leadership", "hackathons", 
@@ -136,8 +114,8 @@ const allPossibleOptionalIds = [
 
 const SECTION_FIELDS_CONFIG = {
   achievements: {
-    title: { label: "Achievement Title", placeholder: "e.g. Won 1st Place at National Hackathon", sanitizeType: "strict" },
-    subtitle: { label: "Awarding Authority / Organization", placeholder: "e.g. Major League Hacking (MLH)", sanitizeType: "strict" },
+    title: { label: "Achievement Title", placeholder: "Won 1st place in coding contest.", hint: "Mention measurable achievements.", sanitizeType: "textOnly" },
+    subtitle: { label: "Awarding Authority / Organization", placeholder: "e.g. Major League Hacking (MLH)", sanitizeType: "textOnly" },
     date: { label: "Date Achieved", placeholder: "e.g. October 2025", sanitizeType: "date" },
     description: { label: "Details & Metrics", placeholder: "e.g. Beat out 150+ teams by building a serverless analytics tool.", hint: "Quantify metrics (e.g. percentages, budgets, participant size) to prove business value.", sanitizeType: "strict" }
   },
@@ -224,7 +202,7 @@ const SECTION_FIELDS_CONFIG = {
 const getSectionFieldProps = (secId, fieldKey) => {
   const sectionConfig = SECTION_FIELDS_CONFIG[secId] || {};
   const defaults = {
-    title: { label: "Title", placeholder: "", sanitizeType: "strict" },
+    title: { label: "Title", placeholder: "Add custom information here.", hint: "Only include relevant information.", sanitizeType: "strict" },
     subtitle: { label: "Subtitle", placeholder: "", sanitizeType: "strict" },
     date: { label: "Date", placeholder: "", sanitizeType: "strict" },
     description: { label: "Description", placeholder: "", sanitizeType: "strict" }
@@ -1082,15 +1060,15 @@ const ResumeEditor = () => {
             <main className="editor-main">
               {activeSection === "Profile" && (
                 <Section title="Profile">
-                  <Field label="Full name" value={resume.profileInfo.fullName} sanitize={sanitizeName} onChange={(v) => updateField("profileInfo", "fullName", v)} />
-                  <Field label="Designation" value={resume.profileInfo.designation} sanitize={sanitizeRole} onChange={(v) => updateField("profileInfo", "designation", v)} />
+                  <Field label="Full name" value={resume.profileInfo.fullName} placeholder="Rithik Mettu" hint="Enter your full name." sanitize={sanitizeName} onChange={(v) => updateField("profileInfo", "fullName", v)} />
+                  <Field label="Designation" value={resume.profileInfo.designation} placeholder="Frontend Developer" hint="Your target role." sanitize={sanitizeRole} onChange={(v) => updateField("profileInfo", "designation", v)} />
                   <Field 
                     label="Target Role" 
                     value={resume.profileInfo.targetRole} 
                     sanitize={sanitizeRole} 
                     onChange={(v) => updateField("profileInfo", "targetRole", v)} 
-                    placeholder="e.g. Senior Software Engineer" 
-                    hint="Specifying your target job title (e.g. 'Senior React Engineer') makes it instantly clear to recruiters and ATS systems which role you are applying for."
+                    placeholder="Frontend Developer" 
+                    hint="Your target role."
                   />
                   <div className="field">
                 <label>Profile photo</label>
@@ -1130,6 +1108,8 @@ const ResumeEditor = () => {
               <Field 
                 label="Summary" 
                 value={resume.profileInfo.summary} 
+                placeholder="Frontend developer with experience in React and JavaScript."
+                hint="Write 2–3 short sentences. Example: Built web projects using React and REST APIs."
                 sanitize={sanitizeStrictText}
                 onChange={(v) => updateField("profileInfo", "summary", v)} 
                 textarea 
@@ -1139,17 +1119,19 @@ const ResumeEditor = () => {
 
           {activeSection === "Contact" && (
             <Section title="Contact">
-              <ContactField platform="email"    label="Email"    value={resume.contactInfo.email}    onChange={(v) => updateField("contactInfo", "email", v)} />
+              <ContactField platform="email"    label="Email"    value={resume.contactInfo.email}    onChange={(v) => updateField("contactInfo", "email", v)} placeholder="rithik@example.com" hint="Use a professional email." />
               <div className="field">
                 <label>Phone</label>
                 <PhoneInput
                   value={resume.contactInfo.phone}
                   onChange={(v) => updateField("contactInfo", "phone", v)}
+                  placeholder="+91 9876543210"
+                  hint="Include country code if needed."
                 />
               </div>
-              <ContactField platform="location" label="Location" value={resume.contactInfo.location} onChange={(v) => updateField("contactInfo", "location", v)} />
-              <ContactField platform="linkedin" label="LinkedIn" value={resume.contactInfo.linkedIn} onChange={(v) => updateField("contactInfo", "linkedIn", v)} />
-              <ContactField platform="github"   label="GitHub"   value={resume.contactInfo.github}   onChange={(v) => updateField("contactInfo", "github", v)} />
+              <ContactField platform="location" label="Location" value={resume.contactInfo.location} onChange={(v) => updateField("contactInfo", "location", v)} placeholder="Hyderabad, India" hint="City and country are enough." />
+              <ContactField platform="linkedin" label="LinkedIn" value={resume.contactInfo.linkedIn} onChange={(v) => updateField("contactInfo", "linkedIn", v)} placeholder="linkedin.com/in/rithik" hint="Optional but recommended." />
+              <ContactField platform="github"   label="GitHub"   value={resume.contactInfo.github}   onChange={(v) => updateField("contactInfo", "github", v)} placeholder="github.com/rithik" hint="Add if you have projects." />
               <ContactField platform="website"  label="Website"  value={resume.contactInfo.website}  onChange={(v) => updateField("contactInfo", "website", v)} />
             </Section>
           )}
@@ -1192,9 +1174,9 @@ const ResumeEditor = () => {
               </div>
               {resume.workExperience.map((item, index) => (
                 <ListCard key={index} title={item.role || makeListTitle("workExperience", index)} onRemove={() => removeListItem("workExperience", index)}>
-                  <Field label="Company" value={item.company} sanitize={sanitizeStrictText} onChange={(v) => updateListItem("workExperience", index, "company", v)} />
-                  <Field label="Role" value={item.role} sanitize={sanitizeRole} onChange={(v) => updateListItem("workExperience", index, "role", v)} />
-                  <Field label="Location" value={item.location || ""} sanitize={sanitizeStrictText} onChange={(v) => updateListItem("workExperience", index, "location", v)} placeholder="e.g. City, State or Country" />
+                  <Field label="Company" value={item.company} placeholder="ABC Technologies" sanitize={sanitizeTextOnly} onChange={(v) => updateListItem("workExperience", index, "company", v)} />
+                  <Field label="Role" value={item.role} placeholder="Frontend Developer Intern" sanitize={sanitizeRole} onChange={(v) => updateListItem("workExperience", index, "role", v)} />
+                  <Field label="Location" value={item.location || ""} sanitize={sanitizeLocation} onChange={(v) => updateListItem("workExperience", index, "location", v)} placeholder="e.g. City, State or Country" />
                   <DateRangePicker
                     startDate={item.startDate}
                     endDate={item.endDate}
@@ -1203,9 +1185,12 @@ const ResumeEditor = () => {
                       updateListItem("workExperience", index, "endDate", endDate);
                     }}
                   />
+                  <small className="field-hint" style={{ marginTop: "0.25rem", color: "var(--muted)", display: "block", marginBottom: "1rem" }}>e.g. Jan 2025 - Jun 2025</small>
                   <Field 
                     label="Description" 
                     value={item.description} 
+                    placeholder="Built responsive web pages using React."
+                    hint="Write 2–4 simple bullet points. Example: Improved UI performance and fixed bugs."
                     sanitize={sanitizeStrictText}
                     onChange={(v) => updateListItem("workExperience", index, "description", v)} 
                     textarea 
@@ -1253,10 +1238,10 @@ const ResumeEditor = () => {
               </div>
               {resume.education.map((item, index) => (
                 <ListCard key={index} title={item.degree || makeListTitle("education", index)} onRemove={() => removeListItem("education", index)}>
-                  <Field label="Degree" value={item.degree} sanitize={sanitizeStrictText} onChange={(v) => updateListItem("education", index, "degree", v)} />
-                  <Field label="Institution" value={item.institution} sanitize={sanitizeStrictText} onChange={(v) => updateListItem("education", index, "institution", v)} />
-                  <Field label="Location" value={item.location || ""} sanitize={sanitizeStrictText} onChange={(v) => updateListItem("education", index, "location", v)} placeholder="e.g. City, State" />
-                  <Field label="GPA" value={item.gpa || ""} sanitize={sanitizeStrictText} onChange={(v) => updateListItem("education", index, "gpa", v)} placeholder="e.g. 3.9 / 4.0" />
+                  <Field label="Degree" value={item.degree} placeholder="B.Tech Information Technology" sanitize={sanitizeStrictText} onChange={(v) => updateListItem("education", index, "degree", v)} />
+                  <Field label="Institution" value={item.institution} placeholder="XYZ Institute of Technology" sanitize={sanitizeTextOnly} onChange={(v) => updateListItem("education", index, "institution", v)} />
+                  <Field label="Location" value={item.location || ""} sanitize={sanitizeLocation} onChange={(v) => updateListItem("education", index, "location", v)} placeholder="e.g. City, State" />
+                  <Field label="GPA" value={item.gpa || ""} placeholder="8.5" hint="Optional." sanitize={sanitizeDecimal} onChange={(v) => updateListItem("education", index, "gpa", v)} />
                   <DateRangePicker
                     startDate={item.startDate}
                     endDate={item.endDate}
@@ -1265,6 +1250,7 @@ const ResumeEditor = () => {
                       updateListItem("education", index, "endDate", endDate);
                     }}
                   />
+                  <small className="field-hint" style={{ marginTop: "0.25rem", color: "var(--muted)", display: "block", marginBottom: "1rem" }}>e.g. 2022 - 2026</small>
                   <Field 
                     label="Details / Coursework" 
                     value={item.description || ""} 
@@ -1315,7 +1301,7 @@ const ResumeEditor = () => {
               </div>
               {resume.skills.map((item, index) => (
                 <ListCard key={index} title={item.name || makeListTitle("skills", index)} onRemove={() => removeListItem("skills", index)}>
-                  <Field label="Skill" value={item.name} sanitize={sanitizeStrictText} onChange={(v) => updateListItem("skills", index, "name", v)} />
+                  <Field label="Skill" value={item.name} placeholder="React, JavaScript, HTML, CSS" hint="Separate skills with commas." sanitize={sanitizeRawText} onChange={(v) => updateListItem("skills", index, "name", v)} />
                   <RangeField label="Proficiency" value={item.progress} onChange={(v) => updateListItem("skills", index, "progress", v)} />
                 </ListCard>
               ))}
@@ -1360,10 +1346,12 @@ const ResumeEditor = () => {
               </div>
               {resume.projects.map((item, index) => (
                 <ListCard key={index} title={item.title || makeListTitle("projects", index)} onRemove={() => removeListItem("projects", index)}>
-                  <Field label="Project title" value={item.title} sanitize={sanitizeStrictText} onChange={(v) => updateListItem("projects", index, "title", v)} />
+                  <Field label="Project title" value={item.title} placeholder="AI Resume Builder" sanitize={sanitizeTextOnly} onChange={(v) => updateListItem("projects", index, "title", v)} />
                   <Field 
                     label="Description" 
                     value={item.description} 
+                    placeholder="Built a resume builder with ATS scoring."
+                    hint="Explain what the project does. Example: Created a web app for resume creation."
                     sanitize={sanitizeStrictText}
                     onChange={(v) => updateListItem("projects", index, "description", v)} 
                     textarea 
@@ -1431,9 +1419,9 @@ const ResumeEditor = () => {
               </div>
               {resume.certifications.map((item, index) => (
                 <ListCard key={index} title={item.title || makeListTitle("certifications", index)} onRemove={() => removeListItem("certifications", index)}>
-                  <Field label="Title" value={item.title} sanitize={sanitizeStrictText} onChange={(v) => updateListItem("certifications", index, "title", v)} />
-                  <Field label="Issuer" value={item.issuer} sanitize={sanitizeStrictText} onChange={(v) => updateListItem("certifications", index, "issuer", v)} />
-                  <Field label="Year" value={item.year} sanitize={sanitizeYear} inputMode="numeric" maxLength={4} onChange={(v) => updateListItem("certifications", index, "year", v)} />
+                  <Field label="Title" value={item.title} placeholder="AWS Cloud Practitioner" sanitize={sanitizeTextOnly} onChange={(v) => updateListItem("certifications", index, "title", v)} />
+                  <Field label="Issuer" value={item.issuer} placeholder="Amazon Web Services" sanitize={sanitizeTextOnly} onChange={(v) => updateListItem("certifications", index, "issuer", v)} />
+                  <Field label="Date" value={item.year} placeholder="March 2025" sanitize={sanitizeFlexibleDate} onChange={(v) => updateListItem("certifications", index, "year", v)} />
                 </ListCard>
               ))}
             </Section>
@@ -1477,7 +1465,7 @@ const ResumeEditor = () => {
               </div>
               {resume.languages.map((item, index) => (
                 <ListCard key={index} title={item.name || makeListTitle("languages", index)} onRemove={() => removeListItem("languages", index)}>
-                  <Field label="Language" value={item.name} sanitize={sanitizeStrictText} onChange={(v) => updateListItem("languages", index, "name", v)} />
+                  <Field label="Language" value={item.name} placeholder="English, Telugu" hint="Separate with commas." sanitize={sanitizeRawText} onChange={(v) => updateListItem("languages", index, "name", v)} />
                   <RangeField label="Proficiency" value={item.progress} onChange={(v) => updateListItem("languages", index, "progress", v)} />
                 </ListCard>
               ))}
@@ -1536,11 +1524,12 @@ const ResumeEditor = () => {
                       value={item || ""}
                       onChange={(e) => {
                         const next = [...resume.interests];
-                        next[index] = sanitizeStrictText(e.target.value);
+                        next[index] = sanitizeRawText(e.target.value);
                         setResume((prev) => ({ ...prev, interests: next }));
                       }}
-                      placeholder="e.g. Open source, Photography"
+                      placeholder="Web Development, AI"
                     />
+                    <small className="field-hint" style={{ marginTop: "0.25rem", color: "var(--muted)", display: "block" }}>Keep it professional.</small>
                   </div>
                 </div>
               ))}
@@ -1888,6 +1877,17 @@ const ResumeEditor = () => {
                           placeholder={titleProps.placeholder}
                           hint={titleProps.hint}
                           sanitize={getSanitizer(titleProps.sanitizeType)}
+                          onBlur={(e) => {
+                            if (titleProps.sanitizeType === "url") {
+                              const normalized = normalizeUrl("website", e.target.value);
+                              const currentList = [...(resume.customSections?.[optionalSectionEntry] || [])];
+                              currentList[index] = { ...currentList[index], title: normalized };
+                              setResume(prev => ({
+                                ...prev,
+                                customSections: { ...(prev.customSections || {}), [optionalSectionEntry]: currentList }
+                              }));
+                            }
+                          }}
                           onChange={(v) => {
                             const currentList = [...(resume.customSections?.[optionalSectionEntry] || [])];
                             currentList[index] = { ...currentList[index], title: v };
@@ -1903,6 +1903,17 @@ const ResumeEditor = () => {
                           placeholder={subtitleProps.placeholder}
                           hint={subtitleProps.hint}
                           sanitize={getSanitizer(subtitleProps.sanitizeType)}
+                          onBlur={(e) => {
+                            if (subtitleProps.sanitizeType === "url") {
+                              const normalized = normalizeUrl("website", e.target.value);
+                              const currentList = [...(resume.customSections?.[optionalSectionEntry] || [])];
+                              currentList[index] = { ...currentList[index], subtitle: normalized };
+                              setResume(prev => ({
+                                ...prev,
+                                customSections: { ...(prev.customSections || {}), [optionalSectionEntry]: currentList }
+                              }));
+                            }
+                          }}
                           onChange={(v) => {
                             const currentList = [...(resume.customSections?.[optionalSectionEntry] || [])];
                             currentList[index] = { ...currentList[index], subtitle: v };
@@ -1918,6 +1929,17 @@ const ResumeEditor = () => {
                           placeholder={dateProps.placeholder}
                           hint={dateProps.hint}
                           sanitize={getSanitizer(dateProps.sanitizeType)}
+                          onBlur={(e) => {
+                            if (dateProps.sanitizeType === "url") {
+                              const normalized = normalizeUrl("website", e.target.value);
+                              const currentList = [...(resume.customSections?.[optionalSectionEntry] || [])];
+                              currentList[index] = { ...currentList[index], date: normalized };
+                              setResume(prev => ({
+                                ...prev,
+                                customSections: { ...(prev.customSections || {}), [optionalSectionEntry]: currentList }
+                              }));
+                            }
+                          }}
                           onChange={(v) => {
                             const currentList = [...(resume.customSections?.[optionalSectionEntry] || [])];
                             currentList[index] = { ...currentList[index], date: v };
@@ -1934,6 +1956,17 @@ const ResumeEditor = () => {
                           hint={descProps.hint}
                           sanitize={getSanitizer(descProps.sanitizeType)}
                           textarea
+                          onBlur={(e) => {
+                            if (descProps.sanitizeType === "url") {
+                              const normalized = normalizeUrl("website", e.target.value);
+                              const currentList = [...(resume.customSections?.[optionalSectionEntry] || [])];
+                              currentList[index] = { ...currentList[index], description: normalized };
+                              setResume(prev => ({
+                                ...prev,
+                                customSections: { ...(prev.customSections || {}), [optionalSectionEntry]: currentList }
+                              }));
+                            }
+                          }}
                           onChange={(v) => {
                             const currentList = [...(resume.customSections?.[optionalSectionEntry] || [])];
                             currentList[index] = { ...currentList[index], description: v };

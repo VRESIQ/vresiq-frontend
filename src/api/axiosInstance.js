@@ -1,6 +1,13 @@
 import axios from "axios";
 import { loadingService } from "../utils/loadingService";
 
+/*
+Purpose: Configures Axios instance, attaches authorization headers, manages loading indicator transitions, and handles session expiration intercepts.
+Used By: api/index.js
+Request Flow: React Components -> Axios Instance Interceptors -> Target Backend Server
+Data Flow: HTTP Requests / Responses -> Interceptor middleware -> JWT header injection
+Learn: Axios interceptors, JWT auto-attach middleware, HTTP status codes intercepting
+*/
 const resolveBaseUrl = () => {
   const raw = (import.meta.env.VITE_API_BASE_URL || "").trim();
 

@@ -1,3 +1,10 @@
+/*
+Purpose: Registry declaring resume template metadata (layouts, Pro lock flags) and custom font settings.
+Used By: ResumeEditor.jsx, Dashboard.jsx, Dashboard templates dialog
+Request Flow: Frontend Editor loading -> Read configurations -> Render layout panels
+Data Flow: Static metadata lookup configurations -> Editor layout engine
+Learn: Static registries, configuration constants, typography pairing rules
+*/
 export const TEMPLATE_CONFIGS = {
   template1: {
     id: "template1",

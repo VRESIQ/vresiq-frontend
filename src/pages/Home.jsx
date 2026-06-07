@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import ThemeToggle from "../components/ThemeToggle";
 import NavLogo from "../components/NavLogo";
+import axiosInstance from "../api/axiosInstance";
 import "./Home.css";
 
 /* ── Hero resume card that tilts in 3D following the mouse ─────────────── */
@@ -114,6 +115,13 @@ const FeatureCard = ({ index, title, desc, delay = 0 }) => {
 const Home = () => {
   const { user } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    // Fire a silent health check request to wake up the backend on Render
+    axiosInstance.get("/actuator/health", { skipLoader: true }).catch(() => {
+      // Catch and ignore all errors silently to avoid UI intrusion
+    });
+  }, []);
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -302,10 +310,15 @@ const Home = () => {
             <Link to={user ? "/dashboard" : "/login"}>
               {user ? "Dashboard" : "Sign in"}
             </Link>
+            <a href="/legal.html#privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+            <a href="/legal.html#terms" target="_blank" rel="noopener noreferrer">Terms of Service</a>
           </div>
         </div>
-        <div className="footer-bottom">
-          Copyright {new Date().getFullYear()} VRESIQ. All rights reserved.
+        <div className="footer-bottom" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px" }}>
+          <span>Copyright {new Date().getFullYear()} VRESIQ. All rights reserved.</span>
+          <span style={{ fontSize: "0.85rem", opacity: 0.8 }}>
+            Support: <a href="mailto:vresiq.app@gmail.com" style={{ color: "inherit", textDecoration: "underline" }}>vresiq.app@gmail.com</a>
+          </span>
         </div>
       </footer>
 
