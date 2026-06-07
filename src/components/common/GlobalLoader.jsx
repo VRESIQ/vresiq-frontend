@@ -3,10 +3,10 @@ import { loadingService } from "../../utils/loadingService";
 import "./GlobalLoader.css";
 
 /*
-Purpose: Renders a fullscreen progress overlay with milestone stages, rotating tips, and transparency alerts for backend cold starts.
+Purpose: Renders a fullscreen progress overlay with milestone stages, rotating tips, and factual duration-based status messaging.
 Used By: App.jsx
 Request Flow: Axios call starts -> Interceptor updates loadingService -> GlobalLoader displays -> Finished -> Hides
-Data Flow: Active API calls array -> GlobalLoader state -> Milestone Progress / Tips / Transparency UI
+Data Flow: Active API calls array -> GlobalLoader state -> Milestone Progress / Tips / Status UI
 Learn: Conditional UI, interval rotation, responsive layout structures
 */
 
@@ -88,57 +88,67 @@ const GlobalLoader = () => {
   let titleText = "Processing request";
   let descText = "Please wait a moment...";
 
-  // Contextual Mapping of Operations & Estimations (First 10s default titles)
-  if (elapsed < 10) {
-    if (url.includes("/api/auth/profile") && method === "GET") {
-      titleText = "Loading profile";
-      descText = "Fetching your workspace environment.";
-    } else if (url.includes("/api/auth/login") && method === "POST") {
-      titleText = "Signing you in";
-      descText = "Authenticating credentials and loading session.";
-    } else if (url.includes("/api/auth/register") && method === "POST") {
-      titleText = "Creating account";
-      descText = "Registering user and initializing default workspace settings.";
-    } else if (url.includes("/api/resumes") && method === "GET") {
-      titleText = "Loading dashboard";
-      descText = "Fetching your resume documents.";
-    } else if (url.includes("/api/resumes") && method === "POST") {
-      titleText = "Generating resume";
-      descText = "Assembling template, structure, and database record.";
-    } else if ((url.includes("/api/resumes") || url.includes("/export-pdf")) && method === "POST" && (url.includes("/export-pdf") || JSON.stringify(primaryReq).includes("pdf"))) {
-      titleText = "Exporting PDF document";
-      descText = "Rendering template, assets, fonts, and exporting high-resolution PDF.";
-    } else if (url.includes("/api/resumes") && method === "PUT" && url.includes("/export-pdf")) {
-      titleText = "Exporting PDF document";
-      descText = "Rendering template, assets, fonts, and exporting high-resolution PDF.";
-    } else if (url.includes("/api/resumes") && method === "PUT") {
-      titleText = "Saving changes";
-      descText = "Syncing document edits to cloud storage.";
-    } else if (url.includes("/api/payment/create-order")) {
-      titleText = "Connecting payment gateway";
-      descText = "Preparing order details and secure transaction checkout.";
-    } else if (url.includes("/api/payment/verify")) {
-      titleText = "Verifying payment transaction";
-      descText = "Securing subscription status. Please do not refresh the page.";
-    } else if (url.includes("/api/email/send-resume")) {
-      titleText = "Sending email";
-      descText = "Processing email delivery with PDF attachment via Brevo SMTP Service.";
-    } else if (url.includes("/api/ai/refine")) {
-      titleText = "Analyzing resume (ATS)";
-      descText = "Running advanced AI keywords extraction, formatting checks, and scoring.";
-    } else if (url.includes("/api/ai/rewrite")) {
-      titleText = "Rewriting content";
-      descText = "Polishing text to sound more professional with AI support.";
-    } else if (url.includes("/api/auth/upload-image") || url.includes("/upload-images")) {
-      titleText = "Uploading files";
-      descText = "Optimizing media and streaming to Cloudinary CDN.";
-    } else if (url.includes("/api/admin/")) {
-      titleText = "Loading admin analytics";
-      descText = "Retrieving global platform statistics and database indexes.";
-    }
+  // 1. Context-specific loading message (0-10s)
+  if (url.includes("/api/auth/profile") && method === "GET") {
+    titleText = "Loading profile";
+    descText = "Fetching your workspace environment.";
+  } else if (url.includes("/api/auth/login") && method === "POST") {
+    titleText = "Signing you in";
+    descText = "Authenticating credentials and loading session.";
+  } else if (url.includes("/api/auth/register") && method === "POST") {
+    titleText = "Creating account";
+    descText = "Registering user and initializing default workspace settings.";
+  } else if (url.includes("/api/resumes") && method === "GET") {
+    titleText = "Loading dashboard";
+    descText = "Fetching your resume documents.";
+  } else if (url.includes("/api/resumes") && method === "POST") {
+    titleText = "Generating resume";
+    descText = "Assembling template, structure, and database record.";
+  } else if ((url.includes("/api/resumes") || url.includes("/export-pdf")) && method === "POST" && (url.includes("/export-pdf") || JSON.stringify(primaryReq).includes("pdf"))) {
+    titleText = "Exporting PDF document";
+    descText = "Rendering template, assets, fonts, and exporting high-resolution PDF.";
+  } else if (url.includes("/api/resumes") && method === "PUT" && url.includes("/export-pdf")) {
+    titleText = "Exporting PDF document";
+    descText = "Rendering template, assets, fonts, and exporting high-resolution PDF.";
+  } else if (url.includes("/api/resumes") && method === "PUT") {
+    titleText = "Saving changes";
+    descText = "Syncing document edits to cloud storage.";
+  } else if (url.includes("/api/payment/create-order")) {
+    titleText = "Connecting payment gateway";
+    descText = "Preparing order details and secure transaction checkout.";
+  } else if (url.includes("/api/payment/verify")) {
+    titleText = "Verifying payment transaction";
+    descText = "Securing subscription status. Please do not refresh the page.";
+  } else if (url.includes("/api/email/send-resume")) {
+    titleText = "Sending email";
+    descText = "Processing email delivery with PDF attachment via Brevo SMTP Service.";
+  } else if (url.includes("/api/ai/refine")) {
+    titleText = "Analyzing resume (ATS)";
+    descText = "Running advanced AI keywords extraction, formatting checks, and scoring.";
+  } else if (url.includes("/api/ai/rewrite")) {
+    titleText = "Rewriting content";
+    descText = "Polishing text to sound more professional with AI support.";
+  } else if (url.includes("/api/auth/upload-image") || url.includes("/upload-images")) {
+    titleText = "Uploading files";
+    descText = "Optimizing media and streaming to Cloudinary CDN.";
+  } else if (url.includes("/api/admin/")) {
+    titleText = "Loading admin analytics";
+    descText = "Retrieving global platform statistics and database indexes.";
   }
 
-  // Calculate Progress Percentages (Milestone-based, time-justified, no 99% faking)
+  // 2. Factual duration-based messaging adjustments
+  if (elapsed >= 10 && elapsed < 30) {
+    titleText = "Still loading...";
+    descText = "Waiting for a response from the server.";
+  } else if (elapsed >= 30 && elapsed < 60) {
+    titleText = "Taking longer than expected...";
+    descText = "The operation is still in progress.";
+  } else if (elapsed >= 60) {
+    titleText = "This request is unusually slow.";
+    descText = "You may continue waiting or refresh the page.";
+  }
+
+  // Calculate Progress Percentages (Milestone-based, time-justified)
   let progressPercent = 20;
   if (elapsed >= 10 && elapsed < 30) {
     progressPercent = 40;
@@ -154,7 +164,7 @@ const GlobalLoader = () => {
   const getStageIcon = (stageId) => {
     switch (stageId) {
       case 1:
-        return "✓"; // Stage 1 is checked immediately
+        return "✓"; // Stage 1 (Request sent) is checked immediately
       case 2:
         return elapsed >= 10 ? "✓" : "⏳";
       case 3:
@@ -162,79 +172,59 @@ const GlobalLoader = () => {
       case 4:
         return elapsed >= 60 ? "✓" : "⏳";
       case 5:
-        return "⏳"; // Finalizing request is in progress until load stops
+        return "⏳"; // Final stage (Awaiting completion) remains in-progress until finished
       default:
         return "⏳";
     }
   };
 
-  const isColdStart = elapsed >= 10;
-  const showTransparency = elapsed >= 30;
+  const isExtended = elapsed >= 30;
 
   return (
     <div className="global-loader-overlay">
-      <div className={`global-loader-card ${isColdStart ? "cold-start-active" : ""}`}>
+      <div className={`global-loader-card ${isExtended ? "cold-start-active" : ""}`}>
         
         {/* Top Accent & Status Badge */}
         <div className="global-loader-header">
-          <span className={`status-badge ${isColdStart ? "badge-warning" : "badge-info"}`}>
-            {isColdStart ? "Server Waking Up" : "Normal Operation"}
+          <span className={`status-badge ${elapsed >= 60 ? "badge-warning" : "badge-info"}`}>
+            {elapsed >= 60 ? "Unusually Slow" : elapsed >= 30 ? "Extended Wait" : "Loading"}
           </span>
-          {isColdStart && <span className="pulse-dot"></span>}
+          {elapsed >= 30 && <span className="pulse-dot"></span>}
         </div>
 
         {/* Loader Animation */}
         <div className="loader-animation-container">
           <div className="global-loader-spinner" />
-          {isColdStart && <div className="spinner-glow-ring" />}
+          {elapsed >= 30 && <div className="spinner-glow-ring" />}
         </div>
 
         {/* Informative Text */}
         <div className="loader-text-group">
-          {!isColdStart ? (
-            <>
-              <h3 className="global-loader-text">{titleText}</h3>
-              <p className="global-loader-subtext">{descText}</p>
-            </>
-          ) : (
-            <>
-              <h3 className="global-loader-text">Server is waking up.</h3>
-              <p className="global-loader-subtext">This can happen after periods of inactivity.</p>
-              <span className="estimated-wait-text">Estimated wait: 1–3 minutes</span>
-            </>
-          )}
+          <h3 className="global-loader-text">{titleText}</h3>
+          <p className="global-loader-subtext">{descText}</p>
         </div>
-
-        {/* 0-10s Startup Statements (No timer) */}
-        {!isColdStart && (
-          <div className="startup-steps">
-            <div className={`startup-step ${elapsed < 3 ? "active" : "done"}`}>Starting VResIQ...</div>
-            <div className={`startup-step ${elapsed >= 3 && elapsed < 7 ? "active" : elapsed >= 7 ? "done" : ""}`}>Checking server status...</div>
-            <div className={`startup-step ${elapsed >= 7 ? "active" : ""}`}>Preparing workspace...</div>
-          </div>
-        )}
 
         {/* Milestone Progress List */}
         <div className="milestones-container">
           <div className="milestone-item done">
             <span className="milestone-status">{getStageIcon(1)}</span>
-            <span className="milestone-label">Request received</span>
+            <span className="milestone-label">Request sent</span>
           </div>
           <div className={`milestone-item ${elapsed >= 10 ? "done" : "active"}`}>
             <span className="milestone-status">{getStageIcon(2)}</span>
-            <span className="milestone-label">Wake-up initiated</span>
+            <span className="milestone-label">Response pending</span>
           </div>
           <div className={`milestone-item ${elapsed >= 30 ? "done" : elapsed >= 10 ? "active" : ""}`}>
             <span className="milestone-status">{getStageIcon(3)}</span>
-            <span className="milestone-label">Connecting services</span>
+            <span className="milestone-label">Extended wait detected</span>
           </div>
           <div className={`milestone-item ${elapsed >= 60 ? "done" : elapsed >= 30 ? "active" : ""}`}>
             <span className="milestone-status">{getStageIcon(4)}</span>
-            <span className="milestone-label">Preparing resume engine</span>
+            <span className="milestone-label">Still processing</span>
           </div>
           <div className={`milestone-item ${elapsed >= 60 ? "active" : ""}`}>
             <span className="milestone-status">{getStageIcon(5)}</span>
-            <span className="milestone-label">Finalizing request</span>
+            <span className="milestone-label">Awaiting completion</span>
           </div>
         </div>
 
@@ -242,7 +232,7 @@ const GlobalLoader = () => {
         <div className="progress-section">
           <div className="progress-track">
             <div 
-              className={`progress-fill ${isColdStart ? "progress-cold" : ""}`} 
+              className={`progress-fill ${elapsed >= 30 ? "progress-cold" : ""}`} 
               style={{ width: `${progressPercent}%` }}
             />
           </div>
@@ -256,14 +246,6 @@ const GlobalLoader = () => {
           <div className="tips-category-badge">{TIPS[tipIndex].category}</div>
           <p className="tips-text">"{TIPS[tipIndex].text}"</p>
         </div>
-
-        {/* Part E — Transparency Notification (After 30s) */}
-        {showTransparency && (
-          <div className="transparency-alert-card">
-            <h4>No Server Crash</h4>
-            <p>Your request is still processing. The backend is waking up on free infrastructure. You can safely keep this page open.</p>
-          </div>
-        )}
 
       </div>
     </div>
