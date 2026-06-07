@@ -18,11 +18,42 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const tabToken = sessionStorage.getItem("tabToken");
+
+    if (token !== tabToken) {
+      if (!token) {
+        setNotification({
+          message: "Your session changed in another tab.",
+          subtext: "Reloading to keep your account data consistent.",
+          action: () => {
+            sessionStorage.removeItem("tabToken");
+            setUser(null);
+            if (!window.location.pathname.startsWith("/login")) {
+              window.location.href = "/login?expired=1";
+            } else {
+              window.location.reload();
+            }
+          }
+        });
+      } else {
+        setNotification({
+          message: "You signed into a different account.",
+          subtext: "Reloading to keep your account data consistent.",
+          action: () => {
+            sessionStorage.setItem("tabToken", token);
+            window.location.reload();
+          }
+        });
+      }
+      setLoading(false);
+      return;
+    }
 
     if (token) {
       getProfile()
         .then((res) => {
           setUser(res.data);
+          sessionStorage.setItem("tabToken", token);
         })
         .catch((err) => {
           console.error("Profile fetch failed:", err);
@@ -46,6 +77,7 @@ export const AuthProvider = ({ children }) => {
             message: "Your session changed in another tab.",
             subtext: "Reloading to keep your account data consistent.",
             action: () => {
+              sessionStorage.removeItem("tabToken");
               setUser(null);
               if (!window.location.pathname.startsWith("/login")) {
                 window.location.href = "/login?expired=1";
@@ -59,6 +91,7 @@ export const AuthProvider = ({ children }) => {
             message: "You signed into a different account.",
             subtext: "Reloading to keep your account data consistent.",
             action: () => {
+              sessionStorage.setItem("tabToken", newToken || "");
               window.location.reload();
             }
           });
@@ -81,11 +114,13 @@ export const AuthProvider = ({ children }) => {
 
   const loginUser = (userData) => {
     localStorage.setItem("token", userData.token);
+    sessionStorage.setItem("tabToken", userData.token);
     setUser(userData);
   };
 
   const logoutUser = () => {
     localStorage.removeItem("token");
+    sessionStorage.removeItem("tabToken");
     setUser(null);
   };
 
