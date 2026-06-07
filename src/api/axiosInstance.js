@@ -34,7 +34,7 @@ const axiosInstance = axios.create({
 // Attach JWT token on every request
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -70,8 +70,7 @@ axiosInstance.interceptors.response.use(
     if (isUnauthorized) {
       if (!isLoggingOut) {
         isLoggingOut = true;
-        localStorage.removeItem("token");
-        sessionStorage.removeItem("tabToken");
+        sessionStorage.removeItem("token");
         
         // Redirect cleanly to login page with expired flag
         if (!window.location.pathname.startsWith("/login")) {
