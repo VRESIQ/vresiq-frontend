@@ -71,6 +71,7 @@ axiosInstance.interceptors.response.use(
       if (!isLoggingOut) {
         isLoggingOut = true;
         localStorage.removeItem("token");
+        sessionStorage.removeItem("tabToken");
         
         // Redirect cleanly to login page with expired flag
         if (!window.location.pathname.startsWith("/login")) {

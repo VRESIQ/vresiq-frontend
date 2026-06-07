@@ -16,11 +16,15 @@ export const AuthProvider = ({ children }) => {
 
   const [notification, setNotification] = useState(null);
 
-  useEffect(() => {
+  const checkSessionConsistency = () => {
     const token = localStorage.getItem("token");
     const tabToken = sessionStorage.getItem("tabToken");
 
     if (token !== tabToken) {
+      if (document.hidden) {
+        return;
+      }
+
       if (!token) {
         setNotification({
           message: "Your session changed in another tab.",
@@ -45,21 +49,33 @@ export const AuthProvider = ({ children }) => {
           }
         });
       }
-      setLoading(false);
-      return;
+    }
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    let tabToken = sessionStorage.getItem("tabToken");
+
+    if (token && tabToken === null) {
+      sessionStorage.setItem("tabToken", token);
+      tabToken = token;
     }
 
-    if (token) {
-      getProfile()
-        .then((res) => {
-          setUser(res.data);
-          sessionStorage.setItem("tabToken", token);
-        })
-        .catch((err) => {
-          console.error("Profile fetch failed:", err);
-        })
-        .finally(() => setLoading(false));
+    if (token === tabToken) {
+      if (token) {
+        getProfile()
+          .then((res) => {
+            setUser(res.data);
+          })
+          .catch((err) => {
+            console.error("Profile fetch failed:", err);
+          })
+          .finally(() => setLoading(false));
+      } else {
+        setLoading(false);
+      }
     } else {
+      checkSessionConsistency();
       setLoading(false);
     }
   }, []);
@@ -67,40 +83,23 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const handleStorageChange = (e) => {
       if (e.key === "token") {
-        const newToken = e.newValue;
-        const oldToken = e.oldValue;
+        checkSessionConsistency();
+      }
+    };
 
-        if (newToken === oldToken) return;
-
-        if (!newToken) {
-          setNotification({
-            message: "Your session changed in another tab.",
-            subtext: "Reloading to keep your account data consistent.",
-            action: () => {
-              sessionStorage.removeItem("tabToken");
-              setUser(null);
-              if (!window.location.pathname.startsWith("/login")) {
-                window.location.href = "/login?expired=1";
-              } else {
-                window.location.reload();
-              }
-            }
-          });
-        } else {
-          setNotification({
-            message: "You signed into a different account.",
-            subtext: "Reloading to keep your account data consistent.",
-            action: () => {
-              sessionStorage.setItem("tabToken", newToken || "");
-              window.location.reload();
-            }
-          });
-        }
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        checkSessionConsistency();
       }
     };
 
     window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
   }, []);
 
   useEffect(() => {
