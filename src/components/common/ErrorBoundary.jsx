@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react";
 import { Component } from "react";
 import { Link } from "react-router-dom";
 
@@ -13,6 +14,14 @@ class ErrorBoundary extends Component {
 
   componentDidCatch(error, info) {
     console.error("ErrorBoundary caught:", error, info);
+    if (import.meta.env.PROD && import.meta.env.VITE_SENTRY_DSN) {
+      Sentry.captureException(error, {
+        tags: {
+          boundary: "resume-editor",
+        },
+        extra: info,
+      });
+    }
   }
 
   render() {

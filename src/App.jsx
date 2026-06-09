@@ -1,8 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import * as Sentry from "@sentry/react";
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/common/PrivateRoute";
 import ErrorBoundary from "./components/common/ErrorBoundary";
 import PageViewTracker from "./components/common/PageViewTracker";
+import SentryFallback from "./components/common/SentryFallback";
 import { useTheme } from "./hooks/useTheme";
 
 // Pages
@@ -41,11 +43,14 @@ function App() {
   useTheme(); // reads localStorage / OS preference, sets data-theme on <html>
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <PageViewTracker />
-        <GlobalLoader />
-        <Suspense fallback={<SuspenseFallback />}>
-          <Routes>
+      <Sentry.ErrorBoundary fallback={({ error, resetError }) => (
+        <SentryFallback error={error} resetError={resetError} />
+      )}>
+        <AuthProvider>
+          <PageViewTracker />
+          <GlobalLoader />
+          <Suspense fallback={<SuspenseFallback />}>
+            <Routes>
 
             {/* Public */}
             <Route path="/" element={<Home />} />
@@ -82,9 +87,10 @@ function App() {
 
             {/* Fallback */}
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
-          </Routes>
-        </Suspense>
-      </AuthProvider>
+            </Routes>
+          </Suspense>
+        </AuthProvider>
+      </Sentry.ErrorBoundary>
     </BrowserRouter>
   );
 }

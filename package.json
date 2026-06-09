@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@sentry/react": "^10.57.0",
     "axios": "^1.7.2",
     "html2pdf.js": "^0.14.0",
     "libphonenumber-js": "^1.13.2",
