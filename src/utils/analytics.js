@@ -3,12 +3,12 @@
  * Thin wrapper around window.gtag for GA4.
  * All callers import from here so the integration point is centralised.
  *
- * GA4 Measurement ID: G-KRRC930LPF
+ * GA4 Measurement ID: G-7BBKLSZZPL
  * send_page_view is disabled in the gtag('config') call in index.html
  * so that React Router controls every page_view event manually.
  */
 
-const GA_ID = "G-KRRC930LPF";
+const GA_ID = "G-7BBKLSZZPL";
 
 /**
  * Send a page_view event to GA4.
