@@ -7,17 +7,17 @@ const hasText = (v) => String(v || "").trim().length > 0;
 
 const cleanEmail = (email) => {
   if (!email) return "";
-  return email.trim().replace(/^mailto:/i, "");
+  return String(email).trim().replace(/^mailto:/i, "");
 };
 
 const cleanPhone = (phone) => {
   if (!phone) return "";
-  return phone.trim().replace(/^tel:/i, "");
+  return String(phone).trim().replace(/^tel:/i, "");
 };
 
 const formatUrl = (url) => {
   if (!url) return "";
-  let trimmed = url.trim();
+  let trimmed = String(url).trim();
   if (/^http:\/\//i.test(trimmed)) {
     trimmed = trimmed.replace(/^http:\/\//i, "https://");
   } else if (!/^https:\/\//i.test(trimmed)) {
@@ -33,7 +33,7 @@ const formatPhone = (phone) => {
 
 const getLinkedInUrl = (val) => {
   if (!val) return "";
-  let trimmed = val.trim();
+  let trimmed = String(val).trim();
   if (/^http:\/\//i.test(trimmed)) {
     trimmed = trimmed.replace(/^http:\/\//i, "https://");
   } else if (!/^https:\/\//i.test(trimmed)) {
@@ -48,7 +48,7 @@ const getLinkedInUrl = (val) => {
 
 const getGithubUrl = (val) => {
   if (!val) return "";
-  let trimmed = val.trim();
+  let trimmed = String(val).trim();
   if (/^http:\/\//i.test(trimmed)) {
     trimmed = trimmed.replace(/^http:\/\//i, "https://");
   } else if (!/^https:\/\//i.test(trimmed)) {
@@ -63,18 +63,19 @@ const getGithubUrl = (val) => {
 
 const isUrl = (str) => {
   if (!str) return false;
-  const trimmed = str.trim();
+  const trimmed = String(str).trim();
   return /^https?:\/\//i.test(trimmed) || /^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,6}(:[0-9]{1,5})?(\/.*)?$/i.test(trimmed);
 };
 
 const getLocationUrl = (location) => {
   if (!location) return "";
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.trim())}`;
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(String(location).trim())}`;
 };
 
 const renderLinkOrText = (text, className, isTitle = false) => {
   if (!text) return null;
-  const trimmed = text.trim();
+  const strText = String(text);
+  const trimmed = strText.trim();
   if (isUrl(trimmed)) {
     return (
       <a href={formatUrl(trimmed)} target="_blank" rel="noopener noreferrer" className={className} style={isTitle ? { fontWeight: 600 } : undefined}>
@@ -82,7 +83,7 @@ const renderLinkOrText = (text, className, isTitle = false) => {
       </a>
     );
   }
-  return isTitle ? <strong style={{ fontWeight: 600 }}>{text}</strong> : text;
+  return isTitle ? <strong style={{ fontWeight: 600 }}>{strText}</strong> : strText;
 };
 
 
@@ -343,16 +344,18 @@ const ProgressSection = ({ title, items = [], style, showIcon, dec, templateId, 
 };
 
 const highlightText = (text, scanMode) => {
-  if (!text || !scanMode) return text;
+  if (!text) return text;
+  const strText = String(text);
+  if (!scanMode) return strText;
   const tokens = [];
   let lastIndex = 0;
   const regex = /\b(Optimized|Engineered|Spearheaded|Accelerated|Designed|Developed|Implemented|Architected|Launched|Managed|Delivered|Improved|Reduced|Increased|Created|Led|Executed|Systematized|Streamlined|Formulated|Overhauled)\b|(\b\d+(?:%\b|\b\d*\+?|\s*(?:k|m|b|x)?\b)|\$\d+(?:\.\d+)?\s*(?:[km]illion|[kmb])?)/gi;
   let match;
-  while ((match = regex.exec(text)) !== null) {
+  while ((match = regex.exec(strText)) !== null) {
     const matchIndex = match.index;
     const matchStr = match[0];
     if (matchIndex > lastIndex) {
-      tokens.push(text.slice(lastIndex, matchIndex));
+      tokens.push(strText.slice(lastIndex, matchIndex));
     }
     const isVerb = /^(Optimized|Engineered|Spearheaded|Accelerated|Designed|Developed|Implemented|Architected|Launched|Managed|Delivered|Improved|Reduced|Increased|Created|Led|Executed|Systematized|Streamlined|Formulated|Overhauled)$/i.test(matchStr);
     if (isVerb) {
@@ -362,24 +365,25 @@ const highlightText = (text, scanMode) => {
     }
     lastIndex = regex.lastIndex;
   }
-  if (lastIndex < text.length) {
-    tokens.push(text.slice(lastIndex));
+  if (lastIndex < strText.length) {
+    tokens.push(strText.slice(lastIndex));
   }
-  return tokens.length ? tokens : text;
+  return tokens.length ? tokens : strText;
 };
 
 // Simple inline markdown bold/italics node parser
 const parseMarkdown = (text) => {
   if (!text) return [];
+  const strText = String(text);
   const parts = [];
   const regex = /(\*\*|__)(.*?)\1|(\*|_)(.*?)\3/g;
   let match;
   let lastIndex = 0;
   
-  while ((match = regex.exec(text)) !== null) {
+  while ((match = regex.exec(strText)) !== null) {
     const matchIndex = match.index;
     if (matchIndex > lastIndex) {
-      parts.push(text.slice(lastIndex, matchIndex));
+      parts.push(strText.slice(lastIndex, matchIndex));
     }
     if (match[1]) {
       parts.push(<strong key={matchIndex}>{match[2]}</strong>);
@@ -389,24 +393,25 @@ const parseMarkdown = (text) => {
     lastIndex = regex.lastIndex;
   }
   
-  if (lastIndex < text.length) {
-    parts.push(text.slice(lastIndex));
+  if (lastIndex < strText.length) {
+    parts.push(strText.slice(lastIndex));
   }
   
-  return parts.length ? parts : [text];
+  return parts.length ? parts : [strText];
 };
 
 const linkifyText = (text) => {
   if (!text) return [];
+  const strText = String(text);
   const parts = [];
   const regex = /\b(https?:\/\/[^\s$.?#].[^\s]*|www\.[^\s$.?#].[^\s]*|[a-zA-Z0-9.-]+\.(?:com|org|net|edu|gov|io|co|in|info|me|dev)(?:\/[^\s]*)?)\b/gi;
   let match;
   let lastIndex = 0;
-  while ((match = regex.exec(text)) !== null) {
+  while ((match = regex.exec(strText)) !== null) {
     const matchIndex = match.index;
     const matchStr = match[0];
     if (matchIndex > lastIndex) {
-      parts.push(text.slice(lastIndex, matchIndex));
+      parts.push(strText.slice(lastIndex, matchIndex));
     }
     let href = matchStr;
     if (!/^https?:\/\//i.test(href)) {
@@ -419,10 +424,10 @@ const linkifyText = (text) => {
     );
     lastIndex = regex.lastIndex;
   }
-  if (lastIndex < text.length) {
-    parts.push(text.slice(lastIndex));
+  if (lastIndex < strText.length) {
+    parts.push(strText.slice(lastIndex));
   }
-  return parts.length ? parts : [text];
+  return parts.length ? parts : [strText];
 };
 
 const linkifyElements = (elements) => {
@@ -444,11 +449,12 @@ const linkifyElements = (elements) => {
 // Bolds the user's name case-insensitively
 const boldCandidateName = (text, fullName) => {
   if (!text) return [];
-  if (!fullName) return parseMarkdown(text);
+  const strText = String(text);
+  if (!fullName) return parseMarkdown(strText);
   
-  const escaped = fullName.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+  const escaped = String(fullName).replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
   const regex = new RegExp(`(${escaped})`, 'gi');
-  const parts = text.split(regex);
+  const parts = strText.split(regex);
   
   return parts.flatMap((part, i) => {
     if (regex.test(part)) {
@@ -462,7 +468,8 @@ const boldCandidateName = (text, fullName) => {
 // Formats descriptions and parses newlines/bullets into semantic list items
 const renderDescription = (text, fullName, scanMode) => {
   if (!text) return null;
-  const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+  const strText = String(text);
+  const lines = strText.split('\n').map(l => l.trim()).filter(Boolean);
   const isBulletList = lines.some(l => l.startsWith('•') || l.startsWith('-') || l.startsWith('*'));
   
   if (isBulletList || lines.length > 1) {
@@ -480,7 +487,7 @@ const renderDescription = (text, fullName, scanMode) => {
     );
   }
   
-  return <span className="rp-desc-text">{linkifyElements(boldCandidateName(text, fullName))}</span>;
+  return <span className="rp-desc-text">{linkifyElements(boldCandidateName(strText, fullName))}</span>;
 };
 
 const ExperienceSection = ({ items = [], showIcon, dec, isTimeline = false, scanMode = false, sectionNumber, fullName, title = "Experience", hasBullets = true }) => {
