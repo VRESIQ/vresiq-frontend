@@ -75,6 +75,24 @@
       }]
     }
     </script>
+
+    <!-- Google Analytics 4 -->
+    <script type="module">
+      if (import.meta.env.PROD) {
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function gtag() {
+          window.dataLayer.push(arguments);
+        };
+
+        window.gtag("js", new Date());
+        window.gtag("config", "G-KRRC930LPF", { send_page_view: false });
+
+        const script = document.createElement("script");
+        script.async = true;
+        script.src = "https://www.googletagmanager.com/gtag/js?id=G-KRRC930LPF";
+        document.head.appendChild(script);
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

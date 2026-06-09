@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/common/PrivateRoute";
 import ErrorBoundary from "./components/common/ErrorBoundary";
+import PageViewTracker from "./components/common/PageViewTracker";
 import { useTheme } from "./hooks/useTheme";
 
 // Pages
@@ -41,6 +42,7 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
+        <PageViewTracker />
         <GlobalLoader />
         <Suspense fallback={<SuspenseFallback />}>
           <Routes>
