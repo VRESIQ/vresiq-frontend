@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { getProfile } from "../api";
+import { getProfile, refresh } from "../api";
 
 const AuthContext = createContext(null);
 
@@ -14,8 +14,15 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const logoutUser = () => {
+    sessionStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
+    setUser(null);
+  };
+
   useEffect(() => {
     const token = sessionStorage.getItem("token");
+    const refreshToken = localStorage.getItem("refreshToken");
 
     if (token) {
       getProfile()
@@ -24,6 +31,25 @@ export const AuthProvider = ({ children }) => {
         })
         .catch((err) => {
           console.error("Profile fetch failed:", err);
+          logoutUser();
+        })
+        .finally(() => setLoading(false));
+    } else if (refreshToken) {
+      refresh(refreshToken)
+        .then((res) => {
+          const { token: newAccessToken, refreshToken: newRefreshToken } = res.data;
+          sessionStorage.setItem("token", newAccessToken);
+          if (newRefreshToken) {
+            localStorage.setItem("refreshToken", newRefreshToken);
+          }
+          return getProfile();
+        })
+        .then((profileRes) => {
+          setUser(profileRes.data);
+        })
+        .catch((err) => {
+          console.error("Silent refresh failed on startup:", err);
+          logoutUser();
         })
         .finally(() => setLoading(false));
     } else {
@@ -33,12 +59,10 @@ export const AuthProvider = ({ children }) => {
 
   const loginUser = (userData) => {
     sessionStorage.setItem("token", userData.token);
+    if (userData.refreshToken) {
+      localStorage.setItem("refreshToken", userData.refreshToken);
+    }
     setUser(userData);
-  };
-
-  const logoutUser = () => {
-    sessionStorage.removeItem("token");
-    setUser(null);
   };
 
   const updateUser = (updatedData) => {

@@ -27,6 +27,9 @@ export const verifyEmail = (token, email) => {
 export const resendVerification = (email) =>
   axiosInstance.post("/api/auth/resend-verification", { email });
 
+export const refresh = (refreshToken) =>
+  axiosInstance.post("/api/auth/refresh", { refreshToken }, { skipLoader: true });
+
 export const forgotPassword = (email) =>
   axiosInstance.post("/api/auth/forgot-password", { email });
 

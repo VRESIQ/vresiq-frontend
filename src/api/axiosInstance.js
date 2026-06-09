@@ -51,7 +51,19 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-let isLoggingOut = false;
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+  failedQueue = [];
+};
 
 // Handle errors: on 401 clear stale token and redirect to login
 axiosInstance.interceptors.response.use(
@@ -61,28 +73,81 @@ axiosInstance.interceptors.response.use(
     }
     return res;
   },
-  (error) => {
-    if (!error.config?.skipLoader) {
-      loadingService.stop(error.config?.url, error.config?.method);
+  async (error) => {
+    const originalRequest = error.config;
+    if (!originalRequest?.skipLoader) {
+      loadingService.stop(originalRequest?.url, originalRequest?.method);
     }
+    
     const isUnauthorized = error.response?.status === 401;
 
-    if (isUnauthorized) {
-      if (!isLoggingOut) {
-        isLoggingOut = true;
+    // Prevent recursive loop if the refresh call itself fails with 401
+    if (isUnauthorized && originalRequest.url.includes("/api/auth/refresh")) {
+      sessionStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
+      if (!window.location.pathname.startsWith("/login")) {
+        window.location.href = "/login?expired=1";
+      }
+      return Promise.reject(error);
+    }
+
+    if (isUnauthorized && !originalRequest._retry) {
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        })
+          .then((token) => {
+            originalRequest.headers.Authorization = `Bearer ${token}`;
+            return axiosInstance(originalRequest);
+          })
+          .catch((err) => Promise.reject(err));
+      }
+
+      originalRequest._retry = true;
+      isRefreshing = true;
+
+      const refreshToken = localStorage.getItem("refreshToken");
+      if (!refreshToken) {
         sessionStorage.removeItem("token");
-        
-        // Redirect cleanly to login page with expired flag
+        localStorage.removeItem("refreshToken");
         if (!window.location.pathname.startsWith("/login")) {
           window.location.href = "/login?expired=1";
         }
-        
-        // Reset flag after a delay to ensure future valid logins can proceed
-        setTimeout(() => {
-          isLoggingOut = false;
-        }, 3000);
+        isRefreshing = false;
+        return Promise.reject(error);
       }
-    } else {
+
+      try {
+        const response = await axios.post(
+          (originalRequest.baseURL || "") + "/api/auth/refresh",
+          { refreshToken },
+          { headers: { "Content-Type": "application/json" } }
+        );
+
+        const { token: newAccessToken, refreshToken: newRefreshToken } = response.data;
+        sessionStorage.setItem("token", newAccessToken);
+        if (newRefreshToken) {
+          localStorage.setItem("refreshToken", newRefreshToken);
+        }
+
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        processQueue(null, newAccessToken);
+        isRefreshing = false;
+
+        return axiosInstance(originalRequest);
+      } catch (refreshError) {
+        processQueue(refreshError, null);
+        sessionStorage.removeItem("token");
+        localStorage.removeItem("refreshToken");
+        if (!window.location.pathname.startsWith("/login")) {
+          window.location.href = "/login?expired=1";
+        }
+        isRefreshing = false;
+        return Promise.reject(refreshError);
+      }
+    }
+
+    if (!isUnauthorized) {
       console.error("API ERROR:", error.response?.status, error.response?.data || error.message);
     }
 
