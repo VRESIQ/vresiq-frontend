@@ -11,13 +11,13 @@ export const login = (data) =>
 // returns: { id, name, email, profileImageUrl, subscriptionPlan, emailVerified, token, createdAt, updatedAt }
 
 export const getProfile = () =>
-  axiosInstance.get("/api/auth/profile");
+  axiosInstance.get("/api/auth/profile", { skipLoader: true });
 
 export const updateProfile = (data) =>
-  axiosInstance.put("/api/auth/profile", data);
+  axiosInstance.put("/api/auth/profile", data, { skipLoader: true });
 
 export const deleteProfile = () =>
-  axiosInstance.delete("/api/auth/profile");
+  axiosInstance.delete("/api/auth/profile", { skipLoader: true });
 
 export const verifyEmail = (token, email) => {
   const url = `/api/auth/verify-email?token=${encodeURIComponent(token)}${email ? `&email=${encodeURIComponent(email)}` : ""}`;
@@ -38,6 +38,7 @@ export const uploadProfileImage = (file) => {
   form.append("image", file);
   return axiosInstance.post("/api/auth/upload-image", form, {
     headers: { "Content-Type": "multipart/form-data" },
+    skipLoader: true,
   });
 };
 
@@ -47,17 +48,17 @@ export const createResume = (title, template) =>
 // returns: full Resume object
 
 export const getUserResumes = () =>
-  axiosInstance.get("/api/resumes");
+  axiosInstance.get("/api/resumes", { skipLoader: true });
 
 export const getResumeById = (id) =>
-  axiosInstance.get(`/api/resumes/${id}`);
+  axiosInstance.get(`/api/resumes/${id}`, { skipLoader: true });
 
 export const updateResume = (id, data) =>
-  axiosInstance.put(`/api/resumes/${id}`, data);
+  axiosInstance.put(`/api/resumes/${id}`, data, { skipLoader: true });
 // data: full Resume object (profileInfo, contactInfo, workExperience, education, skills, projects, certifications, languages, interests, template)
 
 export const deleteResume = (id) =>
-  axiosInstance.delete(`/api/resumes/${id}`);
+  axiosInstance.delete(`/api/resumes/${id}`, { skipLoader: true });
 
 export const uploadResumeImages = (id, thumbnail, profileImage) => {
   const form = new FormData();
@@ -65,12 +66,13 @@ export const uploadResumeImages = (id, thumbnail, profileImage) => {
   if (profileImage) form.append("profileImage", profileImage);
   return axiosInstance.put(`/api/resumes/${id}/upload-images`, form, {
     headers: { "Content-Type": "multipart/form-data" },
+    skipLoader: true,
   });
 };
 
 // ─── TEMPLATES ───────────────────────────────────────────
 export const getTemplates = () =>
-  axiosInstance.get("/api/templates");
+  axiosInstance.get("/api/templates", { skipLoader: true });
 // returns: { templates: [...], userPlan: "basic" | "premium" }
 
 // ─── PAYMENT ─────────────────────────────────────────────
@@ -83,10 +85,10 @@ export const verifyPayment = (data) =>
 // data: { razorpay_order_id, razorpay_payment_id, razorpay_signature }
 
 export const getPaymentHistory = () =>
-  axiosInstance.get("/api/payment/history");
+  axiosInstance.get("/api/payment/history", { skipLoader: true });
 
 export const getOrderDetails = (orderId) =>
-  axiosInstance.get(`/api/payment/order/${orderId}`);
+  axiosInstance.get(`/api/payment/order/${orderId}`, { skipLoader: true });
 
 // ─── EMAIL ───────────────────────────────────────────────
 export const sendResumeByEmail = ({ recipientEmail, subject, message, pdfFile }) => {
@@ -112,23 +114,23 @@ export const refineResume = (resumeId) =>
 
 // ─── VERIFICATION ────────────────────────────────────────
 export const verifyGitHub = (username) =>
-  axiosInstance.get(`/api/verify/github?username=${username}`);
+  axiosInstance.get(`/api/verify/github?username=${username}`, { skipLoader: true });
 
 export const verifyInstitution = (name) =>
-  axiosInstance.get(`/api/verify/institution?name=${name}`);
+  axiosInstance.get(`/api/verify/institution?name=${name}`, { skipLoader: true });
 
 export const verifyCertification = (name) =>
-  axiosInstance.get(`/api/verify/certification?name=${name}`);
+  axiosInstance.get(`/api/verify/certification?name=${name}`, { skipLoader: true });
 
 export const rewriteContent = (content, tone = "professional") =>
   axiosInstance.post("/api/ai/rewrite", { content, tone });
 
 // ─── ADMIN ───────────────────────────────────────────────
-export const getAdminAnalytics = () => axiosInstance.get("/api/admin/analytics");
-export const getAdminUsers = () => axiosInstance.get("/api/admin/users");
-export const toggleUserStatus = (userId) => axiosInstance.put(`/api/admin/users/${userId}/toggle-status`);
-export const deleteUserAdmin = (userId) => axiosInstance.delete(`/api/admin/users/${userId}`);
-export const getAdminResumes = () => axiosInstance.get("/api/admin/resumes");
-export const deleteAdminResume = (resumeId) => axiosInstance.delete(`/api/admin/resumes/${resumeId}`);
-export const getAdminPayments = () => axiosInstance.get("/api/admin/payments");
-export const getAdminAiStats = () => axiosInstance.get("/api/admin/ai-stats");
+export const getAdminAnalytics = () => axiosInstance.get("/api/admin/analytics", { skipLoader: true });
+export const getAdminUsers = () => axiosInstance.get("/api/admin/users", { skipLoader: true });
+export const toggleUserStatus = (userId) => axiosInstance.put(`/api/admin/users/${userId}/toggle-status`, {}, { skipLoader: true });
+export const deleteUserAdmin = (userId) => axiosInstance.delete(`/api/admin/users/${userId}`, { skipLoader: true });
+export const getAdminResumes = () => axiosInstance.get("/api/admin/resumes", { skipLoader: true });
+export const deleteAdminResume = (resumeId) => axiosInstance.delete(`/api/admin/resumes/${resumeId}`, { skipLoader: true });
+export const getAdminPayments = () => axiosInstance.get("/api/admin/payments", { skipLoader: true });
+export const getAdminAiStats = () => axiosInstance.get("/api/admin/ai-stats", { skipLoader: true });
