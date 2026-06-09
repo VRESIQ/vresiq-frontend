@@ -162,6 +162,7 @@
    Explicit class selectors only — does NOT bleed into generic section text. */
 a.rp-project-link,
 a.rp-custom-link,
+a.rp-inline-link,
 .rp-links a {
   color: #1a5fb4 !important;
   text-decoration: underline !important;
@@ -172,6 +173,7 @@ a.rp-custom-link,
 
 a.rp-project-link:hover,
 a.rp-custom-link:hover,
+a.rp-inline-link:hover,
 .rp-links a:hover {
   color: #0b3d7a !important;
   text-decoration: underline !important;
@@ -180,18 +182,24 @@ a.rp-custom-link:hover,
 /* Hyperlink Style overrides */
 .resume-preview[data-lstyle="professional"] a {
   color: inherit !important;
-  text-decoration: none !important;
+  text-decoration: underline dotted !important;
+  text-decoration-color: var(--accent-readable, #1a5fb4) !important;
+  text-decoration-thickness: 0.8px !important;
+  text-underline-offset: 1.5px;
 }
 .resume-preview[data-lstyle="professional"] a:hover {
-  color: inherit !important;
-  text-decoration: none !important;
+  color: var(--accent-readable, #1a5fb4) !important;
+  text-decoration: underline dotted !important;
 }
 
 @media print {
   /* Hyperlink Style overrides for print */
   .resume-preview[data-lstyle="professional"] a {
     color: inherit !important;
-    text-decoration: none !important;
+    text-decoration: underline dotted !important;
+    text-decoration-color: var(--accent-readable, #1a5fb4) !important;
+    text-decoration-thickness: 0.8px !important;
+    text-underline-offset: 1.5px;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
@@ -210,6 +218,7 @@ a.rp-custom-link:hover,
   /* Body content links: blue + underline preserved in print/PDF */
   a.rp-project-link,
   a.rp-custom-link,
+  a.rp-inline-link,
   .rp-links a {
     color: #1a5fb4 !important;
     text-decoration: underline !important;

@@ -395,6 +395,51 @@ const parseMarkdown = (text) => {
   return parts.length ? parts : [text];
 };
 
+const linkifyText = (text) => {
+  if (!text) return [];
+  const parts = [];
+  const regex = /\b(https?:\/\/[^\s$.?#].[^\s]*|www\.[^\s$.?#].[^\s]*|[a-zA-Z0-9.-]+\.(?:com|org|net|edu|gov|io|co|in|info|me|dev)(?:\/[^\s]*)?)\b/gi;
+  let match;
+  let lastIndex = 0;
+  while ((match = regex.exec(text)) !== null) {
+    const matchIndex = match.index;
+    const matchStr = match[0];
+    if (matchIndex > lastIndex) {
+      parts.push(text.slice(lastIndex, matchIndex));
+    }
+    let href = matchStr;
+    if (!/^https?:\/\//i.test(href)) {
+      href = `https://${href}`;
+    }
+    parts.push(
+      <a key={matchIndex} href={href} target="_blank" rel="noopener noreferrer" className="rp-inline-link">
+        {matchStr}
+      </a>
+    );
+    lastIndex = regex.lastIndex;
+  }
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex));
+  }
+  return parts.length ? parts : [text];
+};
+
+const linkifyElements = (elements) => {
+  if (!Array.isArray(elements)) return elements;
+  return elements.flatMap((el) => {
+    if (typeof el === "string") {
+      return linkifyText(el);
+    }
+    if (el && el.props && el.props.children) {
+      const newChildren = linkifyElements(
+        Array.isArray(el.props.children) ? el.props.children : [el.props.children]
+      );
+      return { ...el, props: { ...el.props, children: newChildren } };
+    }
+    return el;
+  });
+};
+
 // Bolds the user's name case-insensitively
 const boldCandidateName = (text, fullName) => {
   if (!text) return [];
@@ -426,7 +471,7 @@ const renderDescription = (text, fullName, scanMode) => {
           const cleanLine = line.replace(/^[•\-\*]\s*/, '');
           return (
             <li key={idx}>
-              {boldCandidateName(cleanLine, fullName)}
+              {linkifyElements(boldCandidateName(cleanLine, fullName))}
             </li>
           );
         })}
@@ -434,7 +479,7 @@ const renderDescription = (text, fullName, scanMode) => {
     );
   }
   
-  return <span className="rp-desc-text">{boldCandidateName(text, fullName)}</span>;
+  return <span className="rp-desc-text">{linkifyElements(boldCandidateName(text, fullName))}</span>;
 };
 
 const ExperienceSection = ({ items = [], showIcon, dec, isTimeline = false, scanMode = false, sectionNumber, fullName, title = "Experience", hasBullets = true }) => {
