@@ -72,18 +72,19 @@ const getLocationUrl = (location) => {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location.trim())}`;
 };
 
-const renderLinkOrText = (text, className) => {
+const renderLinkOrText = (text, className, isTitle = false) => {
   if (!text) return null;
   const trimmed = text.trim();
   if (isUrl(trimmed)) {
     return (
-      <a href={formatUrl(trimmed)} target="_blank" rel="noopener noreferrer" className={className}>
+      <a href={formatUrl(trimmed)} target="_blank" rel="noopener noreferrer" className={className} style={isTitle ? { fontWeight: 600 } : undefined}>
         {trimmed.replace(/^(https?:\/\/)?(www\.)?/, "")}
       </a>
     );
   }
-  return text;
+  return isTitle ? <strong style={{ fontWeight: 600 }}>{text}</strong> : text;
 };
+
 
 const WATERMARK_TEXT = "Made with VRESIQ";
 
@@ -670,7 +671,7 @@ const CustomSection = ({ title, items = [], showIcon, dec, scanMode = false, sec
         {filled.map((item, i) => (
           <ItemWrapper key={i} className="rp-item" style={{ marginBottom: "6px" }}>
             <div className="rp-item-head" style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-              <strong>{item.title || ""}</strong>
+              {item.title && renderLinkOrText(item.title, "rp-custom-link", true)}
               {hasText(item.date) && <span>{renderLinkOrText(item.date, "rp-custom-link")}</span>}
             </div>
             {hasText(item.subtitle) && <p className="rp-item-sub">{renderLinkOrText(item.subtitle, "rp-custom-link")}</p>}
@@ -707,7 +708,7 @@ const PublicationsSection = ({ title, items = [], fullName, dec, sectionNumber, 
               {hasText(item.date) && <span className="rp-citation-date"> ({item.date})</span>}
               {hasText(item.description) && (
                 <div className="rp-citation-authors" style={{ marginTop: "2px", fontSize: "var(--rp-fs-meta)", color: "#555" }}>
-                  {boldCandidateName(item.description, fullName)}
+                  {renderDescription(item.description, fullName)}
                 </div>
               )}
             </div>
@@ -744,6 +745,63 @@ const AwardsSection = ({ title, items = [], dec, sectionNumber, hasBullets = tru
 };
 
 
+const TechnicalProfilesSection = ({ title, items = [], dec, sectionNumber, fullName, hasBullets = true }) => {
+  const filled = (items || []).filter(item => hasText(item.title));
+  if (!filled.length) return null;
+  const Wrapper = hasBullets ? "ul" : "div";
+  const ItemWrapper = hasBullets ? "li" : "div";
+  const wrapperClass = hasBullets ? "rp-desc-list rp-tech-profiles-list" : "rp-tech-profiles-list";
+
+  return (
+    <section className="rp-section">
+      <STitle showIcon={false} dec={dec} sectionNumber={sectionNumber}>{title}</STitle>
+      <Wrapper className={wrapperClass}>
+        {filled.map((item, i) => {
+          const url = item.date ? formatUrl(item.date) : "";
+          const hasUrl = hasText(url);
+          return (
+            <ItemWrapper key={i} className="rp-compact-item" style={{ marginBottom: "6px" }}>
+              <div className="rp-compact-head" style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                <span>
+                  {hasUrl ? (
+                    <a href={url} target="_blank" rel="noopener noreferrer" className="rp-custom-link" style={{ fontWeight: 600 }}>
+                      {item.title}
+                    </a>
+                  ) : (
+                    <strong style={{ fontWeight: 600 }}>{item.title}</strong>
+                  )}
+                  {item.subtitle && (
+                    <>
+                      <span>: </span>
+                      {hasUrl ? (
+                        <a href={url} target="_blank" rel="noopener noreferrer" className="rp-custom-link">
+                          {item.subtitle}
+                        </a>
+                      ) : (
+                        <span className="rp-compact-subtitle">{item.subtitle}</span>
+                      )}
+                    </>
+                  )}
+                </span>
+                {item.date && !isUrl(item.date) && (
+                  <span className="rp-compact-date">
+                    {item.date}
+                  </span>
+                )}
+              </div>
+              {hasText(item.description) && (
+                <div className="rp-item-desc" style={{ marginTop: "2px" }}>
+                  {renderDescription(item.description, fullName)}
+                </div>
+              )}
+            </ItemWrapper>
+          );
+        })}
+      </Wrapper>
+    </section>
+  );
+};
+
 const MembershipsSection = ({ title, items = [], dec, sectionNumber, fullName, hasBullets = true }) => {
   const filled = (items || []).filter(item => hasText(item.title));
   if (!filled.length) return null;
@@ -759,8 +817,13 @@ const MembershipsSection = ({ title, items = [], dec, sectionNumber, fullName, h
           <ItemWrapper key={i} className="rp-compact-item" style={{ marginBottom: "6px" }}>
             <div className="rp-compact-head" style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
               <span>
-                <strong>{item.title}</strong>
-                {item.subtitle && <span className="rp-compact-subtitle">: {item.subtitle}</span>}
+                {item.title && renderLinkOrText(item.title, "rp-custom-link", true)}
+                {item.subtitle && (
+                  <>
+                    <span>: </span>
+                    {renderLinkOrText(item.subtitle, "rp-custom-link")}
+                  </>
+                )}
               </span>
               {item.date && (
                 <span className="rp-compact-date">
@@ -779,6 +842,7 @@ const MembershipsSection = ({ title, items = [], dec, sectionNumber, fullName, h
     </section>
   );
 };
+
 
 const Photo = ({ src, shape = "circle" }) =>
   src ? <img src={src} alt="Profile" className={`rp-photo rp-photo-${shape}`} /> : null;
@@ -1129,7 +1193,10 @@ const renderSectionsForColumn = (columnType, order, visibility, resume, commonPr
         if (sectionId === "awards" || sectionId === "achievements") {
           return <AwardsSection key={sectionId} title={getSectionLabel(sectionId)} items={customItems} {...propsWithNum} hasBullets={hasBullets} />;
         }
-        if (sectionId === "memberships" || sectionId === "coursework" || sectionId === "extracurriculars" || sectionId === "technicalProfiles") {
+        if (sectionId === "technicalProfiles") {
+          return <TechnicalProfilesSection key={sectionId} title={getSectionLabel(sectionId)} items={customItems} {...propsWithNum} hasBullets={hasBullets} />;
+        }
+        if (sectionId === "memberships" || sectionId === "coursework" || sectionId === "extracurriculars") {
           return <MembershipsSection key={sectionId} title={getSectionLabel(sectionId)} items={customItems} {...propsWithNum} hasBullets={hasBullets} />;
         }
 

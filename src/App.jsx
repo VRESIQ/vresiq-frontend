@@ -23,13 +23,26 @@ const ResumeEditor = lazy(() => import("./pages/ResumeEditor"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 import "./styles/brand.css";
 
+const SuspenseFallback = () => (
+  <div className="app-loading">
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+      <div className="nav-logo" style={{ fontSize: '1.8rem', pointerEvents: 'none', textDecoration: 'none' }}>
+        <span className="logo-v">V</span>
+        <span className="logo-res">RES</span>
+        <span className="logo-iq">IQ</span>
+      </div>
+      <div className="spinner" />
+    </div>
+  </div>
+);
+
 function App() {
   useTheme(); // reads localStorage / OS preference, sets data-theme on <html>
   return (
     <BrowserRouter>
       <AuthProvider>
         <GlobalLoader />
-        <Suspense fallback={<div className="app-loading">Loading…</div>}>
+        <Suspense fallback={<SuspenseFallback />}>
           <Routes>
 
             {/* Public */}
