@@ -766,33 +766,29 @@ const TechnicalProfilesSection = ({ title, items = [], dec, sectionNumber, fullN
         {filled.map((item, i) => {
           const url = item.date ? formatUrl(item.date) : "";
           const hasUrl = hasText(url);
+          const platformName = String(item.title);
+          const username = item.subtitle ? String(item.subtitle) : "";
           return (
             <ItemWrapper key={i} className="rp-compact-item" style={{ marginBottom: "6px" }}>
               <div className="rp-compact-head" style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
                 <span>
-                  {hasUrl ? (
-                    <a href={url} target="_blank" rel="noopener noreferrer" className="rp-custom-link" style={{ fontWeight: 600 }}>
-                      {item.title}
-                    </a>
-                  ) : (
-                    <strong style={{ fontWeight: 600 }}>{item.title}</strong>
-                  )}
-                  {item.subtitle && (
+                  <strong style={{ fontWeight: 600 }}>{platformName}</strong>
+                  {username && (
                     <>
                       <span>: </span>
                       {hasUrl ? (
                         <a href={url} target="_blank" rel="noopener noreferrer" className="rp-custom-link">
-                          {item.subtitle}
+                          {username}
                         </a>
                       ) : (
-                        <span className="rp-compact-subtitle">{item.subtitle}</span>
+                        <span className="rp-compact-subtitle">{username}</span>
                       )}
                     </>
                   )}
                 </span>
                 {item.date && !isUrl(item.date) && (
                   <span className="rp-compact-date">
-                    {item.date}
+                    {String(item.date)}
                   </span>
                 )}
               </div>

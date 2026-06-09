@@ -184,6 +184,13 @@ const GlobalLoader = () => {
     <div className="global-loader-overlay">
       <div className={`global-loader-card ${isExtended ? "cold-start-active" : ""}`}>
         
+        {/* VResIQ Logo */}
+        <div className="nav-logo" style={{ fontSize: '1.8rem', pointerEvents: 'none', textDecoration: 'none', marginBottom: '8px' }}>
+          <span className="logo-v">V</span>
+          <span className="logo-res">RES</span>
+          <span className="logo-iq">IQ</span>
+        </div>
+
         {/* Top Accent & Status Badge */}
         <div className="global-loader-header">
           <span className={`status-badge ${elapsed >= 60 ? "badge-warning" : "badge-info"}`}>
