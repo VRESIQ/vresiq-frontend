@@ -1,18 +1,8 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import * as Sentry from "@sentry/react";
+import "./sentry";
 import App from './App.jsx'
 import './index.css'
-
-const sentryDsn = import.meta.env.VITE_SENTRY_DSN;
-
-if (import.meta.env.PROD && sentryDsn) {
-  Sentry.init({
-    dsn: sentryDsn,
-    enabled: true,
-    environment: import.meta.env.VITE_SENTRY_ENVIRONMENT || "production",
-  });
-}
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
