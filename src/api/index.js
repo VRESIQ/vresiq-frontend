@@ -11,7 +11,7 @@ export const login = (data) =>
 // returns: { id, name, email, profileImageUrl, subscriptionPlan, emailVerified, token, createdAt, updatedAt }
 
 export const getProfile = () =>
-  axiosInstance.get("/api/auth/profile", { skipLoader: true });
+  axiosInstance.get("/api/auth/profile");
 
 export const updateProfile = (data) =>
   axiosInstance.put("/api/auth/profile", data, { skipLoader: true });
