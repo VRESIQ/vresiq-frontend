@@ -659,7 +659,7 @@ const ResumeEditor = () => {
             @page {
               size: letter;
               margin-top: 40px;
-              margin-bottom: 48px;
+              margin-bottom: 36px;
               margin-left: 0;
               margin-right: 0;
             }
