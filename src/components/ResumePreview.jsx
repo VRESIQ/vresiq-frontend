@@ -68,7 +68,8 @@ const isUrl = (str) => {
 };
 
 const getLocationUrl = (location) => {
-  return "";
+  if (!location) return "";
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`;
 };
 
 const renderLinkOrText = (text, className, isTitle = false) => {
@@ -85,36 +86,6 @@ const renderLinkOrText = (text, className, isTitle = false) => {
   return isTitle ? <strong style={{ fontWeight: 600 }}>{strText}</strong> : strText;
 };
 
-
-const WATERMARK_TEXT = "Made with VRESIQ";
-
-/**
- * Builds the watermark as a data URL at the exact tile dimensions of one
- * Letter page (816 × 1056 px at 96 DPI).  The text is drawn near the bottom
- * centre so it lands at the same position on every page when the image is
- * repeated vertically with background-size: 816px 1056px.
- *
- * Opacity strategy: canvas text is drawn at 0.55 alpha on the solid tile,
- * then the tile is applied at CSS opacity 0.18 on the article element.
- * Effective perceived opacity ≈ 0.55 × 0.18 ≈ 10% — readable but subtle.
- */
-const buildWatermarkImage = () => {
-  if (typeof document === "undefined") return "";
-  // Tile canvas matches one Letter page at 96 DPI
-  const canvas = document.createElement("canvas");
-  canvas.width = 816;
-  canvas.height = 1056;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return "";
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  // Position text 28px from the bottom, horizontally centred
-  ctx.font = "700 13px Inter, Arial, sans-serif";
-  ctx.fillStyle = "rgba(15, 23, 42, 0.08)";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "bottom";
-  ctx.fillText(WATERMARK_TEXT, canvas.width / 2, canvas.height - 20);
-  return canvas.toDataURL("image/png");
-};
 
 const icon = (section) => ({
   Experience: "", Education: "", Skills: "",
@@ -170,10 +141,10 @@ const buildContactEntries = (c = {}) => {
     const location = c.location.trim().replace(/^(https?:\/\/)?(www\.)?/i, "");
     entries.push({
       key: "location",
-      href: "",
+      href: getLocationUrl(location),
       text: location,
       className: "rp-contact-item-text",
-      target: undefined,
+      target: "_blank",
     });
   }
 
@@ -866,10 +837,6 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
   const progressStyle = dec.progressStyle || "bar";
   const showIcons = false;
   const pageBorder = dec.pageBorder === "true";
-  // Build watermark tile once per plan change. The data URL is a full
-  // 816×1056 px canvas (one Letter page) with the text near the bottom.
-  const watermarkDataUrl = useMemo(() => (isFreePlan ? buildWatermarkImage() : ""), [isFreePlan]);
-
   const profileInfo = resume.profileInfo || {};
   const contactInfo = resume.contactInfo || {};
   const photo = profileInfo.ProfilePreviewUrl || profileInfo.profilePreviewUrl || "";
@@ -1038,19 +1005,11 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
         "--on-accent-line": accentText.line,
         "--page-border": pageBorder ? `1px solid ${accent}` : "none",
         ...fontVars,
-        // Watermark: tiled background so it repeats on EVERY page in both
-        // the browser preview and the exported PDF.  Each tile is exactly
-        // one Letter page (816×1056 px) with the text near the bottom centre.
-        // opacity is handled via CSS on .resume-preview[data-watermark].
-        ...(isFreePlan && watermarkDataUrl ? {
-          "--rp-watermark-url": `url("${watermarkDataUrl}")`
-        } : {})
       }}
       data-template={templateId}
       data-hstyle={dec.headerStyle || "minimal"}
       data-bullet={dec.bulletStyle || "disc"}
       data-lstyle={dec.linkStyle || "standard"}
-      data-watermark={isFreePlan ? "true" : undefined}
     >
       {renderTemplate({
         templateId,
@@ -1085,10 +1044,11 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
         </>
       )}
 
-      {/* Watermark is now injected via CSS background-image tiling (see
-          .resume-preview[data-watermark] in ResumePreview.css) so it appears
-          on every page in both the browser preview and exported PDF.
-          No visible DOM element is needed — aria-hidden is implicit via CSS. */}
+      {isFreePlan && (
+        <div className="watermark-footer" aria-hidden="true">
+          Made with VResIQ
+        </div>
+      )}
 
     </article>
   );

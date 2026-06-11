@@ -105,8 +105,8 @@ export const sendResumeByEmail = ({ recipientEmail, subject, message, pdfFile })
   });
 };
 
-export const exportResumePdf = (id, htmlContent) =>
-  axiosInstance.post(`/api/resumes/${id}/export-pdf`, { htmlContent }, {
+export const exportResumePdf = (id, htmlContent, isFreePlan = true) =>
+  axiosInstance.post(`/api/resumes/${id}/export-pdf`, { htmlContent, isFreePlan: String(isFreePlan) }, {
     responseType: "blob"
   });
 

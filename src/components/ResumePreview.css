@@ -737,43 +737,38 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-photo-square { border-radius: 0; }
 .rp-photo-none { display: none; }
 
-/* ── Watermark — background-image tiling ────────────────────────────────────
-   Strategy: instead of position:fixed (which Chromium only renders on page 1
-   in PDF), we tile the watermark data URL as the background-image of the
-   resume article itself.
-
-   The canvas tile is exactly 816×1056 px (one Letter page at 96 DPI) with
-   the text drawn near the bottom centre.  background-repeat:repeat-y causes
-   Chromium to paint one copy per page height in both screen and PDF output.
-
-   background-attachment:local ensures the tile is painted relative to the
-   element's own content box, not the viewport.
-
-   The 0.18 opacity on the pseudo-element (via the data-watermark selector)
-   combined with the 0.55 alpha in the canvas text gives ≈10% effective
-   perceived opacity — meets the 8–12% spec requirement.
-
-   pointer-events:none and the absence of any DOM text node means ATS parsers
-   and clipboard selection are unaffected.
+/* ── Watermark — Native text-based footer ───────────────────────────────────
+   Strategy: A position:fixed footer is treated by Chromium/Puppeteer print layout
+   as a repeating element drawn at the specified coordinates of every single printed page.
    ─────────────────────────────────────────────────────────────────────────── */
-.resume-preview[data-watermark="true"] {
-  /* The data URL is injected via the --rp-watermark-url CSS variable set
-     inline on the element from ResumePreview.jsx */
-  background-image: var(--rp-watermark-url, none);
-  background-repeat: repeat-y;
-  background-size: 816px 1056px;
-  background-position: center top;
-  /* Opacity-blend: the tile already carries 0.55 alpha text, but we reduce
-     the background further via filter so the net effect is ~10% visible. */
-  background-blend-mode: normal;
+.watermark-footer {
+  text-align: center;
+  font-family: 'Inter', 'Manrope', 'Plus Jakarta Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  color: #6b7280; /* Neutral gray */
+  opacity: 0.65;
+  letter-spacing: 0.4px;
+  padding: 12px 0;
+  pointer-events: none;
+  user-select: none;
+  width: 100%;
 }
 
 @media print {
-  .resume-preview[data-watermark="true"] {
-    background-image: var(--rp-watermark-url, none) !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
+  .watermark-footer {
+    display: none !important;
   }
+}
+
+/* Scoped override to keep Location link visually identical to plain text */
+.rp-contact a.rp-contact-item-text,
+.rp-ats-contact a.rp-contact-item-text,
+.rp-contact span.rp-contact-item-text,
+.rp-ats-contact span.rp-contact-item-text {
+  color: inherit !important;
+  text-decoration: none !important;
+  cursor: text !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
