@@ -68,8 +68,7 @@ const isUrl = (str) => {
 };
 
 const getLocationUrl = (location) => {
-  if (!location) return "";
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(String(location).trim())}`;
+  return "";
 };
 
 const renderLinkOrText = (text, className, isTitle = false) => {
@@ -168,13 +167,13 @@ const buildContactEntries = (c = {}) => {
   }
 
   if (hasText(c.location)) {
-    const location = c.location.trim();
+    const location = c.location.trim().replace(/^(https?:\/\/)?(www\.)?/i, "");
     entries.push({
       key: "location",
-      href: getLocationUrl(location),
+      href: "",
       text: location,
-      className: "rp-contact-link rp-contact-link-location",
-      target: "_blank",
+      className: "rp-contact-item-text",
+      target: undefined,
     });
   }
 
@@ -186,6 +185,7 @@ const buildContactEntries = (c = {}) => {
       text,
       className: "rp-contact-link rp-contact-link-linkedin",
       target: "_blank",
+      // Clean location link wrapping in ContactRow below
     });
   }
 
@@ -219,15 +219,19 @@ const ContactRow = ({ c = {} }) => {
     <div className="rp-contact">
       {entries.map((entry, idx) => (
         <span key={entry.key} className="rp-contact-item">
-          <a
-            href={entry.href}
-            className={entry.className}
-            target={entry.target}
-            rel={entry.target === "_blank" ? "noopener noreferrer" : undefined}
-            onClick={entry.href.startsWith("mailto:") || entry.href.startsWith("tel:") ? handleContactClick : undefined}
-          >
-            {entry.text}
-          </a>
+          {entry.href ? (
+            <a
+              href={entry.href}
+              className={entry.className}
+              target={entry.target}
+              rel={entry.target === "_blank" ? "noopener noreferrer" : undefined}
+              onClick={entry.href.startsWith("mailto:") || entry.href.startsWith("tel:") ? handleContactClick : undefined}
+            >
+              {entry.text}
+            </a>
+          ) : (
+            <span className={entry.className}>{entry.text}</span>
+          )}
           {idx < entries.length - 1 && <span className="rp-contact-sep" aria-hidden="true"> · </span>}
         </span>
       ))}

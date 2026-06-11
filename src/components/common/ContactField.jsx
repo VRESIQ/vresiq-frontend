@@ -16,6 +16,10 @@ const normalize = (platform, raw) => {
     return val;
   }
 
+  if (platform === "location") {
+    return val;
+  }
+
   return smartNormalizeUrl(platform, val);
 };
 

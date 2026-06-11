@@ -34,6 +34,10 @@ const Profile = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
+    if (file.size > 2 * 1024 * 1024) {
+      setMessage({ text: "File size exceeds the maximum limit of 2MB.", type: "error" });
+      return;
+    }
     setProfileImage(file);
     setPreviewImage(URL.createObjectURL(file));
   };

@@ -9,7 +9,7 @@ import PhoneInput from "../components/common/PhoneInput";
 import DateRangePicker from "../components/common/DateRangePicker";
 import ContactField from "../components/common/ContactField";
 import { useAuth } from "../context/AuthContext";
-import { sanitizeStrictText, sanitizeYear, sanitizeName, sanitizeRole, sanitizeURL, sanitizeUsername, sanitizeDigits, sanitizeFlexibleDate, isNumericPattern, sanitizeTextOnly, sanitizeDecimal, smartNormalizeUrl, sanitizeRawText } from "../utils/inputSanitizers";
+import { sanitizeStrictText, sanitizeYear, sanitizeName, sanitizeRole, sanitizeURL, sanitizeUsername, sanitizeDigits, sanitizeFlexibleDate, isNumericPattern, sanitizeTextOnly, sanitizeDecimal, smartNormalizeUrl, sanitizeRawText, sanitizeLocation } from "../utils/inputSanitizers";
 import { computeAtsReport } from "../utils/atsScorer";
 import "./ResumeEditor.css";
 
@@ -314,26 +314,44 @@ const ResumeEditor = () => {
   }, [activeSection]);
 
 
+  const [baselineResume, setBaselineResume] = useState(null);
+  const [lastSaved, setLastSaved] = useState(null);
+
+  const hasUnsavedChanges = baselineResume !== null && JSON.stringify(resume) !== baselineResume;
+
   useEffect(() => {
     getResumeById(id)
       .then((res) => {
         const data = res.data;
-        setResume({
+        const normalized = {
           ...emptyResume,
           ...data,
           template: data.template || "template1",
           fontPairing: data.fontPairing || null,
           decoratives: data.decoratives || {},
           profileInfo: normalizeProfileInfo(data.profileInfo),
-          contactInfo: { ...emptyResume.contactInfo, ...data.contactInfo },
-          workExperience: data.workExperience || [],
-          education: data.education || [],
+          contactInfo: { 
+            ...emptyResume.contactInfo, 
+            ...data.contactInfo,
+            location: data.contactInfo?.location ? data.contactInfo.location.replace(/^(https?:\/\/)?(www\.)?/i, "") : ""
+          },
+          workExperience: (data.workExperience || []).map(item => ({
+            ...item,
+            location: item.location ? item.location.replace(/^(https?:\/\/)?(www\.)?/i, "") : ""
+          })),
+          education: (data.education || []).map(item => ({
+            ...item,
+            location: item.location ? item.location.replace(/^(https?:\/\/)?(www\.)?/i, "") : ""
+          })),
           skills: data.skills || [],
           projects: data.projects || [],
           certifications: data.certifications || [],
           languages: data.languages || [],
           interests: data.interests || [],
-        });
+        };
+        setResume(normalized);
+        setBaselineResume(JSON.stringify(normalized));
+        setLastSaved(new Date());
       })
       .catch(() => navigate("/dashboard"))
       .finally(() => setLoading(false));
@@ -403,11 +421,37 @@ const ResumeEditor = () => {
   const removeListItem = (section, index) =>
     setResume((prev) => ({ ...prev, [section]: prev[section].filter((_, i) => i !== index) }));
 
+  // Auto-save logic: triggers a debounced save 1.5s after user stops typing
+  useEffect(() => {
+    if (baselineResume === null) return; // Wait until initial resume loads
+    if (!hasUnsavedChanges) return;
+
+    const delayDebounce = setTimeout(async () => {
+      setSaving(true);
+      setSaveError("");
+      try {
+        await updateResume(id, resume);
+        setBaselineResume(JSON.stringify(resume));
+        setLastSaved(new Date());
+        setSaved(true);
+        setTimeout(() => setSaved(false), 2000);
+      } catch (err) {
+        setSaveError(err.response?.data?.message || "Could not auto-save changes.");
+      } finally {
+        setSaving(false);
+      }
+    }, 1500);
+
+    return () => clearTimeout(delayDebounce);
+  }, [resume, baselineResume, hasUnsavedChanges, id]);
+
   const save = async () => {
     setSaving(true);
     setSaveError("");
     try {
       await updateResume(id, resume);
+      setBaselineResume(JSON.stringify(resume));
+      setLastSaved(new Date());
       setSaved(true);
       setTimeout(() => setSaved(false), 2200);
     } catch (err) {
@@ -420,6 +464,10 @@ const ResumeEditor = () => {
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
+    if (file.size > 2 * 1024 * 1024) {
+      setImageError("File size exceeds the maximum limit of 2MB.");
+      return;
+    }
     setUploadingImage(true);
     setImageError("");
     try {
@@ -1036,9 +1084,14 @@ const ResumeEditor = () => {
                   Send email
                 </button>
               )}
-              <button className="btn-save" onClick={save} disabled={saving}>
-                {saving ? "Saving…" : saved ? "✓ Saved" : "Save"}
-              </button>
+              <div className="save-status-container" style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.82rem", color: "var(--muted)", marginRight: "0.5rem" }}>
+                {hasUnsavedChanges && (
+                  <span className="unsaved-dot" style={{ display: "inline-block", width: "8px", height: "8px", borderRadius: "50%", background: "#e76f51" }} title="Unsaved Changes" />
+                )}
+                <span>
+                  {saving ? "Saving..." : saved ? "Changes Saved" : hasUnsavedChanges ? "Unsaved Changes" : lastSaved ? `Saved at ${lastSaved.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}` : "Saved"}
+                </span>
+              </div>
             </div>
           </header>
 
@@ -1060,8 +1113,8 @@ const ResumeEditor = () => {
             <main className="editor-main">
               {activeSection === "Profile" && (
                 <Section title="Profile">
-                  <Field label="Full name" value={resume.profileInfo.fullName} placeholder="Rithik Mettu" hint="Enter your full name." sanitize={sanitizeName} onChange={(v) => updateField("profileInfo", "fullName", v)} />
-                  <Field label="Designation" value={resume.profileInfo.designation} placeholder="Frontend Developer" hint="Your target role." sanitize={sanitizeRole} onChange={(v) => updateField("profileInfo", "designation", v)} />
+                  <Field label="Full name" value={resume.profileInfo.fullName} placeholder="John Doe" hint="Enter your full name." sanitize={sanitizeName} onChange={(v) => updateField("profileInfo", "fullName", v)} />
+                  <Field label="Designation" value={resume.profileInfo.designation} placeholder="Software Engineer" hint="Your current role or designation." sanitize={sanitizeRole} onChange={(v) => updateField("profileInfo", "designation", v)} />
                   <Field 
                     label="Target Role" 
                     value={resume.profileInfo.targetRole} 
@@ -1119,7 +1172,7 @@ const ResumeEditor = () => {
 
           {activeSection === "Contact" && (
             <Section title="Contact">
-              <ContactField platform="email"    label="Email"    value={resume.contactInfo.email}    onChange={(v) => updateField("contactInfo", "email", v)} placeholder="rithik@example.com" hint="Use a professional email." />
+              <ContactField platform="email"    label="Email"    value={resume.contactInfo.email}    onChange={(v) => updateField("contactInfo", "email", v)} placeholder="name@example.com" hint="Use a professional email." />
               <div className="field">
                 <label>Phone</label>
                 <PhoneInput
@@ -1130,8 +1183,8 @@ const ResumeEditor = () => {
                 />
               </div>
               <ContactField platform="location" label="Location" value={resume.contactInfo.location} onChange={(v) => updateField("contactInfo", "location", v)} placeholder="Hyderabad, India" hint="City and country are enough." />
-              <ContactField platform="linkedin" label="LinkedIn" value={resume.contactInfo.linkedIn} onChange={(v) => updateField("contactInfo", "linkedIn", v)} placeholder="linkedin.com/in/rithik" hint="Optional but recommended." />
-              <ContactField platform="github"   label="GitHub"   value={resume.contactInfo.github}   onChange={(v) => updateField("contactInfo", "github", v)} placeholder="github.com/rithik" hint="Add if you have projects." />
+              <ContactField platform="linkedin" label="LinkedIn" value={resume.contactInfo.linkedIn} onChange={(v) => updateField("contactInfo", "linkedIn", v)} placeholder="linkedin.com/in/username" hint="Optional but recommended." />
+              <ContactField platform="github"   label="GitHub"   value={resume.contactInfo.github}   onChange={(v) => updateField("contactInfo", "github", v)} placeholder="github.com/username" hint="Add if you have projects." />
               <ContactField platform="website"  label="Website"  value={resume.contactInfo.website}  onChange={(v) => updateField("contactInfo", "website", v)} />
             </Section>
           )}
