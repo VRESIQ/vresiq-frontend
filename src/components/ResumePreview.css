@@ -120,21 +120,21 @@
 /* ─── Hyperlink visual behavior — scoped semantic selectors ──────────────── */
 
 /* 1. CONTACT / HEADER LINKS
-   email, phone, LinkedIn, GitHub, website inside the header/contact area.
-   These inherit surrounding text color — NO blue, NO default underline.
-   Only a subtle underline appears on hover. */
+   email, phone, LinkedIn, GitHub, website, location inside the header/contact area.
+   Standard hyperlink styling — blue + underline — matching UX requirement. */
 .rp-contact a,
 .rp-ats-contact a {
-  color: #1a5fb4 !important;            /* Professional hyperlink blue in header */
+  color: #2563EB !important;            /* Standard hyperlink blue */
   text-decoration: underline !important;
   text-decoration-thickness: 0.5px !important;
   text-underline-offset: 1.5px;
+  cursor: pointer !important;
   transition: color 0.15s ease;
 }
 
 .rp-contact a:hover,
 .rp-ats-contact a:hover {
-  color: #0b3d7a !important;
+  color: #1d4ed8 !important;
   text-decoration: underline !important;
 }
 
@@ -145,10 +145,11 @@
 }
 
 .rp-contact-link {
-  color: #1a5fb4 !important;
+  color: #2563EB !important;
   text-decoration: underline !important;
   text-decoration-thickness: 0.5px !important;
   text-underline-offset: 1.5px;
+  cursor: pointer !important;
   white-space: nowrap;
 }
 
@@ -164,10 +165,11 @@ a.rp-project-link,
 a.rp-custom-link,
 a.rp-inline-link,
 .rp-links a {
-  color: #1a5fb4 !important;
+  color: #2563EB !important;
   text-decoration: underline !important;
   text-decoration-thickness: 0.5px !important;
   text-underline-offset: 1.5px;
+  cursor: pointer !important;
   transition: color 0.15s ease;
 }
 
@@ -175,7 +177,7 @@ a.rp-project-link:hover,
 a.rp-custom-link:hover,
 a.rp-inline-link:hover,
 .rp-links a:hover {
-  color: #0b3d7a !important;
+  color: #1d4ed8 !important;
   text-decoration: underline !important;
 }
 
@@ -207,10 +209,11 @@ a.rp-inline-link:hover,
   /* Contact/header links: blue + underline preserved in print/PDF */
   .rp-contact a,
   .rp-ats-contact a {
-    color: #1a5fb4 !important;
+    color: #2563EB !important;
     text-decoration: underline !important;
     text-decoration-thickness: 0.5px !important;
     text-underline-offset: 1.5px;
+    cursor: pointer !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
@@ -220,7 +223,7 @@ a.rp-inline-link:hover,
   a.rp-custom-link,
   a.rp-inline-link,
   .rp-links a {
-    color: #1a5fb4 !important;
+    color: #2563EB !important;
     text-decoration: underline !important;
     text-decoration-thickness: 0.5px !important;
     text-underline-offset: 1.5px;
@@ -761,14 +764,21 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   }
 }
 
-/* Scoped override to keep Location link visually identical to plain text */
+/* Location link — standard hyperlink styling (Google Maps clickable) */
 .rp-contact a.rp-contact-item-text,
-.rp-ats-contact a.rp-contact-item-text,
+.rp-ats-contact a.rp-contact-item-text {
+  color: #2563EB !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 0.5px !important;
+  text-underline-offset: 1.5px;
+  cursor: pointer !important;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+}
+/* Span fallback (non-clickable location) */
 .rp-contact span.rp-contact-item-text,
 .rp-ats-contact span.rp-contact-item-text {
-  color: inherit !important;
-  text-decoration: none !important;
-  cursor: text !important;
+  color: inherit;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════

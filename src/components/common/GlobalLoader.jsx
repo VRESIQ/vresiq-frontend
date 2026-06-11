@@ -15,7 +15,7 @@ const TIPS = [
   { category: "ATS Tips", text: "ATS software parses resumes from top to bottom. Avoid multi-column layouts for maximum compatibility." },
   { category: "ATS Tips", text: "Standardize section headings like 'Work Experience' and 'Education' so parsing tools identify them easily." },
   { category: "ATS Tips", text: "Use standard bullet points instead of custom symbols, which can confuse ATS parser algorithms." },
-  { category: "ATS Tips", text: "Save and upload your resume as a PDF. VResIQ's templates are fully optimized for PDF text layout extraction." },
+  { category: "ATS Tips", text: "Save and upload your resume as a PDF. VRESIQ's templates are fully optimized for PDF text layout extraction." },
   { category: "ATS Tips", text: "Tailor your resume skills to match key verbs and terms found directly in the job description." },
   { category: "ATS Tips", text: "Avoid placing important contact details or links inside the header or footer fields, as some parsers ignore them." },
 
@@ -35,13 +35,13 @@ const TIPS = [
   { category: "Interview Tips", text: "Practice explaining your projects in under 2 minutes. Focus on what you did and why it mattered." },
   { category: "Interview Tips", text: "Follow up with a brief, personalized thank-you email within 24 hours of completing your interview." },
 
-  // VResIQ Features
-  { category: "VResIQ Features", text: "You can customize template accent colors to fit your target company's branding in one click." },
-  { category: "VResIQ Features", text: "Switch templates instantly inside the editor. Your content is preserved and reflowed automatically." },
-  { category: "VResIQ Features", text: "Verify your resume's ATS compatibility using our interactive scorer before exporting." },
-  { category: "VResIQ Features", text: "Pro users can email their generated resume PDF directly to recruiters from the dashboard." },
-  { category: "VResIQ Features", text: "Use the AI rewrite assistant to refine bullet points for professional impact." },
-  { category: "VResIQ Features", text: "Add customizable custom sections to tailor your resume for academic or creative roles." }
+  // VRESIQ Features
+  { category: "VRESIQ Features", text: "You can customize template accent colors to fit your target company's branding in one click." },
+  { category: "VRESIQ Features", text: "Switch templates instantly inside the editor. Your content is preserved and reflowed automatically." },
+  { category: "VRESIQ Features", text: "Verify your resume's ATS compatibility using our interactive scorer before exporting." },
+  { category: "VRESIQ Features", text: "Pro users can email their generated resume PDF directly to recruiters from the dashboard." },
+  { category: "VRESIQ Features", text: "Use the AI rewrite assistant to refine bullet points for professional impact." },
+  { category: "VRESIQ Features", text: "Add customizable custom sections to tailor your resume for academic or creative roles." }
 ];
 
 const GlobalLoader = () => {
@@ -184,7 +184,7 @@ const GlobalLoader = () => {
     <div className="global-loader-overlay">
       <div className={`global-loader-card ${isExtended ? "cold-start-active" : ""}`}>
         
-        {/* VResIQ Logo */}
+        {/* VRESIQ Logo */}
         <div className="nav-logo" style={{ fontSize: '1.8rem', pointerEvents: 'none', textDecoration: 'none', marginBottom: '8px' }}>
           <span className="logo-v">V</span>
           <span className="logo-res">RES</span>

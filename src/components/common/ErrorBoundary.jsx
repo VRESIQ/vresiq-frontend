@@ -40,7 +40,7 @@ class ErrorBoundary extends Component {
           }}
         >
           <div style={{ maxWidth: "480px", width: "100%" }}>
-            {/* VResIQ Logo */}
+            {/* VRESIQ Logo */}
             <div className="nav-logo" style={{ fontSize: "2rem", pointerEvents: "none", textDecoration: "none", marginBottom: "24px", display: "inline-block" }}>
               <span className="logo-v">V</span>
               <span className="logo-res">RES</span>
