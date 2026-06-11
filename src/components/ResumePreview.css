@@ -740,25 +740,50 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-photo-square { border-radius: 0; }
 .rp-photo-none { display: none; }
 
-/* ── Watermark — Native text-based footer ───────────────────────────────────
-   Strategy: A position:fixed footer is treated by Chromium/Puppeteer print layout
-   as a repeating element drawn at the specified coordinates of every single printed page.
+/* ── Watermark — Preview sticky footer + PDF Puppeteer footerTemplate ────────
+   Preview (screen): position:sticky anchors the watermark to the bottom of
+   the scrollable .editor-preview-panel at all scroll positions. This means
+   it is visible regardless of how far the user has scrolled, giving the
+   appearance of persisting across all resume pages.
+
+   PDF export: The sticky div is hidden via @media print { display: none }.
+   Puppeteer's footerTemplate in pdf-generator.js handles the per-page
+   watermark in the downloaded PDF independently.
+
+   Pro users: isFreePlan=false means this element is not rendered at all.
    ─────────────────────────────────────────────────────────────────────────── */
 .watermark-footer {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
   text-align: center;
   font-family: 'Inter', 'Manrope', 'Plus Jakarta Sans', sans-serif;
   font-size: 10px;
   font-weight: 500;
   color: #6b7280; /* Neutral gray */
-  opacity: 0.65;
+  opacity: 0.72;
   letter-spacing: 0.4px;
-  padding: 12px 0;
+  padding: 7px 0;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
   pointer-events: none;
   user-select: none;
   width: 100%;
+  margin-top: 8px;
+}
+
+/* Dark theme watermark */
+[data-theme="dark"] .watermark-footer {
+  background: rgba(20, 21, 18, 0.88);
+  border-top-color: rgba(255, 255, 255, 0.06);
 }
 
 @media print {
+  /* Hidden in PDF — Puppeteer footerTemplate handles per-page watermark */
   .watermark-footer {
     display: none !important;
   }
