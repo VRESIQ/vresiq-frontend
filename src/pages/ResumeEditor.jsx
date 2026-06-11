@@ -319,6 +319,81 @@ const ResumeEditor = () => {
 
   const hasUnsavedChanges = baselineResume !== null && JSON.stringify(resume) !== baselineResume;
 
+  // Undo/Redo History refs and states
+  const historyStack = useRef([]);
+  const pointer = useRef(-1);
+  const isUndoRedoAction = useRef(false);
+
+  const pushToHistory = (state) => {
+    if (isUndoRedoAction.current) {
+      isUndoRedoAction.current = false;
+      return;
+    }
+    const stateStr = JSON.stringify(state);
+    if (pointer.current >= 0 && historyStack.current[pointer.current] === stateStr) {
+      return;
+    }
+    const newStack = historyStack.current.slice(0, pointer.current + 1);
+    newStack.push(stateStr);
+    if (newStack.length > 40) {
+      newStack.shift();
+    }
+    historyStack.current = newStack;
+    pointer.current = newStack.length - 1;
+  };
+
+  const undo = () => {
+    if (pointer.current > 0) {
+      isUndoRedoAction.current = true;
+      pointer.current -= 1;
+      const prevStr = historyStack.current[pointer.current];
+      setResume(JSON.parse(prevStr));
+    }
+  };
+
+  const redo = () => {
+    if (pointer.current < historyStack.current.length - 1) {
+      isUndoRedoAction.current = true;
+      pointer.current += 1;
+      const nextStr = historyStack.current[pointer.current];
+      setResume(JSON.parse(nextStr));
+    }
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      const isZ = e.key === "z" || e.key === "Z";
+      const isY = e.key === "y" || e.key === "Y";
+      if ((e.ctrlKey || e.metaKey) && isZ) {
+        if (e.shiftKey) {
+          e.preventDefault();
+          redo();
+        } else {
+          e.preventDefault();
+          undo();
+        }
+      } else if ((e.ctrlKey || e.metaKey) && isY) {
+        e.preventDefault();
+        redo();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  // Debounced observer to record history states automatically as changes occur
+  useEffect(() => {
+    if (!resume || pointer.current === -1) return;
+    if (isUndoRedoAction.current) {
+      isUndoRedoAction.current = false;
+      return;
+    }
+    const timer = setTimeout(() => {
+      pushToHistory(resume);
+    }, 350);
+    return () => clearTimeout(timer);
+  }, [resume]);
+
   useEffect(() => {
     getResumeById(id)
       .then((res) => {
@@ -352,6 +427,10 @@ const ResumeEditor = () => {
         setResume(normalized);
         setBaselineResume(JSON.stringify(normalized));
         setLastSaved(new Date());
+
+        // Initialize history stack with loaded state
+        historyStack.current = [JSON.stringify(normalized)];
+        pointer.current = 0;
       })
       .catch(() => navigate("/dashboard"))
       .finally(() => setLoading(false));
@@ -565,7 +644,10 @@ const ResumeEditor = () => {
             }
             #resume-preview, .resume-preview {
               background-color: transparent !important;
-              background-image: none !important;
+              background-image: ${watermarkUrl} !important;
+              background-repeat: repeat-y !important;
+              background-size: 816px 1056px !important;
+              background-position: center top !important;
             }
       `;
     }
@@ -1084,6 +1166,44 @@ const ResumeEditor = () => {
                   Send email
                 </button>
               )}
+              <div className="history-controls" style={{ display: "flex", gap: "0.25rem", marginRight: "0.5rem" }}>
+                <button
+                  type="button"
+                  className="btn-outline-sm btn-history"
+                  onClick={undo}
+                  disabled={pointer.current <= 0}
+                  title="Undo (Ctrl+Z)"
+                  style={{
+                    padding: "4px 8px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    opacity: pointer.current <= 0 ? 0.4 : 1,
+                    cursor: pointer.current <= 0 ? "not-allowed" : "pointer",
+                    fontSize: "1.1rem"
+                  }}
+                >
+                  ↺
+                </button>
+                <button
+                  type="button"
+                  className="btn-outline-sm btn-history"
+                  onClick={redo}
+                  disabled={pointer.current >= historyStack.current.length - 1}
+                  title="Redo (Ctrl+Y)"
+                  style={{
+                    padding: "4px 8px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    opacity: pointer.current >= historyStack.current.length - 1 ? 0.4 : 1,
+                    cursor: pointer.current >= historyStack.current.length - 1 ? "not-allowed" : "pointer",
+                    fontSize: "1.1rem"
+                  }}
+                >
+                  ↻
+                </button>
+              </div>
               <div className="save-status-container" style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.82rem", color: "var(--muted)", marginRight: "0.5rem" }}>
                 {hasUnsavedChanges && (
                   <span className="unsaved-dot" style={{ display: "inline-block", width: "8px", height: "8px", borderRadius: "50%", background: "#e76f51" }} title="Unsaved Changes" />
