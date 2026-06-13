@@ -149,14 +149,12 @@ const buildContactEntries = (c = {}) => {
   }
 
   if (hasText(c.linkedIn)) {
-    const text = c.linkedIn.replace(/^(https?:\/\/)?(www\.)?linkedin\.com\/in\//i, "").replace(/^(https?:\/\/)?(www\.)?linkedin\.com\//i, "");
     entries.push({
       key: "linkedin",
       href: getLinkedInUrl(c.linkedIn),
-      text,
+      text: "LinkedIn",
       className: "rp-contact-link rp-contact-link-linkedin",
       target: "_blank",
-      // Clean location link wrapping in ContactRow below
     });
   }
 
@@ -164,7 +162,7 @@ const buildContactEntries = (c = {}) => {
     entries.push({
       key: "github",
       href: getGithubUrl(c.github),
-      text: c.github.replace(/^(https?:\/\/)?(www\.)?github\.com\//i, ""),
+      text: "GitHub",
       className: "rp-contact-link rp-contact-link-github",
       target: "_blank",
     });
@@ -174,7 +172,7 @@ const buildContactEntries = (c = {}) => {
     entries.push({
       key: "website",
       href: formatUrl(c.website),
-      text: c.website.replace(/^(https?:\/\/)?(www\.)?/, ""),
+      text: "Website",
       className: "rp-contact-link rp-contact-link-website",
       target: "_blank",
     });
@@ -559,7 +557,7 @@ const ProjectsSection = ({ items = [], showIcon, dec, scanMode = false, sectionN
               <p className="rp-links" style={{ marginTop: "2px" }}>
                 {hasText(item.github) && (
                   <a href={getGithubUrl(item.github)} target="_blank" rel="noopener noreferrer" className="rp-project-link">
-                    Github
+                    Github <span className="rp-link-arrow" style={{ fontSize: "0.85em", fontWeight: 400 }}>↗</span>
                   </a>
                 )}
                 {hasText(item.github) && hasText(item.liveDemo) && <span className="rp-links-divider"> · </span>}
@@ -570,7 +568,7 @@ const ProjectsSection = ({ items = [], showIcon, dec, scanMode = false, sectionN
                       if (lower.includes("docs") || lower.includes("wiki") || lower.includes("documentation")) return "Documentation";
                       if (lower.includes("demo") || lower.includes("app") || lower.includes("dashboard")) return "Live Demo";
                       return "Website";
-                    })()}
+                    })()} <span className="rp-link-arrow" style={{ fontSize: "0.85em", fontWeight: 400 }}>↗</span>
                   </a>
                 )}
               </p>
@@ -775,7 +773,7 @@ const TechnicalProfilesSection = ({ title, items = [], dec, sectionNumber, fullN
                         fontWeight: 600
                       }}
                     >
-                      {platformName}
+                      {platformName} <span className="rp-link-arrow" style={{ fontSize: "0.85em", fontWeight: 400 }}>↗</span>
                     </a>
                   ) : (
                     <strong style={{ fontWeight: 600 }}>{platformName}</strong>
