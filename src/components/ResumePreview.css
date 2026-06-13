@@ -780,21 +780,10 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 }
 
 @media print {
-  /* PDF Rendering: The watermark-footer is now positioned as a fixed footer
-     that appears at the bottom of every page. Fixed positioning in print media
-     will cause the element to repeat on each page, giving multi-page support. */
+  /* Hide the HTML-embedded watermark in print mode to prevent duplicates.
+     Puppeteer's footerTemplate will handle watermark rendering on every page instead. */
   .watermark-footer {
-    position: fixed !important;
-    bottom: 8px !important;
-    left: 0 !important;
-    right: 0 !important;
-    z-index: 9999 !important;
-    width: 100% !important;
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
-    display: block !important;
-    visibility: visible !important;
-    opacity: 0.35 !important;
+    display: none !important;
   }
 }
 
