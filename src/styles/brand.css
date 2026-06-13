@@ -87,10 +87,12 @@ button {
 [data-theme="dark"] .home-nav,
 [data-theme="dark"] .pricing-nav,
 [data-theme="dark"] .dash-nav,
+[data-theme="dark"] .profile-nav,
 [data-theme="dark"] .editor-topbar {
-  background: rgba(10, 11, 9, 0.7);
-  backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 1px solid rgba(184, 255, 44, 0.15);
+  background: rgba(10, 11, 9, 0.72) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border-bottom: 1px solid rgba(184, 255, 44, 0.15) !important;
 }
 
 /* Cards in dark mode */
@@ -208,10 +210,15 @@ button {
 .home-nav,
 .pricing-nav,
 .dash-nav,
+.profile-nav,
 .editor-topbar {
-  background: rgba(255, 254, 249, 0.82);
-  backdrop-filter: blur(18px);
-  border-bottom: 1px solid var(--line);
+  background: rgba(255, 254, 249, 0.75) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border-bottom: 1px solid rgba(17, 20, 16, 0.08) !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 100 !important;
 }
 
 .nav-logo,

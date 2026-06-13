@@ -111,7 +111,11 @@ const TEMPLATE_RISK = {
   premium7: 6,
   premium8: 8,
   premium9: 2,
-  premium10: 4
+  premium10: 4,
+  consulting_bcg: 1,
+  tech_faang: 1,
+  harvard_ats: 0,
+  swiss_minimal: 2
 };
 
 const TEMPLATE_NAMES = {
@@ -121,13 +125,17 @@ const TEMPLATE_NAMES = {
   premium1: "Timeline",
   premium2: "Executive",
   premium3: "Compact",
-  premium4: "Minimal",
-  premium5: "Accent",
+  premium4: "Signature",
+  premium5: "Apex",
   premium6: "Split",
   premium7: "Cards",
   premium8: "Graph",
   premium9: "Centered",
   premium10: "Tech",
+  consulting_bcg: "Consulting BCG",
+  tech_faang: "Tech FAANG",
+  harvard_ats: "Harvard ATS",
+  swiss_minimal: "Swiss Minimal",
   ats_classic: "Basic",
   ats_entry: "Edge",
   ats_senior: "Serif",

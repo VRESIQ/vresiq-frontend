@@ -3,17 +3,11 @@
 }
 
 .profile-nav {
-  position: sticky;
-  top: 0;
-  z-index: 50;
   height: 72px;
   padding: 0 clamp(1.25rem, 4vw, 4rem);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(255, 254, 249, 0.82);
-  backdrop-filter: blur(18px);
-  border-bottom: 1px solid var(--line);
 }
 
 .profile-nav-links {

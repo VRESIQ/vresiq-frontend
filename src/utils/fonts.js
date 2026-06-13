@@ -87,6 +87,30 @@ export const FONT_MAP = {
     heading: "'Lora', Georgia, serif",
     body: "'Lora', Georgia, serif",
   },
+  consulting_bcg: {
+    name: "Times New Roman",
+    url: "https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700&display=swap",
+    heading: "'Lora', Georgia, serif",
+    body: "'Lora', Georgia, serif",
+  },
+  tech_faang: {
+    name: "Inter",
+    url: null,
+    heading: "'Inter', sans-serif",
+    body: "'Inter', sans-serif",
+  },
+  harvard_ats: {
+    name: "Georgia",
+    url: null,
+    heading: "Georgia, serif",
+    body: "Georgia, serif",
+  },
+  swiss_minimal: {
+    name: "Jost",
+    url: "https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap",
+    heading: "'Jost', sans-serif",
+    body: "'Jost', sans-serif",
+  },
 };
 
 const loadedFonts = new Set(["template1"]);

@@ -1549,6 +1549,59 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
         </div>
       );
 
+    // ── consulting_bcg: McKinsey/Bain/BCG Consulting Style ─────────────────
+    case "consulting_bcg":
+      return (
+        <div className="rp-ats-container rp-consulting-bcg">
+          <header className="rp-ats-header">
+            <h1 className="rp-ats-name-serif">{name}</h1>
+            {role && <p className="rp-ats-role-serif">{role}</p>}
+            <AtsContactRow c={contactInfo} />
+          </header>
+          <main className="rp-ats-body">{getSections('all')}</main>
+        </div>
+      );
+
+    // ── tech_faang: FAANG/Tech Professional ───────────────────────────────
+    case "tech_faang":
+      return (
+        <div className="rp-ats-container rp-tech-faang">
+          <header className="rp-ats-header-left">
+            <h1 className="rp-ats-name">{name}</h1>
+            {role && <p className="rp-ats-role-left">{role}</p>}
+            <AtsContactRow c={contactInfo} />
+          </header>
+          <main className="rp-ats-body">{getSections('all')}</main>
+        </div>
+      );
+
+    // ── harvard_ats: Harvard-Inspired ATS ──────────────────────────────────
+    case "harvard_ats":
+      return (
+        <div className="rp-ats-container rp-harvard-ats">
+          <header className="rp-ats-header">
+            <h1 className="rp-ats-name-serif">{name}</h1>
+            {role && <p className="rp-ats-role-serif">{role}</p>}
+            <AtsContactRow c={contactInfo} />
+          </header>
+          <hr className="rp-rule" />
+          <main className="rp-ats-body">{getSections('all')}</main>
+        </div>
+      );
+
+    // ── swiss_minimal: Minimal Swiss Professional ─────────────────────────
+    case "swiss_minimal":
+      return (
+        <div className="rp-ats-container rp-swiss-minimal">
+          <header className="rp-ats-header-left">
+            <h1 className="rp-ats-name">{name}</h1>
+            {role && <p className="rp-ats-role-left">{role}</p>}
+            <AtsContactRow c={contactInfo} />
+          </header>
+          <main className="rp-ats-body">{getSections('all')}</main>
+        </div>
+      );
+
     default:
       return <p>Unknown template</p>;
   }
@@ -1576,6 +1629,10 @@ function getDefaultAccent(templateId) {
     ats_lead: "#111111",
     ats_intern: "#111111",
     ats_experienced: "#111111",
+    consulting_bcg: "#000000",
+    tech_faang: "#1a5fb4",
+    harvard_ats: "#000000",
+    swiss_minimal: "#2b2b2b",
   };
   return map[templateId] || "#111111";
 }

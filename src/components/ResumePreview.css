@@ -56,24 +56,24 @@
   --rp-space-lg: 16px;
   --rp-space-xl: 24px;
 
-  --rp-section-margin-bottom: 22px;
-  --rp-item-margin-bottom: 14px;
-  --rp-divider-spacing-bottom: 6px;
+  --rp-section-margin-bottom: 15px;
+  --rp-item-margin-bottom: 9px;
+  --rp-divider-spacing-bottom: 4px;
   --rp-border-thin: 1.5px;
   --rp-border-thick: 3px;
 
   /* Typographic Design System Scale */
-  --rp-fs-base: 12px;
-  --rp-fs-name: 26px;
-  --rp-fs-role: 13px;
-  --rp-fs-stitle: 13.5px;
-  --rp-fs-item-title: 12.5px;
-  --rp-fs-item-sub: 11.5px;
-  --rp-fs-body: 11.5px;
-  --rp-fs-meta: 10.5px;
+  --rp-fs-base: 11px;
+  --rp-fs-name: 24px;
+  --rp-fs-role: 12px;
+  --rp-fs-stitle: 12.5px;
+  --rp-fs-item-title: 11.5px;
+  --rp-fs-item-sub: 10.5px;
+  --rp-fs-body: 10.5px;
+  --rp-fs-meta: 9.5px;
 
-  --rp-lh-body: 1.55;
-  --rp-lh-summary: 1.6;
+  --rp-lh-body: 1.45;
+  --rp-lh-summary: 1.5;
 
   font-size: var(--rp-fs-base);
   line-height: var(--rp-lh-body);
@@ -468,14 +468,13 @@ a.rp-tech-link:hover,
 
 /* ── Common header base ──────────────────────────────────────────────────── */
 .rp-header {
-  padding: 28px 36px;
+  padding: 18px 36px 14px;
 }
-
 
 .rp-header h1 {
   font-size: var(--rp-fs-name);
   font-weight: 700;
-  margin: 0 0 4px;
+  margin: 0 0 2px;
   line-height: 1.1;
   color: #111;
 }
@@ -484,25 +483,25 @@ a.rp-tech-link:hover,
   font-size: var(--rp-fs-role);
   font-weight: 600;
   color: var(--accent-readable);
-  margin: 0 0 10px;
+  margin: 0 0 6px;
 }
 
 .rp-body {
-  padding: 0 36px 36px;
+  padding: 0 36px 24px;
 }
 
 /* ── Contact row ─────────────────────────────────────────────────────────── */
 .rp-contact {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 14px;
+  gap: 3px 12px;
   font-size: var(--rp-fs-meta);
   color: #444;
-  margin-top: 6px;
+  margin-top: 4px;
 }
 
 .rp-contact-inline .rp-contact {
-  margin-top: 8px;
+  margin-top: 6px;
 }
 
 /* ── Section title ───────────────────────────────────────────────────────── */
@@ -513,10 +512,9 @@ a.rp-tech-link:hover,
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--accent-readable);
-  margin: 0 0 12px;
-  padding-bottom: 6px;
+  margin: 0 0 8px;
+  padding-bottom: 4px;
 }
-
 /* Divider variants */
 .rp-stitle[data-divider="line"] {
   border-bottom: 1.5px solid var(--accent);
@@ -1813,12 +1811,12 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 /* ATS headers */
 .rp-ats-header {
   text-align: center;
-  margin-bottom: 18px;
+  margin-bottom: 10px;
 }
 
 .rp-ats-header-left {
   text-align: left;
-  margin-bottom: 18px;
+  margin-bottom: 10px;
 }
 
 .rp-ats-name {
@@ -2223,4 +2221,101 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-header-accentbar,
 .rp-header-tech {
   display: flex;
+}
+
+/* ── Consulting BCG (McKinsey Style) ────────────────────────────────────── */
+.rp-consulting-bcg {
+  padding: 30px 45px 15px;
+}
+.rp-consulting-bcg .rp-ats-name-serif {
+  font-size: 26px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+}
+.rp-consulting-bcg .rp-ats-role-serif {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.rp-consulting-bcg .rp-ats-contact {
+  justify-content: center;
+  font-size: 10px;
+  margin-top: 4px;
+}
+
+/* ── Tech FAANG ─────────────────────────────────────────────────────────── */
+.rp-tech-faang {
+  padding: 30px 45px 15px;
+}
+.rp-tech-faang .rp-ats-name {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 2px;
+}
+.rp-tech-faang .rp-ats-role-left {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-readable);
+  margin-bottom: 6px;
+}
+.rp-tech-faang .rp-ats-contact {
+  font-size: 10px;
+  gap: 4px 12px;
+}
+
+/* ── Harvard ATS ────────────────────────────────────────────────────────── */
+.rp-harvard-ats {
+  padding: 32px 48px 12px;
+}
+.rp-harvard-ats .rp-ats-name-serif {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin-bottom: 2px;
+}
+.rp-harvard-ats .rp-ats-role-serif {
+  font-size: 11.5px;
+  letter-spacing: 0.05em;
+  font-style: italic;
+  margin-bottom: 6px;
+}
+.rp-harvard-ats .rp-ats-contact {
+  font-size: 10px;
+  margin-top: 4px;
+}
+.rp-harvard-ats .rp-rule {
+  border: none;
+  border-top: 1.5px solid #222;
+  margin: 8px 48px;
+}
+
+/* ── Swiss Minimal ──────────────────────────────────────────────────────── */
+.rp-swiss-minimal {
+  padding: 35px 45px 15px;
+}
+.rp-swiss-minimal .rp-ats-name {
+  font-size: 28px;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.rp-swiss-minimal .rp-ats-role-left {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 8px;
+}
+.rp-swiss-minimal .rp-ats-contact {
+  font-size: 9.5px;
+  color: #666;
+  border-top: 1px solid #eee;
+  padding-top: 8px;
 }
