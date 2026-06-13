@@ -106,10 +106,16 @@ const cleanURL = (url) => {
 
 const normalizeUrl = smartNormalizeUrl;
 
+const isFresher = (resume) => {
+  if (resume?.decoratives?.fresherMode === "true") return true;
+  if (resume?.decoratives?.fresherMode === "false") return false;
+  return (resume?.workExperience || []).length === 0;
+};
+
 const allPossibleOptionalIds = [
-  "languages", "interests",
+  "experience", "internships", "languages", "interests",
   "achievements", "publications", "volunteering", "leadership", "hackathons", 
-  "openSource", "awards", "internships", "workshops", "coursework", 
+  "openSource", "awards", "workshops", "coursework", 
   "technicalProfiles", "extracurriculars", "patents", "researchExperience"
 ];
 
@@ -1027,16 +1033,16 @@ const ResumeEditor = () => {
     );
   }
 
-      const hasExperience = (resume.workExperience || []).length > 0;
+      const fresher = isFresher(resume);
       const visibility = {
         summary: true,
         education: true,
         skills: true,
-        experience: hasExperience,
+        experience: !fresher,
         projects: true,
         certifications: true,
-        languages: true,
         interests: false,
+        languages: false,
         achievements: false,
         publications: false,
         volunteering: false,
@@ -1060,7 +1066,9 @@ const ResumeEditor = () => {
       // Optional sections default overrides
       allPossibleOptionalIds.forEach(id => {
         if (visibility[id] === undefined) {
-          if (id === "internships" && !hasExperience) {
+          if (id === "internships" && fresher) {
+            visibility[id] = true;
+          } else if (id === "experience" && !fresher) {
             visibility[id] = true;
           } else {
             visibility[id] = false;
@@ -1072,10 +1080,10 @@ const ResumeEditor = () => {
         ? resume.decoratives.sectionOrder.split(",") 
         : null;
       if (!sectionOrderList) {
-        if (hasExperience) {
-          sectionOrderList = ["summary", "experience", "skills", "projects", "education", "certifications", "languages"];
+        if (fresher) {
+          sectionOrderList = ["summary", "education", "skills", "projects", "internships", "certifications"];
         } else {
-          sectionOrderList = ["summary", "education", "skills", "projects", "internships", "certifications", "languages"];
+          sectionOrderList = ["summary", "experience", "skills", "projects", "education", "certifications"];
         }
       }
 
@@ -1107,7 +1115,10 @@ const ResumeEditor = () => {
         "ATS Refine"
       );
 
-      const optionalSectionEntry = allPossibleOptionalIds.find(id => getSectionLabel(id) === activeSection);
+      const optionalSectionEntry = allPossibleOptionalIds.find(id => {
+        const isBuiltIn = ["experience", "education", "skills", "projects", "certifications", "summary"].includes(id);
+        return !isBuiltIn && getSectionLabel(id) === activeSection;
+      });
 
       const handleSectionVisibilityToggle = (secId, currentVal) => {
         const nextVisibility = { ...visibility, [secId]: !currentVal };

@@ -947,21 +947,27 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
   const commonProps = { showIcon: showIcons, dec, scanMode, templateId, fullName: resume.profileInfo?.fullName };
 
   // Parse Section Order
-  const hasExperience = (resume.workExperience || []).length > 0;
+  const isFresher = (res) => {
+    if (res?.decoratives?.fresherMode === "true") return true;
+    if (res?.decoratives?.fresherMode === "false") return false;
+    return (res?.workExperience || []).length === 0;
+  };
+  const fresher = isFresher(resume);
+
   let order = dec.sectionOrder ? dec.sectionOrder.split(",") : null;
   if (!order) {
-    if (hasExperience) {
-      order = ["summary", "experience", "skills", "projects", "education", "certifications", "languages"];
+    if (fresher) {
+      order = ["summary", "education", "skills", "projects", "internships", "certifications"];
     } else {
-      order = ["summary", "education", "skills", "projects", "internships", "certifications", "languages"];
+      order = ["summary", "experience", "skills", "projects", "education", "certifications"];
     }
   }
 
   // Add optional/custom sections to the order if they are not already present
   const allPossibleOptionalIds = [
-    "languages", "interests",
+    "experience", "internships", "languages", "interests",
     "achievements", "publications", "volunteering", "leadership", "hackathons", 
-    "openSource", "awards", "internships", "workshops", "coursework", 
+    "openSource", "awards", "workshops", "coursework", 
     "technicalProfiles", "extracurriculars", "patents", "researchExperience"
   ];
   allPossibleOptionalIds.forEach(id => {
@@ -975,11 +981,11 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
     summary: true,
     education: true,
     skills: true,
-    experience: hasExperience,
+    experience: !fresher,
     projects: true,
     certifications: true,
-    languages: true,
-    interests: false
+    interests: false,
+    languages: false
   };
   if (dec.sectionVisibility) {
     try {
@@ -989,7 +995,9 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
   // Optional sections are visible only if explicitly enabled
   allPossibleOptionalIds.forEach(id => {
     if (visibility[id] === undefined) {
-      if (id === "internships" && !hasExperience) {
+      if (id === "internships" && fresher) {
+        visibility[id] = true;
+      } else if (id === "experience" && !fresher) {
         visibility[id] = true;
       } else {
         visibility[id] = false; // default off for optional sections
