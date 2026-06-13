@@ -2330,15 +2330,56 @@ const ResumeEditor = () => {
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
-const Section = ({ title, children, onAdd }) => (
-  <section className="editor-section">
-    <div className="section-header">
-      <h2>{title}</h2>
-      {onAdd && <button className="btn-add" onClick={onAdd}>Add</button>}
-    </div>
-    {children}
-  </section>
-);
+const Section = ({ title, children, onAdd }) => {
+  const containerRef = useRef(null);
+  const prevCountRef = useRef(0);
+  const hasMountedRef = useRef(false);
+
+  useEffect(() => {
+    if (!onAdd || !containerRef.current) return;
+
+    const cards = containerRef.current.querySelectorAll(".list-card");
+    const currentCount = cards.length;
+
+    if (hasMountedRef.current) {
+      if (currentCount > prevCountRef.current) {
+        const lastCard = cards[cards.length - 1];
+        if (lastCard) {
+          lastCard.scrollIntoView({ behavior: "smooth", block: "nearest" });
+          setTimeout(() => {
+            const firstInput = lastCard.querySelector("input, textarea, select");
+            if (firstInput) {
+              firstInput.focus();
+            }
+          }, 100);
+        }
+      }
+    } else {
+      hasMountedRef.current = true;
+    }
+
+    prevCountRef.current = currentCount;
+  });
+
+  return (
+    <section className="editor-section" ref={containerRef}>
+      <div className="section-header">
+        <h2>{title}</h2>
+        {onAdd && <button className="btn-add" onClick={onAdd}>Add</button>}
+      </div>
+      {children}
+      {onAdd && (
+        <button 
+          className="btn-add-bottom" 
+          onClick={onAdd}
+          type="button"
+        >
+          + Add {title}
+        </button>
+      )}
+    </section>
+  );
+};
 
 const Field = ({ label, value, onChange, onBlur, textarea, sanitize, inputMode, maxLength, placeholder, hint }) => {
   const handleChange = (nextValue) => {

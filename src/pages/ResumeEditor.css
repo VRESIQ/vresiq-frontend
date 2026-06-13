@@ -1639,4 +1639,47 @@
   }
 }
 
+/* Global Bottom Add Button styles */
+.btn-add-bottom {
+  width: 100%;
+  min-height: 46px;
+  margin-top: 1.25rem;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--wash, #fcfbf7);
+  border: 1px dashed var(--line, #e6e4d9);
+  border-radius: var(--radius, 6px);
+  color: var(--ink, #111410);
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.btn-add-bottom:hover {
+  background: var(--paper, #fff);
+  border-color: var(--ink, #111410);
+  transform: translateY(-1px);
+}
+
+.btn-add-bottom:focus-visible {
+  outline: 2px solid #648c00;
+  outline-offset: 2px;
+}
+
+[data-theme="dark"] .btn-add-bottom {
+  background: var(--wash);
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+[data-theme="dark"] .btn-add-bottom:hover {
+  background: var(--paper);
+  border-color: var(--accent, #b8ff2c);
+}
+
 
