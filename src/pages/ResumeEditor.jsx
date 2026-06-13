@@ -1027,29 +1027,55 @@ const ResumeEditor = () => {
     );
   }
 
+      const hasExperience = (resume.workExperience || []).length > 0;
       const visibility = {
-        summary: true, education: true, skills: true, experience: true,
-        projects: true, certifications: true, interests: false, languages: false,
-        achievements: false, publications: false, volunteering: false, leadership: false,
-        hackathons: false, openSource: false, awards: false, internships: false,
-        workshops: false, coursework: false, extracurriculars: false, technicalProfiles: false,
-        patents: false, researchExperience: false
+        summary: true,
+        education: true,
+        skills: true,
+        experience: hasExperience,
+        projects: true,
+        certifications: true,
+        languages: true,
+        interests: false,
+        achievements: false,
+        publications: false,
+        volunteering: false,
+        leadership: false,
+        hackathons: false,
+        openSource: false,
+        awards: false,
+        internships: false,
+        workshops: false,
+        coursework: false,
+        extracurriculars: false,
+        technicalProfiles: false,
+        patents: false,
+        researchExperience: false
       };
       if (resume.decoratives?.sectionVisibility) {
         try {
           Object.assign(visibility, JSON.parse(resume.decoratives.sectionVisibility));
         } catch (e) {}
       }
+      // Optional sections default overrides
+      allPossibleOptionalIds.forEach(id => {
+        if (visibility[id] === undefined) {
+          if (id === "internships" && !hasExperience) {
+            visibility[id] = true;
+          } else {
+            visibility[id] = false;
+          }
+        }
+      });
 
       let sectionOrderList = resume.decoratives?.sectionOrder 
         ? resume.decoratives.sectionOrder.split(",") 
         : null;
       if (!sectionOrderList) {
-        const hasExperience = (resume.workExperience || []).length > 0;
         if (hasExperience) {
-          sectionOrderList = ["summary", "experience", "skills", "projects", "education", "certifications"];
+          sectionOrderList = ["summary", "experience", "skills", "projects", "education", "certifications", "languages"];
         } else {
-          sectionOrderList = ["summary", "education", "skills", "projects", "certifications"];
+          sectionOrderList = ["summary", "education", "skills", "projects", "internships", "certifications", "languages"];
         }
       }
 

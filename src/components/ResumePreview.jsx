@@ -947,13 +947,13 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
   const commonProps = { showIcon: showIcons, dec, scanMode, templateId, fullName: resume.profileInfo?.fullName };
 
   // Parse Section Order
+  const hasExperience = (resume.workExperience || []).length > 0;
   let order = dec.sectionOrder ? dec.sectionOrder.split(",") : null;
   if (!order) {
-    const hasExperience = (resume.workExperience || []).length > 0;
     if (hasExperience) {
-      order = ["summary", "experience", "skills", "projects", "education", "certifications"];
+      order = ["summary", "experience", "skills", "projects", "education", "certifications", "languages"];
     } else {
-      order = ["summary", "education", "skills", "projects", "certifications"];
+      order = ["summary", "education", "skills", "projects", "internships", "certifications", "languages"];
     }
   }
 
@@ -972,8 +972,14 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
 
   // Parse Section Visibility
   const visibility = {
-    summary: true, education: true, skills: true, experience: true,
-    projects: true, certifications: true, interests: false, languages: false
+    summary: true,
+    education: true,
+    skills: true,
+    experience: hasExperience,
+    projects: true,
+    certifications: true,
+    languages: true,
+    interests: false
   };
   if (dec.sectionVisibility) {
     try {
@@ -983,7 +989,11 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
   // Optional sections are visible only if explicitly enabled
   allPossibleOptionalIds.forEach(id => {
     if (visibility[id] === undefined) {
-      visibility[id] = false; // default off for optional sections
+      if (id === "internships" && !hasExperience) {
+        visibility[id] = true;
+      } else {
+        visibility[id] = false; // default off for optional sections
+      }
     }
   });
 
