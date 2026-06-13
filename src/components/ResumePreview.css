@@ -164,6 +164,8 @@
 a.rp-project-link,
 a.rp-custom-link,
 a.rp-inline-link,
+a.rp-cert-link,
+a.rp-tech-link,
 .rp-links a {
   color: #2563EB !important;
   text-decoration: underline !important;
@@ -176,6 +178,8 @@ a.rp-inline-link,
 a.rp-project-link:hover,
 a.rp-custom-link:hover,
 a.rp-inline-link:hover,
+a.rp-cert-link:hover,
+a.rp-tech-link:hover,
 .rp-links a:hover {
   color: #1d4ed8 !important;
   text-decoration: underline !important;
@@ -222,6 +226,8 @@ a.rp-inline-link:hover,
   a.rp-project-link,
   a.rp-custom-link,
   a.rp-inline-link,
+  a.rp-cert-link,
+  a.rp-tech-link,
   .rp-links a {
     color: #2563EB !important;
     text-decoration: underline !important;
@@ -1464,7 +1470,9 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   .rp-ats-contact a,
   .rp-links a,
   a.rp-project-link,
-  a.rp-custom-link {
+  a.rp-custom-link,
+  a.rp-cert-link,
+  a.rp-tech-link {
     display: inline !important;
     position: static !important;
     float: none !important;

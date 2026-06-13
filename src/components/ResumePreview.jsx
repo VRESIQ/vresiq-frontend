@@ -559,13 +559,18 @@ const ProjectsSection = ({ items = [], showIcon, dec, scanMode = false, sectionN
               <p className="rp-links" style={{ marginTop: "2px" }}>
                 {hasText(item.github) && (
                   <a href={getGithubUrl(item.github)} target="_blank" rel="noopener noreferrer" className="rp-project-link">
-                    {item.github.replace(/^(https?:\/\/)?(www\.)?github\.com\//i, "")}
+                    Github <span className="rp-link-arrow" style={{ fontSize: "0.85em", fontWeight: 400, display: "inline-block" }}>↗</span>
                   </a>
                 )}
                 {hasText(item.github) && hasText(item.liveDemo) && <span className="rp-links-divider"> · </span>}
                 {hasText(item.liveDemo) && (
                   <a href={formatUrl(item.liveDemo)} target="_blank" rel="noopener noreferrer" className="rp-project-link">
-                    {item.liveDemo.replace(/^(https?:\/\/)?(www\.)?/, "")}
+                    {(() => {
+                      const lower = item.liveDemo.toLowerCase();
+                      if (lower.includes("docs") || lower.includes("wiki") || lower.includes("documentation")) return "Documentation";
+                      if (lower.includes("demo") || lower.includes("app") || lower.includes("dashboard")) return "Live Demo";
+                      return "Website";
+                    })()} <span className="rp-link-arrow" style={{ fontSize: "0.85em", fontWeight: 400, display: "inline-block" }}>↗</span>
                   </a>
                 )}
               </p>
@@ -597,8 +602,6 @@ const CertsSection = ({ items = [], showIcon, dec, sectionNumber, hasBullets = t
                   rel="noopener noreferrer"
                   className="rp-cert-link"
                   style={{
-                    color: "inherit",
-                    textDecoration: "none",
                     fontWeight: 700
                   }}
                 >
@@ -758,23 +761,24 @@ const TechnicalProfilesSection = ({ title, items = [], dec, sectionNumber, fullN
           const url = item.date ? formatUrl(item.date) : "";
           const hasUrl = hasText(url);
           const platformName = String(item.title);
-          const username = item.subtitle ? String(item.subtitle) : "";
           return (
             <ItemWrapper key={i} className="rp-compact-item" style={{ marginBottom: "6px" }}>
               <div className="rp-compact-head" style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
                 <span>
-                  <strong style={{ fontWeight: 600 }}>{platformName}</strong>
-                  {username && (
-                    <>
-                      <span>: </span>
-                      {hasUrl ? (
-                        <a href={url} target="_blank" rel="noopener noreferrer" className="rp-custom-link">
-                          {username}
-                        </a>
-                      ) : (
-                        <span className="rp-compact-subtitle">{username}</span>
-                      )}
-                    </>
+                  {hasUrl ? (
+                    <a
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rp-tech-link"
+                      style={{
+                        fontWeight: 600
+                      }}
+                    >
+                      {platformName} <span className="rp-link-arrow" style={{ fontSize: "0.85em", fontWeight: 400, display: "inline-block" }}>↗</span>
+                    </a>
+                  ) : (
+                    <strong style={{ fontWeight: 600 }}>{platformName}</strong>
                   )}
                 </span>
                 {item.date && !isUrl(item.date) && (
