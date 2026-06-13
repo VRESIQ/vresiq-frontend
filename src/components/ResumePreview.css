@@ -158,19 +158,21 @@
   padding: 0 4px;
 }
 
-/* 2. BODY / CONTENT LINKS
-   Project links, live demos, publication URLs, custom section URLs.
-   Explicit class selectors only — does NOT bleed into generic section text. */
+/* 2. BODY / CONTENT LINKS (Unified Link Design System)
+   Applied globally across Projects, Certifications, Publications, Technical Profiles,
+   Portfolio, Github, Website, and LinkedIn links. */
 a.rp-project-link,
 a.rp-custom-link,
 a.rp-inline-link,
 a.rp-cert-link,
 a.rp-tech-link,
-.rp-links a {
+.rp-links a,
+.resume-link {
   color: #2563EB !important;
+  font-weight: 560 !important;
   text-decoration: underline !important;
   text-decoration-thickness: 0.5px !important;
-  text-underline-offset: 1.5px;
+  text-underline-offset: 1.5px !important;
   cursor: pointer !important;
   transition: color 0.15s ease;
 }
@@ -180,9 +182,19 @@ a.rp-custom-link:hover,
 a.rp-inline-link:hover,
 a.rp-cert-link:hover,
 a.rp-tech-link:hover,
-.rp-links a:hover {
+.rp-links a:hover,
+.resume-link:hover {
   color: #1d4ed8 !important;
   text-decoration: underline !important;
+}
+
+.rp-link-arrow {
+  color: inherit !important;
+  text-decoration: none !important;
+  display: inline-block;
+  margin-left: 2px;
+  font-size: 0.85em;
+  font-weight: 400 !important;
 }
 
 /* Hyperlink Style overrides */
@@ -228,7 +240,8 @@ a.rp-tech-link:hover,
   a.rp-inline-link,
   a.rp-cert-link,
   a.rp-tech-link,
-  .rp-links a {
+  .rp-links a,
+  .resume-link {
     color: #2563EB !important;
     text-decoration: underline !important;
     text-decoration-thickness: 0.5px !important;

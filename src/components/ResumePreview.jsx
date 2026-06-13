@@ -786,9 +786,6 @@ const TechnicalProfilesSection = ({ title, items = [], dec, sectionNumber, fullN
                       target="_blank"
                       rel="noopener noreferrer"
                       className="rp-tech-link"
-                      style={{
-                        fontWeight: 600
-                      }}
                     >
                       {platformName} <span className="rp-link-arrow" style={{ fontSize: "0.85em", fontWeight: 400 }}>↗</span>
                     </a>
