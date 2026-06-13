@@ -1529,7 +1529,7 @@ const ResumeEditor = () => {
           )}
 
           {activeSection === "Certifications" && (
-            <Section title="Certifications" onAdd={() => addListItem("certifications", { title: "", issuer: "", year: "" })}>
+            <Section title="Certifications" onAdd={() => addListItem("certifications", { title: "", issuer: "", year: "", certificateUrl: "" })}>
               <div style={{ marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
                 <input
                   type="checkbox"
@@ -1569,6 +1569,17 @@ const ResumeEditor = () => {
                   <Field label="Title" value={item.title} placeholder="AWS Cloud Practitioner" sanitize={sanitizeTextOnly} onChange={(v) => updateListItem("certifications", index, "title", v)} />
                   <Field label="Issuer" value={item.issuer} placeholder="Amazon Web Services" sanitize={sanitizeTextOnly} onChange={(v) => updateListItem("certifications", index, "issuer", v)} />
                   <Field label="Date" value={item.year} placeholder="March 2025" sanitize={sanitizeFlexibleDate} onChange={(v) => updateListItem("certifications", index, "year", v)} />
+                  <Field
+                    label="Certificate URL"
+                    value={item.certificateUrl || ""}
+                    placeholder="https://..."
+                    sanitize={sanitizeURL}
+                    onChange={(v) => updateListItem("certifications", index, "certificateUrl", v)}
+                    onBlur={(e) => {
+                      const normalized = normalizeUrl("website", e.target.value);
+                      updateListItem("certifications", index, "certificateUrl", normalized);
+                    }}
+                  />
                 </ListCard>
               ))}
             </Section>

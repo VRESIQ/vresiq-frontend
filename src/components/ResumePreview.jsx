@@ -590,7 +590,23 @@ const CertsSection = ({ items = [], showIcon, dec, sectionNumber, hasBullets = t
         {items.map((item, i) => (
           <ItemWrapper key={i} style={{ marginBottom: "4px" }}>
             <div className="rp-compact" style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-              <strong>{item.title || "Certification"}</strong>
+              {hasText(item.certificateUrl) ? (
+                <a
+                  href={formatUrl(item.certificateUrl)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rp-cert-link"
+                  style={{
+                    color: "inherit",
+                    textDecoration: "none",
+                    fontWeight: 700
+                  }}
+                >
+                  {item.title || "Certification"} <span className="rp-link-arrow" style={{ fontSize: "0.85em", fontWeight: 400, display: "inline-block" }}>↗</span>
+                </a>
+              ) : (
+                <strong>{item.title || "Certification"}</strong>
+              )}
               <span>{[item.issuer, item.year].filter(hasText).join(", ")}</span>
             </div>
           </ItemWrapper>
