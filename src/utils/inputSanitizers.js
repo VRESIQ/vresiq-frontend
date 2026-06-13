@@ -164,6 +164,24 @@ export const smartNormalizeUrl = (platform, raw) => {
     return `https://linkedin.com/in/${val}`;
   }
 
+  if (platform === "leetcode") {
+    if (/^http:\/\//i.test(val)) {
+      val = val.replace(/^http:\/\//i, "https://");
+    }
+    if (val.startsWith("https://")) return val;
+    if (val.startsWith("leetcode.com")) return `https://${val}`;
+    return `https://leetcode.com/${val}`;
+  }
+
+  if (platform === "hackerrank") {
+    if (/^http:\/\//i.test(val)) {
+      val = val.replace(/^http:\/\//i, "https://");
+    }
+    if (val.startsWith("https://")) return val;
+    if (val.startsWith("hackerrank.com")) return `https://${val}`;
+    return `https://hackerrank.com/${val}`;
+  }
+
   // Generic Website / URLs
   if (/^http:\/\//i.test(val)) {
     val = val.replace(/^http:\/\//i, "https://");

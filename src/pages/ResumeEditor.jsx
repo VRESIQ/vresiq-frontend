@@ -70,7 +70,7 @@ const emptyResume = {
   fontPairing: null,
   decoratives: {},
   profileInfo: { fullName: "", designation: "", summary: "", ProfilePreviewUrl: "" },
-  contactInfo: { email: "", phone: "", location: "", linkedIn: "", github: "", website: "" },
+  contactInfo: { email: "", phone: "", location: "", linkedIn: "", github: "", website: "", leetCode: "", hackerRank: "" },
   workExperience: [],
   education: [],
   skills: [],
@@ -107,9 +107,10 @@ const cleanURL = (url) => {
 const normalizeUrl = smartNormalizeUrl;
 
 const allPossibleOptionalIds = [
+  "languages", "interests",
   "achievements", "publications", "volunteering", "leadership", "hackathons", 
   "openSource", "awards", "internships", "workshops", "coursework", 
-  "extracurriculars", "technicalProfiles", "patents", "researchExperience"
+  "technicalProfiles", "extracurriculars", "patents", "researchExperience"
 ];
 
 const SECTION_FIELDS_CONFIG = {
@@ -1028,7 +1029,7 @@ const ResumeEditor = () => {
 
       const visibility = {
         summary: true, education: true, skills: true, experience: true,
-        projects: true, certifications: true, interests: true, languages: true,
+        projects: true, certifications: true, interests: false, languages: false,
         achievements: false, publications: false, volunteering: false, leadership: false,
         hackathons: false, openSource: false, awards: false, internships: false,
         workshops: false, coursework: false, extracurriculars: false, technicalProfiles: false,
@@ -1044,10 +1045,11 @@ const ResumeEditor = () => {
         ? resume.decoratives.sectionOrder.split(",") 
         : null;
       if (!sectionOrderList) {
-        if (resume.decoratives?.fresherMode === "true") {
-          sectionOrderList = ["summary", "education", "projects", "skills", "certifications", "languages", "interests", "experience"];
+        const hasExperience = (resume.workExperience || []).length > 0;
+        if (hasExperience) {
+          sectionOrderList = ["summary", "experience", "skills", "projects", "education", "certifications"];
         } else {
-          sectionOrderList = ["summary", "education", "skills", "experience", "projects", "certifications", "interests", "languages"];
+          sectionOrderList = ["summary", "education", "skills", "projects", "certifications"];
         }
       }
 
@@ -1064,7 +1066,7 @@ const ResumeEditor = () => {
       ];
 
       sectionOrderList.forEach(secId => {
-        if (visibility[secId] !== false && secId !== "summary") {
+        if (visibility[secId] !== false) {
           const label = getSectionLabel(secId);
           if (!activeSections.includes(label)) {
             activeSections.push(label);
@@ -1252,6 +1254,11 @@ const ResumeEditor = () => {
                 </div>
                 {imageError && <p className="field-error">{imageError}</p>}
               </div>
+            </Section>
+          )}
+
+          {activeSection === "Summary" && (
+            <Section title="Summary">
               <Field 
                 label="Summary" 
                 value={resume.profileInfo.summary} 
@@ -1280,6 +1287,8 @@ const ResumeEditor = () => {
               <ContactField platform="linkedin" label="LinkedIn" value={resume.contactInfo.linkedIn} onChange={(v) => updateField("contactInfo", "linkedIn", v)} placeholder="linkedin.com/in/username" hint="Optional but recommended." />
               <ContactField platform="github"   label="GitHub"   value={resume.contactInfo.github}   onChange={(v) => updateField("contactInfo", "github", v)} placeholder="github.com/username" hint="Add if you have projects." />
               <ContactField platform="website"  label="Website"  value={resume.contactInfo.website}  onChange={(v) => updateField("contactInfo", "website", v)} />
+              <ContactField platform="leetcode" label="LeetCode" value={resume.contactInfo.leetCode || ""} onChange={(v) => updateField("contactInfo", "leetCode", v)} placeholder="leetcode.com/username" hint="Showcase your problem solving profile." />
+              <ContactField platform="hackerrank" label="HackerRank" value={resume.contactInfo.hackerRank || ""} onChange={(v) => updateField("contactInfo", "hackerRank", v)} placeholder="hackerrank.com/username" hint="Showcase your coding credentials." />
             </Section>
           )}
 

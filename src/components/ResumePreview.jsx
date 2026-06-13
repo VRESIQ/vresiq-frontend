@@ -178,6 +178,26 @@ const buildContactEntries = (c = {}) => {
     });
   }
 
+  if (hasText(c.leetCode)) {
+    entries.push({
+      key: "leetcode",
+      href: formatUrl(c.leetCode),
+      text: "LeetCode",
+      className: "rp-contact-link rp-contact-link-leetcode",
+      target: "_blank",
+    });
+  }
+
+  if (hasText(c.hackerRank)) {
+    entries.push({
+      key: "hackerrank",
+      href: formatUrl(c.hackerRank),
+      text: "HackerRank",
+      className: "rp-contact-link rp-contact-link-hackerrank",
+      target: "_blank",
+    });
+  }
+
   return entries;
 };
 
@@ -929,58 +949,20 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
   // Parse Section Order
   let order = dec.sectionOrder ? dec.sectionOrder.split(",") : null;
   if (!order) {
-    if (templateId === "ats_lead") {
-      order = [
-        "summary",
-        "skills",
-        "experience",
-        "projects",
-        "education",
-        "certifications",
-        "languages",
-        "interests"
-      ];
-    } else if (templateId === "ats_intern") {
-      order = [
-        "summary",
-        "education",
-        "projects",
-        "skills",
-        "experience",
-        "certifications",
-        "languages",
-        "interests"
-      ];
-    } else if (dec.fresherMode === "true") {
-      order = [
-        "summary",
-        "education",
-        "projects",
-        "skills",
-        "certifications",
-        "languages",
-        "interests",
-        "experience"
-      ];
+    const hasExperience = (resume.workExperience || []).length > 0;
+    if (hasExperience) {
+      order = ["summary", "experience", "skills", "projects", "education", "certifications"];
     } else {
-      order = [
-        "summary",
-        "education",
-        "skills",
-        "experience",
-        "projects",
-        "certifications",
-        "interests",
-        "languages"
-      ];
+      order = ["summary", "education", "skills", "projects", "certifications"];
     }
   }
 
   // Add optional/custom sections to the order if they are not already present
   const allPossibleOptionalIds = [
+    "languages", "interests",
     "achievements", "publications", "volunteering", "leadership", "hackathons", 
     "openSource", "awards", "internships", "workshops", "coursework", 
-    "extracurriculars", "technicalProfiles", "patents", "researchExperience"
+    "technicalProfiles", "extracurriculars", "patents", "researchExperience"
   ];
   allPossibleOptionalIds.forEach(id => {
     if (!order.includes(id)) {
@@ -991,7 +973,7 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
   // Parse Section Visibility
   const visibility = {
     summary: true, education: true, skills: true, experience: true,
-    projects: true, certifications: true, interests: true, languages: true
+    projects: true, certifications: true, interests: false, languages: false
   };
   if (dec.sectionVisibility) {
     try {

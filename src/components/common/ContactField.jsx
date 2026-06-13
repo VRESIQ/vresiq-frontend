@@ -29,6 +29,8 @@ const icons = {
   github:   "</>",
   website:  "web",
   location: "loc",
+  leetcode: "lc",
+  hackerrank: "hr",
 };
 
 const placeholders = {
@@ -37,6 +39,8 @@ const placeholders = {
   github:   "github.com/username",
   website:  "yoursite.com",
   location: "City, Country",
+  leetcode: "leetcode.com/username",
+  hackerrank: "hackerrank.com/username",
 };
 
 const ContactField = ({ platform, label, value = "", onChange, placeholder, hint }) => {
@@ -51,7 +55,7 @@ const ContactField = ({ platform, label, value = "", onChange, placeholder, hint
     let val = e.target.value;
     if (platform === "email") {
       val = sanitizeEmail(val);
-    } else if (platform === "linkedin" || platform === "github" || platform === "website") {
+    } else if (platform === "linkedin" || platform === "github" || platform === "website" || platform === "leetcode" || platform === "hackerrank") {
       val = sanitizeURL(val);
     } else if (platform === "location") {
       val = sanitizeLocation(val);
