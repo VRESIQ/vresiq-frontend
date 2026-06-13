@@ -559,7 +559,7 @@ const ProjectsSection = ({ items = [], showIcon, dec, scanMode = false, sectionN
               <p className="rp-links" style={{ marginTop: "2px" }}>
                 {hasText(item.github) && (
                   <a href={getGithubUrl(item.github)} target="_blank" rel="noopener noreferrer" className="rp-project-link">
-                    Github <span className="rp-link-arrow" style={{ fontSize: "0.85em", fontWeight: 400, display: "inline-block" }}>↗</span>
+                    Github
                   </a>
                 )}
                 {hasText(item.github) && hasText(item.liveDemo) && <span className="rp-links-divider"> · </span>}
@@ -570,7 +570,7 @@ const ProjectsSection = ({ items = [], showIcon, dec, scanMode = false, sectionN
                       if (lower.includes("docs") || lower.includes("wiki") || lower.includes("documentation")) return "Documentation";
                       if (lower.includes("demo") || lower.includes("app") || lower.includes("dashboard")) return "Live Demo";
                       return "Website";
-                    })()} <span className="rp-link-arrow" style={{ fontSize: "0.85em", fontWeight: 400, display: "inline-block" }}>↗</span>
+                    })()}
                   </a>
                 )}
               </p>
@@ -605,7 +605,7 @@ const CertsSection = ({ items = [], showIcon, dec, sectionNumber, hasBullets = t
                     fontWeight: 700
                   }}
                 >
-                  {item.title || "Certification"} <span className="rp-link-arrow" style={{ fontSize: "0.85em", fontWeight: 400, display: "inline-block" }}>↗</span>
+                  {item.title || "Certification"} <span className="rp-link-arrow" style={{ fontSize: "0.85em", fontWeight: 400 }}>↗</span>
                 </a>
               ) : (
                 <strong>{item.title || "Certification"}</strong>
@@ -775,7 +775,7 @@ const TechnicalProfilesSection = ({ title, items = [], dec, sectionNumber, fullN
                         fontWeight: 600
                       }}
                     >
-                      {platformName} <span className="rp-link-arrow" style={{ fontSize: "0.85em", fontWeight: 400, display: "inline-block" }}>↗</span>
+                      {platformName}
                     </a>
                   ) : (
                     <strong style={{ fontWeight: 600 }}>{platformName}</strong>

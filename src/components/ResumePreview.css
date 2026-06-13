@@ -2224,3 +2224,11 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-header-tech {
   display: flex;
 }
+
+/* Certifications redirect arrow styling */
+.rp-cert-link .rp-link-arrow {
+  color: inherit !important;
+  text-decoration: inherit !important;
+  display: inline !important;
+}
+
