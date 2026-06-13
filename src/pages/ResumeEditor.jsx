@@ -1038,25 +1038,8 @@ const ResumeEditor = () => {
         summary: true,
         education: true,
         skills: true,
-        experience: !fresher,
         projects: true,
-        certifications: true,
-        interests: false,
-        languages: false,
-        achievements: false,
-        publications: false,
-        volunteering: false,
-        leadership: false,
-        hackathons: false,
-        openSource: false,
-        awards: false,
-        internships: false,
-        workshops: false,
-        coursework: false,
-        extracurriculars: false,
-        technicalProfiles: false,
-        patents: false,
-        researchExperience: false
+        certifications: true
       };
       if (resume.decoratives?.sectionVisibility) {
         try {

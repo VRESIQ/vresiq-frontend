@@ -981,11 +981,8 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
     summary: true,
     education: true,
     skills: true,
-    experience: !fresher,
     projects: true,
-    certifications: true,
-    interests: false,
-    languages: false
+    certifications: true
   };
   if (dec.sectionVisibility) {
     try {
