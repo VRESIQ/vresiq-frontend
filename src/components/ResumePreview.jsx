@@ -619,9 +619,6 @@ const CertsSection = ({ items = [], showIcon, dec, sectionNumber, hasBullets = t
                   target="_blank"
                   rel="noopener noreferrer"
                   className="rp-cert-link"
-                  style={{
-                    fontWeight: 700
-                  }}
                 >
                   {item.title || "Certification"} <span className="rp-link-arrow" style={{ fontSize: "0.85em", fontWeight: 400 }}>↗</span>
                 </a>
