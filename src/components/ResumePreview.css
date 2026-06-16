@@ -210,6 +210,25 @@ a.rp-tech-link:hover,
   text-decoration: underline dotted !important;
 }
 
+/* Contact/header links Professional Mode screen overrides */
+.resume-preview[data-lstyle="professional"] .rp-contact a,
+.resume-preview[data-lstyle="professional"] .rp-ats-contact a,
+.resume-preview[data-lstyle="professional"] .rp-contact-link {
+  color: inherit !important;
+  text-decoration: none !important;
+  border-bottom: none !important;
+  transition: opacity 0.2s ease, text-decoration 0.2s ease;
+}
+.resume-preview[data-lstyle="professional"] .rp-contact a:hover,
+.resume-preview[data-lstyle="professional"] .rp-ats-contact a:hover,
+.resume-preview[data-lstyle="professional"] .rp-contact-link:hover {
+  color: inherit !important;
+  opacity: 0.75 !important;
+  text-decoration: underline !important;
+  text-decoration-style: solid !important;
+  text-decoration-thickness: 1px !important;
+}
+
 @media print {
   /* Hyperlink Style overrides for print */
   .resume-preview[data-lstyle="professional"] a {
@@ -218,6 +237,16 @@ a.rp-tech-link:hover,
     text-decoration-color: var(--accent-readable, #1a5fb4) !important;
     text-decoration-thickness: 0.8px !important;
     text-underline-offset: 1.5px;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Contact/header links Professional Mode print overrides */
+  .resume-preview[data-lstyle="professional"] .rp-contact a,
+  .resume-preview[data-lstyle="professional"] .rp-ats-contact a,
+  .resume-preview[data-lstyle="professional"] .rp-contact-link {
+    color: inherit !important;
+    text-decoration: none !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
@@ -804,18 +833,9 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   }
 }
 
-/* Location link — standard hyperlink styling (Google Maps clickable) */
-.rp-contact a.rp-contact-item-text,
-.rp-ats-contact a.rp-contact-item-text {
-  color: #2563EB !important;
-  text-decoration: underline !important;
-  text-decoration-thickness: 0.5px !important;
-  text-underline-offset: 1.5px;
-  cursor: pointer !important;
-  -webkit-print-color-adjust: exact !important;
-  print-color-adjust: exact !important;
-}
-/* Span fallback (non-clickable location) */
+/* Location link uses shared rp-contact-link rules. Span fallback for non-clickable location: */
+.rp-contact span.rp-contact-link,
+.rp-ats-contact span.rp-contact-link,
 .rp-contact span.rp-contact-item-text,
 .rp-ats-contact span.rp-contact-item-text {
   color: inherit;

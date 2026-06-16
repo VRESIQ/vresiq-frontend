@@ -13,6 +13,68 @@ import { sanitizeStrictText, sanitizeYear, sanitizeName, sanitizeRole, sanitizeU
 import { computeAtsReport } from "../utils/atsScorer";
 import "./ResumeEditor.css";
 
+const CustomizableContactField = ({ platform, label, value, onChange, placeholder, hint, isPhone = false }) => {
+  const data = typeof value === "object" && value !== null ? value : { value: value || "", displayText: "" };
+  
+  const handleValueChange = (newVal) => {
+    onChange({ ...data, value: newVal });
+  };
+  
+  const handleDisplayChange = (e) => {
+    onChange({ ...data, displayText: e.target.value });
+  };
+
+  return (
+    <div className="customizable-contact-field" style={{ marginBottom: "1.25rem", padding: "0.75rem", border: "1px solid var(--line)", borderRadius: "8px", background: "var(--paper-subtle, rgba(255,255,255,0.4))" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+        {isPhone ? (
+          <div className="field" style={{ margin: 0 }}>
+            <label style={{ fontSize: "0.85rem", fontWeight: "600", color: "var(--ink)", display: "block", marginBottom: "0.25rem" }}>{label}</label>
+            <PhoneInput
+              value={data.value}
+              onChange={handleValueChange}
+              placeholder={placeholder || "+91 9876543210"}
+              hint={hint}
+            />
+          </div>
+        ) : (
+          <ContactField
+            platform={platform}
+            label={label}
+            value={data.value}
+            onChange={handleValueChange}
+            placeholder={placeholder}
+            hint={hint}
+          />
+        )}
+        
+        <div className="field" style={{ margin: 0 }}>
+          <label style={{ fontSize: "0.75rem", fontWeight: "550", color: "var(--muted)", display: "block", marginBottom: "0.25rem" }}>
+            Display As
+          </label>
+          <input
+            type="text"
+            className="contact-input"
+            value={data.displayText || ""}
+            onChange={handleDisplayChange}
+            placeholder={`e.g. ${label || platform}`}
+            style={{ 
+              width: "100%", 
+              height: "36px", 
+              padding: "0 0.75rem", 
+              borderRadius: "6px", 
+              border: "1px solid var(--line)", 
+              fontSize: "0.85rem", 
+              background: "var(--paper)",
+              color: "var(--ink)"
+            }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const SECTIONS = [
   "Profile", "Contact", "Experience", "Education",
   "Skills", "Projects", "Certifications", "Languages", "Interests", "Customization", "ATS Refine"
@@ -419,7 +481,16 @@ const ResumeEditor = () => {
           contactInfo: { 
             ...emptyResume.contactInfo, 
             ...data.contactInfo,
-            location: data.contactInfo?.location ? data.contactInfo.location.replace(/^(https?:\/\/)?(www\.)?/i, "") : ""
+            location: (() => {
+              const loc = data.contactInfo?.location;
+              if (loc && typeof loc === "object") {
+                return {
+                  value: loc.value ? loc.value.replace(/^(https?:\/\/)?(www\.)?/i, "") : "",
+                  displayText: loc.displayText || ""
+                };
+              }
+              return loc ? loc.replace(/^(https?:\/\/)?(www\.)?/i, "") : "";
+            })()
           },
           workExperience: (data.workExperience || []).map(item => ({
             ...item,
@@ -1297,22 +1368,12 @@ const ResumeEditor = () => {
 
           {activeSection === "Contact" && (
             <Section title="Contact">
-              <ContactField platform="email"    label="Email"    value={resume.contactInfo.email}    onChange={(v) => updateField("contactInfo", "email", v)} placeholder="name@example.com" hint="Use a professional email." />
-              <div className="field">
-                <label>Phone</label>
-                <PhoneInput
-                  value={resume.contactInfo.phone}
-                  onChange={(v) => updateField("contactInfo", "phone", v)}
-                  placeholder="+91 9876543210"
-                  hint="Include country code if needed."
-                />
-              </div>
-              <ContactField platform="location" label="Location" value={resume.contactInfo.location} onChange={(v) => updateField("contactInfo", "location", v)} placeholder="Hyderabad, India" hint="City and country are enough." />
-              <ContactField platform="linkedin" label="LinkedIn" value={resume.contactInfo.linkedIn} onChange={(v) => updateField("contactInfo", "linkedIn", v)} placeholder="linkedin.com/in/username" hint="Optional but recommended." />
-              <ContactField platform="github"   label="GitHub"   value={resume.contactInfo.github}   onChange={(v) => updateField("contactInfo", "github", v)} placeholder="github.com/username" hint="Add if you have projects." />
-              <ContactField platform="website"  label="Website"  value={resume.contactInfo.website}  onChange={(v) => updateField("contactInfo", "website", v)} />
-              <ContactField platform="leetcode" label="LeetCode" value={resume.contactInfo.leetCode || ""} onChange={(v) => updateField("contactInfo", "leetCode", v)} placeholder="leetcode.com/username" hint="Showcase your problem solving profile." />
-              <ContactField platform="hackerrank" label="HackerRank" value={resume.contactInfo.hackerRank || ""} onChange={(v) => updateField("contactInfo", "hackerRank", v)} placeholder="hackerrank.com/username" hint="Showcase your coding credentials." />
+              <CustomizableContactField platform="email"    label="Email"    value={resume.contactInfo.email}    onChange={(v) => updateField("contactInfo", "email", v)} placeholder="name@example.com" hint="Use a professional email." />
+              <CustomizableContactField platform="phone"    label="Phone"    value={resume.contactInfo.phone}    onChange={(v) => updateField("contactInfo", "phone", v)} placeholder="+91 9876543210" hint="Include country code if needed." isPhone={true} />
+              <CustomizableContactField platform="location" label="Location" value={resume.contactInfo.location} onChange={(v) => updateField("contactInfo", "location", v)} placeholder="Hyderabad, India" hint="City and country are enough." />
+              <CustomizableContactField platform="linkedin" label="LinkedIn" value={resume.contactInfo.linkedIn} onChange={(v) => updateField("contactInfo", "linkedIn", v)} placeholder="linkedin.com/in/username" hint="Optional but recommended." />
+              <CustomizableContactField platform="github"   label="GitHub"   value={resume.contactInfo.github}   onChange={(v) => updateField("contactInfo", "github", v)} placeholder="github.com/username" hint="Add if you have projects." />
+              <CustomizableContactField platform="website"  label="Website"  value={resume.contactInfo.website}  onChange={(v) => updateField("contactInfo", "website", v)} />
             </Section>
           )}
 

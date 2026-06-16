@@ -3,7 +3,13 @@ import { loadTemplateFont, getFontVars, FONT_MAP } from "../utils/fonts";
 import "./ResumePreview.css";
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
-const hasText = (v) => String(v || "").trim().length > 0;
+const hasText = (v) => {
+  if (v === null || v === undefined) return false;
+  if (typeof v === "object") {
+    return String(v.value || "").trim().length > 0;
+  }
+  return String(v || "").trim().length > 0;
+};
 
 const cleanEmail = (email) => {
   if (!email) return "";
@@ -116,84 +122,83 @@ const buildContactEntries = (c = {}) => {
   const entries = [];
 
   if (hasText(c.email)) {
-    const cleaned = cleanEmail(c.email);
+    const emailObj = typeof c.email === "object" && c.email !== null ? c.email : { value: c.email, displayText: "" };
+    const emailVal = emailObj.value || "";
+    const emailText = emailObj.displayText || cleanEmail(emailVal);
+    const cleaned = cleanEmail(emailVal);
     entries.push({
       key: "email",
       href: `mailto:${cleaned}`,
-      text: cleaned,
+      text: emailText,
       className: "rp-contact-link rp-contact-link-email",
       target: undefined,
     });
   }
 
   if (hasText(c.phone)) {
-    const cleaned = cleanPhone(c.phone);
+    const phoneObj = typeof c.phone === "object" && c.phone !== null ? c.phone : { value: c.phone, displayText: "" };
+    const phoneVal = phoneObj.value || "";
+    const phoneText = phoneObj.displayText || cleanPhone(phoneVal);
+    const cleaned = cleanPhone(phoneVal);
     entries.push({
       key: "phone",
-      href: `tel:${formatPhone(c.phone)}`,
-      text: cleaned,
+      href: `tel:${formatPhone(phoneVal)}`,
+      text: phoneText,
       className: "rp-contact-link rp-contact-link-phone",
       target: undefined,
     });
   }
 
   if (hasText(c.location)) {
-    const location = c.location.trim().replace(/^(https?:\/\/)?(www\.)?/i, "");
+    const locObj = typeof c.location === "object" && c.location !== null ? c.location : { value: c.location, displayText: "" };
+    const locVal = locObj.value || "";
+    const locText = locObj.displayText || locVal.trim().replace(/^(https?:\/\/)?(www\.)?/i, "");
+    const isValUrl = /^https?:\/\//i.test(locVal.trim());
+    const href = isValUrl ? locVal.trim() : getLocationUrl(locVal);
     entries.push({
       key: "location",
-      href: getLocationUrl(location),
-      text: location,
-      className: "rp-contact-item-text",
+      href: href,
+      text: locText,
+      className: "rp-contact-link rp-contact-link-location",
       target: "_blank",
     });
   }
 
   if (hasText(c.linkedIn)) {
+    const liObj = typeof c.linkedIn === "object" && c.linkedIn !== null ? c.linkedIn : { value: c.linkedIn, displayText: "" };
+    const liVal = liObj.value || "";
+    const liText = liObj.displayText || "LinkedIn";
     entries.push({
       key: "linkedin",
-      href: getLinkedInUrl(c.linkedIn),
-      text: "LinkedIn",
+      href: getLinkedInUrl(liVal),
+      text: liText,
       className: "rp-contact-link rp-contact-link-linkedin",
       target: "_blank",
     });
   }
 
   if (hasText(c.github)) {
+    const ghObj = typeof c.github === "object" && c.github !== null ? c.github : { value: c.github, displayText: "" };
+    const ghVal = ghObj.value || "";
+    const ghText = ghObj.displayText || "GitHub";
     entries.push({
       key: "github",
-      href: getGithubUrl(c.github),
-      text: "GitHub",
+      href: getGithubUrl(ghVal),
+      text: ghText,
       className: "rp-contact-link rp-contact-link-github",
       target: "_blank",
     });
   }
 
   if (hasText(c.website)) {
+    const webObj = typeof c.website === "object" && c.website !== null ? c.website : { value: c.website, displayText: "" };
+    const webVal = webObj.value || "";
+    const webText = webObj.displayText || "Website";
     entries.push({
       key: "website",
-      href: formatUrl(c.website),
-      text: "Website",
+      href: formatUrl(webVal),
+      text: webText,
       className: "rp-contact-link rp-contact-link-website",
-      target: "_blank",
-    });
-  }
-
-  if (hasText(c.leetCode)) {
-    entries.push({
-      key: "leetcode",
-      href: formatUrl(c.leetCode),
-      text: "LeetCode",
-      className: "rp-contact-link rp-contact-link-leetcode",
-      target: "_blank",
-    });
-  }
-
-  if (hasText(c.hackerRank)) {
-    entries.push({
-      key: "hackerrank",
-      href: formatUrl(c.hackerRank),
-      text: "HackerRank",
-      className: "rp-contact-link rp-contact-link-hackerrank",
       target: "_blank",
     });
   }
@@ -1065,7 +1070,13 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
 
 // Helper to check if a section actually has renderable content
 const hasSectionContent = (sectionId, resume) => {
-  const hasText = (v) => String(v || "").trim().length > 0;
+  const hasText = (v) => {
+    if (v === null || v === undefined) return false;
+    if (typeof v === "object") {
+      return String(v.value || "").trim().length > 0;
+    }
+    return String(v || "").trim().length > 0;
+  };
   switch (sectionId) {
     case "summary":
       return hasText(resume.profileInfo?.summary);

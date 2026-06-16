@@ -149,7 +149,20 @@ const MONTHS = {
   jul: 7, aug: 8, sep: 9, oct: 10, nov: 11, dec: 12
 };
 
-const asText = (v) => String(v || "").trim();
+const asText = (v) => {
+  if (v && typeof v === "object") {
+    return String(valueOrRaw(v.value) || "").trim();
+  }
+  return String(valueOrRaw(v) || "").trim();
+};
+
+const valueOrRaw = (val) => {
+  if (val && typeof val === "object") {
+    return val.value !== undefined ? val.value : val;
+  }
+  return val;
+};
+
 const hasText = (v) => asText(v).length > 0;
 const short = (v, max = 120) => {
   const t = asText(v);
@@ -204,7 +217,12 @@ const allText = (resume) => {
   const interests = resume.interests || [];
 
   text.push(profile.fullName, profile.designation, profile.summary);
-  text.push(contact.location, contact.linkedIn, contact.github, contact.website);
+  text.push(
+    asText(contact.location),
+    asText(contact.linkedIn),
+    asText(contact.github),
+    asText(contact.website)
+  );
   experience.forEach((j) => text.push(j.company, j.role, j.description));
   education.forEach((e) => text.push(e.degree, e.institution));
   skills.forEach((s) => text.push(s.name));
