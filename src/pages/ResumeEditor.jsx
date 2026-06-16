@@ -25,11 +25,11 @@ const CustomizableContactField = ({ platform, label, value, onChange, placeholde
   };
 
   return (
-    <div className="customizable-contact-field" style={{ marginBottom: "1.25rem", padding: "0.75rem", border: "1px solid var(--line)", borderRadius: "8px", background: "var(--paper-subtle, rgba(255,255,255,0.4))" }}>
-      <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+    <div className="customizable-contact-field">
+      <div className="customizable-contact-field-container">
         {isPhone ? (
-          <div className="field" style={{ margin: 0 }}>
-            <label style={{ fontSize: "0.85rem", fontWeight: "600", color: "var(--ink)", display: "block", marginBottom: "0.25rem" }}>{label}</label>
+          <div className="field-phone-label-wrap">
+            <label className="phone-label-custom">{label}</label>
             <PhoneInput
               value={data.value}
               onChange={handleValueChange}
@@ -48,26 +48,16 @@ const CustomizableContactField = ({ platform, label, value, onChange, placeholde
           />
         )}
         
-        <div className="field" style={{ margin: 0 }}>
-          <label style={{ fontSize: "0.75rem", fontWeight: "550", color: "var(--muted)", display: "block", marginBottom: "0.25rem" }}>
+        <div className="display-as-field">
+          <label className="display-as-label">
             Display As
           </label>
           <input
             type="text"
-            className="contact-input"
+            className="contact-display-as-input"
             value={data.displayText || ""}
             onChange={handleDisplayChange}
             placeholder={`e.g. ${label || platform}`}
-            style={{ 
-              width: "100%", 
-              height: "36px", 
-              padding: "0 0.75rem", 
-              borderRadius: "6px", 
-              border: "1px solid var(--line)", 
-              fontSize: "0.85rem", 
-              background: "var(--paper)",
-              color: "var(--ink)"
-            }}
           />
         </div>
       </div>

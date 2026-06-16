@@ -7,19 +7,30 @@
 .phone-input-wrap {
   position: relative;
   display: flex;
-  gap: 0;
+  align-items: stretch;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255,254,249,0.72);
+  overflow: hidden;
+  transition: border-color 0.15s, box-shadow 0.15s;
   margin-top: 0.4rem;
+}
+
+.phone-input-wrap:focus-within {
+  border-color: rgba(100,140,0,0.6);
+  box-shadow: 0 0 0 3px rgba(184,255,44,0.16);
 }
 
 .phone-country-btn {
   display: flex;
   align-items: center;
   gap: 5px;
-  min-height: 46px;
+  min-height: 44px;
+  height: 44px;
   padding: 0 0.75rem;
-  border: 1px solid var(--line);
-  border-right: none;
-  border-radius: var(--radius) 0 0 var(--radius);
+  border: none;
+  border-right: 1px solid var(--line);
+  border-radius: 0;
   background: var(--wash);
   cursor: pointer;
   font-size: 0.88rem;
@@ -34,11 +45,12 @@
 
 .phone-number-input {
   flex: 1;
-  min-height: 46px;
+  min-height: 44px;
+  height: 44px;
   padding: 0.7rem 0.85rem;
-  border: 1px solid var(--line);
-  border-radius: 0 var(--radius) var(--radius) 0;
-  background: rgba(255,254,249,0.72);
+  border: none;
+  border-radius: 0;
+  background: transparent;
   color: var(--ink);
   font: inherit;
   font-size: 0.9rem;
@@ -46,8 +58,8 @@
 
 .phone-number-input:focus {
   outline: none;
-  border-color: rgba(100,140,0,0.6);
-  box-shadow: 0 0 0 3px rgba(184,255,44,0.16);
+  border: none;
+  box-shadow: none;
 }
 
 .phone-dropdown {
@@ -226,10 +238,20 @@
    DARK MODE — SmartInputs overrides
    ═══════════════════════════════════════════════════════════════ */
 
+/* Phone input wrap */
+[data-theme="dark"] .phone-input-wrap {
+  background: var(--wash) !important;
+  border-color: rgba(232, 230, 220, 0.14) !important;
+}
+[data-theme="dark"] .phone-input-wrap:focus-within {
+  border-color: rgba(184, 255, 44, 0.4) !important;
+  box-shadow: 0 0 0 3px rgba(184, 255, 44, 0.1) !important;
+}
+
 /* Phone country button */
 [data-theme="dark"] .phone-country-btn {
   background: var(--wash-2) !important;
-  border-color: rgba(232, 230, 220, 0.14) !important;
+  border-color: rgba(232, 230, 220, 0.1) !important;
   color: var(--ink) !important;
 }
 [data-theme="dark"] .phone-country-btn:hover {
@@ -238,8 +260,8 @@
 
 /* Phone number input */
 [data-theme="dark"] .phone-number-input {
-  background: var(--wash) !important;
-  border-color: rgba(232, 230, 220, 0.14) !important;
+  background: transparent !important;
+  border: none !important;
   color: var(--ink) !important;
 }
 
@@ -309,6 +331,77 @@
     width: 100% !important;
     max-width: calc(100vw - 2.5rem) !important;
   }
+}
+
+/* ── Customizable Contact Field ──────────────────────────────── */
+.customizable-contact-field {
+  margin-bottom: 1.25rem;
+  padding: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--wash);
+}
+
+.customizable-contact-field-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.field-phone-label-wrap {
+  margin: 0;
+}
+
+.phone-label-custom {
+  font-size: 0.82rem;
+  font-weight: 650;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.display-as-field {
+  margin: 0;
+}
+
+.display-as-label {
+  font-size: 0.75rem;
+  font-weight: 550;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.contact-display-as-input {
+  width: 100%;
+  height: 36px;
+  padding: 0 0.75rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  font-size: 0.85rem;
+  background: rgba(255,254,249,0.72);
+  color: var(--ink);
+  outline: none;
+}
+
+.contact-display-as-input:focus {
+  border-color: rgba(100,140,0,0.6);
+}
+
+/* Dark theme overrides */
+[data-theme="dark"] .customizable-contact-field {
+  background: var(--wash-2) !important;
+  border-color: rgba(232, 230, 220, 0.14) !important;
+}
+
+[data-theme="dark"] .contact-display-as-input {
+  background: var(--wash) !important;
+  border-color: rgba(232, 230, 220, 0.14) !important;
+  color: var(--ink) !important;
+}
+
+[data-theme="dark"] .contact-display-as-input:focus {
+  border-color: rgba(184, 255, 44, 0.4) !important;
 }
 
 
