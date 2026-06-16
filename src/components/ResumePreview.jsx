@@ -167,7 +167,7 @@ const buildContactEntries = (c = {}) => {
   if (hasText(c.linkedIn)) {
     const liObj = typeof c.linkedIn === "object" && c.linkedIn !== null ? c.linkedIn : { value: c.linkedIn, displayText: "" };
     const liVal = liObj.value || "";
-    const liText = liObj.displayText || "LinkedIn";
+    const liText = liObj.displayText?.trim() ? liObj.displayText.trim() : liVal.trim().replace(/^(https?:\/\/)?(www\.)?/i, "");
     entries.push({
       key: "linkedin",
       href: getLinkedInUrl(liVal),
@@ -180,7 +180,7 @@ const buildContactEntries = (c = {}) => {
   if (hasText(c.github)) {
     const ghObj = typeof c.github === "object" && c.github !== null ? c.github : { value: c.github, displayText: "" };
     const ghVal = ghObj.value || "";
-    const ghText = ghObj.displayText || "GitHub";
+    const ghText = ghObj.displayText?.trim() ? ghObj.displayText.trim() : ghVal.trim().replace(/^(https?:\/\/)?(www\.)?/i, "");
     entries.push({
       key: "github",
       href: getGithubUrl(ghVal),
@@ -193,7 +193,7 @@ const buildContactEntries = (c = {}) => {
   if (hasText(c.website)) {
     const webObj = typeof c.website === "object" && c.website !== null ? c.website : { value: c.website, displayText: "" };
     const webVal = webObj.value || "";
-    const webText = webObj.displayText || "Website";
+    const webText = webObj.displayText?.trim() ? webObj.displayText.trim() : webVal.trim().replace(/^(https?:\/\/)?(www\.)?/i, "");
     entries.push({
       key: "website",
       href: formatUrl(webVal),
