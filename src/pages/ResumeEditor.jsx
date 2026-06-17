@@ -186,7 +186,9 @@ const SECTION_FIELDS_CONFIG = {
     title: { label: "Publication Title", placeholder: "e.g. Deep Learning Methods for Document Parsing", sanitizeType: "strict" },
     subtitle: { label: "Journal / Conference / Publisher", placeholder: "e.g. IEEE Journal of AI Research", sanitizeType: "strict" },
     date: { label: "Publication Date", placeholder: "e.g. January 2026", sanitizeType: "date" },
-    description: { label: "Abstract & Authors", placeholder: "e.g. Co-authored a peer-reviewed paper detailing a novel Transformer architecture.", hint: "Mention co-authors, DOI link, and research significance.", sanitizeType: "strict" }
+    authors: { label: "Authors", placeholder: "e.g. Jane Doe, John Smith", sanitizeType: "strict" },
+    abstract: { label: "Abstract", placeholder: "e.g. We propose a novel architecture that improves accuracy by 15%...", hint: "Summarize the key contributions and methodology of your research.", sanitizeType: "strict" },
+    paperUrl: { label: "Paper URL", placeholder: "e.g. https://arxiv.org/abs/1234.5678", hint: "Provide a link to the online publication or PDF.", sanitizeType: "url" }
   },
   volunteering: {
     title: { label: "Volunteer Role", placeholder: "e.g. Volunteer Coding Instructor", sanitizeType: "role" },
@@ -495,6 +497,27 @@ const ResumeEditor = () => {
           certifications: data.certifications || [],
           languages: data.languages || [],
           interests: data.interests || [],
+          customSections: (() => {
+            const cs = { ...(data.customSections || {}) };
+            if (cs.publications) {
+              cs.publications = cs.publications.map(item => {
+                const newItem = { ...item };
+                if (newItem.paperUrl) {
+                  newItem.paperUrl = newItem.paperUrl.trim();
+                  if (newItem.paperUrl && !/^https?:\/\//i.test(newItem.paperUrl)) {
+                    newItem.paperUrl = "https://" + newItem.paperUrl;
+                  }
+                }
+                if (newItem.abstractAuthors !== undefined) {
+                  newItem.abstract = newItem.abstractAuthors;
+                  newItem.authors = "";
+                  delete newItem.abstractAuthors;
+                }
+                return newItem;
+              });
+            }
+            return cs;
+          })(),
         };
         setResume(normalized);
         setBaselineResume(JSON.stringify(normalized));
@@ -2045,7 +2068,10 @@ const ResumeEditor = () => {
               title={getSectionLabel(optionalSectionEntry)}
               onAdd={() => {
                 const currentList = resume.customSections?.[optionalSectionEntry] || [];
-                const nextList = [...currentList, { title: "", subtitle: "", date: "", description: "" }];
+                const newItemTemplate = optionalSectionEntry === "publications"
+                  ? { title: "", subtitle: "", date: "", authors: "", abstract: "", paperUrl: "" }
+                  : { title: "", subtitle: "", date: "", description: "" };
+                const nextList = [...currentList, newItemTemplate];
                 setResume(prev => ({
                   ...prev,
                   customSections: {
@@ -2109,6 +2135,121 @@ const ResumeEditor = () => {
                     const titleProps = getSectionFieldProps(optionalSectionEntry, "title");
                     const subtitleProps = getSectionFieldProps(optionalSectionEntry, "subtitle");
                     const dateProps = getSectionFieldProps(optionalSectionEntry, "date");
+                    
+                    if (optionalSectionEntry === "publications") {
+                      const authorsProps = getSectionFieldProps("publications", "authors");
+                      const abstractProps = getSectionFieldProps("publications", "abstract");
+                      const paperUrlProps = getSectionFieldProps("publications", "paperUrl");
+                      return (
+                        <>
+                          <Field
+                            label={titleProps.label}
+                            value={item.title}
+                            placeholder={titleProps.placeholder}
+                            hint={titleProps.hint}
+                            sanitize={getSanitizer(titleProps.sanitizeType)}
+                            onChange={(v) => {
+                              const currentList = [...(resume.customSections?.[optionalSectionEntry] || [])];
+                              currentList[index] = { ...currentList[index], title: v };
+                              setResume(prev => ({
+                                ...prev,
+                                customSections: { ...(prev.customSections || {}), [optionalSectionEntry]: currentList }
+                              }));
+                            }}
+                          />
+                          <Field
+                            label={subtitleProps.label}
+                            value={item.subtitle}
+                            placeholder={subtitleProps.placeholder}
+                            hint={subtitleProps.hint}
+                            sanitize={getSanitizer(subtitleProps.sanitizeType)}
+                            onChange={(v) => {
+                              const currentList = [...(resume.customSections?.[optionalSectionEntry] || [])];
+                              currentList[index] = { ...currentList[index], subtitle: v };
+                              setResume(prev => ({
+                                ...prev,
+                                customSections: { ...(prev.customSections || {}), [optionalSectionEntry]: currentList }
+                              }));
+                            }}
+                          />
+                          <Field
+                            label={dateProps.label}
+                            value={item.date}
+                            placeholder={dateProps.placeholder}
+                            hint={dateProps.hint}
+                            sanitize={getSanitizer(dateProps.sanitizeType)}
+                            onChange={(v) => {
+                              const currentList = [...(resume.customSections?.[optionalSectionEntry] || [])];
+                              currentList[index] = { ...currentList[index], date: v };
+                              setResume(prev => ({
+                                ...prev,
+                                customSections: { ...(prev.customSections || {}), [optionalSectionEntry]: currentList }
+                              }));
+                            }}
+                          />
+                          <Field
+                            label={authorsProps.label}
+                            value={item.authors}
+                            placeholder={authorsProps.placeholder}
+                            hint={authorsProps.hint}
+                            sanitize={getSanitizer(authorsProps.sanitizeType)}
+                            onChange={(v) => {
+                              const currentList = [...(resume.customSections?.[optionalSectionEntry] || [])];
+                              currentList[index] = { ...currentList[index], authors: v };
+                              setResume(prev => ({
+                                ...prev,
+                                customSections: { ...(prev.customSections || {}), [optionalSectionEntry]: currentList }
+                              }));
+                            }}
+                          />
+                          <Field
+                            label={abstractProps.label}
+                            value={item.abstract}
+                            placeholder={abstractProps.placeholder}
+                            hint={abstractProps.hint}
+                            sanitize={getSanitizer(abstractProps.sanitizeType)}
+                            textarea
+                            onChange={(v) => {
+                              const currentList = [...(resume.customSections?.[optionalSectionEntry] || [])];
+                              currentList[index] = { ...currentList[index], abstract: v };
+                              setResume(prev => ({
+                                ...prev,
+                                customSections: { ...(prev.customSections || {}), [optionalSectionEntry]: currentList }
+                              }));
+                            }}
+                          />
+                          <Field
+                            label={paperUrlProps.label}
+                            value={item.paperUrl}
+                            placeholder={paperUrlProps.placeholder}
+                            hint={paperUrlProps.hint}
+                            sanitize={getSanitizer(paperUrlProps.sanitizeType)}
+                            onBlur={(e) => {
+                              const val = e.target.value;
+                              const currentList = [...(resume.customSections?.[optionalSectionEntry] || [])];
+                              let normalized = val.trim();
+                              if (normalized && !/^https?:\/\//i.test(normalized)) {
+                                normalized = "https://" + normalized;
+                              }
+                              currentList[index] = { ...currentList[index], paperUrl: normalized };
+                              setResume(prev => ({
+                                ...prev,
+                                customSections: { ...(prev.customSections || {}), [optionalSectionEntry]: currentList }
+                              }));
+                            }}
+                            onChange={(v) => {
+                              const currentList = [...(resume.customSections?.[optionalSectionEntry] || [])];
+                              currentList[index] = { ...currentList[index], paperUrl: v };
+                              setResume(prev => ({
+                                ...prev,
+                                customSections: { ...(prev.customSections || {}), [optionalSectionEntry]: currentList }
+                              }));
+                            }}
+                          />
+                        </>
+                      );
+                    }
+                    
                     const descProps = getSectionFieldProps(optionalSectionEntry, "description");
                     
                     return (

@@ -719,6 +719,72 @@ const PublicationsSection = ({ title, items = [], fullName, dec, sectionNumber, 
     <section className="rp-section">
       <STitle showIcon={false} dec={dec} sectionNumber={sectionNumber}>{title}</STitle>
       <Wrapper className={wrapperClass}>
+        {filled.map((item, i) => {
+          let formattedUrl = "";
+          if (item.paperUrl) {
+            const trimmed = item.paperUrl.trim();
+            if (trimmed) {
+              formattedUrl = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+            }
+          }
+
+          return (
+            <ItemWrapper key={i} className="rp-citation-item" style={{ marginBottom: "12px", pageBreakInside: "avoid", breakInside: "avoid" }}>
+              <div className="rp-citation-content" style={{ display: "block", width: "100%", verticalAlign: "top" }}>
+                {/* 1. Publication Title */}
+                <div className="rp-publication-title" style={{ fontWeight: "bold" }}>
+                  {boldCandidateName(item.title, fullName)}
+                </div>
+                
+                {/* 2. Journal / Conference / Publisher • Date */}
+                {(hasText(item.subtitle) || hasText(item.date)) && (
+                  <div className="rp-publication-meta" style={{ fontSize: "var(--rp-fs-meta)", color: "var(--rp-meta-color, #666)", marginTop: "2px" }}>
+                    {item.subtitle}{item.subtitle && item.date && " • "}{item.date}
+                  </div>
+                )}
+
+                {/* 3. Authors */}
+                {hasText(item.authors) && (
+                  <div className="rp-publication-authors" style={{ fontSize: "var(--rp-fs-meta)", marginTop: "2px" }}>
+                    {boldCandidateName(item.authors, fullName)}
+                  </div>
+                )}
+
+                {/* 4. Abstract */}
+                {hasText(item.abstract) && (
+                  <div className="rp-publication-abstract" style={{ fontSize: "var(--rp-fs-body)", color: "var(--rp-body-color, #333)", marginTop: "4px" }}>
+                    {renderDescription(item.abstract, fullName)}
+                  </div>
+                )}
+
+                {/* 5. Paper URL */}
+                {formattedUrl && (
+                  <div className="rp-publication-url" style={{ fontSize: "var(--rp-fs-meta)", marginTop: "4px" }}>
+                    <a href={formattedUrl} target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent)", textDecoration: "underline" }}>
+                      {formattedUrl}
+                    </a>
+                  </div>
+                )}
+              </div>
+            </ItemWrapper>
+          );
+        })}
+      </Wrapper>
+    </section>
+  );
+};
+
+const PatentsSection = ({ title, items = [], fullName, dec, sectionNumber, hasBullets = true }) => {
+  const filled = (items || []).filter(item => hasText(item.title));
+  if (!filled.length) return null;
+  const Wrapper = hasBullets ? "ul" : "div";
+  const ItemWrapper = hasBullets ? "li" : "div";
+  const wrapperClass = hasBullets ? "rp-desc-list rp-patents-list" : "rp-patents-list";
+
+  return (
+    <section className="rp-section">
+      <STitle showIcon={false} dec={dec} sectionNumber={sectionNumber}>{title}</STitle>
+      <Wrapper className={wrapperClass}>
         {filled.map((item, i) => (
           <ItemWrapper key={i} className="rp-citation-item" style={{ marginBottom: "8px", pageBreakInside: "avoid", breakInside: "avoid" }}>
             <div className="rp-citation-content" style={{ display: "block", width: "100%", verticalAlign: "top" }}>
@@ -1174,8 +1240,11 @@ const renderSectionsForColumn = (columnType, order, visibility, resume, commonPr
         // Custom or Optional section
         const customItems = resume.customSections?.[sectionId] || [];
         const hasBullets = bulletConfig[sectionId] !== false;
-        if (sectionId === "publications" || sectionId === "patents") {
+        if (sectionId === "publications") {
           return <PublicationsSection key={sectionId} title={getSectionLabel(sectionId)} items={customItems} {...propsWithNum} hasBullets={hasBullets} />;
+        }
+        if (sectionId === "patents") {
+          return <PatentsSection key={sectionId} title={getSectionLabel(sectionId)} items={customItems} {...propsWithNum} hasBullets={hasBullets} />;
         }
         if (sectionId === "awards" || sectionId === "achievements") {
           return <AwardsSection key={sectionId} title={getSectionLabel(sectionId)} items={customItems} {...propsWithNum} hasBullets={hasBullets} />;
