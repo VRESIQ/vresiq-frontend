@@ -177,12 +177,6 @@
 }
 
 /* 2. BODY / CONTENT LINKS (Unified Link Design System) */
-a.rp-project-link,
-a.rp-custom-link,
-a.rp-inline-link,
-a.rp-cert-link,
-a.rp-tech-link,
-.rp-links a,
 .resume-link {
   color: var(--accent-readable, #2563EB) !important;
   font-weight: 560 !important;
@@ -193,12 +187,6 @@ a.rp-tech-link,
   transition: color 0.15s ease;
 }
 
-a.rp-project-link:hover,
-a.rp-custom-link:hover,
-a.rp-inline-link:hover,
-a.rp-cert-link:hover,
-a.rp-tech-link:hover,
-.rp-links a:hover,
 .resume-link:hover {
   color: var(--accent, #1d4ed8) !important;
   text-decoration: underline !important;
@@ -270,10 +258,11 @@ a.rp-tech-link:hover,
     print-color-adjust: exact !important;
   }
 
-  /* Contact/header links: blue + underline preserved in print/PDF */
+  /* Contact/header links: contrast-aware + underline preserved in print/PDF */
   .rp-contact a,
-  .rp-ats-contact a {
-    color: #2563EB !important;
+  .rp-ats-contact a,
+  .header-link {
+    color: var(--header-link-color, var(--accent-readable, #2563EB)) !important;
     text-decoration: underline !important;
     text-decoration-thickness: 0.5px !important;
     text-underline-offset: 1.5px;
@@ -282,15 +271,16 @@ a.rp-tech-link:hover,
     print-color-adjust: exact !important;
   }
 
-  /* Body content links: blue + underline preserved in print/PDF */
-  a.rp-project-link,
-  a.rp-custom-link,
-  a.rp-inline-link,
-  a.rp-cert-link,
-  a.rp-tech-link,
-  .rp-links a,
+  [data-hstyle="full-bleed"] .header-link,
+  [data-hstyle="full-bleed"] .rp-contact a,
+  .rp-sidebar-dark .header-link,
+  .rp-sidebar-dark .rp-contact a {
+    color: var(--header-link-color, #ffffff) !important;
+  }
+
+  /* Body content links: theme-aware + underline preserved in print/PDF */
   .resume-link {
-    color: #2563EB !important;
+    color: var(--accent-readable, #2563EB) !important;
     text-decoration: underline !important;
     text-decoration-thickness: 0.5px !important;
     text-underline-offset: 1.5px;
@@ -1518,11 +1508,8 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 
   .rp-contact a,
   .rp-ats-contact a,
-  .rp-links a,
-  a.rp-project-link,
-  a.rp-custom-link,
-  a.rp-cert-link,
-  a.rp-tech-link {
+  .header-link,
+  .resume-link {
     display: inline !important;
     position: static !important;
     float: none !important;
