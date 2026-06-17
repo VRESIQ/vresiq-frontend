@@ -84,8 +84,8 @@ const renderLinkOrText = (text, className, isTitle = false) => {
   const trimmed = strText.trim();
   if (isUrl(trimmed)) {
     return (
-      <a href={formatUrl(trimmed)} target="_blank" rel="noopener noreferrer" className={className} style={isTitle ? { fontWeight: 600 } : undefined}>
-        {trimmed.replace(/^(https?:\/\/)?(www\.)?/, "")}
+      <a href={formatUrl(trimmed)} target="_blank" rel="noopener noreferrer" className="resume-link" style={isTitle ? { fontWeight: 600 } : undefined}>
+        {trimmed.replace(/^(https?:\/\/)?(www\.)?/, "")} <span className="external-link-icon">↗</span>
       </a>
     );
   }
@@ -130,7 +130,7 @@ const buildContactEntries = (c = {}) => {
       key: "email",
       href: `mailto:${cleaned}`,
       text: emailText,
-      className: "rp-contact-link rp-contact-link-email",
+      className: "rp-contact-link rp-contact-link-email header-link",
       target: undefined,
     });
   }
@@ -144,7 +144,7 @@ const buildContactEntries = (c = {}) => {
       key: "phone",
       href: `tel:${formatPhone(phoneVal)}`,
       text: phoneText,
-      className: "rp-contact-link rp-contact-link-phone",
+      className: "rp-contact-link rp-contact-link-phone header-link",
       target: undefined,
     });
   }
@@ -159,7 +159,7 @@ const buildContactEntries = (c = {}) => {
       key: "location",
       href: href,
       text: locText,
-      className: "rp-contact-link rp-contact-link-location",
+      className: "rp-contact-link rp-contact-link-location header-link",
       target: "_blank",
     });
   }
@@ -172,7 +172,7 @@ const buildContactEntries = (c = {}) => {
       key: "linkedin",
       href: getLinkedInUrl(liVal),
       text: liText,
-      className: "rp-contact-link rp-contact-link-linkedin",
+      className: "rp-contact-link rp-contact-link-linkedin header-link",
       target: "_blank",
     });
   }
@@ -185,7 +185,7 @@ const buildContactEntries = (c = {}) => {
       key: "github",
       href: getGithubUrl(ghVal),
       text: ghText,
-      className: "rp-contact-link rp-contact-link-github",
+      className: "rp-contact-link rp-contact-link-github header-link",
       target: "_blank",
     });
   }
@@ -198,7 +198,7 @@ const buildContactEntries = (c = {}) => {
       key: "website",
       href: formatUrl(webVal),
       text: webText,
-      className: "rp-contact-link rp-contact-link-website",
+      className: "rp-contact-link rp-contact-link-website header-link",
       target: "_blank",
     });
   }
@@ -416,8 +416,8 @@ const linkifyText = (text) => {
       href = `https://${href}`;
     }
     parts.push(
-      <a key={matchIndex} href={href} target="_blank" rel="noopener noreferrer" className="rp-inline-link">
-        {matchStr}
+      <a key={matchIndex} href={href} target="_blank" rel="noopener noreferrer" className="resume-link">
+        {matchStr} <span className="external-link-icon">↗</span>
       </a>
     );
     lastIndex = regex.lastIndex;
@@ -581,19 +581,19 @@ const ProjectsSection = ({ items = [], showIcon, dec, scanMode = false, sectionN
             {[item.github, item.liveDemo].filter(hasText).length > 0 && (
               <p className="rp-links" style={{ marginTop: "2px" }}>
                 {hasText(item.github) && (
-                  <a href={getGithubUrl(item.github)} target="_blank" rel="noopener noreferrer" className="rp-project-link">
-                    Github <span className="rp-link-arrow" style={{ fontSize: "0.85em", fontWeight: 400 }}>↗</span>
+                  <a href={getGithubUrl(item.github)} target="_blank" rel="noopener noreferrer" className="resume-link">
+                    Github <span className="external-link-icon">↗</span>
                   </a>
                 )}
                 {hasText(item.github) && hasText(item.liveDemo) && <span className="rp-links-divider"> · </span>}
                 {hasText(item.liveDemo) && (
-                  <a href={formatUrl(item.liveDemo)} target="_blank" rel="noopener noreferrer" className="rp-project-link">
+                  <a href={formatUrl(item.liveDemo)} target="_blank" rel="noopener noreferrer" className="resume-link">
                     {(() => {
                       const lower = item.liveDemo.toLowerCase();
                       if (lower.includes("docs") || lower.includes("wiki") || lower.includes("documentation")) return "Documentation";
                       if (lower.includes("demo") || lower.includes("app") || lower.includes("dashboard")) return "Live Demo";
                       return "Website";
-                    })()} <span className="rp-link-arrow" style={{ fontSize: "0.85em", fontWeight: 400 }}>↗</span>
+                    })()} <span className="external-link-icon">↗</span>
                   </a>
                 )}
               </p>
@@ -623,9 +623,9 @@ const CertsSection = ({ items = [], showIcon, dec, sectionNumber, hasBullets = t
                   href={formatUrl(item.certificateUrl)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rp-cert-link"
+                  className="resume-link"
                 >
-                  {item.title || "Certification"} <span className="rp-link-arrow" style={{ fontSize: "0.85em", fontWeight: 400 }}>↗</span>
+                  {item.title || "Certification"} <span className="external-link-icon">↗</span>
                 </a>
               ) : (
                 <strong>{item.title || "Certification"}</strong>
@@ -760,8 +760,8 @@ const PublicationsSection = ({ title, items = [], fullName, dec, sectionNumber, 
                 {/* 5. Paper URL */}
                 {formattedUrl && (
                   <div className="rp-publication-url" style={{ fontSize: "var(--rp-fs-meta)", marginTop: "4px" }}>
-                    <a href={formattedUrl} target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent)", textDecoration: "underline" }}>
-                      {formattedUrl}
+                    <a href={formattedUrl} target="_blank" rel="noopener noreferrer" className="resume-link">
+                      {formattedUrl} <span className="external-link-icon">↗</span>
                     </a>
                   </div>
                 )}
@@ -856,9 +856,9 @@ const TechnicalProfilesSection = ({ title, items = [], dec, sectionNumber, fullN
                       href={url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="rp-tech-link"
+                      className="resume-link"
                     >
-                      {platformName} <span className="rp-link-arrow" style={{ fontSize: "0.85em", fontWeight: 400 }}>↗</span>
+                      {platformName} <span className="external-link-icon">↗</span>
                     </a>
                   ) : (
                     <strong style={{ fontWeight: 600 }}>{platformName}</strong>
@@ -1083,6 +1083,8 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
         "--on-accent-muted": accentText.muted,
         "--on-accent-soft": accentText.soft,
         "--on-accent-line": accentText.line,
+        "--header-link-color": accentText.primary === "#ffffff" ? "#ffffff" : accentReadable,
+        "--header-link-hover": accentText.primary === "#ffffff" ? accentText.muted : accent,
         "--page-border": pageBorder ? `1px solid ${accent}` : "none",
         ...fontVars,
       }}

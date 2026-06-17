@@ -122,20 +122,39 @@
 /* 1. CONTACT / HEADER LINKS
    email, phone, LinkedIn, GitHub, website, location inside the header/contact area.
    Standard hyperlink styling — blue + underline — matching UX requirement. */
+/* 1. CONTACT / HEADER LINKS */
 .rp-contact a,
-.rp-ats-contact a {
-  color: #2563EB !important;            /* Standard hyperlink blue */
+.rp-ats-contact a,
+.header-link {
+  color: var(--header-link-color, var(--accent-readable, #2563EB)) !important;
   text-decoration: underline !important;
   text-decoration-thickness: 0.5px !important;
   text-underline-offset: 1.5px;
   cursor: pointer !important;
   transition: color 0.15s ease;
+  font-weight: 500 !important;
 }
 
 .rp-contact a:hover,
-.rp-ats-contact a:hover {
-  color: #1d4ed8 !important;
+.rp-ats-contact a:hover,
+.header-link:hover {
+  color: var(--header-link-hover, var(--accent, #1d4ed8)) !important;
   text-decoration: underline !important;
+}
+
+/* Hard contrast overrides for dark/full-bleed headers or sidebars */
+[data-hstyle="full-bleed"] .header-link,
+[data-hstyle="full-bleed"] .rp-contact a,
+.rp-sidebar-dark .header-link,
+.rp-sidebar-dark .rp-contact a {
+  color: var(--header-link-color, #ffffff) !important;
+}
+
+[data-hstyle="full-bleed"] .header-link:hover,
+[data-hstyle="full-bleed"] .rp-contact a:hover,
+.rp-sidebar-dark .header-link:hover,
+.rp-sidebar-dark .rp-contact a:hover {
+  color: var(--header-link-hover, rgba(255, 255, 255, 0.8)) !important;
 }
 
 .rp-contact-item,
@@ -145,7 +164,6 @@
 }
 
 .rp-contact-link {
-  color: #2563EB !important;
   text-decoration: underline !important;
   text-decoration-thickness: 0.5px !important;
   text-underline-offset: 1.5px;
@@ -158,9 +176,7 @@
   padding: 0 4px;
 }
 
-/* 2. BODY / CONTENT LINKS (Unified Link Design System)
-   Applied globally across Projects, Certifications, Publications, Technical Profiles,
-   Portfolio, Github, Website, and LinkedIn links. */
+/* 2. BODY / CONTENT LINKS (Unified Link Design System) */
 a.rp-project-link,
 a.rp-custom-link,
 a.rp-inline-link,
@@ -168,7 +184,7 @@ a.rp-cert-link,
 a.rp-tech-link,
 .rp-links a,
 .resume-link {
-  color: #2563EB !important;
+  color: var(--accent-readable, #2563EB) !important;
   font-weight: 560 !important;
   text-decoration: underline !important;
   text-decoration-thickness: 0.5px !important;
@@ -184,17 +200,20 @@ a.rp-cert-link:hover,
 a.rp-tech-link:hover,
 .rp-links a:hover,
 .resume-link:hover {
-  color: #1d4ed8 !important;
+  color: var(--accent, #1d4ed8) !important;
   text-decoration: underline !important;
 }
 
-.rp-link-arrow {
+.rp-link-arrow,
+.external-link-icon {
   color: inherit !important;
   text-decoration: none !important;
   display: inline-block;
-  margin-left: 2px;
-  font-size: 0.85em;
+  margin-left: 3px;
+  font-size: 0.82em;
   font-weight: 400 !important;
+  vertical-align: baseline;
+  line-height: 1;
 }
 
 /* Hyperlink Style overrides */
