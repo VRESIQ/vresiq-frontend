@@ -59,6 +59,7 @@ const CustomizableContactField = ({ platform, label, value, onChange, placeholde
             onChange={handleDisplayChange}
             placeholder={`e.g. ${label || platform}`}
           />
+          <small className="field-hint" style={{ marginTop: "0.25rem", color: "var(--muted)", display: "block" }}>Custom text to display instead of the link URL.</small>
         </div>
       </div>
     </div>
@@ -178,88 +179,88 @@ const allPossibleOptionalIds = [
 const SECTION_FIELDS_CONFIG = {
   achievements: {
     title: { label: "Achievement Title", placeholder: "Won 1st place in coding contest.", hint: "Mention measurable achievements.", sanitizeType: "textOnly" },
-    subtitle: { label: "Awarding Authority / Organization", placeholder: "e.g. Major League Hacking (MLH)", sanitizeType: "textOnly" },
-    date: { label: "Date Achieved", placeholder: "e.g. October 2025", sanitizeType: "date" },
+    subtitle: { label: "Awarding Authority / Organization", placeholder: "e.g. Major League Hacking (MLH)", hint: "Organization or authority granting the achievement.", sanitizeType: "textOnly" },
+    date: { label: "Date Achieved", placeholder: "e.g. October 2025", hint: "Enter the date you received the achievement.", sanitizeType: "date" },
     description: { label: "Details & Metrics", placeholder: "e.g. Beat out 150+ teams by building a serverless analytics tool.", hint: "Quantify metrics (e.g. percentages, budgets, participant size) to prove business value.", sanitizeType: "strict" }
   },
   publications: {
-    title: { label: "Publication Title", placeholder: "e.g. Deep Learning Methods for Document Parsing", sanitizeType: "strict" },
-    subtitle: { label: "Journal / Conference / Publisher", placeholder: "e.g. IEEE Journal of AI Research", sanitizeType: "strict" },
-    date: { label: "Publication Date", placeholder: "e.g. January 2026", sanitizeType: "date" },
-    authors: { label: "Authors", placeholder: "e.g. Jane Doe, John Smith", sanitizeType: "strict" },
+    title: { label: "Publication Title", placeholder: "Research Paper on NLP", hint: "Name of the published research paper.", sanitizeType: "strict" },
+    subtitle: { label: "Journal / Conference / Publisher", placeholder: "e.g. IEEE Journal of AI Research", hint: "Journal, conference, or publishing body.", sanitizeType: "strict" },
+    date: { label: "Publication Date", placeholder: "e.g. January 2026", hint: "Date when the paper was published.", sanitizeType: "date" },
+    authors: { label: "Authors", placeholder: "e.g. Jane Doe, John Smith", hint: "All contributing authors.", sanitizeType: "strict" },
     abstract: { label: "Abstract", placeholder: "e.g. We propose a novel architecture that improves accuracy by 15%...", hint: "Summarize the key contributions and methodology of your research.", sanitizeType: "strict" },
     paperUrl: { label: "Paper URL", placeholder: "e.g. https://arxiv.org/abs/1234.5678", hint: "Provide a link to the online publication or PDF.", sanitizeType: "url" }
   },
   volunteering: {
-    title: { label: "Volunteer Role", placeholder: "e.g. Volunteer Coding Instructor", sanitizeType: "role" },
-    subtitle: { label: "Organization Name", placeholder: "e.g. Girls Who Code", sanitizeType: "strict" },
-    date: { label: "Dates Active", placeholder: "e.g. September 2024 - Present", sanitizeType: "date" },
+    title: { label: "Volunteer Role", placeholder: "e.g. Volunteer Coding Instructor", hint: "Your title or role during this volunteer work.", sanitizeType: "role" },
+    subtitle: { label: "Organization Name", placeholder: "e.g. Girls Who Code", hint: "Organization you volunteered for.", sanitizeType: "strict" },
+    date: { label: "Dates Active", placeholder: "e.g. September 2024 - Present", hint: "Enter the timeframe of your volunteer work.", sanitizeType: "date" },
     description: { label: "Activities & Impact", placeholder: "e.g. Mentored and taught Python basics to 30 high school students.", hint: "Demonstrates community leadership and team collaboration.", sanitizeType: "strict" }
   },
   leadership: {
-    title: { label: "Leadership Position", placeholder: "e.g. Chapter Tech Lead / Founder", sanitizeType: "role" },
-    subtitle: { label: "Organization / Initiative", placeholder: "e.g. Open Source Developer Group", sanitizeType: "strict" },
-    date: { label: "Dates Active", placeholder: "e.g. January 2025 - Present", sanitizeType: "date" },
+    title: { label: "Leadership Position", placeholder: "e.g. Chapter Tech Lead / Founder", hint: "Your title or role in this leadership position.", sanitizeType: "role" },
+    subtitle: { label: "Organization / Initiative", placeholder: "e.g. Open Source Developer Group", hint: "Organization or initiative you led.", sanitizeType: "strict" },
+    date: { label: "Dates Active", placeholder: "e.g. January 2025 - Present", hint: "Enter the leadership timeframe.", sanitizeType: "date" },
     description: { label: "Key Contributions & Initiatives", placeholder: "e.g. Led a team of 12 volunteers to build a community learning hub.", hint: "Focus on initiatives you owned and the growth of the team/membership.", sanitizeType: "strict" }
   },
   hackathons: {
-    title: { label: "Hackathon Name", placeholder: "e.g. ETHDenver Hackathon", sanitizeType: "strict" },
-    subtitle: { label: "Project / Contribution Role", placeholder: "e.g. Built 'DappFlow' (Lead Smart Contract Developer)", sanitizeType: "strict" },
-    date: { label: "Hackathon Date", placeholder: "e.g. February 2026", sanitizeType: "date" },
+    title: { label: "Hackathon Name", placeholder: "e.g. ETHDenver Hackathon", hint: "Name of the hackathon event.", sanitizeType: "strict" },
+    subtitle: { label: "Project / Contribution Role", placeholder: "e.g. Built 'DappFlow' (Lead Smart Contract Developer)", hint: "Your project name or contribution role.", sanitizeType: "strict" },
+    date: { label: "Hackathon Date", placeholder: "e.g. February 2026", hint: "Date of the hackathon event.", sanitizeType: "date" },
     description: { label: "Achievement & Technologies Used", placeholder: "e.g. Placed Top 10 out of 500 projects. Used Solidity, React, and Ethers.js.", hint: "Detail the problem solved, tech stack, and any prizes won.", sanitizeType: "strict" }
   },
   openSource: {
-    title: { label: "Repository Name", placeholder: "e.g. facebook/react", sanitizeType: "url" },
-    subtitle: { label: "Contribution / Role", placeholder: "e.g. Pull Request Author / Core Contributor", sanitizeType: "strict" },
-    date: { label: "Contribution Dates", placeholder: "e.g. June 2024 - Present", sanitizeType: "date" },
+    title: { label: "Repository Name", placeholder: "e.g. facebook/react", hint: "GitHub repository path or project name.", sanitizeType: "url" },
+    subtitle: { label: "Contribution / Role", placeholder: "e.g. Pull Request Author / Core Contributor", hint: "Your role or nature of contribution.", sanitizeType: "strict" },
+    date: { label: "Contribution Dates", placeholder: "e.g. June 2024 - Present", hint: "Enter the contribution timeframe.", sanitizeType: "date" },
     description: { label: "Contribution Details", placeholder: "e.g. Optimized reconciliation logic, reducing memory allocations by 8%.", hint: "Showcase merged PRs, features developed, or issues fixed.", sanitizeType: "strict" }
   },
   awards: {
-    title: { label: "Award / Honor Name", placeholder: "e.g. Outstanding Engineering Employee", sanitizeType: "strict" },
-    subtitle: { label: "Issuing Organization", placeholder: "e.g. Acme Corporation", sanitizeType: "strict" },
-    date: { label: "Award Date", placeholder: "e.g. December 2025", sanitizeType: "date" },
+    title: { label: "Award / Honor Name", placeholder: "e.g. Outstanding Engineering Employee", hint: "Name of the award or honor.", sanitizeType: "strict" },
+    subtitle: { label: "Issuing Organization", placeholder: "e.g. Acme Corporation", hint: "Issuing organization or authority.", sanitizeType: "strict" },
+    date: { label: "Award Date", placeholder: "e.g. December 2025", hint: "Enter the date you received the award.", sanitizeType: "date" },
     description: { label: "Award Criteria & Details", placeholder: "e.g. Awarded to top 1% of developers for migration of payment gateway.", hint: "Briefly explain the criteria and the competitive pool size.", sanitizeType: "strict" }
   },
   internships: {
-    title: { label: "Internship Role", placeholder: "e.g. Software Engineering Intern", sanitizeType: "role" },
-    subtitle: { label: "Company / Team", placeholder: "e.g. Google Cloud Platform", sanitizeType: "strict" },
-    date: { label: "Internship Dates", placeholder: "e.g. June 2025 - August 2025", sanitizeType: "date" },
+    title: { label: "Internship Role", placeholder: "e.g. Software Engineering Intern", hint: "Your title or role during this internship.", sanitizeType: "role" },
+    subtitle: { label: "Company / Team", placeholder: "e.g. Google Cloud Platform", hint: "Company or team where you interned.", sanitizeType: "strict" },
+    date: { label: "Internship Dates", placeholder: "e.g. June 2025 - August 2025", hint: "Enter the internship timeframe.", sanitizeType: "date" },
     description: { label: "Key Projects & Learnings", placeholder: "e.g. Developed serverless log streaming pipelines in Go, processing 5TB daily.", hint: "Focus on specific features built, languages used, and mentorship received.", sanitizeType: "strict" }
   },
   workshops: {
-    title: { label: "Workshop / Course Title", placeholder: "e.g. Advanced Distributed Systems", sanitizeType: "strict" },
-    subtitle: { label: "Provider / Instructor", placeholder: "e.g. ByteByteGo Academy", sanitizeType: "strict" },
-    date: { label: "Date Attended", placeholder: "e.g. November 2025", sanitizeType: "date" },
+    title: { label: "Workshop / Course Title", placeholder: "e.g. Advanced Distributed Systems", hint: "Title of the workshop or course.", sanitizeType: "strict" },
+    subtitle: { label: "Provider / Instructor", placeholder: "e.g. ByteByteGo Academy", hint: "Provider or instructor of the workshop.", sanitizeType: "strict" },
+    date: { label: "Date Attended", placeholder: "e.g. November 2025", hint: "Enter the date you attended.", sanitizeType: "date" },
     description: { label: "Topics & Hands-On Experience", placeholder: "e.g. Completed labs on database partitioning, consensus models, and load balancing.", hint: "Highlight specialized tools or concepts learned.", sanitizeType: "strict" }
   },
   coursework: {
-    title: { label: "Course Name", placeholder: "e.g. Algorithms & Computational Complexity", sanitizeType: "strict" },
-    subtitle: { label: "Department / Institution", placeholder: "e.g. Computer Science (Stanford University)", sanitizeType: "strict" },
-    date: { label: "Term / Year", placeholder: "e.g. Fall 2025", sanitizeType: "date" },
+    title: { label: "Course Name", placeholder: "e.g. Algorithms & Computational Complexity", hint: "Title of the course.", sanitizeType: "strict" },
+    subtitle: { label: "Department / Institution", placeholder: "e.g. Computer Science (Stanford University)", hint: "Department or institution.", sanitizeType: "strict" },
+    date: { label: "Term / Year", placeholder: "e.g. Fall 2025", hint: "Enter the term or year.", sanitizeType: "date" },
     description: { label: "Key Concepts & Labs", placeholder: "e.g. Dynamic programming, graph optimization, and NP-hard problems.", hint: "Showcase advanced courses that align with target job requirements.", sanitizeType: "strict" }
   },
   extracurriculars: {
-    title: { label: "Activity / Organization", placeholder: "e.g. ACM Competitive Programming Team", sanitizeType: "strict" },
-    subtitle: { label: "Role / Position", placeholder: "e.g. Lead Trainer", sanitizeType: "role" },
-    date: { label: "Dates Active", placeholder: "e.g. September 2024 - Present", sanitizeType: "date" },
+    title: { label: "Activity / Organization", placeholder: "e.g. ACM Competitive Programming Team", hint: "Name of the group or activity.", sanitizeType: "strict" },
+    subtitle: { label: "Role / Position", placeholder: "e.g. Lead Trainer", hint: "Your role or position.", sanitizeType: "role" },
+    date: { label: "Dates Active", placeholder: "e.g. September 2024 - Present", hint: "Enter the active timeframe.", sanitizeType: "date" },
     description: { label: "Details & Accomplishments", placeholder: "e.g. Coached 15 members on data structures, improving standings in regional contests.", hint: "Demonstrates leadership, dedication, and teamwork.", sanitizeType: "strict" }
   },
   technicalProfiles: {
-    title: { label: "Platform Name", placeholder: "e.g. LeetCode / Kaggle / StackOverflow", sanitizeType: "strict" },
-    subtitle: { label: "Username / Handle", placeholder: "e.g. coder_jane", sanitizeType: "username" },
-    date: { label: "Profile URL / Link", placeholder: "e.g. https://leetcode.com/coder_jane", sanitizeType: "url" },
+    title: { label: "Platform Name", placeholder: "e.g. LeetCode / Kaggle / StackOverflow", hint: "Name of the platform.", sanitizeType: "strict" },
+    subtitle: { label: "Username / Handle", placeholder: "e.g. coder_jane", hint: "Your handle or username.", sanitizeType: "username" },
+    date: { label: "Profile URL / Link", placeholder: "e.g. https://leetcode.com/coder_jane", hint: "Provide direct link to your profile.", sanitizeType: "url" },
     description: { label: "Highlights & Rankings", placeholder: "e.g. Top 1.5% worldwide rating with 800+ solved problems.", hint: "Provide exact URLs and highlights to prove technical credentials.", sanitizeType: "strict" }
   },
   patents: {
-    title: { label: "Patent Title", placeholder: "e.g. Decentralized Consensus Protocol for High-Throughput Networks", sanitizeType: "strict" },
-    subtitle: { label: "Patent / App Number", placeholder: "e.g. US Patent App 12/345,678 (or Pending)", sanitizeType: "strict" },
-    date: { label: "Filing / Issue Date", placeholder: "e.g. March 2025", sanitizeType: "date" },
+    title: { label: "Patent Title", placeholder: "e.g. Decentralized Consensus Protocol for High-Throughput Networks", hint: "Title of the patent.", sanitizeType: "strict" },
+    subtitle: { label: "Patent / App Number", placeholder: "e.g. US Patent App 12/345,678 (or Pending)", hint: "Official filing reference or app number.", sanitizeType: "strict" },
+    date: { label: "Filing / Issue Date", placeholder: "e.g. March 2025", hint: "Filing or issue date.", sanitizeType: "date" },
     description: { label: "Summary of Invention", placeholder: "e.g. A consensus model enabling micro-node transaction processing without mining overhead.", hint: "State whether the patent is pending, granted, or published.", sanitizeType: "strict" }
   },
   researchExperience: {
-    title: { label: "Research Project / Topic", placeholder: "e.g. Neural Networks for Edge Anomaly Detection", sanitizeType: "strict" },
-    subtitle: { label: "Institution / Lab / Advisor", placeholder: "e.g. MIT AI Lab / Advisor: Dr. Alan Turing", sanitizeType: "strict" },
-    date: { label: "Research Dates", placeholder: "e.g. January 2025 - Present", sanitizeType: "date" },
+    title: { label: "Research Project / Topic", placeholder: "e.g. Neural Networks for Edge Anomaly Detection", hint: "Subject of the research project.", sanitizeType: "strict" },
+    subtitle: { label: "Institution / Lab / Advisor", placeholder: "e.g. MIT AI Lab / Advisor: Dr. Alan Turing", hint: "Lab, institution, or principal advisor.", sanitizeType: "strict" },
+    date: { label: "Research Dates", placeholder: "e.g. January 2025 - Present", hint: "Enter the research timeframe.", sanitizeType: "date" },
     description: { label: "Methodology, Findings & Tools", placeholder: "e.g. Designed unsupervised LSTM models with PyTorch. Improved edge detection by 14%.", hint: "Detail the scientific methodology, tools utilized, and resulting papers.", sanitizeType: "strict" }
   }
 };
@@ -272,7 +273,7 @@ const getSectionFieldProps = (secId, fieldKey) => {
     date: { label: "Date", placeholder: "e.g. January 2025 - Present or 2025", hint: "Enter a single date or date range.", sanitizeType: "date" },
     description: { label: "Description", placeholder: "e.g. Detailed description of achievements, activities, or notes.", hint: "Explain your contributions and achievements in this section.", sanitizeType: "strict" }
   };
-  return sectionConfig[fieldKey] || defaults[fieldKey] || { label: fieldKey, placeholder: "", sanitizeType: "strict" };
+  return sectionConfig[fieldKey] || defaults[fieldKey] || { label: fieldKey, placeholder: `Enter ${fieldKey}`, hint: `Provide details for ${fieldKey.toLowerCase()}.`, sanitizeType: "strict" };
 };
 
 const getSanitizer = (type) => {
@@ -1428,9 +1429,9 @@ const ResumeEditor = () => {
               </div>
               {resume.workExperience.map((item, index) => (
                 <ListCard key={index} title={item.role || makeListTitle("workExperience", index)} onRemove={() => removeListItem("workExperience", index)}>
-                  <Field label="Company" value={item.company} placeholder="ABC Technologies" sanitize={sanitizeTextOnly} onChange={(v) => updateListItem("workExperience", index, "company", v)} />
-                  <Field label="Role" value={item.role} placeholder="Frontend Developer Intern" sanitize={sanitizeRole} onChange={(v) => updateListItem("workExperience", index, "role", v)} />
-                  <Field label="Location" value={item.location || ""} sanitize={sanitizeLocation} onChange={(v) => updateListItem("workExperience", index, "location", v)} placeholder="e.g. City, State or Country" />
+                  <Field label="Company" value={item.company} placeholder="Google" hint="Enter the full name of the company or organization." sanitize={sanitizeTextOnly} onChange={(v) => updateListItem("workExperience", index, "company", v)} />
+                  <Field label="Role" value={item.role} placeholder="Software Engineering Intern" hint="Your job title or role during this experience." sanitize={sanitizeRole} onChange={(v) => updateListItem("workExperience", index, "role", v)} />
+                  <Field label="Location" value={item.location || ""} sanitize={sanitizeLocation} onChange={(v) => updateListItem("workExperience", index, "location", v)} placeholder="e.g. City, State or Country" hint="City and State/Country (e.g., Hyderabad, India)." />
                   <DateRangePicker
                     startDate={item.startDate}
                     endDate={item.endDate}
@@ -1492,9 +1493,9 @@ const ResumeEditor = () => {
               </div>
               {resume.education.map((item, index) => (
                 <ListCard key={index} title={item.degree || makeListTitle("education", index)} onRemove={() => removeListItem("education", index)}>
-                  <Field label="Degree" value={item.degree} placeholder="B.Tech Information Technology" sanitize={sanitizeStrictText} onChange={(v) => updateListItem("education", index, "degree", v)} />
-                  <Field label="Institution" value={item.institution} placeholder="XYZ Institute of Technology" sanitize={sanitizeTextOnly} onChange={(v) => updateListItem("education", index, "institution", v)} />
-                  <Field label="Location" value={item.location || ""} sanitize={sanitizeLocation} onChange={(v) => updateListItem("education", index, "location", v)} placeholder="e.g. City, State" />
+                  <Field label="Degree" value={item.degree} placeholder="B.Tech Information Technology" hint="Degree or credential earned (e.g., B.Tech, M.S.)." sanitize={sanitizeStrictText} onChange={(v) => updateListItem("education", index, "degree", v)} />
+                  <Field label="Institution" value={item.institution} placeholder="St. Martin's Engineering College" hint="Name of the school or university." sanitize={sanitizeTextOnly} onChange={(v) => updateListItem("education", index, "institution", v)} />
+                  <Field label="Location" value={item.location || ""} sanitize={sanitizeLocation} onChange={(v) => updateListItem("education", index, "location", v)} placeholder="e.g. City, State" hint="City and State/Country of the school." />
                   <Field label="GPA" value={item.gpa || ""} placeholder="8.5" hint="Optional." sanitize={sanitizeDecimal} onChange={(v) => updateListItem("education", index, "gpa", v)} />
                   <DateRangePicker
                     startDate={item.startDate}
@@ -1557,7 +1558,7 @@ const ResumeEditor = () => {
               </div>
               {resume.skills.map((item, index) => (
                 <ListCard key={index} title={item.name || makeListTitle("skills", index)} onRemove={() => removeListItem("skills", index)}>
-                  <Field label="Skill" value={item.name} placeholder="React, JavaScript, HTML, CSS" hint="Separate skills with commas." sanitize={sanitizeRawText} onChange={(v) => updateListItem("skills", index, "name", v)} />
+                  <Field label="Skill" value={item.name} placeholder="Java" hint="Separate skills with commas." sanitize={sanitizeRawText} onChange={(v) => updateListItem("skills", index, "name", v)} />
                   <RangeField label="Proficiency" value={item.progress} onChange={(v) => updateListItem("skills", index, "progress", v)} />
                 </ListCard>
               ))}
@@ -1602,7 +1603,7 @@ const ResumeEditor = () => {
               </div>
               {resume.projects.map((item, index) => (
                 <ListCard key={index} title={item.title || makeListTitle("projects", index)} onRemove={() => removeListItem("projects", index)}>
-                  <Field label="Project title" value={item.title} placeholder="AI Resume Builder" sanitize={sanitizeTextOnly} onChange={(v) => updateListItem("projects", index, "title", v)} />
+                  <Field label="Project title" value={item.title} placeholder="AI Resume Builder" hint="Name of the project." sanitize={sanitizeTextOnly} onChange={(v) => updateListItem("projects", index, "title", v)} />
                   <Field 
                     label="Description" 
                     value={item.description} 
@@ -1615,6 +1616,8 @@ const ResumeEditor = () => {
                   <Field
                     label="GitHub URL"
                     value={item.github}
+                    placeholder="https://github.com/username/project"
+                    hint="Link to the repository."
                     sanitize={sanitizeURL}
                     onChange={(v) => updateListItem("projects", index, "github", v)}
                     onBlur={(e) => {
@@ -1625,6 +1628,8 @@ const ResumeEditor = () => {
                   <Field
                     label="Live demo URL"
                     value={item.liveDemo}
+                    placeholder="https://example.com"
+                    hint="Link to the working application."
                     sanitize={sanitizeURL}
                     onChange={(v) => updateListItem("projects", index, "liveDemo", v)}
                     onBlur={(e) => {
@@ -1675,13 +1680,14 @@ const ResumeEditor = () => {
               </div>
               {resume.certifications.map((item, index) => (
                 <ListCard key={index} title={item.title || makeListTitle("certifications", index)} onRemove={() => removeListItem("certifications", index)}>
-                  <Field label="Title" value={item.title} placeholder="AWS Cloud Practitioner" sanitize={sanitizeTextOnly} onChange={(v) => updateListItem("certifications", index, "title", v)} />
-                  <Field label="Issuer" value={item.issuer} placeholder="Amazon Web Services" sanitize={sanitizeTextOnly} onChange={(v) => updateListItem("certifications", index, "issuer", v)} />
-                  <Field label="Date" value={item.year} placeholder="March 2025" sanitize={sanitizeFlexibleDate} onChange={(v) => updateListItem("certifications", index, "year", v)} />
+                  <Field label="Title" value={item.title} placeholder="AWS Cloud Practitioner" hint="Name of the certification earned." sanitize={sanitizeTextOnly} onChange={(v) => updateListItem("certifications", index, "title", v)} />
+                  <Field label="Issuer" value={item.issuer} placeholder="Amazon Web Services" hint="Organization that issued this certificate." sanitize={sanitizeTextOnly} onChange={(v) => updateListItem("certifications", index, "issuer", v)} />
+                  <Field label="Date" value={item.year} placeholder="March 2025" hint="Date or year when you received the certification." sanitize={sanitizeFlexibleDate} onChange={(v) => updateListItem("certifications", index, "year", v)} />
                   <Field
                     label="Certificate URL"
                     value={item.certificateUrl || ""}
-                    placeholder="https://..."
+                    placeholder="https://example.com/certificate"
+                    hint="Optional link to verify the certificate online."
                     sanitize={sanitizeURL}
                     onChange={(v) => updateListItem("certifications", index, "certificateUrl", v)}
                     onBlur={(e) => {
@@ -1732,7 +1738,7 @@ const ResumeEditor = () => {
               </div>
               {resume.languages.map((item, index) => (
                 <ListCard key={index} title={item.name || makeListTitle("languages", index)} onRemove={() => removeListItem("languages", index)}>
-                  <Field label="Language" value={item.name} placeholder="English, Telugu" hint="Separate with commas." sanitize={sanitizeRawText} onChange={(v) => updateListItem("languages", index, "name", v)} />
+                  <Field label="Language" value={item.name} placeholder="English" hint="Separate with commas." sanitize={sanitizeRawText} onChange={(v) => updateListItem("languages", index, "name", v)} />
                   <RangeField label="Proficiency" value={item.progress} onChange={(v) => updateListItem("languages", index, "progress", v)} />
                 </ListCard>
               ))}
