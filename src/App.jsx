@@ -19,11 +19,100 @@ import Pricing from "./pages/Pricing";
 import Profile from "./pages/Profile";
 
 // Lazy load heavy pages
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import AdminRoute from "./components/common/AdminRoute";
 import GlobalLoader from "./components/common/GlobalLoader";
-const ResumeEditor = lazy(() => import("./pages/ResumeEditor"));
-const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+
+// Dynamic import with recovery retry for CSS / module preloads
+const lazyWithRetry = (importFn) => {
+  return lazy(() => {
+    return importFn().catch((error) => {
+      const msg = error.message || "";
+      if (
+        msg.includes("Unable to preload CSS") || 
+        msg.includes("Failed to fetch dynamically imported module") ||
+        msg.includes("preload")
+      ) {
+        const hasReloaded = sessionStorage.getItem("chunk-load-reloaded");
+        if (!hasReloaded) {
+          sessionStorage.setItem("chunk-load-reloaded", "true");
+          
+          const toast = document.createElement("div");
+          toast.style.position = "fixed";
+          toast.style.bottom = "24px";
+          toast.style.right = "24px";
+          toast.style.backgroundColor = "#ba2b2b";
+          toast.style.color = "#ffffff";
+          toast.style.padding = "14px 28px";
+          toast.style.borderRadius = "8px";
+          toast.style.boxShadow = "0 8px 24px rgba(0,0,0,0.25)";
+          toast.style.zIndex = "999999";
+          toast.style.fontFamily = "system-ui, -apple-system, sans-serif";
+          toast.style.fontSize = "0.92rem";
+          toast.style.fontWeight = "600";
+          toast.style.border = "1px solid rgba(255,255,255,0.1)";
+          toast.innerText = "A new version of the application is available. Refreshing...";
+          document.body.appendChild(toast);
+          
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
+          
+          return new Promise(() => {}); // Wait here until reload
+        }
+      }
+      throw error;
+    });
+  });
+};
+
+const ResumeEditor = lazyWithRetry(() => import("./pages/ResumeEditor"));
+const AdminDashboard = lazyWithRetry(() => import("./pages/AdminDashboard"));
+
+// Register global error listeners for Vite CSS preload errors
+const handlePreloadFailure = (msg) => {
+  if (
+    msg.includes("Unable to preload CSS") || 
+    msg.includes("Failed to fetch dynamically imported module") ||
+    msg.includes("preload")
+  ) {
+    const hasReloaded = sessionStorage.getItem("chunk-load-reloaded");
+    if (!hasReloaded) {
+      sessionStorage.setItem("chunk-load-reloaded", "true");
+      
+      const toast = document.createElement("div");
+      toast.style.position = "fixed";
+      toast.style.bottom = "24px";
+      toast.style.right = "24px";
+      toast.style.backgroundColor = "#ba2b2b";
+      toast.style.color = "#ffffff";
+      toast.style.padding = "14px 28px";
+      toast.style.borderRadius = "8px";
+      toast.style.boxShadow = "0 8px 24px rgba(0,0,0,0.25)";
+      toast.style.zIndex = "999999";
+      toast.style.fontFamily = "system-ui, -apple-system, sans-serif";
+      toast.style.fontSize = "0.92rem";
+      toast.style.fontWeight = "600";
+      toast.style.border = "1px solid rgba(255,255,255,0.1)";
+      toast.innerText = "A new version of the application is available. Refreshing...";
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+    }
+  }
+};
+
+window.addEventListener("error", (e) => {
+  handlePreloadFailure(e.message || "");
+});
+
+window.addEventListener("unhandledrejection", (e) => {
+  const reason = e.reason;
+  handlePreloadFailure(reason?.message || (typeof reason === "string" ? reason : ""));
+});
+
 import "./styles/brand.css";
 
 const SuspenseFallback = () => (
@@ -41,6 +130,12 @@ const SuspenseFallback = () => (
 
 function App() {
   useTheme(); // reads localStorage / OS preference, sets data-theme on <html>
+  
+  useEffect(() => {
+    // Clear chunk-load-reloaded flag on successful mount
+    sessionStorage.removeItem("chunk-load-reloaded");
+  }, []);
+
   return (
     <BrowserRouter>
       <Sentry.ErrorBoundary fallback={({ error, resetError }) => (
