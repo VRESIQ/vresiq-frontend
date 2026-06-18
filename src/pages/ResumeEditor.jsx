@@ -180,13 +180,13 @@ const SECTION_FIELDS_CONFIG = {
   achievements: {
     title: { label: "Achievement Title", placeholder: "Won 1st place in coding contest.", hint: "Mention measurable achievements.", sanitizeType: "textOnly" },
     subtitle: { label: "Awarding Authority / Organization", placeholder: "e.g. Major League Hacking (MLH)", hint: "Organization or authority granting the achievement.", sanitizeType: "textOnly" },
-    date: { label: "Date Achieved", placeholder: "e.g. October 2025", hint: "Enter the date you received the achievement.", sanitizeType: "date" },
+    date: { label: "Date Achieved", placeholder: "e.g. October 2025", hint: "Enter format as Month Year (e.g. October 2025) or Year only.", sanitizeType: "date" },
     description: { label: "Details & Metrics", placeholder: "e.g. Beat out 150+ teams by building a serverless analytics tool.", hint: "Quantify metrics (e.g. percentages, budgets, participant size) to prove business value.", sanitizeType: "strict" }
   },
   publications: {
     title: { label: "Publication Title", placeholder: "Research Paper on NLP", hint: "Name of the published research paper.", sanitizeType: "strict" },
     subtitle: { label: "Journal / Conference / Publisher", placeholder: "e.g. IEEE Journal of AI Research", hint: "Journal, conference, or publishing body.", sanitizeType: "strict" },
-    date: { label: "Publication Date", placeholder: "e.g. January 2026", hint: "Date when the paper was published.", sanitizeType: "date" },
+    date: { label: "Publication Date", placeholder: "e.g. January 2026", hint: "Date when the paper was published (e.g. January 2026 or 2026).", sanitizeType: "date" },
     authors: { label: "Authors", placeholder: "e.g. Jane Doe, John Smith", hint: "All contributing authors.", sanitizeType: "strict" },
     abstract: { label: "Abstract", placeholder: "e.g. We propose a novel architecture that improves accuracy by 15%...", hint: "Summarize the key contributions and methodology of your research.", sanitizeType: "strict" },
     paperUrl: { label: "Paper URL", placeholder: "e.g. https://arxiv.org/abs/1234.5678", hint: "Provide a link to the online publication or PDF.", sanitizeType: "url" }
@@ -194,55 +194,55 @@ const SECTION_FIELDS_CONFIG = {
   volunteering: {
     title: { label: "Volunteer Role", placeholder: "e.g. Volunteer Coding Instructor", hint: "Your title or role during this volunteer work.", sanitizeType: "role" },
     subtitle: { label: "Organization Name", placeholder: "e.g. Girls Who Code", hint: "Organization you volunteered for.", sanitizeType: "strict" },
-    date: { label: "Dates Active", placeholder: "e.g. September 2024 - Present", hint: "Enter the timeframe of your volunteer work.", sanitizeType: "date" },
+    date: { label: "Dates Active", placeholder: "e.g. September 2024 - Present", hint: "Enter active timeframe (e.g. Sept 2024 - Present or 2024 - 2025).", sanitizeType: "date" },
     description: { label: "Activities & Impact", placeholder: "e.g. Mentored and taught Python basics to 30 high school students.", hint: "Demonstrates community leadership and team collaboration.", sanitizeType: "strict" }
   },
   leadership: {
     title: { label: "Leadership Position", placeholder: "e.g. Chapter Tech Lead / Founder", hint: "Your title or role in this leadership position.", sanitizeType: "role" },
     subtitle: { label: "Organization / Initiative", placeholder: "e.g. Open Source Developer Group", hint: "Organization or initiative you led.", sanitizeType: "strict" },
-    date: { label: "Dates Active", placeholder: "e.g. January 2025 - Present", hint: "Enter the leadership timeframe.", sanitizeType: "date" },
+    date: { label: "Dates Active", placeholder: "e.g. January 2025 - Present", hint: "Enter leadership timeframe (e.g. Jan 2025 - Present or 2025).", sanitizeType: "date" },
     description: { label: "Key Contributions & Initiatives", placeholder: "e.g. Led a team of 12 volunteers to build a community learning hub.", hint: "Focus on initiatives you owned and the growth of the team/membership.", sanitizeType: "strict" }
   },
   hackathons: {
     title: { label: "Hackathon Name", placeholder: "e.g. ETHDenver Hackathon", hint: "Name of the hackathon event.", sanitizeType: "strict" },
     subtitle: { label: "Project / Contribution Role", placeholder: "e.g. Built 'DappFlow' (Lead Smart Contract Developer)", hint: "Your project name or contribution role.", sanitizeType: "strict" },
-    date: { label: "Hackathon Date", placeholder: "e.g. February 2026", hint: "Date of the hackathon event.", sanitizeType: "date" },
+    date: { label: "Hackathon Date", placeholder: "e.g. February 2026", hint: "Date of the hackathon event (e.g. February 2026 or 2026).", sanitizeType: "date" },
     description: { label: "Achievement & Technologies Used", placeholder: "e.g. Placed Top 10 out of 500 projects. Used Solidity, React, and Ethers.js.", hint: "Detail the problem solved, tech stack, and any prizes won.", sanitizeType: "strict" }
   },
   openSource: {
     title: { label: "Repository Name", placeholder: "e.g. facebook/react", hint: "GitHub repository path or project name.", sanitizeType: "url" },
     subtitle: { label: "Contribution / Role", placeholder: "e.g. Pull Request Author / Core Contributor", hint: "Your role or nature of contribution.", sanitizeType: "strict" },
-    date: { label: "Contribution Dates", placeholder: "e.g. June 2024 - Present", hint: "Enter the contribution timeframe.", sanitizeType: "date" },
+    date: { label: "Contribution Dates", placeholder: "e.g. June 2024 - Present", hint: "Enter contribution timeframe (e.g. June 2024 - Present or 2024 - 2025).", sanitizeType: "date" },
     description: { label: "Contribution Details", placeholder: "e.g. Optimized reconciliation logic, reducing memory allocations by 8%.", hint: "Showcase merged PRs, features developed, or issues fixed.", sanitizeType: "strict" }
   },
   awards: {
     title: { label: "Award / Honor Name", placeholder: "e.g. Outstanding Engineering Employee", hint: "Name of the award or honor.", sanitizeType: "strict" },
     subtitle: { label: "Issuing Organization", placeholder: "e.g. Acme Corporation", hint: "Issuing organization or authority.", sanitizeType: "strict" },
-    date: { label: "Award Date", placeholder: "e.g. December 2025", hint: "Enter the date you received the award.", sanitizeType: "date" },
+    date: { label: "Award Date", placeholder: "e.g. December 2025", hint: "Date when you received the award (e.g. December 2025 or 2025).", sanitizeType: "date" },
     description: { label: "Award Criteria & Details", placeholder: "e.g. Awarded to top 1% of developers for migration of payment gateway.", hint: "Briefly explain the criteria and the competitive pool size.", sanitizeType: "strict" }
   },
   internships: {
     title: { label: "Internship Role", placeholder: "e.g. Software Engineering Intern", hint: "Your title or role during this internship.", sanitizeType: "role" },
     subtitle: { label: "Company / Team", placeholder: "e.g. Google Cloud Platform", hint: "Company or team where you interned.", sanitizeType: "strict" },
-    date: { label: "Internship Dates", placeholder: "e.g. June 2025 - August 2025", hint: "Enter the internship timeframe.", sanitizeType: "date" },
+    date: { label: "Internship Dates", placeholder: "e.g. June 2025 - August 2025", hint: "Enter internship timeframe (e.g. June 2025 - August 2025).", sanitizeType: "date" },
     description: { label: "Key Projects & Learnings", placeholder: "e.g. Developed serverless log streaming pipelines in Go, processing 5TB daily.", hint: "Focus on specific features built, languages used, and mentorship received.", sanitizeType: "strict" }
   },
   workshops: {
     title: { label: "Workshop / Course Title", placeholder: "e.g. Advanced Distributed Systems", hint: "Title of the workshop or course.", sanitizeType: "strict" },
     subtitle: { label: "Provider / Instructor", placeholder: "e.g. ByteByteGo Academy", hint: "Provider or instructor of the workshop.", sanitizeType: "strict" },
-    date: { label: "Date Attended", placeholder: "e.g. November 2025", hint: "Enter the date you attended.", sanitizeType: "date" },
+    date: { label: "Date Attended", placeholder: "e.g. November 2025", hint: "Date when you attended (e.g. November 2025 or 2025).", sanitizeType: "date" },
     description: { label: "Topics & Hands-On Experience", placeholder: "e.g. Completed labs on database partitioning, consensus models, and load balancing.", hint: "Highlight specialized tools or concepts learned.", sanitizeType: "strict" }
   },
   coursework: {
     title: { label: "Course Name", placeholder: "e.g. Algorithms & Computational Complexity", hint: "Title of the course.", sanitizeType: "strict" },
     subtitle: { label: "Department / Institution", placeholder: "e.g. Computer Science (Stanford University)", hint: "Department or institution.", sanitizeType: "strict" },
-    date: { label: "Term / Year", placeholder: "e.g. Fall 2025", hint: "Enter the term or year.", sanitizeType: "date" },
+    date: { label: "Term / Year", placeholder: "e.g. Fall 2025", hint: "Enter term or year (e.g. Fall 2025 or 2025).", sanitizeType: "date" },
     description: { label: "Key Concepts & Labs", placeholder: "e.g. Dynamic programming, graph optimization, and NP-hard problems.", hint: "Showcase advanced courses that align with target job requirements.", sanitizeType: "strict" }
   },
   extracurriculars: {
     title: { label: "Activity / Organization", placeholder: "e.g. ACM Competitive Programming Team", hint: "Name of the group or activity.", sanitizeType: "strict" },
     subtitle: { label: "Role / Position", placeholder: "e.g. Lead Trainer", hint: "Your role or position.", sanitizeType: "role" },
-    date: { label: "Dates Active", placeholder: "e.g. September 2024 - Present", hint: "Enter the active timeframe.", sanitizeType: "date" },
+    date: { label: "Dates Active", placeholder: "e.g. September 2024 - Present", hint: "Enter active timeframe (e.g. Sept 2024 - Present or 2024 - 2025).", sanitizeType: "date" },
     description: { label: "Details & Accomplishments", placeholder: "e.g. Coached 15 members on data structures, improving standings in regional contests.", hint: "Demonstrates leadership, dedication, and teamwork.", sanitizeType: "strict" }
   },
   technicalProfiles: {
@@ -254,13 +254,13 @@ const SECTION_FIELDS_CONFIG = {
   patents: {
     title: { label: "Patent Title", placeholder: "e.g. Decentralized Consensus Protocol for High-Throughput Networks", hint: "Title of the patent.", sanitizeType: "strict" },
     subtitle: { label: "Patent / App Number", placeholder: "e.g. US Patent App 12/345,678 (or Pending)", hint: "Official filing reference or app number.", sanitizeType: "strict" },
-    date: { label: "Filing / Issue Date", placeholder: "e.g. March 2025", hint: "Filing or issue date.", sanitizeType: "date" },
+    date: { label: "Filing / Issue Date", placeholder: "e.g. March 2025", hint: "Filing or issue date (e.g. March 2025 or 2025).", sanitizeType: "date" },
     description: { label: "Summary of Invention", placeholder: "e.g. A consensus model enabling micro-node transaction processing without mining overhead.", hint: "State whether the patent is pending, granted, or published.", sanitizeType: "strict" }
   },
   researchExperience: {
     title: { label: "Research Project / Topic", placeholder: "e.g. Neural Networks for Edge Anomaly Detection", hint: "Subject of the research project.", sanitizeType: "strict" },
     subtitle: { label: "Institution / Lab / Advisor", placeholder: "e.g. MIT AI Lab / Advisor: Dr. Alan Turing", hint: "Lab, institution, or principal advisor.", sanitizeType: "strict" },
-    date: { label: "Research Dates", placeholder: "e.g. January 2025 - Present", hint: "Enter the research timeframe.", sanitizeType: "date" },
+    date: { label: "Research Dates", placeholder: "e.g. January 2025 - Present", hint: "Enter research timeframe (e.g. Jan 2025 - Present or 2025).", sanitizeType: "date" },
     description: { label: "Methodology, Findings & Tools", placeholder: "e.g. Designed unsupervised LSTM models with PyTorch. Improved edge detection by 14%.", hint: "Detail the scientific methodology, tools utilized, and resulting papers.", sanitizeType: "strict" }
   }
 };
@@ -270,7 +270,7 @@ const getSectionFieldProps = (secId, fieldKey) => {
   const defaults = {
     title: { label: "Title", placeholder: "Add custom information here.", hint: "Only include relevant information.", sanitizeType: "strict" },
     subtitle: { label: "Subtitle", placeholder: "e.g. Organization, Institution, or Authority", hint: "Provide the name of the relevant organization or entity.", sanitizeType: "strict" },
-    date: { label: "Date", placeholder: "e.g. January 2025 - Present or 2025", hint: "Enter a single date or date range.", sanitizeType: "date" },
+    date: { label: "Date", placeholder: "e.g. January 2025 - Present or 2025", hint: "Enter format as Month Year (e.g. June 2025) or Date Range (e.g. June 2025 - Present).", sanitizeType: "date" },
     description: { label: "Description", placeholder: "e.g. Detailed description of achievements, activities, or notes.", hint: "Explain your contributions and achievements in this section.", sanitizeType: "strict" }
   };
   return sectionConfig[fieldKey] || defaults[fieldKey] || { label: fieldKey, placeholder: `Enter ${fieldKey}`, hint: `Provide details for ${fieldKey.toLowerCase()}.`, sanitizeType: "strict" };
@@ -1440,7 +1440,7 @@ const ResumeEditor = () => {
                       updateListItem("workExperience", index, "endDate", endDate);
                     }}
                   />
-                  <small className="field-hint" style={{ marginTop: "0.25rem", color: "var(--muted)", display: "block", marginBottom: "1rem" }}>e.g. Jan 2025 - Jun 2025</small>
+                  <small className="field-hint" style={{ marginTop: "0.25rem", color: "var(--muted)", display: "block", marginBottom: "1rem" }}>Supported formats: Month Year (e.g. Jan 2025), Year only (e.g. 2025), or Present for end dates.</small>
                   <Field 
                     label="Description" 
                     value={item.description} 
@@ -1505,7 +1505,7 @@ const ResumeEditor = () => {
                       updateListItem("education", index, "endDate", endDate);
                     }}
                   />
-                  <small className="field-hint" style={{ marginTop: "0.25rem", color: "var(--muted)", display: "block", marginBottom: "1rem" }}>e.g. 2022 - 2026</small>
+                  <small className="field-hint" style={{ marginTop: "0.25rem", color: "var(--muted)", display: "block", marginBottom: "1rem" }}>Supported formats: Year (e.g. 2026) or Month Year (e.g. June 2026).</small>
                   <Field 
                     label="Details / Coursework" 
                     value={item.description || ""} 
