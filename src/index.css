@@ -53,3 +53,25 @@ a[class*="btn"]:hover {
   outline-offset: 3px;
   border-radius: 3px;
 }
+
+/* Application-wide UI Hardening rules for overflow prevention */
+input, textarea, select {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+textarea {
+  resize: vertical;
+}
+
+/* Force wrapping of URLs and long strings inside preview and editor cards */
+a, p, span, li, h1, h2, h3, h4, h5, h6, label, small, .field-hint {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Prevent horizontal scroll globally while preserving scrolling where explicitly needed */
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}

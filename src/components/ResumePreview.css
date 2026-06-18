@@ -2358,3 +2358,35 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   border-top: 1px solid #eee;
   padding-top: 8px;
 }
+
+/* Hardening: ensure all text elements inside any template preview wrap cleanly and never break container bounds */
+.resume-preview,
+.resume-preview *,
+.rp-section,
+.rp-item,
+.rp-item-desc,
+.rp-contact,
+.rp-links,
+.rp-citation-item,
+.rp-compact-item,
+.rp-publication-meta,
+.rp-citation-authors {
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Ensure links and text block styling inside ResumePreview does not overflow */
+.resume-preview a,
+.resume-preview p,
+.resume-preview span,
+.resume-preview li,
+.resume-preview h1,
+.resume-preview h2,
+.resume-preview h3,
+.resume-preview h4,
+.resume-preview strong {
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+}

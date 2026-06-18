@@ -268,9 +268,9 @@ const getSectionFieldProps = (secId, fieldKey) => {
   const sectionConfig = SECTION_FIELDS_CONFIG[secId] || {};
   const defaults = {
     title: { label: "Title", placeholder: "Add custom information here.", hint: "Only include relevant information.", sanitizeType: "strict" },
-    subtitle: { label: "Subtitle", placeholder: "", sanitizeType: "strict" },
-    date: { label: "Date", placeholder: "", sanitizeType: "strict" },
-    description: { label: "Description", placeholder: "", sanitizeType: "strict" }
+    subtitle: { label: "Subtitle", placeholder: "e.g. Organization, Institution, or Authority", hint: "Provide the name of the relevant organization or entity.", sanitizeType: "strict" },
+    date: { label: "Date", placeholder: "e.g. January 2025 - Present or 2025", hint: "Enter a single date or date range.", sanitizeType: "date" },
+    description: { label: "Description", placeholder: "e.g. Detailed description of achievements, activities, or notes.", hint: "Explain your contributions and achievements in this section.", sanitizeType: "strict" }
   };
   return sectionConfig[fieldKey] || defaults[fieldKey] || { label: fieldKey, placeholder: "", sanitizeType: "strict" };
 };
@@ -1386,7 +1386,7 @@ const ResumeEditor = () => {
               <CustomizableContactField platform="location" label="Location" value={resume.contactInfo.location} onChange={(v) => updateField("contactInfo", "location", v)} placeholder="Hyderabad, India" hint="City and country are enough." />
               <CustomizableContactField platform="linkedin" label="LinkedIn" value={resume.contactInfo.linkedIn} onChange={(v) => updateField("contactInfo", "linkedIn", v)} placeholder="linkedin.com/in/username" hint="Optional but recommended." />
               <CustomizableContactField platform="github"   label="GitHub"   value={resume.contactInfo.github}   onChange={(v) => updateField("contactInfo", "github", v)} placeholder="github.com/username" hint="Add if you have projects." />
-              <CustomizableContactField platform="website"  label="Website"  value={resume.contactInfo.website}  onChange={(v) => updateField("contactInfo", "website", v)} />
+              <CustomizableContactField platform="website"  label="Website"  value={resume.contactInfo.website}  onChange={(v) => updateField("contactInfo", "website", v)} placeholder="https://example.com" hint="Your portfolio or personal website." />
             </Section>
           )}
 
@@ -1508,6 +1508,8 @@ const ResumeEditor = () => {
                   <Field 
                     label="Details / Coursework" 
                     value={item.description || ""} 
+                    placeholder="Data Structures, DBMS, Operating Systems"
+                    hint="Relevant coursework, projects, or academic honors."
                     sanitize={sanitizeStrictText}
                     onChange={(v) => updateListItem("education", index, "description", v)} 
                     textarea 

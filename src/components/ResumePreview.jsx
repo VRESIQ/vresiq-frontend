@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from "react";
 import { loadTemplateFont, getFontVars, FONT_MAP } from "../utils/fonts";
 import "./ResumePreview.css";
+import { formatPartialDate, formatDateRange } from "../utils/formatters";
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 const hasText = (v) => {
@@ -505,7 +506,7 @@ const ExperienceSection = ({ items = [], showIcon, dec, isTimeline = false, scan
             {isTimeline && <div className="rp-timeline-dot" />}
             <div className="rp-item-head">
               <strong>{item.role || "Role"}</strong>
-              <span>{[item.startDate, item.endDate].filter(hasText).join(" – ")}</span>
+              <span>{formatDateRange(item.startDate, item.endDate)}</span>
             </div>
             <div className="rp-item-sub">
               <span>{item.company}</span>
@@ -541,7 +542,7 @@ const EducationSection = ({ items = [], showIcon, dec, sectionNumber, fullName, 
             </div>
             <div className="rp-item-sub">
               <span>{item.degree || "Degree"}</span>
-              <span>{[item.startDate, item.endDate].filter(hasText).join(" – ")}</span>
+              <span>{formatDateRange(item.startDate, item.endDate)}</span>
             </div>
             {hasText(item.gpa) && (
               <p className="rp-education-gpa">
@@ -630,7 +631,7 @@ const CertsSection = ({ items = [], showIcon, dec, sectionNumber, hasBullets = t
               ) : (
                 <strong>{item.title || "Certification"}</strong>
               )}
-              <span>{[item.issuer, item.year].filter(hasText).join(", ")}</span>
+               <span>{[item.issuer, formatPartialDate(item.year)].filter(hasText).join(", ")}</span>
             </div>
           </ItemWrapper>
         ))}
@@ -693,7 +694,7 @@ const CustomSection = ({ title, items = [], showIcon, dec, scanMode = false, sec
           <ItemWrapper key={i} className="rp-item" style={{ marginBottom: "6px" }}>
             <div className="rp-item-head" style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
               {item.title && renderLinkOrText(item.title, "rp-custom-link", true)}
-              {hasText(item.date) && <span>{renderLinkOrText(item.date, "rp-custom-link")}</span>}
+              {hasText(item.date) && <span>{renderLinkOrText(formatPartialDate(item.date), "rp-custom-link")}</span>}
             </div>
             {hasText(item.subtitle) && <p className="rp-item-sub">{renderLinkOrText(item.subtitle, "rp-custom-link")}</p>}
             {hasText(item.description) && (
@@ -739,7 +740,7 @@ const PublicationsSection = ({ title, items = [], fullName, dec, sectionNumber, 
                 {/* 2. Journal / Conference / Publisher • Date */}
                 {(hasText(item.subtitle) || hasText(item.date)) && (
                   <div className="rp-publication-meta" style={{ fontSize: "var(--rp-fs-meta)", color: "var(--rp-meta-color, #666)", marginTop: "2px" }}>
-                    {item.subtitle}{item.subtitle && item.date && " • "}{item.date}
+                    {item.subtitle}{item.subtitle && item.date && " • "}{formatPartialDate(item.date)}
                   </div>
                 )}
 
@@ -792,7 +793,7 @@ const PatentsSection = ({ title, items = [], fullName, dec, sectionNumber, hasBu
               <strong className="rp-citation-title">
                 {boldCandidateName(item.title, fullName)}
               </strong>
-              {hasText(item.date) && <span className="rp-citation-date"> ({item.date})</span>}
+              {hasText(item.date) && <span className="rp-citation-date"> ({formatPartialDate(item.date)})</span>}
               {hasText(item.description) && (
                 <div className="rp-citation-authors" style={{ marginTop: "2px", fontSize: "var(--rp-fs-meta)", color: "#555" }}>
                   {renderDescription(item.description, fullName)}
@@ -822,7 +823,7 @@ const AwardsSection = ({ title, items = [], dec, sectionNumber, hasBullets = tru
             <div style={{ display: "block", verticalAlign: "top" }}>
               <strong>{item.title}</strong>
               {item.subtitle && ` (${item.subtitle})`}
-              {item.date && ` [${item.date}]`}
+              {item.date && ` [${formatPartialDate(item.date)}]`}
             </div>
           </ItemWrapper>
         ))}
@@ -866,7 +867,7 @@ const TechnicalProfilesSection = ({ title, items = [], dec, sectionNumber, fullN
                 </span>
                 {item.date && !isUrl(item.date) && (
                   <span className="rp-compact-date">
-                    {String(item.date)}
+                    {formatPartialDate(item.date)}
                   </span>
                 )}
               </div>
@@ -908,7 +909,7 @@ const MembershipsSection = ({ title, items = [], dec, sectionNumber, fullName, h
               </span>
               {item.date && (
                 <span className="rp-compact-date">
-                  {renderLinkOrText(item.date, "rp-custom-link")}
+                  {renderLinkOrText(formatPartialDate(item.date), "rp-custom-link")}
                 </span>
               )}
             </div>

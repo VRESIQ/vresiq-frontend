@@ -7,7 +7,16 @@ const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "
 const DateRangePicker = ({ startDate = "", endDate = "", onChange }) => {
   const parse = (val) => {
     if (!val || val === "Present") return { month: "", year: "" };
-    const [month, year] = val.split(" ");
+    const parts = val.trim().split(/\s+/);
+    if (parts.length === 1) {
+      const part = parts[0];
+      if (/^\d{4}$/.test(part)) {
+        return { month: "", year: part };
+      } else {
+        return { month: part, year: "" };
+      }
+    }
+    const [month, year] = parts;
     return { month: month || "", year: year || "" };
   };
 
@@ -19,7 +28,14 @@ const DateRangePicker = ({ startDate = "", endDate = "", onChange }) => {
   const [endYear, setEndYear] = useState(initialEnd.year);
   const [present, setPresent] = useState(endDate === "Present");
 
-  const buildDate = (month, year) => (month && year ? `${month} ${year}` : "");
+  const buildDate = (month, year) => {
+    const m = month ? String(month).trim() : "";
+    const y = year ? String(year).trim() : "";
+    if (m && y) return `${m} ${y}`;
+    if (m) return m;
+    if (y) return y;
+    return "";
+  };
 
   const handleChange = (sm, sy, em, ey, isPresent) => {
     onChange({

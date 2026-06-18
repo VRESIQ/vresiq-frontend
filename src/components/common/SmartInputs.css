@@ -404,4 +404,35 @@
   border-color: rgba(184, 255, 44, 0.4) !important;
 }
 
+/* UI Hardening rules for SmartInputs */
+.phone-input-wrap,
+.date-range-wrap,
+.contact-input-wrap,
+.customizable-contact-field,
+.contact-display-as-input,
+.phone-search,
+.phone-dropdown {
+  box-sizing: border-box !important;
+  max-width: 100% !important;
+}
+
+.date-selects select,
+.date-selects input,
+.contact-input,
+.phone-number-input {
+  box-sizing: border-box !important;
+  max-width: 100% !important;
+}
+
+.phone-dropdown {
+  overflow-x: hidden !important;
+}
+
+.contact-label,
+.phone-label-custom,
+.display-as-label {
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+}
+
 

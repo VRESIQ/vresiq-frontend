@@ -1682,4 +1682,56 @@
   border-color: var(--accent, #b8ff2c);
 }
 
+/* Full application-wide UI hardening & overflow prevention */
+.list-card,
+.field,
+.field-row,
+.field input,
+.field textarea,
+.field-hint,
+.field-error,
+.section-header,
+.editor-main,
+.editor-sidebar,
+.editor-body,
+.editor-topbar,
+.editor-page,
+.customizable-contact-field {
+  box-sizing: border-box !important;
+  max-width: 100% !important;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+}
+
+/* Hardening rule: Force all nested input controls, ranges, textareas to fit parent */
+.field input,
+.field textarea,
+.field select,
+.contact-input,
+.phone-number-input {
+  box-sizing: border-box !important;
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+.field textarea {
+  resize: vertical !important;
+}
+
+/* Hardening rule: Prevent inner components and helper text from leaking out of cards */
+.list-card * {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.field-hint,
+.field-error,
+small,
+label {
+  display: block !important;
+  max-width: 100% !important;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+}
+
 
