@@ -64,10 +64,6 @@
   padding-top: 0 !important;
 }
 
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar-header,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar-header {
-  margin-top: -28px !important;
-}
 
 .rp-section:last-child {
   margin-bottom: 0 !important;
@@ -581,48 +577,88 @@
    titles use var(--accent) and would become invisible against an accent background.
    Instead, .rp-sidebar-header (the wrapper div we added in JSX) bleeds to sidebar edges. */
 
-/* Bleed the header block to the sidebar's left/right/top edges */
-[data-hstyle="full-bleed"] .rp-sidebar-light .rp-sidebar-header,
-[data-hstyle="full-bleed"] .rp-sidebar-infographic .rp-sidebar-header {
+/* FULL-BLEED on sidebar templates — the entire left column (sidebar) becomes one continuous colored sidebar */
+.resume-preview[data-hstyle="full-bleed"] .rp-sidebar,
+.resume-preview[data-hstyle="fullBleed"] .rp-sidebar {
   background: var(--accent) !important;
-  margin: -28px -18px 14px;   /* perfectly matches .rp-sidebar padding */
-  padding: 32px 18px 24px;
-  border-bottom: none;
 }
 
-/* Light sidebar: dark text on (usually bright) accent — good contrast */
-[data-hstyle="full-bleed"] .rp-sidebar-light .rp-sidebar-header .rp-sidebar-name,
-[data-hstyle="full-bleed"] .rp-sidebar-infographic .rp-sidebar-header .rp-sidebar-name {
-  color: var(--on-accent) !important;
-}
-[data-hstyle="full-bleed"] .rp-sidebar-light .rp-sidebar-header .rp-sidebar-role,
-[data-hstyle="full-bleed"] .rp-sidebar-infographic .rp-sidebar-header .rp-sidebar-role {
-  color: var(--on-accent-muted) !important;
-}
-[data-hstyle="full-bleed"] .rp-sidebar-light .rp-sidebar-header .rp-sidebar-contact,
-[data-hstyle="full-bleed"] .rp-sidebar-light .rp-sidebar-header .rp-contact,
-[data-hstyle="full-bleed"] .rp-sidebar-infographic .rp-sidebar-header .rp-sidebar-contact,
-[data-hstyle="full-bleed"] .rp-sidebar-infographic .rp-sidebar-header .rp-contact {
-  color: var(--on-accent-soft) !important;
+/* Seam-free header configuration */
+.resume-preview[data-hstyle="full-bleed"] .rp-sidebar-header,
+.resume-preview[data-hstyle="fullBleed"] .rp-sidebar-header {
+  margin: 0 0 14px 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border-bottom: none !important;
 }
 
-/* Dark sidebar (premium6): accent header block, keep WHITE text — it was already white,
-   and the accent background is typically bright so white may clash.
-   But dark-on-accent is also valid. We use white to maintain contrast with ANY accent. */
-[data-hstyle="full-bleed"] .rp-sidebar-dark .rp-sidebar-header {
-  background: var(--accent) !important;
-  margin: -28px -18px 14px;
-  padding: 32px 18px 24px;
+/* Ensure high contrast legibility for all text elements inside the full-bleed sidebar */
+.resume-preview[data-hstyle="full-bleed"] .rp-sidebar,
+.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-sidebar-name,
+.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-sidebar-role,
+.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-contact,
+.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-contact a,
+.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-stitle,
+.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-skill-name,
+.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-item-title,
+.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-item-sub,
+.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-item-desc,
+.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-item-desc ul li,
+.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-summary,
+.resume-preview[data-hstyle="full-bleed"] .rp-sidebar li,
+.resume-preview[data-hstyle="full-bleed"] .rp-sidebar span,
+.resume-preview[data-hstyle="full-bleed"] .rp-sidebar p,
+.resume-preview[data-hstyle="fullBleed"] .rp-sidebar,
+.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-sidebar-name,
+.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-sidebar-role,
+.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-contact,
+.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-contact a,
+.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-contact a,
+.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-stitle,
+.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-skill-name,
+.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-item-title,
+.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-item-sub,
+.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-item-desc,
+.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-item-desc ul li,
+.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-summary,
+.resume-preview[data-hstyle="fullBleed"] .rp-sidebar li,
+.resume-preview[data-hstyle="fullBleed"] .rp-sidebar span,
+.resume-preview[data-hstyle="fullBleed"] .rp-sidebar p {
+  color: #ffffff !important;
 }
-[data-hstyle="full-bleed"] .rp-sidebar-dark .rp-sidebar-header .rp-sidebar-name {
-  color: var(--on-accent) !important;
+
+/* Force specific contact details visibility properties as requested */
+.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-contact,
+.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-contact {
+  opacity: 0.96 !important;
 }
-[data-hstyle="full-bleed"] .rp-sidebar-dark .rp-sidebar-header .rp-sidebar-role {
-  color: var(--on-accent-muted) !important;
+.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-contact a,
+.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-contact a {
+  text-decoration-color: rgba(255,255,255,.6) !important;
 }
-[data-hstyle="full-bleed"] .rp-sidebar-dark .rp-sidebar-header .rp-sidebar-contact,
-[data-hstyle="full-bleed"] .rp-sidebar-dark .rp-sidebar-header .rp-contact {
-  color: var(--on-accent-soft) !important;
+
+/* Ensure sidebar section headers divider line contrast */
+.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-stitle,
+.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-stitle {
+  border-bottom-color: rgba(255,255,255,0.3) !important;
+}
+
+/* Ensure skill rating dots and progress bars remain beautifully visible on the accent background */
+.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .dot,
+.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .dot {
+  border-color: rgba(255, 255, 255, 0.6) !important;
+}
+.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .dot.filled,
+.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .dot.filled {
+  background: rgba(255, 255, 255, 0.85) !important;
+}
+.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-bar,
+.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-bar {
+  background: rgba(255, 255, 255, 0.2) !important;
+}
+.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-bar span,
+.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-bar span {
+  background: rgba(255, 255, 255, 0.9) !important;
 }
 
 
