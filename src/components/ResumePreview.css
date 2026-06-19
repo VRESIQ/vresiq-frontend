@@ -329,13 +329,13 @@
 [data-hstyle="card"] .rp-header-executive,
 [data-hstyle="card"] .rp-header-centered,
 [data-hstyle="card"] .rp-header-tech {
-  margin: 20px 24px 10px !important;
+  margin: 20px 24px 0px !important;
   border: 1.5px solid var(--accent) !important;
-  border-radius: 12px !important;
+  border-radius: 6px !important;
   background: #fff !important;
   color: #111410 !important;
-  padding: 30px 40px !important;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.06) !important;
+  padding: 16px 44px !important;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.04) !important;
   position: relative;
   z-index: 10;
 }
@@ -343,9 +343,9 @@
 [data-hstyle="card"] .rp-ats-header,
 [data-hstyle="card"] .rp-ats-header-left {
   border: 1.5px solid var(--accent) !important;
-  border-radius: 10px !important;
-  padding: 18px 16px !important;
-  margin-bottom: 14px !important;
+  border-radius: 6px !important;
+  padding: 14px 24px !important;
+  margin-bottom: 8px !important;
   background: #fff !important;
 }
 
