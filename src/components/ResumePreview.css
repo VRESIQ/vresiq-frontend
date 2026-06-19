@@ -38,12 +38,16 @@
   padding-bottom: 48px;
 }
 
-/* Remove padding-top when header is full-bleed, card, minimal, or has native bleed to let it touch the page top edge */
+/* Remove padding-top when header is full-bleed, minimal, or has native bleed to let it touch the page top edge */
 .resume-preview[data-hstyle="full-bleed"],
-.resume-preview[data-hstyle="card"],
 .resume-preview[data-hstyle="minimal"],
 .resume-preview.rp-template3 {
   padding-top: 0 !important;
+}
+
+/* Restore 20px top padding for Card mode parent to prevent margin collapsing and top border/shadow clipping */
+.resume-preview[data-hstyle="card"] {
+  padding-top: 20px !important;
 }
 
 .rp-section:last-child {
@@ -329,7 +333,7 @@
 [data-hstyle="card"] .rp-header-executive,
 [data-hstyle="card"] .rp-header-centered,
 [data-hstyle="card"] .rp-header-tech {
-  margin: 20px 24px 0px !important;
+  margin: 0px 24px 0px !important;
   border: 1.5px solid var(--accent) !important;
   border-radius: 6px !important;
   background: #fff !important;
@@ -1809,8 +1813,13 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 }
 
 @media print {
-  .resume-preview {
+  .resume-preview:not([data-hstyle="card"]) {
     padding-top: 0 !important;
+  }
+  .resume-preview[data-hstyle="card"] {
+    padding-top: 20px !important;
+  }
+  .resume-preview {
     padding-bottom: 0 !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
