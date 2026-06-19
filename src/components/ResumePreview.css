@@ -1985,7 +1985,8 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-ats-senior .rp-stitle,
 .rp-ats-lead .rp-stitle,
 .rp-ats-intern .rp-stitle,
-.rp-ats-experienced .rp-stitle {
+.rp-ats-experienced .rp-stitle,
+.rp-engineer-ats .rp-stitle {
   font-family: var(--rp-font-heading, "Inter", sans-serif);
   font-size: var(--rp-fs-stitle);
   font-weight: 700;
@@ -2416,4 +2417,42 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .resume-preview strong {
   overflow-wrap: anywhere !important;
   word-break: break-word !important;
+}
+
+/* ─── Engineer ATS Layout ─── */
+.rp-engineer-ats {
+  border-top: 4px solid var(--accent);
+  padding: 32px 40px;
+}
+.rp-engineer-header {
+  text-align: left;
+  margin-bottom: 12px;
+}
+.rp-engineer-name {
+  font-family: var(--rp-font-heading, "Inter", sans-serif);
+  font-size: 24px;
+  font-weight: 700;
+  color: #111111;
+  margin: 0 0 2px;
+}
+.rp-engineer-role {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-readable);
+  margin: 0 0 8px;
+}
+.rp-engineer-contacts-grid .rp-contact {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 4px 16px;
+  font-size: 10px;
+  color: #444;
+  margin-top: 4px;
+}
+.rp-engineer-contacts-grid .rp-contact-item {
+  display: flex;
+  align-items: center;
+}
+.rp-engineer-contacts-grid .rp-contact-sep {
+  display: none !important;
 }

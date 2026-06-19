@@ -100,6 +100,7 @@ const PREMIUM_TEMPLATES = [
   { id: "ats_intern",      name: "Campus" },
   { id: "ats_experienced", name: "Prime" },
   { id: "academic_cv",     name: "Scholar" },
+  { id: "engineer_ats",    name: "Engineer ATS" },
 ];
 
 // Font options for Pro users — shown as a picker in the Templates section

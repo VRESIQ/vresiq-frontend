@@ -1679,6 +1679,22 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
         </div>
       );
 
+    case "engineer_ats":
+      return (
+        <div className="rp-ats-container rp-engineer-ats">
+          <header className="rp-engineer-header">
+            <h1 className="rp-engineer-name">{name}</h1>
+            {role && <p className="rp-engineer-role">{role}</p>}
+            {profileInfo.targetRole && <div className="rp-ats-badge-left">{profileInfo.targetRole}</div>}
+            <div className="rp-engineer-contacts-grid">
+              <ContactRow c={contactInfo} />
+            </div>
+          </header>
+          <hr className="rp-rule" />
+          <main className="rp-ats-body">{getSections('all')}</main>
+        </div>
+      );
+
     default:
       return <p>Unknown template</p>;
   }
@@ -1710,6 +1726,7 @@ function getDefaultAccent(templateId) {
     tech_faang: "#1a5fb4",
     harvard_ats: "#000000",
     swiss_minimal: "#2b2b2b",
+    engineer_ats: "#111111",
   };
   return map[templateId] || "#111111";
 }
