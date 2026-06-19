@@ -348,15 +348,20 @@
 [data-hstyle="card"] .rp-header-executive,
 [data-hstyle="card"] .rp-header-centered,
 [data-hstyle="card"] .rp-header-tech {
-  margin: 0px 24px 0px !important;
+  margin: 12px 24px !important;
   border: 1.5px solid var(--accent) !important;
-  border-radius: 6px !important;
+  border-radius: 10px !important;
   background: #fff !important;
   color: #111410 !important;
-  padding: 14px 28px !important;
+  padding: 16px 28px !important;
   box-shadow: 0 6px 20px rgba(0,0,0,0.04) !important;
   position: relative;
   z-index: 10;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  word-wrap: break-word !important;
+  overflow-wrap: anywhere !important;
+  min-width: 0 !important;
 }
 
 [data-hstyle="card"] .rp-ats-header,
@@ -364,10 +369,15 @@
 [data-hstyle="card"] .rp-academic-header,
 [data-hstyle="card"] .rp-engineer-header {
   border: 1.5px solid var(--accent) !important;
-  border-radius: 6px !important;
-  padding: 14px 24px !important;
-  margin: 0 24px 8px !important;
+  border-radius: 10px !important;
+  padding: 16px 24px !important;
+  margin: 12px 24px !important;
   background: #fff !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  word-wrap: break-word !important;
+  overflow-wrap: anywhere !important;
+  min-width: 0 !important;
 }
 
 [data-hstyle="card"] .rp-header h1,

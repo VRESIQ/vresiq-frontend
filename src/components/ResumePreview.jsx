@@ -204,6 +204,32 @@ const buildContactEntries = (c = {}) => {
     });
   }
 
+  if (hasText(c.leetCode)) {
+    const lcObj = typeof c.leetCode === "object" && c.leetCode !== null ? c.leetCode : { value: c.leetCode, displayText: "" };
+    const lcVal = lcObj.value || "";
+    const lcText = lcObj.displayText?.trim() ? lcObj.displayText.trim() : lcVal.trim().replace(/^(https?:\/\/)?(www\.)?/i, "");
+    entries.push({
+      key: "leetcode",
+      href: formatUrl(lcVal.includes("leetcode.com") ? lcVal : `leetcode.com/${lcVal}`),
+      text: lcText,
+      className: "rp-contact-link rp-contact-link-leetcode header-link",
+      target: "_blank",
+    });
+  }
+
+  if (hasText(c.hackerRank)) {
+    const hrObj = typeof c.hackerRank === "object" && c.hackerRank !== null ? c.hackerRank : { value: c.hackerRank, displayText: "" };
+    const hrVal = hrObj.value || "";
+    const hrText = hrObj.displayText?.trim() ? hrObj.displayText.trim() : hrVal.trim().replace(/^(https?:\/\/)?(www\.)?/i, "");
+    entries.push({
+      key: "hackerrank",
+      href: formatUrl(hrVal.includes("hackerrank.com") ? hrVal : `hackerrank.com/${hrVal}`),
+      text: hrText,
+      className: "rp-contact-link rp-contact-link-hackerrank header-link",
+      target: "_blank",
+    });
+  }
+
   return entries;
 };
 
