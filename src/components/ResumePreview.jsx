@@ -776,7 +776,7 @@ const PublicationsSection = ({ title, items = [], fullName, dec, sectionNumber, 
                 {formattedUrl && (
                   <div className="rp-publication-url" style={{ fontSize: "var(--rp-fs-meta)", marginTop: "4px" }}>
                     <a href={formattedUrl} target="_blank" rel="noopener noreferrer" className="resume-link">
-                      {formattedUrl} <span className="external-link-icon">↗</span>
+                      Paper Link <span className="external-link-icon">↗</span>
                     </a>
                   </div>
                 )}

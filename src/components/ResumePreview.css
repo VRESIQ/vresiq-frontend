@@ -1978,27 +1978,28 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 /* Target Role Styling in Preview */
 .rp-target-role-badge {
   display: inline-block;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  background: var(--accent);
-  color: var(--on-accent);
-  padding: 3px 10px;
-  border-radius: 4px;
-  margin-top: 6px;
-  font-family: var(--rp-font-heading, sans-serif);
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.5px !important;
+  background: none !important;
+  color: inherit !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  margin-top: 6px !important;
+  box-shadow: none !important;
+  border: none !important;
+  text-transform: none !important;
 }
 
-/* Let's style the badge for other header styles too */
 [data-hstyle="card"] .rp-target-role-badge {
-  background: var(--accent) !important;
-  color: #111410 !important;
+  background: none !important;
+  color: inherit !important;
 }
 
-[data-hstyle="full-bleed"] .rp-target-role-badge {
-  background: var(--on-accent) !important;
-  color: var(--accent-readable) !important;
+[data-hstyle="full-bleed"] .rp-target-role-badge,
+[data-hstyle="fullBleed"] .rp-target-role-badge {
+  background: none !important;
+  color: inherit !important;
 }
 
 /* Pulse animation for key scanning landmarks */
@@ -2798,4 +2799,61 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-engineer-ats .rp-experience-list .rp-item-desc ul > li,
 .rp-engineer-ats .rp-projects-list .rp-item-desc ul > li {
   list-style-type: circle !important;
+}
+
+/* ==========================================================================
+   PROFESSIONAL SIDEBAR REDESIGN OVERRIDES
+   ========================================================================== */
+
+/* ISSUE 2 — TECHNICAL PROFILE LINKS: increase contrast, white color, underline with color */
+.rp-sidebar a {
+  color: #FFFFFF !important;
+  opacity: 0.95 !important;
+  text-decoration: underline !important;
+  text-decoration-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* ISSUE 3 — SIDEBAR CONTENT VISIBILITY: skills/languages levels, interests, technical profile descriptions */
+.rp-sidebar .rp-skill-level,
+.rp-sidebar .rp-skill-bar-wrap small,
+.rp-sidebar .rp-interests-list li,
+.rp-sidebar .rp-tags .rp-tag,
+.rp-sidebar .rp-item-desc {
+  color: #D1D5DB !important;
+  opacity: 0.9 !important;
+}
+
+/* ISSUE 5 — CARD HEADER STYLE REDESIGN (Visual, Split, Nova) */
+.resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header,
+.resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header,
+.resume-preview[data-hstyle="card"] .rp-sidebar-dark .rp-sidebar-header {
+  border-radius: 10px !important;
+  padding: 24px !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18) !important;
+  margin: 0 0 28px 0 !important;
+}
+
+/* Typography hierarchy inside card header style */
+.resume-preview[data-hstyle="card"] .rp-sidebar .rp-sidebar-header .rp-sidebar-name {
+  font-size: 32px !important;
+  font-weight: 700 !important;
+  color: #FFFFFF !important;
+  line-height: 1.15 !important;
+}
+
+.resume-preview[data-hstyle="card"] .rp-sidebar .rp-sidebar-header .rp-sidebar-role {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: #FFFFFF !important;
+  margin-top: 4px !important;
+  line-height: 1.2 !important;
+}
+
+.resume-preview[data-hstyle="card"] .rp-sidebar .rp-sidebar-header .rp-contact,
+.resume-preview[data-hstyle="card"] .rp-sidebar .rp-sidebar-header .rp-contact a {
+  font-size: 14px !important;
+  color: #FFFFFF !important;
+  opacity: 0.95 !important;
 }
