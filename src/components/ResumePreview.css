@@ -2846,9 +2846,9 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header,
 .resume-preview[data-hstyle="card"] .rp-sidebar-dark .rp-sidebar-header {
   border-radius: 12px !important;
-  padding: 16px 20px !important;
+  padding: 20px 24px !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
-  margin: 12px 12px 24px 12px !important;
+  margin: 20px 12px 28px 12px !important;
   overflow: hidden !important;
   box-sizing: border-box !important;
   min-width: 0 !important;
@@ -2864,9 +2864,9 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 
 /* Typography hierarchy inside card header style */
 .resume-preview[data-hstyle="card"] .rp-sidebar .rp-sidebar-header .rp-sidebar-name {
-  font-size: 20px !important;
+  font-size: 22px !important;
   font-weight: 700 !important;
-  line-height: 1.15 !important;
+  line-height: 1.2 !important;
   word-wrap: break-word !important;
   overflow-wrap: anywhere !important;
 }
@@ -2881,16 +2881,16 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 }
 
 .resume-preview[data-hstyle="card"] .rp-sidebar .rp-sidebar-header .rp-sidebar-role {
-  font-size: 11.5px !important;
+  font-size: 12.5px !important;
   font-weight: 600 !important;
-  margin-top: 4px !important;
-  line-height: 1.2 !important;
+  margin-top: 6px !important;
+  line-height: 1.25 !important;
   word-wrap: break-word !important;
   overflow-wrap: anywhere !important;
 }
 
 .resume-preview[data-hstyle="card"] .rp-sidebar-dark .rp-sidebar-header .rp-sidebar-role {
-  color: rgba(255, 255, 255, 0.85) !important;
+  color: rgba(255, 255, 255, 0.95) !important;
 }
 
 .resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header .rp-sidebar-role,
@@ -2898,9 +2898,19 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   color: var(--accent-readable, #2563EB) !important;
 }
 
-.resume-preview[data-hstyle="card"] .rp-sidebar .rp-sidebar-header .rp-contact,
+.resume-preview[data-hstyle="card"] .rp-sidebar .rp-sidebar-header .rp-contact {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  margin-top: 12px !important;
+  font-size: 11px !important;
+  word-wrap: break-word !important;
+  overflow-wrap: anywhere !important;
+  min-width: 0 !important;
+}
+
 .resume-preview[data-hstyle="card"] .rp-sidebar .rp-sidebar-header .rp-contact a {
-  font-size: 10.5px !important;
+  font-size: 11px !important;
   word-wrap: break-word !important;
   overflow-wrap: anywhere !important;
   min-width: 0 !important;
@@ -2918,12 +2928,15 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   color: #444444 !important;
 }
 
-/* Target role visibility on dark background / templates */
+/* Force target role visibility on dark sidebars or dark layouts */
 .rp-sidebar-dark .rp-target-role-badge,
+[data-template="premium6"] .rp-target-role-badge,
 [data-hstyle="full-bleed"] .rp-target-role-badge,
 [data-hstyle="fullBleed"] .rp-target-role-badge {
   color: #FFFFFF !important;
   background: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 /* Base link styling inside dark sidebars to ensure readability */
@@ -2950,14 +2963,15 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   color: var(--accent, #1d4ed8) !important;
 }
 
-/* Light/Dark theme sensitivity for sidebar descriptions and values */
+/* Increase contrast for secondary/meta text inside technical profiles & sidebars */
 .rp-sidebar-dark .rp-skill-level,
 .rp-sidebar-dark .rp-skill-bar-wrap small,
 .rp-sidebar-dark .rp-interests-list li,
 .rp-sidebar-dark .rp-tags .rp-tag,
-.rp-sidebar-dark .rp-item-desc {
-  color: #D1D5DB !important;
-  opacity: 0.95 !important;
+.rp-sidebar-dark .rp-item-desc,
+.rp-sidebar-dark .rp-compact-date {
+  color: #E5E7EB !important;
+  opacity: 1 !important;
 }
 
 .rp-sidebar-light .rp-skill-level,
@@ -2965,12 +2979,14 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-sidebar-light .rp-interests-list li,
 .rp-sidebar-light .rp-tags .rp-tag,
 .rp-sidebar-light .rp-item-desc,
+.rp-sidebar-light .rp-compact-date,
 .rp-sidebar-infographic .rp-skill-level,
 .rp-sidebar-infographic .rp-skill-bar-wrap small,
 .rp-sidebar-infographic .rp-interests-list li,
 .rp-sidebar-infographic .rp-tags .rp-tag,
-.rp-sidebar-infographic .rp-item-desc {
-  color: #222222 !important;
+.rp-sidebar-infographic .rp-item-desc,
+.rp-sidebar-infographic .rp-compact-date {
+  color: #1F2937 !important;
   opacity: 1 !important;
 }
 
@@ -2981,8 +2997,8 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   border: 1px solid rgba(0, 0, 0, 0.08) !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
   border-radius: 12px !important;
-  padding: 16px 20px !important;
-  margin: 12px 12px 24px 12px !important;
+  padding: 20px 24px !important;
+  margin: 20px 12px 28px 12px !important;
 }
 
 
