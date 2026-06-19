@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getResumeById, updateResume, uploadProfileImage, sendResumeByEmail, exportResumePdf } from "../api";
 import ResumePreview from "../components/ResumePreview";
@@ -556,9 +556,15 @@ const ResumeEditor = () => {
     } catch (_) {}
   }, [id, atsBadgePos]);
 
+  // Memoize local ATS report to avoid redundant heavy recalculations during renders
+  const localReport = useMemo(() => {
+    if (!resume) return null;
+    return computeAtsReport(resume);
+  }, [resume]);
+
   // Restore ATS badge visibility on template change, score change, or new ATS Refine result
   const currentTemplate = resume?.template;
-  const currentLocalScore = resume ? computeAtsReport(resume).score : null;
+  const currentLocalScore = localReport ? localReport.score : null;
   const currentLatestScore = latestAtsReport ? latestAtsReport.atsScore : null;
 
   useEffect(() => {
@@ -2398,7 +2404,6 @@ const ResumeEditor = () => {
 
           {/* ATS Floating Score Badge — draggable + removable */}
           {(() => {
-            const localReport = computeAtsReport(resume);
             const atsReport = latestAtsReport
               ? {
                   score: latestAtsReport.atsScore,
@@ -2406,7 +2411,7 @@ const ResumeEditor = () => {
                   category: latestAtsReport.category,
                   issues: latestAtsReport.issues || [],
                 }
-              : localReport;
+              : (localReport || { score: 0, issues: [] });
             const atsScore = atsReport.score;
             const scoreClass = atsScore >= 85 ? "good" : atsScore >= 60 ? "warn" : "poor";
 

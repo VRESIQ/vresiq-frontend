@@ -159,30 +159,15 @@
   color: var(--header-link-hover, rgba(255, 255, 255, 0.8)) !important;
 }
 
-/* Contact/header links under card or minimal style should be dark/readable since background is white */
-[data-hstyle="minimal"] .header-link,
-[data-hstyle="minimal"] .rp-contact a,
-[data-hstyle="card"] .header-link,
-[data-hstyle="card"] .rp-contact a {
-  color: var(--accent-readable, #2563EB) !important;
-}
-
-[data-hstyle="minimal"] .header-link:hover,
-[data-hstyle="minimal"] .rp-contact a:hover,
-[data-hstyle="card"] .header-link:hover,
-[data-hstyle="card"] .rp-contact a:hover {
-  color: var(--accent, #1d4ed8) !important;
-}
-
 /* Except when inside a dark sidebar, which always needs white/light text */
 .rp-sidebar-dark .header-link,
 .rp-sidebar-dark .rp-contact a {
-  color: var(--header-link-color, #ffffff) !important;
+  color: #ffffff !important;
 }
 
 .rp-sidebar-dark .header-link:hover,
 .rp-sidebar-dark .rp-contact a:hover {
-  color: var(--header-link-hover, rgba(255, 255, 255, 0.8)) !important;
+  color: rgba(255, 255, 255, 0.8) !important;
 }
 
 .rp-contact-item,

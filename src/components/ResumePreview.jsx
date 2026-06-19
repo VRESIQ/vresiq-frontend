@@ -1084,8 +1084,8 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
         "--on-accent-muted": accentText.muted,
         "--on-accent-soft": accentText.soft,
         "--on-accent-line": accentText.line,
-        "--header-link-color": accentText.primary === "#ffffff" ? "#ffffff" : accentReadable,
-        "--header-link-hover": accentText.primary === "#ffffff" ? accentText.muted : accent,
+        "--header-link-color": (dec.headerStyle === "card" || dec.headerStyle === "minimal" || !dec.headerStyle) ? accentReadable : (accentText.primary === "#ffffff" ? "#ffffff" : accentReadable),
+        "--header-link-hover": (dec.headerStyle === "card" || dec.headerStyle === "minimal" || !dec.headerStyle) ? accent : (accentText.primary === "#ffffff" ? accentText.muted : accent),
         "--page-border": pageBorder ? `1px solid ${accent}` : "none",
         ...fontVars,
       }}
