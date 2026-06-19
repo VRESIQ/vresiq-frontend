@@ -147,3 +147,4 @@ vite.config.ts.timestamp-*
 proof-edge.log
 proof-edge.err.log
 proof-edge.out.log
+.env*
