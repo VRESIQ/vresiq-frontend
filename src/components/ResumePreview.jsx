@@ -573,7 +573,21 @@ const ProjectsSection = ({ items = [], showIcon, dec, scanMode = false, sectionN
       <Wrapper className={wrapperClass}>
         {items.map((item, i) => (
           <ItemWrapper key={i} className="rp-item" style={{ marginBottom: "6px" }}>
-            <strong>{item.title || "Project"}</strong>
+            {(() => {
+              const titleText = item.title || "Project";
+              if (titleText.includes(" | ")) {
+                const parts = titleText.split(" | ");
+                return (
+                  <span className="rp-project-title-wrap">
+                    <strong>{parts[0]}</strong>
+                    <span className="rp-project-tech-inline" style={{ fontWeight: "normal", fontStyle: "italic" }}>
+                      {" | "}{parts.slice(1).join(" | ")}
+                    </span>
+                  </span>
+                );
+              }
+              return <strong>{titleText}</strong>;
+            })()}
             {hasText(item.description) && (
               <div className="rp-item-desc">
                 {renderDescription(item.description, fullName, scanMode)}
@@ -1679,21 +1693,53 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
         </div>
       );
 
-    case "engineer_ats":
+    case "engineer_ats": {
+      const getDisplayVal = (obj) => {
+        if (!obj) return "";
+        if (typeof obj === "object") return obj.displayText || obj.value || "";
+        return obj;
+      };
+      
+      const emailText = getDisplayVal(contactInfo.email);
+      const phoneText = getDisplayVal(contactInfo.phone);
+      const linkedinText = getDisplayVal(contactInfo.linkedIn);
+      const githubText = getDisplayVal(contactInfo.github);
+      
       return (
         <div className="rp-ats-container rp-engineer-ats">
           <header className="rp-engineer-header">
             <h1 className="rp-engineer-name">{name}</h1>
-            {role && <p className="rp-engineer-role">{role}</p>}
-            {profileInfo.targetRole && <div className="rp-ats-badge-left">{profileInfo.targetRole}</div>}
             <div className="rp-engineer-contacts-grid">
-              <ContactRow c={contactInfo} />
+              <div className="rp-engineer-contacts-left">
+                {linkedinText && (
+                  <div className="rp-engineer-contact-item">
+                    <strong>LinkedIn:</strong> <a href={contactInfo.linkedIn?.value || contactInfo.linkedIn} target="_blank" rel="noopener noreferrer">{linkedinText.replace(/^(https?:\/\/)?(www\.)?/i, "")}</a>
+                  </div>
+                )}
+                {githubText && (
+                  <div className="rp-engineer-contact-item">
+                    <strong>GitHub:</strong> <a href={contactInfo.github?.value || contactInfo.github} target="_blank" rel="noopener noreferrer">{githubText.replace(/^(https?:\/\/)?(www\.)?/i, "")}</a>
+                  </div>
+                )}
+              </div>
+              <div className="rp-engineer-contacts-right">
+                {emailText && (
+                  <div className="rp-engineer-contact-item">
+                    <strong>Email:</strong> <a href={`mailto:${emailText}`}>{emailText}</a>
+                  </div>
+                )}
+                {phoneText && (
+                  <div className="rp-engineer-contact-item">
+                    <strong>Mobile:</strong> <a href={`tel:${phoneText}`}>{phoneText}</a>
+                  </div>
+                )}
+              </div>
             </div>
           </header>
-          <hr className="rp-rule" />
           <main className="rp-ats-body">{getSections('all')}</main>
         </div>
       );
+    }
 
     default:
       return <p>Unknown template</p>;

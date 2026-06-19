@@ -2419,40 +2419,174 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   word-break: break-word !important;
 }
 
-/* ─── Engineer ATS Layout ─── */
+/* ─── Frame (Engineer ATS / Devaguru Inspired) Layout ─── */
 .rp-engineer-ats {
-  border-top: 4px solid var(--accent);
+  font-family: 'Georgia', 'Times New Roman', serif !important;
   padding: 32px 40px;
-}
-.rp-engineer-header {
-  text-align: left;
-  margin-bottom: 12px;
-}
-.rp-engineer-name {
-  font-family: var(--rp-font-heading, "Inter", sans-serif);
-  font-size: 24px;
-  font-weight: 700;
   color: #111111;
-  margin: 0 0 2px;
+  --rp-fs-base: 10.5px;
+  --rp-fs-name: 26px;
+  --rp-fs-stitle: 12px;
+  --rp-fs-item-title: 11px;
+  --rp-fs-item-sub: 10.5px;
+  --rp-fs-body: 10.5px;
+  --rp-fs-meta: 10px;
+  --rp-lh-body: 1.35;
+  font-size: var(--rp-fs-base);
+  line-height: var(--rp-lh-body);
 }
-.rp-engineer-role {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--accent-readable);
-  margin: 0 0 8px;
+
+.rp-engineer-ats h1,
+.rp-engineer-ats h2,
+.rp-engineer-ats h3,
+.rp-engineer-ats strong,
+.rp-engineer-ats a,
+.rp-engineer-ats p,
+.rp-engineer-ats li,
+.rp-engineer-ats span {
+  font-family: 'Georgia', 'Times New Roman', serif !important;
 }
-.rp-engineer-contacts-grid .rp-contact {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 4px 16px;
-  font-size: 10px;
-  color: #444;
-  margin-top: 4px;
+
+.rp-engineer-header {
+  text-align: center;
+  margin-bottom: 16px;
 }
-.rp-engineer-contacts-grid .rp-contact-item {
+
+.rp-engineer-name {
+  font-size: var(--rp-fs-name) !important;
+  font-weight: normal !important;
+  color: #111111 !important;
+  margin: 0 0 6px;
+}
+
+.rp-engineer-contacts-grid {
   display: flex;
-  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 10.5px;
+  margin-top: 6px;
 }
-.rp-engineer-contacts-grid .rp-contact-sep {
-  display: none !important;
+
+.rp-engineer-contacts-left {
+  text-align: left;
+}
+
+.rp-engineer-contacts-right {
+  text-align: right;
+}
+
+.rp-engineer-contact-item {
+  margin-bottom: 2px;
+  color: #111111;
+}
+
+.rp-engineer-contact-item strong {
+  font-weight: bold !important;
+}
+
+.rp-engineer-contact-item a {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+.rp-engineer-contact-item a:hover {
+  text-decoration: underline !important;
+}
+
+/* Thin full-width section dividers */
+.rp-engineer-ats .rp-stitle {
+  font-size: var(--rp-fs-stitle) !important;
+  font-weight: bold !important;
+  text-transform: capitalize !important;
+  letter-spacing: 0.02em !important;
+  color: #111111 !important;
+  border-bottom: 1px solid var(--accent, #111111) !important;
+  padding-bottom: 2px;
+  margin-top: 14px !important;
+  margin-bottom: 8px !important;
+}
+
+/* Experience Hierarchy Visual Row Swap */
+.rp-engineer-ats .rp-experience-list .rp-item {
+  display: flex !important;
+  flex-direction: column !important;
+  margin-bottom: 10px !important;
+}
+
+.rp-engineer-ats .rp-experience-list .rp-item-sub {
+  order: 1 !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: baseline !important;
+  width: 100% !important;
+}
+
+.rp-engineer-ats .rp-experience-list .rp-item-sub span:first-child {
+  font-weight: bold !important;
+  color: #111111 !important;
+}
+
+.rp-engineer-ats .rp-experience-list .rp-item-head {
+  order: 2 !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: baseline !important;
+  width: 100% !important;
+  margin-top: 1px !important;
+}
+
+.rp-engineer-ats .rp-experience-list .rp-item-head strong {
+  font-weight: normal !important;
+  color: #444444 !important;
+  font-style: italic !important;
+}
+
+.rp-engineer-ats .rp-experience-list .rp-item-head span {
+  font-size: 10px;
+  color: #444444;
+}
+
+/* General Layout Tights */
+.rp-engineer-ats .rp-item {
+  margin-bottom: 10px !important;
+}
+
+.rp-engineer-ats .rp-item-head {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: baseline !important;
+  width: 100% !important;
+}
+
+.rp-engineer-ats .rp-item-sub {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: baseline !important;
+  width: 100% !important;
+  margin-top: 1px !important;
+}
+
+.rp-engineer-ats .rp-education-gpa {
+  margin-top: 1px !important;
+}
+
+/* Bullets spacing and circular bullets for experience */
+.rp-engineer-ats .rp-item-desc {
+  margin-top: 2px !important;
+}
+
+.rp-engineer-ats .rp-item-desc ul {
+  margin-top: 2px !important;
+  margin-bottom: 0 !important;
+  padding-left: 18px !important;
+}
+
+.rp-engineer-ats .rp-item-desc ul > li {
+  margin-bottom: 1px !important;
+  line-height: 1.35 !important;
+}
+
+.rp-engineer-ats .rp-experience-list .rp-item-desc ul > li,
+.rp-engineer-ats .rp-projects-list .rp-item-desc ul > li {
+  list-style-type: circle !important;
 }

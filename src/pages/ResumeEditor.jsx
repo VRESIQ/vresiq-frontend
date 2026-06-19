@@ -89,10 +89,10 @@ const PREMIUM_TEMPLATES = [
   { id: "premium8",  name: "Visual" },
   { id: "premium9",  name: "Centered" },
   { id: "premium10", name: "Minimal" },
-  { id: "consulting_bcg", name: "Consulting BCG" },
-  { id: "tech_faang", name: "Tech FAANG" },
-  { id: "harvard_ats", name: "Harvard ATS" },
-  { id: "swiss_minimal", name: "Swiss Minimal" },
+  { id: "consulting_bcg", name: "Summit" },
+  { id: "tech_faang", name: "Atlas" },
+  { id: "harvard_ats", name: "Stone" },
+  { id: "swiss_minimal", name: "Metro" },
   { id: "ats_classic",     name: "Standard" },
   { id: "ats_entry",       name: "Edge" },
   { id: "ats_senior",      name: "Serif" },
@@ -100,7 +100,7 @@ const PREMIUM_TEMPLATES = [
   { id: "ats_intern",      name: "Campus" },
   { id: "ats_experienced", name: "Prime" },
   { id: "academic_cv",     name: "Scholar" },
-  { id: "engineer_ats",    name: "Engineer ATS" },
+  { id: "engineer_ats",    name: "Frame" },
 ];
 
 // Font options for Pro users — shown as a picker in the Templates section
