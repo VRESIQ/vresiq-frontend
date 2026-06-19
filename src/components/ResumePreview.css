@@ -1982,7 +1982,7 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   font-weight: 700 !important;
   letter-spacing: 0.5px !important;
   background: none !important;
-  color: inherit !important;
+  color: var(--accent-readable, #2563EB) !important;
   padding: 0 !important;
   border-radius: 0 !important;
   margin-top: 6px !important;
@@ -1993,14 +1993,15 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 
 [data-hstyle="card"] .rp-target-role-badge {
   background: none !important;
-  color: inherit !important;
+  color: var(--accent-readable, #2563EB) !important;
 }
 
 [data-hstyle="full-bleed"] .rp-target-role-badge,
 [data-hstyle="fullBleed"] .rp-target-role-badge {
   background: none !important;
-  color: inherit !important;
+  color: var(--on-accent-muted, #ffffff) !important;
 }
+
 
 /* Pulse animation for key scanning landmarks */
 @keyframes rp-scan-pulse {
@@ -2611,8 +2612,27 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-citation-authors {
   overflow-wrap: anywhere !important;
   word-break: break-word !important;
+  word-wrap: break-word !important;
   max-width: 100% !important;
+  min-width: 0 !important;
   box-sizing: border-box !important;
+}
+
+/* Hard contrast and visibility for publications and other lists */
+.rp-citation-item, .rp-compact-item {
+  color: #111111 !important;
+  opacity: 1 !important;
+}
+
+.rp-publication-title, .rp-citation-title {
+  color: #111111 !important;
+  opacity: 1 !important;
+  font-weight: 700 !important;
+}
+
+.rp-publication-meta, .rp-publication-authors, .rp-publication-abstract, .rp-citation-authors, .rp-citation-prefix, .rp-citation-date {
+  color: #333333 !important;
+  opacity: 1 !important;
 }
 
 /* Ensure links and text block styling inside ResumePreview does not overflow */
@@ -2627,7 +2647,11 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .resume-preview strong {
   overflow-wrap: anywhere !important;
   word-break: break-word !important;
+  word-wrap: break-word !important;
+  min-width: 0 !important;
 }
+
+
 
 /* ─── Frame (Engineer ATS / Devaguru Inspired) Layout ─── */
 .rp-engineer-ats {
@@ -2805,23 +2829,7 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
    PROFESSIONAL SIDEBAR REDESIGN OVERRIDES
    ========================================================================== */
 
-/* ISSUE 2 — TECHNICAL PROFILE LINKS: increase contrast, white color, underline with color */
-.rp-sidebar a {
-  color: #FFFFFF !important;
-  opacity: 0.95 !important;
-  text-decoration: underline !important;
-  text-decoration-color: rgba(255, 255, 255, 0.5) !important;
-}
-
-/* ISSUE 3 — SIDEBAR CONTENT VISIBILITY: skills/languages levels, interests, technical profile descriptions */
-.rp-sidebar .rp-skill-level,
-.rp-sidebar .rp-skill-bar-wrap small,
-.rp-sidebar .rp-interests-list li,
-.rp-sidebar .rp-tags .rp-tag,
-.rp-sidebar .rp-item-desc {
-  color: #D1D5DB !important;
-  opacity: 0.9 !important;
-}
+/* Consolidated sidebar styles are handled below in light vs dark sensitivity rules */
 
 /* ISSUE 5 — CARD HEADER STYLE REDESIGN (Visual, Split, Nova) */
 .resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header,
@@ -2857,3 +2865,81 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   color: #FFFFFF !important;
   opacity: 0.95 !important;
 }
+
+/* Base link styling inside dark sidebars to ensure readability */
+.rp-sidebar-dark a {
+  color: #FFFFFF !important;
+  opacity: 0.95 !important;
+  text-decoration: underline !important;
+  text-decoration-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.rp-sidebar-dark a:hover {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Base link styling inside light sidebars to ensure readability */
+.rp-sidebar-light a, .rp-sidebar-infographic a {
+  color: var(--accent-readable, #2563EB) !important;
+  opacity: 1 !important;
+  text-decoration: underline !important;
+  text-decoration-color: var(--accent-readable, #2563EB) !important;
+}
+
+.rp-sidebar-light a:hover, .rp-sidebar-infographic a:hover {
+  color: var(--accent, #1d4ed8) !important;
+}
+
+/* Light/Dark theme sensitivity for sidebar descriptions and values */
+.rp-sidebar-dark .rp-skill-level,
+.rp-sidebar-dark .rp-skill-bar-wrap small,
+.rp-sidebar-dark .rp-interests-list li,
+.rp-sidebar-dark .rp-tags .rp-tag,
+.rp-sidebar-dark .rp-item-desc {
+  color: #D1D5DB !important;
+  opacity: 0.95 !important;
+}
+
+.rp-sidebar-light .rp-skill-level,
+.rp-sidebar-light .rp-skill-bar-wrap small,
+.rp-sidebar-light .rp-interests-list li,
+.rp-sidebar-light .rp-tags .rp-tag,
+.rp-sidebar-light .rp-item-desc,
+.rp-sidebar-infographic .rp-skill-level,
+.rp-sidebar-infographic .rp-skill-bar-wrap small,
+.rp-sidebar-infographic .rp-interests-list li,
+.rp-sidebar-infographic .rp-tags .rp-tag,
+.rp-sidebar-infographic .rp-item-desc {
+  color: #222222 !important;
+  opacity: 1 !important;
+}
+
+/* Ensure card style on light sidebars does not force white text, rendering it invisible */
+.resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header,
+.resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+  border-radius: 12px !important;
+  padding: 24px !important;
+  margin: 0 0 28px 0 !important;
+}
+
+.resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header .rp-sidebar-name,
+.resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header .rp-sidebar-name {
+  color: #111111 !important;
+}
+
+.resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header .rp-sidebar-role,
+.resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header .rp-sidebar-role {
+  color: var(--accent-readable, #e76f51) !important;
+}
+
+.resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header .rp-contact,
+.resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header .rp-contact a,
+.resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header .rp-contact,
+.resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header .rp-contact a {
+  color: #444444 !important;
+  opacity: 1 !important;
+}
+
