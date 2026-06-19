@@ -50,6 +50,14 @@
   padding-top: 20px !important;
 }
 
+/* Sidebar templates (Template 2, Premium 6, Premium 8) must have ZERO top/bottom preview padding so backgrounds fill fully */
+.resume-preview[data-template="template2"],
+.resume-preview[data-template="premium6"],
+.resume-preview[data-template="premium8"] {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
 .rp-section:last-child {
   margin-bottom: 0 !important;
 }
@@ -338,18 +346,20 @@
   border-radius: 6px !important;
   background: #fff !important;
   color: #111410 !important;
-  padding: 18px 44px !important;
+  padding: 14px 28px !important;
   box-shadow: 0 6px 20px rgba(0,0,0,0.04) !important;
   position: relative;
   z-index: 10;
 }
 
 [data-hstyle="card"] .rp-ats-header,
-[data-hstyle="card"] .rp-ats-header-left {
+[data-hstyle="card"] .rp-ats-header-left,
+[data-hstyle="card"] .rp-academic-header,
+[data-hstyle="card"] .rp-engineer-header {
   border: 1.5px solid var(--accent) !important;
   border-radius: 6px !important;
   padding: 14px 24px !important;
-  margin-bottom: 8px !important;
+  margin: 0 24px 8px !important;
   background: #fff !important;
 }
 
@@ -360,7 +370,9 @@
 [data-hstyle="card"] .rp-sig-name,
 [data-hstyle="card"] .rp-header-executive .rp-executive-name,
 [data-hstyle="card"] .rp-header-centered .rp-centered-name,
-[data-hstyle="card"] .rp-header-tech h1 {
+[data-hstyle="card"] .rp-header-tech h1,
+[data-hstyle="card"] .rp-academic-name,
+[data-hstyle="card"] .rp-engineer-name {
   color: #111410 !important;
   margin-bottom: 2px !important;
   line-height: 1.05 !important;
@@ -369,16 +381,29 @@
 [data-hstyle="card"] .rp-role,
 [data-hstyle="card"] .rp-executive-role,
 [data-hstyle="card"] .rp-sig-role,
-[data-hstyle="card"] .rp-centered-role {
+[data-hstyle="card"] .rp-centered-role,
+[data-hstyle="card"] .rp-academic-role,
+[data-hstyle="card"] .rp-academic-badge {
   color: var(--accent-readable) !important;
   margin-bottom: 4px !important;
 }
 
 [data-hstyle="card"] .rp-contact,
-[data-hstyle="card"] .rp-sig-contact .rp-contact {
+[data-hstyle="card"] .rp-sig-contact .rp-contact,
+[data-hstyle="card"] .rp-academic-header .rp-contact,
+[data-hstyle="card"] .rp-engineer-contacts-grid {
   color: #555 !important;
-  margin-top: 2px !important;
+  margin-top: 4px !important;
   gap: 2px 12px !important;
+}
+
+[data-hstyle="card"] .rp-academic-header .rp-contact {
+  justify-content: center !important;
+}
+
+[data-hstyle="card"] .rp-engineer-contacts-grid a,
+[data-hstyle="card"] .rp-academic-header .rp-contact a {
+  color: #555 !important;
 }
 
 /* full-bleed: forces accent background color across the entire header */
@@ -406,6 +431,57 @@
   color: var(--on-accent) !important;
   padding: 20px 18px !important;
   margin: -8px -8px 14px !important;
+}
+
+[data-hstyle="full-bleed"] .rp-academic_cv,
+[data-hstyle="full-bleed"] .rp-engineer-ats {
+  padding-top: 0 !important;
+}
+
+[data-hstyle="full-bleed"] .rp-academic-header {
+  background: var(--accent) !important;
+  color: var(--on-accent) !important;
+  padding: 30px 48px 24px !important;
+  margin: 0 -48px 18px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+}
+
+[data-hstyle="full-bleed"] .rp-academic-name {
+  color: var(--on-accent) !important;
+}
+
+[data-hstyle="full-bleed"] .rp-academic-role {
+  color: var(--on-accent-muted) !important;
+}
+
+[data-hstyle="full-bleed"] .rp-academic-badge {
+  background: var(--on-accent-line) !important;
+  color: var(--on-accent) !important;
+  border: none !important;
+}
+
+[data-hstyle="full-bleed"] .rp-academic-header .rp-contact,
+[data-hstyle="full-bleed"] .rp-academic-header .rp-contact a {
+  color: var(--on-accent-soft) !important;
+}
+
+[data-hstyle="full-bleed"] .rp-engineer-header {
+  background: var(--accent) !important;
+  color: var(--on-accent) !important;
+  padding: 24px 40px 20px !important;
+  margin: -32px -40px 16px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+}
+
+[data-hstyle="full-bleed"] .rp-engineer-name {
+  color: var(--on-accent) !important;
+}
+
+[data-hstyle="full-bleed"] .rp-engineer-contacts-grid,
+[data-hstyle="full-bleed"] .rp-engineer-contacts-grid a {
+  color: var(--on-accent-soft) !important;
 }
 
 [data-hstyle="full-bleed"] .rp-ats-header .rp-ats-name,
@@ -1066,18 +1142,28 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-premium3 .rp-header-compact {
   background: #f7f9f7;
   color: #111410;
-  padding: 18px 24px;
+  padding: 12px 24px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   gap: 16px;
   border-top: 5px solid var(--accent);
   border-bottom: 1px solid #e5e7e2;
 }
 
-.rp-premium3 .rp-header-compact h1 { font-size: 22px; color: #111410; }
-.rp-premium3 .rp-header-compact .rp-role { color: var(--accent-readable); font-size: 11px; margin: 2px 0 0; }
-.rp-premium3 .rp-header-compact .rp-contact { color: #555; margin: 0; justify-content: flex-end; }
+.resume-preview[data-hstyle="minimal"] .rp-premium3 .rp-header-compact {
+  border-top: none !important;
+  background: transparent !important;
+  padding: 18px 24px 8px !important;
+}
+
+[data-hstyle="card"] .rp-premium3 .rp-header-compact {
+  border-top: none !important;
+}
+
+.rp-premium3 .rp-header-compact h1 { font-size: 22px; color: #111410; margin-bottom: 0px !important; }
+.rp-premium3 .rp-header-compact .rp-role { color: var(--accent-readable); font-size: 11px; margin: 0px 0px 2px !important; }
+.rp-premium3 .rp-header-compact .rp-contact { color: #555; margin: 0; justify-content: flex-end; align-items: flex-end; }
 
 .rp-compact-grid {
   display: grid;
