@@ -791,10 +791,10 @@ const PublicationsSection = ({ title, items = [], fullName, dec, sectionNumber, 
                   </div>
                 )}
 
-                {/* 4. Abstract */}
-                {hasText(item.abstract) && (
+                {/* 4. Abstract — falls back to description if abstract field is absent (custom section schema) */}
+                {(hasText(item.abstract) || hasText(item.description)) && (
                   <div className="rp-publication-abstract" style={{ fontSize: "var(--rp-fs-body)", color: "var(--rp-body-color, #333)", marginTop: "4px" }}>
-                    {renderDescription(item.abstract, fullName)}
+                    {renderDescription(item.abstract || item.description, fullName)}
                   </div>
                 )}
 
@@ -859,12 +859,19 @@ const AwardsSection = ({ title, items = [], dec, sectionNumber, hasBullets = tru
       <STitle showIcon={false} dec={dec} sectionNumber={sectionNumber}>{title}</STitle>
       <Wrapper className={wrapperClass}>
         {filled.map((item, i) => (
-          <ItemWrapper key={i} style={{ marginBottom: "4px" }}>
-            <div style={{ display: "block", verticalAlign: "top" }}>
+          <ItemWrapper key={i} className="rp-item" style={{ marginBottom: "6px" }}>
+            <div className="rp-item-head">
               <strong>{item.title}</strong>
-              {item.subtitle && ` (${item.subtitle})`}
-              {item.date && ` [${formatPartialDate(item.date)}]`}
+              {hasText(item.date) && <span>{formatPartialDate(item.date)}</span>}
             </div>
+            {hasText(item.subtitle) && (
+              <div className="rp-item-sub"><span>{item.subtitle}</span></div>
+            )}
+            {hasText(item.description) && (
+              <div className="rp-item-desc">
+                {renderDescription(item.description, undefined)}
+              </div>
+            )}
           </ItemWrapper>
         ))}
       </Wrapper>

@@ -208,6 +208,11 @@
   padding: 0 4px;
 }
 
+/* Contact separator on dark sidebar backgrounds — keep it visible */
+.rp-sidebar-dark .rp-contact-sep {
+  color: rgba(255, 255, 255, 0.45);
+}
+
 /* 2. BODY / CONTENT LINKS (Unified Link Design System) */
 .resume-link {
   color: var(--accent-readable, #2563EB) !important;
@@ -606,51 +611,10 @@
 
 /* ==========================================================================
    CARD STYLE FOR SIDEBAR TEMPLATES
+   Canonical geometry + containment defined here. Color tokens (background,
+   border) split by sidebar type. Typography overrides at bottom of file in
+   the PROFESSIONAL SIDEBAR REDESIGN OVERRIDES block (~line 2860).
    ========================================================================== */
-.resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header,
-.resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header {
-  background: #ffffff !important;
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
-  border-radius: 12px !important;
-  padding: 24px !important;
-  margin: 0 0 28px 0 !important;
-}
-
-.resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header .rp-sidebar-name,
-.resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header .rp-sidebar-name {
-  color: #111111 !important;
-}
-.resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header .rp-sidebar-role,
-.resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header .rp-sidebar-role {
-  color: var(--accent-readable, #e76f51) !important;
-}
-.resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header .rp-contact,
-.resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header .rp-contact,
-.resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header .rp-contact a,
-.resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header .rp-contact a {
-  color: #444444 !important;
-}
-
-.resume-preview[data-hstyle="card"] .rp-sidebar-dark .rp-sidebar-header {
-  background: rgba(255, 255, 255, 0.08) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
-  border-radius: 12px !important;
-  padding: 24px !important;
-  margin: 0 0 28px 0 !important;
-}
-
-.resume-preview[data-hstyle="card"] .rp-sidebar-dark .rp-sidebar-header .rp-sidebar-name {
-  color: #ffffff !important;
-}
-.resume-preview[data-hstyle="card"] .rp-sidebar-dark .rp-sidebar-header .rp-sidebar-role {
-  color: rgba(255, 255, 255, 0.85) !important;
-}
-.resume-preview[data-hstyle="card"] .rp-sidebar-dark .rp-sidebar-header .rp-contact,
-.resume-preview[data-hstyle="card"] .rp-sidebar-dark .rp-sidebar-header .rp-contact a {
-  color: rgba(255, 255, 255, 0.9) !important;
-}
 
 /* ==========================================================================
    FULL-BLEED STYLE FOR SIDEBAR TEMPLATES
@@ -2024,10 +1988,7 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   letter-spacing: 0 !important;
 }
 
-[data-hstyle="card"] .rp-target-role-badge {
-  background: none !important;
-  color: var(--accent-readable, #2563EB) !important;
-}
+/* [data-hstyle="card"] .rp-target-role-badge inherits base rule — no override needed */
 
 [data-hstyle="full-bleed"] .rp-target-role-badge,
 [data-hstyle="fullBleed"] .rp-target-role-badge {
@@ -2864,13 +2825,18 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 
 /* Consolidated sidebar styles are handled below in light vs dark sensitivity rules */
 
-/* ISSUE 5 — CARD HEADER STYLE REDESIGN (Visual, Split, Nova) */
+/* ── Card sidebar header — CANONICAL DEFINITION ──────────────────────────
+   This is the single source of truth for card-style sidebar header geometry,
+   color, and containment. All three sidebar variants (light, infographic, dark)
+   share geometry; colors are split by sidebar type.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* Shared geometry + containment for all card sidebar types */
 .resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header,
 .resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header,
 .resume-preview[data-hstyle="card"] .rp-sidebar-dark .rp-sidebar-header {
   border-radius: 12px !important;
   padding: 20px 24px !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
   margin: 20px 12px 28px 12px !important;
   overflow: hidden !important;
   box-sizing: border-box !important;
@@ -2879,6 +2845,15 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   overflow-wrap: anywhere !important;
 }
 
+/* Light / infographic sidebar card: white background with subtle border */
+.resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header,
+.resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Dark sidebar card: translucent overlay with bright border */
 .resume-preview[data-hstyle="card"] .rp-sidebar-dark .rp-sidebar-header {
   background: rgba(255, 255, 255, 0.08) !important;
   border: 1px solid rgba(255, 255, 255, 0.15) !important;
@@ -3027,16 +3002,8 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   opacity: 1 !important;
 }
 
-/* Ensure card style on light sidebars does not force white text, rendering it invisible */
-.resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header,
-.resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header {
-  background: #ffffff !important;
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
-  border-radius: 12px !important;
-  padding: 20px 24px !important;
-  margin: 20px 12px 28px 12px !important;
-}
+/* Light sidebar card background/border defined in canonical block above (~line 2867).
+   This comment replaces the redundant third definition that was causing cascade confusion. */
 
 /* ── ATS Badge — full-bleed header style visibility ──────────────────────── */
 /* When the header has a full-bleed accent background, the default badge colors
