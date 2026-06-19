@@ -38,8 +38,10 @@
   padding-bottom: 48px;
 }
 
-/* Remove padding-top when header is full-bleed or has native bleed to let it touch the page top edge */
+/* Remove padding-top when header is full-bleed, card, minimal, or has native bleed to let it touch the page top edge */
 .resume-preview[data-hstyle="full-bleed"],
+.resume-preview[data-hstyle="card"],
+.resume-preview[data-hstyle="minimal"],
 .resume-preview.rp-template3 {
   padding-top: 0 !important;
 }
@@ -152,6 +154,32 @@
 
 [data-hstyle="full-bleed"] .header-link:hover,
 [data-hstyle="full-bleed"] .rp-contact a:hover,
+.rp-sidebar-dark .header-link:hover,
+.rp-sidebar-dark .rp-contact a:hover {
+  color: var(--header-link-hover, rgba(255, 255, 255, 0.8)) !important;
+}
+
+/* Contact/header links under card or minimal style should be dark/readable since background is white */
+[data-hstyle="minimal"] .header-link,
+[data-hstyle="minimal"] .rp-contact a,
+[data-hstyle="card"] .header-link,
+[data-hstyle="card"] .rp-contact a {
+  color: var(--accent-readable, #2563EB) !important;
+}
+
+[data-hstyle="minimal"] .header-link:hover,
+[data-hstyle="minimal"] .rp-contact a:hover,
+[data-hstyle="card"] .header-link:hover,
+[data-hstyle="card"] .rp-contact a:hover {
+  color: var(--accent, #1d4ed8) !important;
+}
+
+/* Except when inside a dark sidebar, which always needs white/light text */
+.rp-sidebar-dark .header-link,
+.rp-sidebar-dark .rp-contact a {
+  color: var(--header-link-color, #ffffff) !important;
+}
+
 .rp-sidebar-dark .header-link:hover,
 .rp-sidebar-dark .rp-contact a:hover {
   color: var(--header-link-hover, rgba(255, 255, 255, 0.8)) !important;

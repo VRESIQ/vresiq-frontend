@@ -538,7 +538,6 @@ const ResumeEditor = () => {
       const raw = localStorage.getItem(key);
       if (!raw) return;
       const parsed = JSON.parse(raw);
-      if (typeof parsed.visible === "boolean") setAtsBadgeVisible(parsed.visible);
       if (parsed.pos) {
         if (typeof parsed.pos.top === "number" && typeof parsed.pos.left === "number") {
           setAtsBadgePos(parsed.pos);
@@ -553,9 +552,18 @@ const ResumeEditor = () => {
   useEffect(() => {
     const key = `atsBadge:${id}`;
     try {
-      localStorage.setItem(key, JSON.stringify({ visible: atsBadgeVisible, pos: atsBadgePos }));
+      localStorage.setItem(key, JSON.stringify({ pos: atsBadgePos }));
     } catch (_) {}
-  }, [id, atsBadgeVisible, atsBadgePos]);
+  }, [id, atsBadgePos]);
+
+  // Restore ATS badge visibility on template change, score change, or new ATS Refine result
+  const currentTemplate = resume?.template;
+  const currentLocalScore = resume ? computeAtsReport(resume).score : null;
+  const currentLatestScore = latestAtsReport ? latestAtsReport.atsScore : null;
+
+  useEffect(() => {
+    setAtsBadgeVisible(true);
+  }, [currentTemplate, currentLocalScore, currentLatestScore]);
 
   useEffect(() => {
     const clampBadgeToPreview = () => {
