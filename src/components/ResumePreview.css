@@ -550,9 +550,15 @@
    We target .rp-sidebar-header (the wrapper we added in JSX) to apply the styles.
    ─────────────────────────────────────────────────────────────────────────── */
 
-/* rp-sidebar-header: default = no visual treatment, just a layout wrapper */
+/* rp-sidebar-header: default = no visual treatment, just a layout wrapper.
+   Always enforce containment so content cannot escape the narrow column. */
 .rp-sidebar-header {
   margin-bottom: 12px;
+  overflow: hidden;
+  box-sizing: border-box;
+  min-width: 0;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
 }
 
 /* CARD on light sidebar (template2) — white card inset with accent border */
@@ -1137,6 +1143,16 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   flex-direction: column;
   gap: 5px;
   font-size: 11px;
+}
+
+/* Sidebar contact links must wrap inside the narrow column — never overflow */
+.rp-sidebar-contact .rp-contact a,
+.rp-sidebar-contact .rp-contact-link,
+.rp-sidebar .rp-contact-link {
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+  min-width: 0 !important;
 }
 
 .rp-main-col { padding: 28px 28px 28px 24px; }
@@ -1988,9 +2004,9 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 /* Target Role Styling in Preview */
 .rp-target-role-badge {
   display: inline-block;
-  font-size: 16px !important;
+  font-size: 14px !important;
   font-weight: 700 !important;
-  letter-spacing: 0.5px !important;
+  letter-spacing: 0.3px !important;
   background: none !important;
   color: var(--accent-readable, #2563EB) !important;
   padding: 0 !important;
@@ -1999,6 +2015,13 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   box-shadow: none !important;
   border: none !important;
   text-transform: none !important;
+}
+
+/* Sidebar target role badge — smaller to fit narrow column */
+.rp-sidebar .rp-target-role-badge {
+  font-size: 11.5px !important;
+  margin-top: 3px !important;
+  letter-spacing: 0 !important;
 }
 
 [data-hstyle="card"] .rp-target-role-badge {
@@ -2939,6 +2962,17 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   visibility: visible !important;
 }
 
+/* Target role badge contrast: dark sidebar (minimal/card/default headerStyle) */
+.rp-sidebar-dark .rp-sidebar-header .rp-target-role-badge {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Target role badge contrast: light sidebar */
+.rp-sidebar-light .rp-sidebar-header .rp-target-role-badge,
+.rp-sidebar-infographic .rp-sidebar-header .rp-target-role-badge {
+  color: var(--accent-readable, #2563EB) !important;
+}
+
 /* Base link styling inside dark sidebars to ensure readability */
 .rp-sidebar-dark a {
   color: #FFFFFF !important;
@@ -2969,7 +3003,8 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-sidebar-dark .rp-interests-list li,
 .rp-sidebar-dark .rp-tags .rp-tag,
 .rp-sidebar-dark .rp-item-desc,
-.rp-sidebar-dark .rp-compact-date {
+.rp-sidebar-dark .rp-compact-date,
+.rp-sidebar-dark .rp-compact-subtitle {
   color: #E5E7EB !important;
   opacity: 1 !important;
 }
@@ -2980,12 +3015,14 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-sidebar-light .rp-tags .rp-tag,
 .rp-sidebar-light .rp-item-desc,
 .rp-sidebar-light .rp-compact-date,
+.rp-sidebar-light .rp-compact-subtitle,
 .rp-sidebar-infographic .rp-skill-level,
 .rp-sidebar-infographic .rp-skill-bar-wrap small,
 .rp-sidebar-infographic .rp-interests-list li,
 .rp-sidebar-infographic .rp-tags .rp-tag,
 .rp-sidebar-infographic .rp-item-desc,
-.rp-sidebar-infographic .rp-compact-date {
+.rp-sidebar-infographic .rp-compact-date,
+.rp-sidebar-infographic .rp-compact-subtitle {
   color: #1F2937 !important;
   opacity: 1 !important;
 }
@@ -3001,4 +3038,22 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   margin: 20px 12px 28px 12px !important;
 }
 
+/* ── ATS Badge — full-bleed header style visibility ──────────────────────── */
+/* When the header has a full-bleed accent background, the default badge colors
+   (light background, accent text) become invisible. Override to use on-accent palette. */
+[data-hstyle="full-bleed"] .rp-ats-badge,
+[data-hstyle="full-bleed"] .rp-ats-badge-left,
+[data-hstyle="fullBleed"] .rp-ats-badge,
+[data-hstyle="fullBleed"] .rp-ats-badge-left {
+  color: var(--on-accent, #ffffff) !important;
+  background: var(--on-accent-line, rgba(255,255,255,0.25)) !important;
+  border-color: var(--on-accent-line, rgba(255,255,255,0.35)) !important;
+}
 
+/* ── Academic CV badge — full-bleed override ─────────────────────────────── */
+[data-hstyle="full-bleed"] .rp-academic-badge,
+[data-hstyle="fullBleed"] .rp-academic-badge {
+  color: var(--on-accent, #ffffff) !important;
+  background: var(--on-accent-line, rgba(255,255,255,0.25)) !important;
+  border: none !important;
+}
