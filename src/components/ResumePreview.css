@@ -1223,6 +1223,13 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-premium5 .rp-header-accentbar {
   padding: 24px 36px 16px;
   border-top: 6px solid var(--accent);
+  flex-direction: column !important;
+  align-items: flex-start !important;
+}
+
+.rp-header-accentbar .rp-contact {
+  margin-top: 8px !important;
+  justify-content: flex-start !important;
 }
 
 .rp-accentbar-name-block h1 { font-size: 30px; margin: 0 0 4px; }
