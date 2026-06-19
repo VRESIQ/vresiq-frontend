@@ -59,10 +59,12 @@
 }
 
 /* Also ensure fullBleed header style on sidebar templates gets zero top margin and padding */
+.resume-preview[data-hstyle="full-bleed"],
 .resume-preview[data-hstyle="fullBleed"] {
   padding-top: 0 !important;
 }
 
+.resume-preview[data-hstyle="full-bleed"] .rp-sidebar-header,
 .resume-preview[data-hstyle="fullBleed"] .rp-sidebar-header {
   margin-top: -28px !important;
 }
