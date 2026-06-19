@@ -334,7 +334,7 @@
   border-radius: 6px !important;
   background: #fff !important;
   color: #111410 !important;
-  padding: 16px 44px !important;
+  padding: 18px 44px !important;
   box-shadow: 0 6px 20px rgba(0,0,0,0.04) !important;
   position: relative;
   z-index: 10;
@@ -358,6 +358,8 @@
 [data-hstyle="card"] .rp-header-centered .rp-centered-name,
 [data-hstyle="card"] .rp-header-tech h1 {
   color: #111410 !important;
+  margin-bottom: 2px !important;
+  line-height: 1.05 !important;
 }
 
 [data-hstyle="card"] .rp-role,
@@ -365,11 +367,14 @@
 [data-hstyle="card"] .rp-sig-role,
 [data-hstyle="card"] .rp-centered-role {
   color: var(--accent-readable) !important;
+  margin-bottom: 4px !important;
 }
 
 [data-hstyle="card"] .rp-contact,
 [data-hstyle="card"] .rp-sig-contact .rp-contact {
   color: #555 !important;
+  margin-top: 2px !important;
+  gap: 2px 12px !important;
 }
 
 /* full-bleed: forces accent background color across the entire header */
