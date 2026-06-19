@@ -2845,35 +2845,85 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header,
 .resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header,
 .resume-preview[data-hstyle="card"] .rp-sidebar-dark .rp-sidebar-header {
-  border-radius: 10px !important;
-  padding: 24px !important;
+  border-radius: 12px !important;
+  padding: 16px 20px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+  margin: 12px 12px 24px 12px !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  min-width: 0 !important;
+  word-wrap: break-word !important;
+  overflow-wrap: anywhere !important;
+}
+
+.resume-preview[data-hstyle="card"] .rp-sidebar-dark .rp-sidebar-header {
   background: rgba(255, 255, 255, 0.08) !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18) !important;
-  margin: 0 0 28px 0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
 }
 
 /* Typography hierarchy inside card header style */
 .resume-preview[data-hstyle="card"] .rp-sidebar .rp-sidebar-header .rp-sidebar-name {
-  font-size: 32px !important;
+  font-size: 20px !important;
   font-weight: 700 !important;
-  color: #FFFFFF !important;
   line-height: 1.15 !important;
+  word-wrap: break-word !important;
+  overflow-wrap: anywhere !important;
+}
+
+.resume-preview[data-hstyle="card"] .rp-sidebar-dark .rp-sidebar-header .rp-sidebar-name {
+  color: #FFFFFF !important;
+}
+
+.resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header .rp-sidebar-name,
+.resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header .rp-sidebar-name {
+  color: #111111 !important;
 }
 
 .resume-preview[data-hstyle="card"] .rp-sidebar .rp-sidebar-header .rp-sidebar-role {
-  font-size: 16px !important;
+  font-size: 11.5px !important;
   font-weight: 600 !important;
-  color: #FFFFFF !important;
   margin-top: 4px !important;
   line-height: 1.2 !important;
+  word-wrap: break-word !important;
+  overflow-wrap: anywhere !important;
+}
+
+.resume-preview[data-hstyle="card"] .rp-sidebar-dark .rp-sidebar-header .rp-sidebar-role {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header .rp-sidebar-role,
+.resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header .rp-sidebar-role {
+  color: var(--accent-readable, #2563EB) !important;
 }
 
 .resume-preview[data-hstyle="card"] .rp-sidebar .rp-sidebar-header .rp-contact,
 .resume-preview[data-hstyle="card"] .rp-sidebar .rp-sidebar-header .rp-contact a {
-  font-size: 14px !important;
+  font-size: 10.5px !important;
+  word-wrap: break-word !important;
+  overflow-wrap: anywhere !important;
+  min-width: 0 !important;
+}
+
+.resume-preview[data-hstyle="card"] .rp-sidebar-dark .rp-sidebar-header .rp-contact,
+.resume-preview[data-hstyle="card"] .rp-sidebar-dark .rp-sidebar-header .rp-contact a {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header .rp-contact,
+.resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header .rp-contact a,
+.resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header .rp-contact,
+.resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header .rp-contact a {
+  color: #444444 !important;
+}
+
+/* Target role visibility on dark background / templates */
+.rp-sidebar-dark .rp-target-role-badge,
+[data-hstyle="full-bleed"] .rp-target-role-badge,
+[data-hstyle="fullBleed"] .rp-target-role-badge {
   color: #FFFFFF !important;
-  opacity: 0.95 !important;
+  background: none !important;
 }
 
 /* Base link styling inside dark sidebars to ensure readability */
@@ -2931,25 +2981,8 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   border: 1px solid rgba(0, 0, 0, 0.08) !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
   border-radius: 12px !important;
-  padding: 24px !important;
-  margin: 0 0 28px 0 !important;
+  padding: 16px 20px !important;
+  margin: 12px 12px 24px 12px !important;
 }
 
-.resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header .rp-sidebar-name,
-.resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header .rp-sidebar-name {
-  color: #111111 !important;
-}
-
-.resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header .rp-sidebar-role,
-.resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header .rp-sidebar-role {
-  color: var(--accent-readable, #e76f51) !important;
-}
-
-.resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header .rp-contact,
-.resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header .rp-contact a,
-.resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header .rp-contact,
-.resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header .rp-contact a {
-  color: #444444 !important;
-  opacity: 1 !important;
-}
 
