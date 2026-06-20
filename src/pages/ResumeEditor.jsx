@@ -817,27 +817,22 @@ const ResumeEditor = () => {
             }
 
             /* Header Contact Links in print PDF */
-            .resume-preview .header-link,
-            .resume-preview .rp-contact-link,
-            .resume-preview .rp-contact a,
-            .resume-preview .rp-ats-contact a {
+            .resume-preview[data-lstyle="professional"] .header-link,
+            .resume-preview[data-lstyle="professional"] .rp-contact-link,
+            .resume-preview[data-lstyle="professional"] .rp-contact a,
+            .resume-preview[data-lstyle="professional"] .rp-ats-contact a {
               color: inherit !important;
+              text-decoration: none !important;
             }
 
             .resume-preview:not([data-lstyle="professional"]) .header-link,
             .resume-preview:not([data-lstyle="professional"]) .rp-contact-link,
             .resume-preview:not([data-lstyle="professional"]) .rp-contact a,
             .resume-preview:not([data-lstyle="professional"]) .rp-ats-contact a {
+              color: #2563EB !important;
               text-decoration: underline !important;
               text-decoration-thickness: 0.5px !important;
               text-underline-offset: 1.5px !important;
-            }
-
-            .resume-preview[data-lstyle="professional"] .header-link,
-            .resume-preview[data-lstyle="professional"] .rp-contact-link,
-            .resume-preview[data-lstyle="professional"] .rp-contact a,
-            .resume-preview[data-lstyle="professional"] .rp-ats-contact a {
-              text-decoration: none !important;
             }
 
             .resume-preview {
