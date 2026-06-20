@@ -814,6 +814,51 @@ const ResumeEditor = () => {
             h1, h2, h3, h4, strong {
               color: #000000 !important;
             }
+
+            .rp-desc-list li::marker,
+            .rp-item-desc ul > li::marker {
+              color: currentColor !important;
+            }
+            
+            .rp-sidebar-dark .rp-sidebar-name,
+            .rp-sidebar-dark .rp-sidebar-role,
+            .rp-sidebar-dark .rp-contact,
+            .rp-sidebar-dark .rp-contact a,
+            .rp-sidebar-dark .rp-contact-link,
+            .rp-sidebar-dark .rp-stitle,
+            .rp-sidebar-dark .rp-skill-name,
+            .rp-sidebar-dark .rp-skill-level,
+            .rp-sidebar-dark .rp-item-head,
+            .rp-sidebar-dark .rp-item-head strong,
+            .rp-sidebar-dark .rp-item-sub,
+            .rp-sidebar-dark .rp-item-sub span,
+            .rp-sidebar-dark .rp-item-desc,
+            .rp-sidebar-dark .rp-item-desc li,
+            .rp-sidebar-dark .rp-item-desc strong,
+            .rp-sidebar-dark .rp-summary,
+            .rp-sidebar-dark .rp-tags .rp-tag,
+            .rp-sidebar-dark .rp-compact-date,
+            .rp-sidebar-dark .rp-compact-subtitle,
+            .rp-sidebar-dark .rp-target-role-badge,
+            .rp-sidebar-dark .rp-role-seeking-label,
+            .rp-sidebar-dark .rp-desc-list li::marker,
+            .rp-sidebar-dark .rp-item-desc ul > li::marker {
+              color: #ffffff !important;
+            }
+
+            [data-hstyle="full-bleed"] .rp-sidebar,
+            [data-hstyle="full-bleed"] .rp-sidebar *,
+            [data-hstyle="fullBleed"] .rp-sidebar,
+            [data-hstyle="fullBleed"] .rp-sidebar * {
+              color: #ffffff !important;
+            }
+
+            [data-hstyle="full-bleed"] .rp-sidebar .rp-desc-list li::marker,
+            [data-hstyle="full-bleed"] .rp-sidebar .rp-item-desc ul > li::marker,
+            [data-hstyle="fullBleed"] .rp-sidebar .rp-desc-list li::marker,
+            [data-hstyle="fullBleed"] .rp-sidebar .rp-item-desc ul > li::marker {
+              color: #ffffff !important;
+            }
             
             .rp-item-sub {
               color: #333333 !important;

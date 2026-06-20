@@ -645,6 +645,8 @@
 .resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-item-sub,
 .resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-item-desc,
 .resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-item-desc ul li,
+.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-compact-head,
+.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-compact-head *,
 .resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-summary,
 .resume-preview[data-hstyle="full-bleed"] .rp-sidebar li,
 .resume-preview[data-hstyle="full-bleed"] .rp-sidebar span,
@@ -661,6 +663,8 @@
 .resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-item-sub,
 .resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-item-desc,
 .resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-item-desc ul li,
+.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-compact-head,
+.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-compact-head *,
 .resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-summary,
 .resume-preview[data-hstyle="fullBleed"] .rp-sidebar li,
 .resume-preview[data-hstyle="fullBleed"] .rp-sidebar span,
@@ -1457,11 +1461,32 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-sidebar-dark .rp-sidebar-role { color: rgba(255,255,255,0.65); }
 .rp-sidebar-dark .rp-contact { color: rgba(255,255,255,0.72); flex-direction: column; font-size: 10.5px; gap: 4px; }
 .rp-sidebar-dark .rp-stitle { color: rgba(255,255,255,0.55); border-bottom-color: rgba(255,255,255,0.2); }
+.rp-sidebar-dark .rp-item-head,
+.rp-sidebar-dark .rp-item-head strong,
+.rp-sidebar-dark .rp-item-head span,
+.rp-sidebar-dark .rp-compact-head,
+.rp-sidebar-dark .rp-compact-head *,
+.rp-sidebar-dark .rp-item-sub,
+.rp-sidebar-dark .rp-item-sub span,
+.rp-sidebar-dark .rp-compact-date,
+.rp-sidebar-dark .rp-compact-subtitle {
+  color: rgba(255,255,255,0.9);
+}
 .rp-sidebar-dark .rp-skill-name { color: rgba(255,255,255,0.9); }
 .rp-sidebar-dark .rp-bar { background: rgba(255,255,255,0.15); }
 .rp-sidebar-dark .rp-bar span { background: rgba(255,255,255,0.8); }
 .rp-sidebar-dark .rp-dots .dot { border-color: rgba(255,255,255,0.6); background: transparent; }
 .rp-sidebar-dark .rp-dots .dot.filled { background: rgba(255,255,255,0.85); }
+.rp-sidebar-dark .rp-desc-list,
+.rp-sidebar-dark .rp-item-desc ul,
+.rp-sidebar-dark .rp-desc-list li,
+.rp-sidebar-dark .rp-item-desc li,
+.rp-sidebar-dark .rp-desc-list li::marker,
+.rp-sidebar-dark .rp-item-desc ul > li::marker,
+.rp-sidebar-dark .rp-desc-list li::before,
+.rp-sidebar-dark .rp-item-desc ul > li::before {
+  color: rgba(255,255,255,0.9) !important;
+}
 .rp-premium6 .rp-photo { border: 3px solid rgba(255,255,255,0.3); }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -1719,12 +1744,20 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
     margin-bottom: 12px !important;
   }
 
-  .rp-contact span,
-  .rp-ats-contact-item {
+  /* Contact items: nowrap prevents phone numbers and emails from splitting
+     mid-value. Use .rp-contact-item (class selector) to beat the span
+     descendant selector [.rp-contact span] which has higher specificity. */
+  .rp-contact .rp-contact-item {
     display: inline !important;
+    white-space: nowrap !important;
+    margin-right: 12px !important;
     float: none !important;
-    margin-right: 14px !important;
+  }
+
+  .rp-contact .rp-contact-sep {
+    display: inline !important;
     white-space: normal !important;
+    margin: 0 2px !important;
   }
 
   .rp-contact a,
@@ -1854,6 +1887,11 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
     break-inside: avoid !important;
   }
 
+  .rp-desc-list li::marker,
+  .rp-item-desc ul > li::marker {
+    color: currentColor !important;
+  }
+
   .resume-preview:not([data-bullet="none"]) .rp-desc-list > li,
   .resume-preview:not([data-bullet="none"]) .rp-item-desc ul > li {
     display: list-item !important;
@@ -1924,6 +1962,56 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
     border: none !important;
     padding: 0 !important;
   }
+
+  .rp-sidebar-dark .rp-sidebar-name,
+  .rp-sidebar-dark .rp-sidebar-role,
+  .rp-sidebar-dark .rp-contact,
+  .rp-sidebar-dark .rp-contact a,
+  .rp-sidebar-dark .rp-contact-link,
+  .rp-sidebar-dark .rp-stitle,
+  .rp-sidebar-dark .rp-skill-name,
+  .rp-sidebar-dark .rp-skill-level,
+  .rp-sidebar-dark .rp-item-head,
+  .rp-sidebar-dark .rp-item-head strong,
+  .rp-sidebar-dark .rp-item-sub,
+  .rp-sidebar-dark .rp-item-sub span,
+  .rp-sidebar-dark .rp-item-desc,
+  .rp-sidebar-dark .rp-item-desc li,
+  .rp-sidebar-dark .rp-item-desc strong,
+  .rp-sidebar-dark .rp-compact-head,
+  .rp-sidebar-dark .rp-compact-head *,
+  .rp-sidebar-dark .rp-summary,
+  .rp-sidebar-dark .rp-tags .rp-tag,
+  .rp-sidebar-dark .rp-compact-date,
+  .rp-sidebar-dark .rp-compact-subtitle,
+  .rp-sidebar-dark .rp-target-role-badge,
+  .rp-sidebar-dark .rp-role-seeking-label,
+  .rp-sidebar-dark .rp-desc-list li::marker,
+  .rp-sidebar-dark .rp-item-desc ul > li::marker {
+    color: #ffffff !important;
+  }
+
+  [data-hstyle="full-bleed"] .rp-sidebar,
+  [data-hstyle="full-bleed"] .rp-sidebar *,
+  [data-hstyle="fullBleed"] .rp-sidebar,
+  [data-hstyle="fullBleed"] .rp-sidebar * {
+    color: #ffffff !important;
+  }
+
+  [data-hstyle="full-bleed"] .rp-sidebar .rp-compact-head,
+  [data-hstyle="full-bleed"] .rp-sidebar .rp-compact-head *,
+  [data-hstyle="fullBleed"] .rp-sidebar .rp-compact-head,
+  [data-hstyle="fullBleed"] .rp-sidebar .rp-compact-head * {
+    color: #ffffff !important;
+    opacity: 1 !important;
+  }
+
+  [data-hstyle="full-bleed"] .rp-sidebar .rp-desc-list li::marker,
+  [data-hstyle="full-bleed"] .rp-sidebar .rp-item-desc ul > li::marker,
+  [data-hstyle="fullBleed"] .rp-sidebar .rp-desc-list li::marker,
+  [data-hstyle="fullBleed"] .rp-sidebar .rp-item-desc ul > li::marker {
+    color: #ffffff !important;
+  }
 }
 
 /* Recruiter Scan Mode Overlay & Highlights */
@@ -1967,18 +2055,39 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 
 /* Target Role Styling in Preview */
 .rp-target-role-badge {
-  display: inline-block;
-  font-size: 14px !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px !important;
   font-weight: 700 !important;
-  letter-spacing: 0.3px !important;
-  background: none !important;
+  letter-spacing: 0.02em !important;
+  background: color-mix(in srgb, var(--accent-readable, #2563EB) 10%, white) !important;
+  border: 1px solid color-mix(in srgb, var(--accent-readable, #2563EB) 24%, white) !important;
   color: var(--accent-readable, #2563EB) !important;
-  padding: 0 !important;
-  border-radius: 0 !important;
+  padding: 3px 10px !important;
+  border-radius: 999px !important;
   margin-top: 6px !important;
   box-shadow: none !important;
-  border: none !important;
   text-transform: none !important;
+  line-height: 1.2 !important;
+}
+
+/* "Seeking: " prefix label — distinguishes target role from current designation.
+   A recruiter scanning a PDF will immediately understand the semantic difference. */
+.rp-role-seeking-label {
+  font-size: 0.75em;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin-right: 3px;
+}
+
+/* Preserve readability of the seeking label on dark/full-bleed backgrounds */
+.rp-sidebar-dark .rp-role-seeking-label,
+[data-hstyle="full-bleed"] .rp-role-seeking-label,
+[data-hstyle="fullBleed"] .rp-role-seeking-label {
+  opacity: 0.8;
 }
 
 /* Sidebar target role badge — smaller to fit narrow column */
@@ -1986,6 +2095,12 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   font-size: 11.5px !important;
   margin-top: 3px !important;
   letter-spacing: 0 !important;
+}
+
+.rp-sidebar-dark .rp-target-role-badge {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
+  color: #ffffff !important;
 }
 
 /* [data-hstyle="card"] .rp-target-role-badge inherits base rule — no override needed */
@@ -2374,6 +2489,7 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   padding-left: 18px;
   margin: 4px 0 0;
   list-style-type: disc;       /* default — overridden by [data-bullet] on root */
+  list-style-position: outside;
   font-size: var(--rp-fs-body);
   color: #333;
   font-weight: 400;
@@ -2387,6 +2503,11 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   font-size: var(--rp-fs-body);
   color: #333;
   font-weight: 400;
+}
+
+.resume-preview .rp-desc-list li::marker,
+.resume-preview .rp-item-desc ul > li::marker {
+  color: currentColor;
 }
 
 .resume-preview:not([data-bullet="none"]) .rp-desc-list > li,
@@ -2425,7 +2546,7 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .resume-preview[data-bullet="dash"] .rp-desc-list li,
 .resume-preview[data-bullet="dash"] .rp-item-desc ul li { position: relative; }
 .resume-preview[data-bullet="dash"] .rp-desc-list li::before,
-.resume-preview[data-bullet="dash"] .rp-item-desc ul li::before { content: '–'; position: absolute; left: -14px; top: 0; color: #555; }
+.resume-preview[data-bullet="dash"] .rp-item-desc ul li::before { content: '–'; position: absolute; left: -14px; top: 0; color: currentColor; }
 
 /* Arrow: suppress default marker, inject accent-colored › via ::before */
 .resume-preview[data-bullet="arrow"] .rp-desc-list,
@@ -2433,7 +2554,7 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .resume-preview[data-bullet="arrow"] .rp-desc-list li,
 .resume-preview[data-bullet="arrow"] .rp-item-desc ul li { position: relative; }
 .resume-preview[data-bullet="arrow"] .rp-desc-list li::before,
-.resume-preview[data-bullet="arrow"] .rp-item-desc ul li::before { content: '›'; position: absolute; left: -14px; top: 0; color: var(--accent); font-weight: 700; }
+.resume-preview[data-bullet="arrow"] .rp-item-desc ul li::before { content: '›'; position: absolute; left: -14px; top: 0; color: currentColor; font-weight: 700; }
 
 /* None: suppress default marker and remove padding */
 .resume-preview[data-bullet="none"] .rp-desc-list,
@@ -2999,6 +3120,15 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-sidebar-infographic .rp-compact-date,
 .rp-sidebar-infographic .rp-compact-subtitle {
   color: #1F2937 !important;
+  opacity: 1 !important;
+}
+
+/* Split technical profile rows need explicit contrast for compact title blocks. */
+.rp-sidebar-dark .rp-compact-head,
+.rp-sidebar-dark .rp-compact-head *,
+.rp-sidebar-dark .rp-compact strong,
+.rp-sidebar-dark .rp-compact span {
+  color: rgba(255, 255, 255, 0.92) !important;
   opacity: 1 !important;
 }
 

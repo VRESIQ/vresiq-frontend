@@ -918,6 +918,11 @@ const TechnicalProfilesSection = ({ title, items = [], dec, sectionNumber, fullN
                   </span>
                 )}
               </div>
+              {hasText(item.subtitle) && (
+                <span className="rp-compact-subtitle" style={{ marginLeft: "6px" }}>
+                  ({item.subtitle})
+                </span>
+              )}
               {hasText(item.description) && (
                 <div className="rp-item-desc" style={{ marginTop: "2px" }}>
                   {renderDescription(item.description, fullName)}
@@ -975,6 +980,18 @@ const MembershipsSection = ({ title, items = [], dec, sectionNumber, fullName, h
 
 const Photo = ({ src, shape = "circle" }) =>
   src ? <img src={src} alt="Profile" className={`rp-photo rp-photo-${shape}`} /> : null;
+
+// Renders a target role with a visible "Seeking:" semantic label so recruiters
+// cannot confuse it with the candidate's current designation.
+const TargetRoleBadge = ({ role, badgeClass = "rp-target-role-badge" }) => {
+  if (!role) return null;
+  return (
+    <div className={badgeClass}>
+      <span className="rp-role-seeking-label" aria-label="Seeking:">Seeking: </span>
+      {role}
+    </div>
+  );
+};
 
 
 // ─── Main ResumePreview ───────────────────────────────────────────────────────
@@ -1327,7 +1344,7 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
             <div className="rp-header-text">
               <h1>{name}</h1>
               <p className="rp-role">{role}</p>
-              {profileInfo.targetRole && <div className="rp-target-role-badge">{profileInfo.targetRole}</div>}
+              <TargetRoleBadge role={profileInfo.targetRole} />
               <div className="rp-contact rp-contact-inline">
                 <ContactRow c={contactInfo} />
               </div>
@@ -1346,7 +1363,7 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
               <Photo src={photo} shape={photoShape} />
               <h1 className="rp-sidebar-name">{name}</h1>
               <p className="rp-sidebar-role">{role}</p>
-              {profileInfo.targetRole && <div className="rp-target-role-badge">{profileInfo.targetRole}</div>}
+              <TargetRoleBadge role={profileInfo.targetRole} />
               <div className="rp-sidebar-contact"><ContactRow c={contactInfo} /></div>
             </div>
             {getSections('sidebar')}
@@ -1364,7 +1381,7 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
             <div>
               <h1>{name}</h1>
               <p className="rp-role">{role}</p>
-              {profileInfo.targetRole && <div className="rp-target-role-badge">{profileInfo.targetRole}</div>}
+              <TargetRoleBadge role={profileInfo.targetRole} />
               <ContactRow c={contactInfo} />
             </div>
           </header>
@@ -1381,7 +1398,7 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
             <div>
               <h1>{name}</h1>
               <p className="rp-role">{role}</p>
-              {profileInfo.targetRole && <div className="rp-target-role-badge">{profileInfo.targetRole}</div>}
+              <TargetRoleBadge role={profileInfo.targetRole} />
               <ContactRow c={contactInfo} />
             </div>
           </header>
@@ -1417,7 +1434,7 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
               <div>
                 <h1>{name}</h1>
                 <p className="rp-role">{role}</p>
-                {profileInfo.targetRole && <div className="rp-target-role-badge">{profileInfo.targetRole}</div>}
+                <TargetRoleBadge role={profileInfo.targetRole} />
               </div>
             </div>
             <ContactRow c={contactInfo} />
@@ -1441,7 +1458,7 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
             <div className="rp-sig-left">
               <h1 className="rp-sig-name">{name}</h1>
               <p className="rp-sig-role">{role}</p>
-              {profileInfo.targetRole && <div className="rp-target-role-badge">{profileInfo.targetRole}</div>}
+              <TargetRoleBadge role={profileInfo.targetRole} />
               <div className="rp-sig-rule" />
             </div>
             <div className="rp-sig-right">
@@ -1463,7 +1480,7 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
               <div className="rp-accentbar-name-block">
                 <h1>{name}</h1>
                 <p className="rp-role">{role}</p>
-                {profileInfo.targetRole && <div className="rp-target-role-badge">{profileInfo.targetRole}</div>}
+                <TargetRoleBadge role={profileInfo.targetRole} />
               </div>
             </div>
             <ContactRow c={contactInfo} />
@@ -1481,7 +1498,7 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
               <Photo src={photo} shape={photoShape} />
               <h1 className="rp-sidebar-name">{name}</h1>
               <p className="rp-sidebar-role">{role}</p>
-              {profileInfo.targetRole && <div className="rp-target-role-badge">{profileInfo.targetRole}</div>}
+              <TargetRoleBadge role={profileInfo.targetRole} />
               <div className="rp-sidebar-contact"><ContactRow c={contactInfo} /></div>
             </div>
             {getSections('sidebar')}
@@ -1499,7 +1516,7 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
             <div>
               <h1>{name}</h1>
               <p className="rp-role">{role}</p>
-              {profileInfo.targetRole && <div className="rp-target-role-badge">{profileInfo.targetRole}</div>}
+              <TargetRoleBadge role={profileInfo.targetRole} />
               <ContactRow c={contactInfo} />
             </div>
           </header>
@@ -1516,7 +1533,7 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
               <Photo src={photo} shape={photoShape} />
               <h1 className="rp-sidebar-name">{name}</h1>
               <p className="rp-sidebar-role">{role}</p>
-              {profileInfo.targetRole && <div className="rp-target-role-badge">{profileInfo.targetRole}</div>}
+              <TargetRoleBadge role={profileInfo.targetRole} />
               <div className="rp-sidebar-contact"><ContactRow c={contactInfo} /></div>
             </div>
             {getSections('sidebar')}
@@ -1552,7 +1569,7 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
               <div className="rp-tech-name-block">
                 <h1>{name}</h1>
                 <p className="rp-role rp-mono">{role}</p>
-                {profileInfo.targetRole && <div className="rp-target-role-badge">{profileInfo.targetRole}</div>}
+                <TargetRoleBadge role={profileInfo.targetRole} />
               </div>
             </div>
             <div className="rp-tech-contact rp-mono"><ContactRow c={contactInfo} /></div>
@@ -1569,7 +1586,7 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
             <Photo src={photo} shape={photoShape} />
             <h1 className="rp-ats-name">{name}</h1>
             {role && <p className="rp-ats-role">{role}</p>}
-            {profileInfo.targetRole && <div className="rp-ats-badge">{profileInfo.targetRole}</div>}
+            <TargetRoleBadge role={profileInfo.targetRole} badgeClass="rp-ats-badge" />
             <AtsContactRow c={contactInfo} />
           </header>
           <main className="rp-ats-body">{getSections('all')}</main>
@@ -1584,7 +1601,7 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
             <Photo src={photo} shape={photoShape} />
             <h1 className="rp-ats-name">{name}</h1>
             {role && <p className="rp-ats-role-left">{role}</p>}
-            {profileInfo.targetRole && <div className="rp-ats-badge-left">{profileInfo.targetRole}</div>}
+            <TargetRoleBadge role={profileInfo.targetRole} badgeClass="rp-ats-badge-left" />
             <AtsContactRow c={contactInfo} />
           </header>
           <div className="rp-layout-twocol rp-ats-twocol">
@@ -1602,7 +1619,7 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
             <Photo src={photo} shape={photoShape} />
             <h1 className="rp-ats-name-serif">{name}</h1>
             {role && <p className="rp-ats-role-serif">{role}</p>}
-            {profileInfo.targetRole && <div className="rp-ats-badge">{profileInfo.targetRole}</div>}
+            <TargetRoleBadge role={profileInfo.targetRole} badgeClass="rp-ats-badge" />
             <AtsContactRow c={contactInfo} />
           </header>
           <main className="rp-ats-body">{getSections('all')}</main>
@@ -1617,7 +1634,7 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
             <Photo src={photo} shape={photoShape} />
             <h1 className="rp-ats-name">{name}</h1>
             {role && <p className="rp-ats-role-left">{role}</p>}
-            {profileInfo.targetRole && <div className="rp-ats-badge-left">{profileInfo.targetRole}</div>}
+            <TargetRoleBadge role={profileInfo.targetRole} badgeClass="rp-ats-badge-left" />
             <AtsContactRow c={contactInfo} />
           </header>
           <main className="rp-ats-body">
@@ -1634,7 +1651,7 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
             <Photo src={photo} shape={photoShape} />
             <h1 className="rp-ats-name">{name}</h1>
             {role && <p className="rp-ats-role">{role}</p>}
-            {profileInfo.targetRole && <div className="rp-ats-badge">{profileInfo.targetRole}</div>}
+            <TargetRoleBadge role={profileInfo.targetRole} badgeClass="rp-ats-badge" />
             <AtsContactRow c={contactInfo} />
           </header>
           <main className="rp-ats-body">{getSections('all')}</main>
@@ -1680,6 +1697,7 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
           <header className="rp-ats-header">
             <h1 className="rp-ats-name-serif">{name}</h1>
             {role && <p className="rp-ats-role-serif">{role}</p>}
+            <TargetRoleBadge role={profileInfo.targetRole} badgeClass="rp-ats-badge" />
             <AtsContactRow c={contactInfo} />
           </header>
           <main className="rp-ats-body">{getSections('all')}</main>
@@ -1693,6 +1711,7 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
           <header className="rp-ats-header-left">
             <h1 className="rp-ats-name">{name}</h1>
             {role && <p className="rp-ats-role-left">{role}</p>}
+            <TargetRoleBadge role={profileInfo.targetRole} badgeClass="rp-ats-badge-left" />
             <AtsContactRow c={contactInfo} />
           </header>
           <main className="rp-ats-body">{getSections('all')}</main>
@@ -1706,6 +1725,7 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
           <header className="rp-ats-header">
             <h1 className="rp-ats-name-serif">{name}</h1>
             {role && <p className="rp-ats-role-serif">{role}</p>}
+            <TargetRoleBadge role={profileInfo.targetRole} badgeClass="rp-ats-badge" />
             <AtsContactRow c={contactInfo} />
           </header>
           <hr className="rp-rule" />
@@ -1720,6 +1740,7 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
           <header className="rp-ats-header-left">
             <h1 className="rp-ats-name">{name}</h1>
             {role && <p className="rp-ats-role-left">{role}</p>}
+            <TargetRoleBadge role={profileInfo.targetRole} badgeClass="rp-ats-badge-left" />
             <AtsContactRow c={contactInfo} />
           </header>
           <main className="rp-ats-body">{getSections('all')}</main>
