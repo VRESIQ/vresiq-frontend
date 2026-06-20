@@ -774,7 +774,7 @@ const ResumeEditor = () => {
 
             @page {
               size: letter;
-              margin-top: 40px;
+              margin-top: 0px;
               margin-bottom: 36px;
               margin-left: 0;
               margin-right: 0;
@@ -890,12 +890,26 @@ const ResumeEditor = () => {
               margin-bottom: 12px !important;
             }
 
+            .rp-sidebar .rp-contact {
+              display: flex !important;
+              flex-direction: column !important;
+              gap: 4px !important;
+              margin-bottom: 12px !important;
+            }
+
             .rp-contact span,
             .rp-ats-contact-item {
               display: inline !important;
               float: none !important;
               margin-right: 14px !important;
               white-space: normal !important;
+            }
+
+            .rp-sidebar .rp-contact span {
+              display: flex !important;
+              float: none !important;
+              margin-right: 0 !important;
+              white-space: nowrap !important;
             }
 
             .rp-contact a,

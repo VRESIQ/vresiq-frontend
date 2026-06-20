@@ -1640,7 +1640,7 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 @media print {
   @page {
     size: letter;
-    margin-top: 40px;
+    margin-top: 0px;
     margin-bottom: 48px;
     margin-left: 0;
     margin-right: 0;
@@ -1763,6 +1763,13 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
     margin-bottom: 12px !important;
   }
 
+  .rp-sidebar .rp-contact {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+    margin-bottom: 12px !important;
+  }
+
   /* Contact items: nowrap prevents phone numbers and emails from splitting
      mid-value. Use .rp-contact-item (class selector) to beat the span
      descendant selector [.rp-contact span] which has higher specificity. */
@@ -1770,6 +1777,13 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
     display: inline !important;
     white-space: nowrap !important;
     margin-right: 12px !important;
+    float: none !important;
+  }
+
+  .rp-sidebar .rp-contact .rp-contact-item {
+    display: flex !important;
+    white-space: nowrap !important;
+    margin-right: 0 !important;
     float: none !important;
   }
 
@@ -1980,15 +1994,17 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 
   /* Keep split layout sidebar column structure on print */
   .rp-layout-sidebar {
-    display: grid !important;
-    grid-template-columns: 210px 1fr !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
     width: 100% !important;
     min-height: 100% !important;
     height: auto !important;
   }
 
   .rp-layout-sidebar > .rp-sidebar {
-    width: auto !important;
+    width: 210px !important;
+    flex-shrink: 0 !important;
     float: none !important;
     display: flex !important;
     flex-direction: column !important;
@@ -1997,7 +2013,8 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   }
 
   .rp-layout-sidebar > .rp-main-col {
-    width: auto !important;
+    flex-grow: 1 !important;
+    width: calc(100% - 210px) !important;
     float: none !important;
     display: block !important;
     margin: 0 !important;
