@@ -1748,12 +1748,7 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
     white-space: nowrap !important;
   }
 
-  .rp-contact-link {
-    color: #1a5fb4 !important;
-    text-decoration: underline !important;
-    text-decoration-thickness: 0.5px !important;
-    text-underline-offset: 1.5px;
-  }
+
   
   /* Force grid and column spacing in templates */
   /* Enforce proper text contrast */
