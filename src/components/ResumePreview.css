@@ -213,22 +213,23 @@
   color: rgba(255, 255, 255, 0.45);
 }
 /* Header Contact Links (top contact block): ALWAYS blue and underlined */
-.header-link,
-.rp-contact a,
-.rp-ats-contact a,
-.rp-contact-link {
-  color: #2563eb !important;
+.resume-preview .header-link,
+.resume-preview .rp-contact-link,
+.resume-preview .rp-contact a,
+.resume-preview .rp-ats-contact a {
+  color: #2563EB !important;
   text-decoration: underline !important;
-  text-decoration-color: #2563eb !important;
+  text-decoration-color: #2563EB !important;
   text-decoration-thickness: 0.5px !important;
   text-underline-offset: 1.5px !important;
   opacity: 1 !important;
+  visibility: visible !important;
 }
 
-.header-link:hover,
-.rp-contact a:hover,
-.rp-ats-contact a:hover,
-.rp-contact-link:hover {
+.resume-preview .header-link:hover,
+.resume-preview .rp-contact-link:hover,
+.resume-preview .rp-contact a:hover,
+.resume-preview .rp-ats-contact a:hover {
   color: #1d4ed8 !important;
   text-decoration: underline !important;
 }
@@ -339,13 +340,13 @@
   }
 
   /* Header Contact Links ALWAYS blue and underlined in print */
-  .header-link,
-  .rp-contact a,
-  .rp-ats-contact a,
-  .rp-contact-link {
-    color: #2563eb !important;
+  .resume-preview .header-link,
+  .resume-preview .rp-contact-link,
+  .resume-preview .rp-contact a,
+  .resume-preview .rp-ats-contact a {
+    color: #2563EB !important;
     text-decoration: underline !important;
-    text-decoration-color: #2563eb !important;
+    text-decoration-color: #2563EB !important;
     text-decoration-thickness: 0.5px !important;
     text-underline-offset: 1.5px !important;
     -webkit-print-color-adjust: exact !important;
@@ -3153,35 +3154,38 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 
 /* Target role visibility — align with the surrounding theme colour */
 .rp-sidebar-dark .rp-target-role-badge,
-[data-template="premium6"] .rp-target-role-badge {
-  color: #FFFFFF !important;
-  background: rgba(255,255,255,0.1) !important;
-  border-color: rgba(255,255,255,0.25) !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
+[data-template="premium6"] .rp-target-role-badge,
 [data-hstyle="full-bleed"] .rp-target-role-badge,
 [data-hstyle="fullBleed"] .rp-target-role-badge {
   color: #FFFFFF !important;
   background: rgba(255,255,255,0.15) !important;
-  border-color: rgba(255,255,255,0.35) !important;
+  border-color: rgba(255,255,255,0.3) !important;
   opacity: 1 !important;
   visibility: visible !important;
 }
 
-/* Seeking label must be fully visible inside dark/full-bleed contexts */
 .rp-sidebar-dark .rp-role-seeking-label,
+[data-template="premium6"] .rp-role-seeking-label,
 [data-hstyle="full-bleed"] .rp-role-seeking-label,
 [data-hstyle="fullBleed"] .rp-role-seeking-label {
-  opacity: 0.9 !important;
+  opacity: 1 !important;
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.rp-sidebar-dark .rp-target-role-text,
+[data-template="premium6"] .rp-target-role-text,
+[data-hstyle="full-bleed"] .rp-target-role-text,
+[data-hstyle="fullBleed"] .rp-target-role-text {
   color: #ffffff !important;
+  opacity: 1 !important;
 }
 
 /* Light sidebar */
 .rp-sidebar-light .rp-sidebar-header .rp-target-role-badge,
 .rp-sidebar-infographic .rp-sidebar-header .rp-target-role-badge {
-  color: var(--accent-readable, #2563EB) !important;
+  color: #1f2937 !important;
+  background: #f3f4f6 !important;
+  border: 1px solid #d1d5db !important;
 }
 
 /* Base link styling inside dark sidebars to ensure readability */

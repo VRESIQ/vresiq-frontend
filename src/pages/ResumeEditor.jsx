@@ -817,16 +817,17 @@ const ResumeEditor = () => {
             }
 
             /* Header Contact Links (top contact block): ALWAYS blue and underlined in PDF */
-            .header-link,
-            .rp-contact a,
-            .rp-ats-contact a,
-            .rp-contact-link {
-              color: #2563eb !important;
+            .resume-preview .header-link,
+            .resume-preview .rp-contact-link,
+            .resume-preview .rp-contact a,
+            .resume-preview .rp-ats-contact a {
+              color: #2563EB !important;
               text-decoration: underline !important;
-              text-decoration-color: #2563eb !important;
+              text-decoration-color: #2563EB !important;
               text-decoration-thickness: 0.5px !important;
               text-underline-offset: 1.5px !important;
               opacity: 1 !important;
+              visibility: visible !important;
             }
 
             .resume-preview {

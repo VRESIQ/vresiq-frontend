@@ -1777,24 +1777,24 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
               <div className="rp-engineer-contacts-left">
                 {linkedinText && (
                   <div className="rp-engineer-contact-item">
-                    <strong>LinkedIn:</strong> <a href={contactInfo.linkedIn?.value || contactInfo.linkedIn} target="_blank" rel="noopener noreferrer" className="resume-link rp-contact-link">{linkedinText.replace(/^(https?:\/\/)?(www\.)?/i, "")}</a>
+                    <strong>LinkedIn:</strong> <a href={contactInfo.linkedIn?.value || contactInfo.linkedIn} target="_blank" rel="noopener noreferrer" className="rp-contact-link">{linkedinText.replace(/^(https?:\/\/)?(www\.)?/i, "")}</a>
                   </div>
                 )}
                 {githubText && (
                   <div className="rp-engineer-contact-item">
-                    <strong>GitHub:</strong> <a href={contactInfo.github?.value || contactInfo.github} target="_blank" rel="noopener noreferrer" className="resume-link rp-contact-link">{githubText.replace(/^(https?:\/\/)?(www\.)?/i, "")}</a>
+                    <strong>GitHub:</strong> <a href={contactInfo.github?.value || contactInfo.github} target="_blank" rel="noopener noreferrer" className="rp-contact-link">{githubText.replace(/^(https?:\/\/)?(www\.)?/i, "")}</a>
                   </div>
                 )}
               </div>
               <div className="rp-engineer-contacts-right">
                 {emailText && (
                   <div className="rp-engineer-contact-item">
-                    <strong>Email:</strong> <a href={`mailto:${emailText}`} className="resume-link rp-contact-link">{emailText}</a>
+                    <strong>Email:</strong> <a href={`mailto:${emailText}`} className="rp-contact-link">{emailText}</a>
                   </div>
                 )}
                 {phoneText && (
                   <div className="rp-engineer-contact-item">
-                    <strong>Mobile:</strong> <a href={`tel:${phoneText}`} className="resume-link rp-contact-link">{phoneText}</a>
+                    <strong>Mobile:</strong> <a href={`tel:${phoneText}`} className="rp-contact-link">{phoneText}</a>
                   </div>
                 )}
               </div>
