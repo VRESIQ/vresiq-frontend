@@ -1992,13 +1992,17 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
     padding: 0 !important;
   }
 
-  /* Keep split layout sidebar column structure on print */
+  /* Keep split layout sidebar column structure on print.
+     Must use flex (not grid) — Chromium's PDF engine collapses multi-page grid columns.
+     align-items:stretch on the parent makes both columns match the tallest column height,
+     exactly like the screen display:grid behaviour.
+     min-height:100% on the sidebar explicitly overrides the generic height:auto !important
+     rule so Chromium's flex engine honours the cross-axis stretch. */
   .rp-layout-sidebar {
     display: flex !important;
     flex-direction: row !important;
     align-items: stretch !important;
     width: 100% !important;
-    min-height: 100% !important;
     height: auto !important;
   }
 
@@ -2008,6 +2012,10 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
     float: none !important;
     display: flex !important;
     flex-direction: column !important;
+    align-self: stretch !important;
+    /* Override the generic .rp-sidebar { height:auto !important } so Chromium
+       respects the flex cross-axis stretch and fills to the main column height. */
+    min-height: 100% !important;
     margin: 0 !important;
     box-sizing: border-box !important;
   }
