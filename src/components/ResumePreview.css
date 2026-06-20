@@ -906,6 +906,21 @@
   font-size: var(--rp-fs-body);
 }
 
+.rp-tech-profile-head {
+  gap: 12px;
+  min-width: 0;
+}
+
+.rp-compact-title {
+  min-width: 0;
+  flex: 1 1 auto;
+  color: inherit;
+}
+
+.rp-compact-url {
+  color: inherit;
+}
+
 .rp-compact-subtitle {
   font-size: var(--rp-fs-body);
   color: #555;
@@ -3100,7 +3115,8 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-sidebar-dark .rp-tags .rp-tag,
 .rp-sidebar-dark .rp-item-desc,
 .rp-sidebar-dark .rp-compact-date,
-.rp-sidebar-dark .rp-compact-subtitle {
+.rp-sidebar-dark .rp-compact-title,
+.rp-sidebar-dark .rp-compact-url {
   color: #E5E7EB !important;
   opacity: 1 !important;
 }
@@ -3111,23 +3127,25 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-sidebar-light .rp-tags .rp-tag,
 .rp-sidebar-light .rp-item-desc,
 .rp-sidebar-light .rp-compact-date,
-.rp-sidebar-light .rp-compact-subtitle,
+.rp-sidebar-light .rp-compact-title,
+.rp-sidebar-light .rp-compact-url,
 .rp-sidebar-infographic .rp-skill-level,
 .rp-sidebar-infographic .rp-skill-bar-wrap small,
 .rp-sidebar-infographic .rp-interests-list li,
 .rp-sidebar-infographic .rp-tags .rp-tag,
 .rp-sidebar-infographic .rp-item-desc,
 .rp-sidebar-infographic .rp-compact-date,
-.rp-sidebar-infographic .rp-compact-subtitle {
+.rp-sidebar-infographic .rp-compact-title,
+.rp-sidebar-infographic .rp-compact-url {
   color: #1F2937 !important;
   opacity: 1 !important;
 }
 
 /* Split technical profile rows need explicit contrast for compact title blocks. */
 .rp-sidebar-dark .rp-compact-head,
-.rp-sidebar-dark .rp-compact-head *,
-.rp-sidebar-dark .rp-compact strong,
-.rp-sidebar-dark .rp-compact span {
+.rp-sidebar-dark .rp-compact-head strong,
+.rp-sidebar-dark .rp-compact-head span,
+.rp-sidebar-dark .rp-compact-head a {
   color: rgba(255, 255, 255, 0.92) !important;
   opacity: 1 !important;
 }

@@ -85,7 +85,7 @@ const renderLinkOrText = (text, className, isTitle = false) => {
   const trimmed = strText.trim();
   if (isUrl(trimmed)) {
     return (
-      <a href={formatUrl(trimmed)} target="_blank" rel="noopener noreferrer" className="resume-link" style={isTitle ? { fontWeight: 600 } : undefined}>
+      <a href={formatUrl(trimmed)} target="_blank" rel="noopener noreferrer" className="resume-link rp-compact-url" style={isTitle ? { fontWeight: 600 } : undefined}>
         {trimmed.replace(/^(https?:\/\/)?(www\.)?/, "")} <span className="external-link-icon">↗</span>
       </a>
     );
@@ -443,7 +443,7 @@ const linkifyText = (text) => {
       href = `https://${href}`;
     }
     parts.push(
-      <a key={matchIndex} href={href} target="_blank" rel="noopener noreferrer" className="resume-link">
+      <a key={matchIndex} href={href} target="_blank" rel="noopener noreferrer" className="resume-link rp-compact-url">
         {matchStr} <span className="external-link-icon">↗</span>
       </a>
     );
@@ -532,10 +532,10 @@ const ExperienceSection = ({ items = [], showIcon, dec, isTimeline = false, scan
             {isTimeline && <div className="rp-timeline-dot" />}
             <div className="rp-item-head">
               <strong>{item.role || "Role"}</strong>
-              <span>{formatDateRange(item.startDate, item.endDate)}</span>
+              <span className="rp-compact-title">{formatDateRange(item.startDate, item.endDate)}</span>
             </div>
             <div className="rp-item-sub">
-              <span>{item.company}</span>
+              <span className="rp-compact-title">{item.company}</span>
               {hasText(item.location) && <span className="rp-item-location">{item.location}</span>}
             </div>
             {hasText(item.description) && (
@@ -567,8 +567,8 @@ const EducationSection = ({ items = [], showIcon, dec, sectionNumber, fullName, 
               {hasText(item.location) && <span className="rp-item-location">{item.location}</span>}
             </div>
             <div className="rp-item-sub">
-              <span>{item.degree || "Degree"}</span>
-              <span>{formatDateRange(item.startDate, item.endDate)}</span>
+              <span className="rp-compact-title">{item.degree || "Degree"}</span>
+              <span className="rp-compact-title">{formatDateRange(item.startDate, item.endDate)}</span>
             </div>
             {hasText(item.gpa) && (
               <p className="rp-education-gpa">
@@ -622,13 +622,13 @@ const ProjectsSection = ({ items = [], showIcon, dec, scanMode = false, sectionN
             {[item.github, item.liveDemo].filter(hasText).length > 0 && (
               <p className="rp-links" style={{ marginTop: "2px" }}>
                 {hasText(item.github) && (
-                  <a href={getGithubUrl(item.github)} target="_blank" rel="noopener noreferrer" className="resume-link">
+                  <a href={getGithubUrl(item.github)} target="_blank" rel="noopener noreferrer" className="resume-link rp-compact-url">
                     Github <span className="external-link-icon">↗</span>
                   </a>
                 )}
                 {hasText(item.github) && hasText(item.liveDemo) && <span className="rp-links-divider"> · </span>}
                 {hasText(item.liveDemo) && (
-                  <a href={formatUrl(item.liveDemo)} target="_blank" rel="noopener noreferrer" className="resume-link">
+                  <a href={formatUrl(item.liveDemo)} target="_blank" rel="noopener noreferrer" className="resume-link rp-compact-url">
                     {(() => {
                       const lower = item.liveDemo.toLowerCase();
                       if (lower.includes("docs") || lower.includes("wiki") || lower.includes("documentation")) return "Documentation";
@@ -664,14 +664,14 @@ const CertsSection = ({ items = [], showIcon, dec, sectionNumber, hasBullets = t
                   href={formatUrl(item.certificateUrl)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="resume-link"
+                  className="resume-link rp-compact-url"
                 >
                   {item.title || "Certification"} <span className="external-link-icon">↗</span>
                 </a>
               ) : (
                 <strong>{item.title || "Certification"}</strong>
               )}
-               <span>{[item.issuer, formatPartialDate(item.year)].filter(hasText).join(", ")}</span>
+               <span className="rp-compact-title">{[item.issuer, formatPartialDate(item.year)].filter(hasText).join(", ")}</span>
             </div>
           </ItemWrapper>
         ))}
@@ -734,7 +734,7 @@ const CustomSection = ({ title, items = [], showIcon, dec, scanMode = false, sec
           <ItemWrapper key={i} className="rp-item" style={{ marginBottom: "6px" }}>
             <div className="rp-item-head" style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
               {item.title && renderLinkOrText(item.title, "rp-custom-link", true)}
-              {hasText(item.date) && <span>{renderLinkOrText(formatPartialDate(item.date), "rp-custom-link")}</span>}
+              {hasText(item.date) && <span className="rp-compact-title">{renderLinkOrText(formatPartialDate(item.date), "rp-custom-link")}</span>}
             </div>
             {hasText(item.subtitle) && <p className="rp-item-sub">{renderLinkOrText(item.subtitle, "rp-custom-link")}</p>}
             {hasText(item.description) && (
@@ -801,7 +801,7 @@ const PublicationsSection = ({ title, items = [], fullName, dec, sectionNumber, 
                 {/* 5. Paper URL */}
                 {formattedUrl && (
                   <div className="rp-publication-url" style={{ fontSize: "var(--rp-fs-meta)", marginTop: "4px" }}>
-                    <a href={formattedUrl} target="_blank" rel="noopener noreferrer" className="resume-link">
+                    <a href={formattedUrl} target="_blank" rel="noopener noreferrer" className="resume-link rp-compact-url">
                       Paper Link <span className="external-link-icon">↗</span>
                     </a>
                   </div>
@@ -862,10 +862,10 @@ const AwardsSection = ({ title, items = [], dec, sectionNumber, hasBullets = tru
           <ItemWrapper key={i} className="rp-item" style={{ marginBottom: "6px" }}>
             <div className="rp-item-head">
               <strong>{item.title}</strong>
-              {hasText(item.date) && <span>{formatPartialDate(item.date)}</span>}
+              {hasText(item.date) && <span className="rp-compact-title">{formatPartialDate(item.date)}</span>}
             </div>
             {hasText(item.subtitle) && (
-              <div className="rp-item-sub"><span>{item.subtitle}</span></div>
+              <div className="rp-item-sub"><span className="rp-compact-title">{item.subtitle}</span></div>
             )}
             {hasText(item.description) && (
               <div className="rp-item-desc">
@@ -897,19 +897,19 @@ const TechnicalProfilesSection = ({ title, items = [], dec, sectionNumber, fullN
           const platformName = String(item.title);
           return (
             <ItemWrapper key={i} className="rp-compact-item" style={{ marginBottom: "6px" }}>
-              <div className="rp-compact-head" style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-                <span>
+              <div className="rp-compact-head rp-tech-profile-head">
+                <span className="rp-compact-title">
                   {hasUrl ? (
                     <a
                       href={url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="resume-link"
+                      className="resume-link rp-compact-url"
                     >
                       {platformName} <span className="external-link-icon">↗</span>
                     </a>
                   ) : (
-                    <strong style={{ fontWeight: 600 }}>{platformName}</strong>
+                    <strong>{platformName}</strong>
                   )}
                 </span>
                 {item.date && !isUrl(item.date) && (
@@ -918,11 +918,6 @@ const TechnicalProfilesSection = ({ title, items = [], dec, sectionNumber, fullN
                   </span>
                 )}
               </div>
-              {hasText(item.subtitle) && (
-                <span className="rp-compact-subtitle" style={{ marginLeft: "6px" }}>
-                  ({item.subtitle})
-                </span>
-              )}
               {hasText(item.description) && (
                 <div className="rp-item-desc" style={{ marginTop: "2px" }}>
                   {renderDescription(item.description, fullName)}
@@ -949,12 +944,12 @@ const MembershipsSection = ({ title, items = [], dec, sectionNumber, fullName, h
       <Wrapper className={wrapperClass}>
         {filled.map((item, i) => (
           <ItemWrapper key={i} className="rp-compact-item" style={{ marginBottom: "6px" }}>
-            <div className="rp-compact-head" style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-              <span>
+            <div className="rp-compact-head rp-tech-profile-head">
+              <span className="rp-compact-title">
                 {item.title && renderLinkOrText(item.title, "rp-custom-link", true)}
                 {item.subtitle && (
                   <>
-                    <span>: </span>
+                    <span className="rp-compact-title">: </span>
                     {renderLinkOrText(item.subtitle, "rp-custom-link")}
                   </>
                 )}
@@ -1922,3 +1917,4 @@ function normalizeDecoratives(raw = {}) {
 }
 
 export default ResumePreview;
+

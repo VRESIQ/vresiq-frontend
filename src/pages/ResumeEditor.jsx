@@ -9,7 +9,7 @@ import PhoneInput from "../components/common/PhoneInput";
 import DateRangePicker from "../components/common/DateRangePicker";
 import ContactField from "../components/common/ContactField";
 import { useAuth } from "../context/AuthContext";
-import { sanitizeStrictText, sanitizeYear, sanitizeName, sanitizeRole, sanitizeURL, sanitizeUsername, sanitizeDigits, sanitizeFlexibleDate, isNumericPattern, sanitizeTextOnly, sanitizeDecimal, smartNormalizeUrl, sanitizeRawText, sanitizeLocation } from "../utils/inputSanitizers";
+import { sanitizeStrictText, sanitizeYear, sanitizeName, sanitizeRole, sanitizeURL, sanitizeDigits, sanitizeFlexibleDate, isNumericPattern, sanitizeTextOnly, sanitizeDecimal, smartNormalizeUrl, sanitizeRawText, sanitizeLocation } from "../utils/inputSanitizers";
 import { computeAtsReport } from "../utils/atsScorer";
 import "./ResumeEditor.css";
 
@@ -248,7 +248,6 @@ const SECTION_FIELDS_CONFIG = {
   },
   technicalProfiles: {
     title: { label: "Platform Name", placeholder: "e.g. LeetCode / Kaggle / StackOverflow", hint: "Name of the platform.", sanitizeType: "strict" },
-    subtitle: { label: "Username / Handle", placeholder: "e.g. coder_jane", hint: "Your handle or username.", sanitizeType: "username" },
     date: { label: "Profile URL / Link", placeholder: "e.g. https://leetcode.com/coder_jane", hint: "Provide direct link to your profile.", sanitizeType: "url" },
     description: { label: "Highlights & Rankings", placeholder: "e.g. Top 1.5% worldwide rating with 800+ solved problems.", hint: "Provide exact URLs and highlights to prove technical credentials.", sanitizeType: "strict" }
   },
@@ -282,7 +281,6 @@ const getSanitizer = (type) => {
     name: sanitizeName,
     role: sanitizeRole,
     url: sanitizeURL,
-    username: sanitizeUsername,
     year: sanitizeYear,
     digits: sanitizeDigits,
     date: sanitizeFlexibleDate
