@@ -983,7 +983,7 @@ const TargetRoleBadge = ({ role, badgeClass = "rp-target-role-badge" }) => {
   return (
     <div className={badgeClass}>
       <span className="rp-role-seeking-label" aria-label="Seeking:">Seeking: </span>
-      {role}
+      <span className="rp-target-role-text">{role}</span>
     </div>
   );
 };

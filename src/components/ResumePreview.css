@@ -212,133 +212,109 @@
 .rp-sidebar-dark .rp-contact-sep {
   color: rgba(255, 255, 255, 0.45);
 }
-
-/* 2. BODY / CONTENT LINKS (Unified Link Design System) */
-.resume-link {
-  color: var(--accent-readable, #2563EB) !important;
-  font-weight: 560 !important;
+/* Header Contact Links (top contact block): ALWAYS blue and underlined */
+.header-link,
+.rp-contact a,
+.rp-ats-contact a,
+.rp-contact-link {
+  color: #2563eb !important;
   text-decoration: underline !important;
+  text-decoration-color: #2563eb !important;
   text-decoration-thickness: 0.5px !important;
   text-underline-offset: 1.5px !important;
-  cursor: pointer !important;
-  transition: color 0.15s ease;
+  opacity: 1 !important;
 }
 
-.resume-link:hover {
-  color: var(--accent, #1d4ed8) !important;
+.header-link:hover,
+.rp-contact a:hover,
+.rp-ats-contact a:hover,
+.rp-contact-link:hover {
+  color: #1d4ed8 !important;
   text-decoration: underline !important;
 }
 
-.rp-link-arrow,
-.external-link-icon {
-  color: inherit !important;
-  text-decoration: none !important;
-  display: inline-block;
-  margin-left: 3px;
-  font-size: 0.82em;
-  font-weight: 400 !important;
-  vertical-align: baseline;
-  line-height: 1;
-}
-
-/* Hyperlink Style overrides */
-.resume-preview[data-lstyle="professional"] .resume-link,
-.resume-preview[data-lstyle="professional"] .rp-contact-link,
+/* BODY LINKS - Professional Hyperlink ON (plain text look) */
+.resume-preview[data-lstyle="professional"] .resume-link:not(.rp-contact-link):not(.header-link),
 .resume-preview[data-lstyle="professional"] .rp-inline-link,
 .resume-preview[data-lstyle="professional"] .rp-project-link,
 .resume-preview[data-lstyle="professional"] .rp-cert-link,
 .resume-preview[data-lstyle="professional"] .rp-tech-profile-link,
-.resume-preview[data-lstyle="professional"] .rp-tech-profile-url,
-.resume-preview[data-lstyle="professional"] a {
+.resume-preview[data-lstyle="professional"] .rp-tech-profile-url {
   color: inherit !important;
   text-decoration: none !important;
   border-bottom: none !important;
 }
 
-.resume-preview[data-lstyle="professional"] .resume-link:hover,
-.resume-preview[data-lstyle="professional"] .rp-contact-link:hover,
+.resume-preview[data-lstyle="professional"] .resume-link:not(.rp-contact-link):not(.header-link):hover,
 .resume-preview[data-lstyle="professional"] .rp-inline-link:hover,
 .resume-preview[data-lstyle="professional"] .rp-project-link:hover,
 .resume-preview[data-lstyle="professional"] .rp-cert-link:hover,
 .resume-preview[data-lstyle="professional"] .rp-tech-profile-link:hover,
-.resume-preview[data-lstyle="professional"] .rp-tech-profile-url:hover,
-.resume-preview[data-lstyle="professional"] a:hover {
+.resume-preview[data-lstyle="professional"] .rp-tech-profile-url:hover {
   color: inherit !important;
   text-decoration: none !important;
-  opacity: 0.8;
+  opacity: 0.85;
 }
 
-/* When "Professional Hyperlink" IS DISABLED (standard mode) */
-.resume-preview:not([data-lstyle="professional"]) .resume-link,
-.resume-preview:not([data-lstyle="professional"]) .rp-contact-link,
+/* BODY LINKS - Professional Hyperlink OFF (visually recognizable) */
+.resume-preview:not([data-lstyle="professional"]) .resume-link:not(.rp-contact-link):not(.header-link),
 .resume-preview:not([data-lstyle="professional"]) .rp-inline-link,
 .resume-preview:not([data-lstyle="professional"]) .rp-project-link,
 .resume-preview:not([data-lstyle="professional"]) .rp-cert-link,
 .resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-link,
-.resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-url,
-.resume-preview:not([data-lstyle="professional"]) a {
+.resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-url {
   color: var(--hyperlink-color, #2563EB) !important;
   text-decoration: underline !important;
   text-decoration-thickness: 0.5px !important;
   text-underline-offset: 1.5px !important;
 }
 
-.resume-preview:not([data-lstyle="professional"]) .resume-link:hover,
-.resume-preview:not([data-lstyle="professional"]) .rp-contact-link:hover,
+.resume-preview:not([data-lstyle="professional"]) .resume-link:not(.rp-contact-link):not(.header-link):hover,
 .resume-preview:not([data-lstyle="professional"]) .rp-inline-link:hover,
 .resume-preview:not([data-lstyle="professional"]) .rp-project-link:hover,
 .resume-preview:not([data-lstyle="professional"]) .rp-cert-link:hover,
 .resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-link:hover,
-.resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-url:hover,
-.resume-preview:not([data-lstyle="professional"]) a:hover {
+.resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-url:hover {
   color: var(--hyperlink-color, #2563EB) !important;
-  opacity: 0.8;
+  opacity: 0.85;
   text-decoration: underline !important;
 }
 
-/* Preserve contrast-aware / light links on dark sidebars when not professional */
+/* Preserve contrast-aware / light body links on dark sidebars when not professional */
 .resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .resume-link,
-.resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .rp-contact-link,
 .resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .rp-inline-link,
 .resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .rp-project-link,
 .resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .rp-cert-link,
 .resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .rp-tech-profile-link,
 .resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .rp-tech-profile-url,
-.resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark a,
 .resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .resume-link,
-.resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .rp-contact-link,
 .resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .rp-inline-link,
 .resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .rp-project-link,
 .resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .rp-cert-link,
 .resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .rp-tech-profile-link,
-.resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .rp-tech-profile-url,
-.resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar a {
+.resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .rp-tech-profile-url {
   color: #ffffff !important;
 }
 
 @media print {
-  .resume-preview[data-lstyle="professional"] .resume-link,
-  .resume-preview[data-lstyle="professional"] .rp-contact-link,
+  .resume-preview[data-lstyle="professional"] .resume-link:not(.rp-contact-link):not(.header-link),
   .resume-preview[data-lstyle="professional"] .rp-inline-link,
   .resume-preview[data-lstyle="professional"] .rp-project-link,
   .resume-preview[data-lstyle="professional"] .rp-cert-link,
   .resume-preview[data-lstyle="professional"] .rp-tech-profile-link,
-  .resume-preview[data-lstyle="professional"] .rp-tech-profile-url,
-  .resume-preview[data-lstyle="professional"] a {
+  .resume-preview[data-lstyle="professional"] .rp-tech-profile-url {
     color: inherit !important;
     text-decoration: none !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 
-  .resume-preview:not([data-lstyle="professional"]) .resume-link,
-  .resume-preview:not([data-lstyle="professional"]) .rp-contact-link,
+  .resume-preview:not([data-lstyle="professional"]) .resume-link:not(.rp-contact-link):not(.header-link),
   .resume-preview:not([data-lstyle="professional"]) .rp-inline-link,
   .resume-preview:not([data-lstyle="professional"]) .rp-project-link,
   .resume-preview:not([data-lstyle="professional"]) .rp-cert-link,
   .resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-link,
-  .resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-url,
-  .resume-preview:not([data-lstyle="professional"]) a {
+  .resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-url {
     color: var(--hyperlink-color, #2563EB) !important;
     text-decoration: underline !important;
     text-decoration-thickness: 0.5px !important;
@@ -348,30 +324,37 @@
   }
 
   .resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .resume-link,
-  .resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .rp-contact-link,
   .resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .rp-inline-link,
   .resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .rp-project-link,
   .resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .rp-cert-link,
   .resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .rp-tech-profile-link,
   .resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .rp-tech-profile-url,
-  .resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark a,
   .resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .resume-link,
-  .resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .rp-contact-link,
   .resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .rp-inline-link,
   .resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .rp-project-link,
   .resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .rp-cert-link,
   .resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .rp-tech-profile-link,
-  .resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .rp-tech-profile-url,
-  .resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar a {
+  .resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .rp-tech-profile-url {
     color: #ffffff !important;
   }
+
+  /* Header Contact Links ALWAYS blue and underlined in print */
+  .header-link,
+  .rp-contact a,
+  .rp-ats-contact a,
+  .rp-contact-link {
+    color: #2563eb !important;
+    text-decoration: underline !important;
+    text-decoration-color: #2563eb !important;
+    text-decoration-thickness: 0.5px !important;
+    text-underline-offset: 1.5px !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
   .resume-preview {
     padding-bottom: 48px !important;
   }
-
-  /* Watermark rule override for @media print is no longer needed because
-     the new background-image approach renders correctly in all paged
-     contexts including Puppeteer/Chromium PDF export. */
 }
 
 /* ── Typography base ─────────────────────────────────────────────────────── */
@@ -2168,9 +2151,9 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   font-size: 12px !important;
   font-weight: 700 !important;
   letter-spacing: 0.02em !important;
-  background: color-mix(in srgb, var(--accent-readable, #2563EB) 10%, white) !important;
-  border: 1px solid color-mix(in srgb, var(--accent-readable, #2563EB) 24%, white) !important;
-  color: var(--accent-readable, #2563EB) !important;
+  background: #f3f4f6 !important;
+  border: 1px solid #d1d5db !important;
+  color: #1f2937 !important;
   /* min-height + line-height prevent card-style headers from clipping 'Seeking:' */
   padding: 4px 10px !important;
   min-height: 24px !important;
@@ -2181,24 +2164,35 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   line-height: 1.4 !important;
 }
 
-/* "Seeking: " prefix label — distinguishes target role from current designation.
-   A recruiter scanning a PDF will immediately understand the semantic difference. */
+/* "Seeking: " prefix label — distinguishes target role from current designation. */
 .rp-role-seeking-label {
   font-size: 0.75em;
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  /* Use 0.75 so the label is clearly secondary but still readable on all backgrounds */
-  opacity: 0.75;
+  color: #4b5563 !important;
+  opacity: 1 !important; /* Do NOT use opacity */
   margin-right: 2px;
   white-space: nowrap;
+}
+
+.rp-target-role-text {
+  color: #111827 !important;
+  font-weight: 700 !important;
 }
 
 /* Preserve readability of the seeking label on dark/full-bleed backgrounds */
 .rp-sidebar-dark .rp-role-seeking-label,
 [data-hstyle="full-bleed"] .rp-role-seeking-label,
 [data-hstyle="fullBleed"] .rp-role-seeking-label {
-  opacity: 0.9;
+  color: rgba(255, 255, 255, 0.8) !important;
+  opacity: 1 !important;
+}
+
+.rp-sidebar-dark .rp-target-role-text,
+[data-hstyle="full-bleed"] .rp-target-role-text,
+[data-hstyle="fullBleed"] .rp-target-role-text {
+  color: #ffffff !important;
 }
 
 /* Sidebar target role badge — smaller to fit narrow column */
@@ -2209,17 +2203,15 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 }
 
 .rp-sidebar-dark .rp-target-role-badge {
-  background: rgba(255, 255, 255, 0.1) !important;
-  border-color: rgba(255, 255, 255, 0.25) !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
   color: #ffffff !important;
 }
-
-/* card style inherits the base rule */
 
 [data-hstyle="full-bleed"] .rp-target-role-badge,
 [data-hstyle="fullBleed"] .rp-target-role-badge {
   background: rgba(255, 255, 255, 0.15) !important;
-  border-color: rgba(255, 255, 255, 0.35) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
   color: #ffffff !important;
 }
 

@@ -805,17 +805,28 @@ const ResumeEditor = () => {
 
             ${extraPrintStyles}
 
-            /* Professional link style overrides for exported PDF */
+            /* Professional link style overrides for exported PDF (body only) */
             .resume-preview[data-lstyle="professional"] .resume-link,
-            .resume-preview[data-lstyle="professional"] .rp-contact-link,
             .resume-preview[data-lstyle="professional"] .rp-inline-link,
             .resume-preview[data-lstyle="professional"] .rp-project-link,
             .resume-preview[data-lstyle="professional"] .rp-cert-link,
             .resume-preview[data-lstyle="professional"] .rp-tech-profile-link,
-            .resume-preview[data-lstyle="professional"] .rp-tech-profile-url,
-            .resume-preview[data-lstyle="professional"] a {
+            .resume-preview[data-lstyle="professional"] .rp-tech-profile-url {
               color: inherit !important;
               text-decoration: none !important;
+            }
+
+            /* Header Contact Links (top contact block): ALWAYS blue and underlined in PDF */
+            .header-link,
+            .rp-contact a,
+            .rp-ats-contact a,
+            .rp-contact-link {
+              color: #2563eb !important;
+              text-decoration: underline !important;
+              text-decoration-color: #2563eb !important;
+              text-decoration-thickness: 0.5px !important;
+              text-underline-offset: 1.5px !important;
+              opacity: 1 !important;
             }
 
             .resume-preview {
