@@ -532,7 +532,7 @@ const ExperienceSection = ({ items = [], showIcon, dec, isTimeline = false, scan
             {isTimeline && <div className="rp-timeline-dot" />}
             <div className="rp-item-head">
               <strong>{item.role || "Role"}</strong>
-              <span className="rp-compact-title">{formatDateRange(item.startDate, item.endDate)}</span>
+              <span className="rp-item-date">{formatDateRange(item.startDate, item.endDate)}</span>
             </div>
             <div className="rp-item-sub">
               <span className="rp-compact-title">{item.company}</span>
@@ -568,7 +568,7 @@ const EducationSection = ({ items = [], showIcon, dec, sectionNumber, fullName, 
             </div>
             <div className="rp-item-sub">
               <span className="rp-compact-title">{item.degree || "Degree"}</span>
-              <span className="rp-compact-title">{formatDateRange(item.startDate, item.endDate)}</span>
+              <span className="rp-item-date">{formatDateRange(item.startDate, item.endDate)}</span>
             </div>
             {hasText(item.gpa) && (
               <p className="rp-education-gpa">
@@ -734,7 +734,7 @@ const CustomSection = ({ title, items = [], showIcon, dec, scanMode = false, sec
           <ItemWrapper key={i} className="rp-item" style={{ marginBottom: "6px" }}>
             <div className="rp-item-head" style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
               {item.title && renderLinkOrText(item.title, "rp-custom-link", true)}
-              {hasText(item.date) && <span className="rp-compact-title">{renderLinkOrText(formatPartialDate(item.date), "rp-custom-link")}</span>}
+              {hasText(item.date) && <span className="rp-compact-date">{renderLinkOrText(formatPartialDate(item.date), "rp-custom-link")}</span>}
             </div>
             {hasText(item.subtitle) && <p className="rp-item-sub">{renderLinkOrText(item.subtitle, "rp-custom-link")}</p>}
             {hasText(item.description) && (
@@ -862,7 +862,7 @@ const AwardsSection = ({ title, items = [], dec, sectionNumber, hasBullets = tru
           <ItemWrapper key={i} className="rp-item" style={{ marginBottom: "6px" }}>
             <div className="rp-item-head">
               <strong>{item.title}</strong>
-              {hasText(item.date) && <span className="rp-compact-title">{formatPartialDate(item.date)}</span>}
+              {hasText(item.date) && <span className="rp-compact-date">{formatPartialDate(item.date)}</span>}
             </div>
             {hasText(item.subtitle) && (
               <div className="rp-item-sub"><span className="rp-compact-title">{item.subtitle}</span></div>

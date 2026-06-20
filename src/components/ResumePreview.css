@@ -927,12 +927,16 @@
   font-weight: 400;
 }
 
+.rp-item-date,
 .rp-compact-date {
   font-size: var(--rp-fs-body);
   color: #555;
   font-weight: 400;
   white-space: nowrap;
   flex-shrink: 0;
+  flex: 0 0 auto;
+  text-align: right;
+  margin-left: auto;
 }
 
 /* ── Skills ──────────────────────────────────────────────────────────────── */
@@ -1913,7 +1917,6 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   }
 
   /* Force block layout instead of CSS grid/flex/table to prevent multi-page column collapse and whitespace gaps in Chromium */
-  .rp-layout-sidebar,
   .rp-compact-grid,
   .rp-layout-twocol,
   .rp-ats-twocol,
@@ -1930,7 +1933,6 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
     clear: both !important;
   }
 
-  .rp-layout-sidebar::after,
   .rp-compact-grid::after,
   .rp-layout-twocol::after,
   .rp-ats-twocol::after,
@@ -1959,8 +1961,6 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
     margin: 0 !important;
   }
 
-  .rp-layout-sidebar > .rp-sidebar,
-  .rp-layout-sidebar > .rp-main-col,
   .rp-compact-grid > .rp-main-col,
   .rp-compact-grid > .rp-aside-col,
   .rp-layout-twocol > .rp-main-col,
@@ -1976,6 +1976,32 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
     margin: 0 0 16px 0 !important;
     border: none !important;
     padding: 0 !important;
+  }
+
+  /* Keep split layout sidebar column structure on print */
+  .rp-layout-sidebar {
+    display: grid !important;
+    grid-template-columns: 210px 1fr !important;
+    width: 100% !important;
+    min-height: 100% !important;
+    height: auto !important;
+  }
+
+  .rp-layout-sidebar > .rp-sidebar {
+    width: auto !important;
+    float: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .rp-layout-sidebar > .rp-main-col {
+    width: auto !important;
+    float: none !important;
+    display: block !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
   }
 
   .rp-sidebar-dark .rp-sidebar-name,
