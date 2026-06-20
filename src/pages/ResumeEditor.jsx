@@ -1036,90 +1036,43 @@ const ResumeEditor = () => {
               break-inside: avoid !important;
             }
 
-            /* Force float layout instead of CSS grid/flex/table to prevent multi-page column collapse in Chromium */
-            .rp-layout-sidebar,
-            .rp-compact-grid,
-            .rp-layout-twocol,
-            .rp-ats-twocol,
-            .rp-ats-twocol-alt {
-              display: block !important;
+            /* Split layout: flex row so sidebar and main col stretch to equal height,
+               matching the screen display:grid behaviour.
+               Float cannot be used — floated elements cannot equal-height each other. */
+            .rp-layout-sidebar {
+              display: flex !important;
+              flex-direction: row !important;
+              align-items: stretch !important;
               width: 100% !important;
               height: auto !important;
               box-sizing: border-box !important;
             }
 
-            .rp-layout-sidebar::after,
-            .rp-compact-grid::after,
-            .rp-layout-twocol::after,
-            .rp-ats-twocol::after,
-            .rp-ats-twocol-alt::after {
-              content: "" !important;
-              display: table !important;
-              clear: both !important;
-            }
-
-            .rp-sidebar,
-            .rp-aside-col {
-              display: block !important;
-              float: left !important;
-              height: auto !important;
-              overflow: visible !important;
-              box-sizing: border-box !important;
-              margin: 0 !important;
-            }
-
-            .rp-main-col {
-              display: block !important;
-              float: left !important;
-              height: auto !important;
-              overflow: visible !important;
-              box-sizing: border-box !important;
-              margin: 0 !important;
+            .rp-layout-sidebar::after {
+              display: none !important;
             }
 
             .rp-layout-sidebar > .rp-sidebar {
-              width: 28% !important;
-              float: left !important;
+              width: 210px !important;
+              flex-shrink: 0 !important;
+              float: none !important;
+              display: flex !important;
+              flex-direction: column !important;
+              align-self: stretch !important;
+              /* Explicitly override generic height:auto !important so Chromium
+                 honours the flex cross-axis stretch. */
+              min-height: 100% !important;
+              margin: 0 !important;
+              box-sizing: border-box !important;
             }
+
             .rp-layout-sidebar > .rp-main-col {
-              width: 72% !important;
-              float: right !important;
-            }
-
-            .rp-compact-grid > .rp-main-col {
-              width: 64% !important;
-              float: left !important;
-            }
-            .rp-compact-grid > .rp-aside-col {
-              width: 36% !important;
-              float: right !important;
-            }
-
-            .rp-layout-twocol > .rp-main-col {
-              width: 65% !important;
-              float: left !important;
-            }
-            .rp-layout-twocol > .rp-aside-col {
-              width: 35% !important;
-              float: right !important;
-            }
-
-            .rp-ats-twocol > .rp-main-col {
-              width: 63% !important;
-              float: left !important;
-            }
-            .rp-ats-twocol > .rp-aside-col {
-              width: 37% !important;
-              float: right !important;
-            }
-
-            .rp-ats-twocol-alt > .rp-aside-col {
-              width: 39% !important;
-              float: left !important;
-            }
-            .rp-ats-twocol-alt > .rp-main-col {
-              width: 61% !important;
-              float: right !important;
+              flex-grow: 1 !important;
+              width: calc(100% - 210px) !important;
+              float: none !important;
+              display: block !important;
+              margin: 0 !important;
+              box-sizing: border-box !important;
             }
 
             /* ── Technical Profiles Explicit Colors ───────────────────────────────────── */
