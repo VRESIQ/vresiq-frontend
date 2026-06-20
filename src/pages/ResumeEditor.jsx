@@ -1075,12 +1075,15 @@ const ResumeEditor = () => {
               box-sizing: border-box !important;
             }
 
-            /* ── Technical Profiles Explicit Colors ───────────────────────────────────── */
+            /* ── Technical Profiles — theme-aware colours (mirrors ResumePreview.css) ── */
+            /* Name inherits surrounding theme; only URL gets accent colour */
             .rp-tech-profile-name {
-              color: #111827 !important;
+              color: inherit !important;
             }
             .rp-tech-profile-url {
-              color: #2563EB !important;
+              color: var(--accent-readable, #2563EB) !important;
+              text-decoration: underline !important;
+              text-decoration-thickness: 0.5px !important;
             }
             .rp-tech-profile-date {
               color: #4B5563 !important;
@@ -1097,15 +1100,16 @@ const ResumeEditor = () => {
               color: #4B5563 !important;
             }
 
-            /* Sidebar Dark overrides to guarantee visibility */
+            /* Dark sidebar: name and URL both go white */
             .rp-sidebar-dark .rp-tech-profile-name {
-              color: #FFFFFF !important;
+              color: inherit !important;
             }
             .rp-sidebar-dark .rp-tech-profile-url {
-              color: #93C5FD !important;
+              color: rgba(255,255,255,0.9) !important;
+              text-decoration-color: rgba(255,255,255,0.4) !important;
             }
             .rp-sidebar-dark .rp-tech-profile-date {
-              color: #D1D5DB !important;
+              color: rgba(255,255,255,0.65) !important;
             }
             .rp-sidebar-dark .rp-tech-profile-highlight,
             .rp-sidebar-dark .rp-tech-profile-ranking,
@@ -1116,17 +1120,20 @@ const ResumeEditor = () => {
             .rp-sidebar-dark .rp-tech-profile-highlight li,
             .rp-sidebar-dark .rp-tech-profile-ranking li,
             .rp-sidebar-dark .rp-tech-profile-desc li {
-              color: #E5E7EB !important;
+              color: rgba(255,255,255,0.8) !important;
             }
 
-            /* Sidebar Light overrides */
-            .rp-sidebar-light .rp-tech-profile-name {
-              color: #111827 !important;
+            /* Light sidebar: accent for URL, inherit for name */
+            .rp-sidebar-light .rp-tech-profile-name,
+            .rp-sidebar-infographic .rp-tech-profile-name {
+              color: inherit !important;
             }
-            .rp-sidebar-light .rp-tech-profile-url {
-              color: #2563EB !important;
+            .rp-sidebar-light .rp-tech-profile-url,
+            .rp-sidebar-infographic .rp-tech-profile-url {
+              color: var(--accent-readable, #2563EB) !important;
             }
-            .rp-sidebar-light .rp-tech-profile-date {
+            .rp-sidebar-light .rp-tech-profile-date,
+            .rp-sidebar-infographic .rp-tech-profile-date {
               color: #4B5563 !important;
             }
             .rp-sidebar-light .rp-tech-profile-highlight,
@@ -1137,20 +1144,7 @@ const ResumeEditor = () => {
             .rp-sidebar-light .rp-tech-profile-desc .rp-desc-text,
             .rp-sidebar-light .rp-tech-profile-highlight li,
             .rp-sidebar-light .rp-tech-profile-ranking li,
-            .rp-sidebar-light .rp-tech-profile-desc li {
-              color: #4B5563 !important;
-            }
-
-            /* Sidebar Infographic overrides */
-            .rp-sidebar-infographic .rp-tech-profile-name {
-              color: #111827 !important;
-            }
-            .rp-sidebar-infographic .rp-tech-profile-url {
-              color: #2563EB !important;
-            }
-            .rp-sidebar-infographic .rp-tech-profile-date {
-              color: #4B5563 !important;
-            }
+            .rp-sidebar-light .rp-tech-profile-desc li,
             .rp-sidebar-infographic .rp-tech-profile-highlight,
             .rp-sidebar-infographic .rp-tech-profile-ranking,
             .rp-sidebar-infographic .rp-tech-profile-desc,

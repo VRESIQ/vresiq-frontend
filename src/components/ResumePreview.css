@@ -2123,6 +2123,7 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-target-role-badge {
   display: inline-flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 4px;
   font-size: 12px !important;
   font-weight: 700 !important;
@@ -2130,12 +2131,14 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   background: color-mix(in srgb, var(--accent-readable, #2563EB) 10%, white) !important;
   border: 1px solid color-mix(in srgb, var(--accent-readable, #2563EB) 24%, white) !important;
   color: var(--accent-readable, #2563EB) !important;
-  padding: 3px 10px !important;
+  /* min-height + line-height prevent card-style headers from clipping 'Seeking:' */
+  padding: 4px 10px !important;
+  min-height: 24px !important;
   border-radius: 999px !important;
   margin-top: 6px !important;
   box-shadow: none !important;
   text-transform: none !important;
-  line-height: 1.2 !important;
+  line-height: 1.4 !important;
 }
 
 /* "Seeking: " prefix label — distinguishes target role from current designation.
@@ -2145,15 +2148,17 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   font-weight: 500;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  opacity: 0.6;
-  margin-right: 3px;
+  /* Use 0.75 so the label is clearly secondary but still readable on all backgrounds */
+  opacity: 0.75;
+  margin-right: 2px;
+  white-space: nowrap;
 }
 
 /* Preserve readability of the seeking label on dark/full-bleed backgrounds */
 .rp-sidebar-dark .rp-role-seeking-label,
 [data-hstyle="full-bleed"] .rp-role-seeking-label,
 [data-hstyle="fullBleed"] .rp-role-seeking-label {
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 /* Sidebar target role badge — smaller to fit narrow column */
@@ -2164,17 +2169,18 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 }
 
 .rp-sidebar-dark .rp-target-role-badge {
-  background: rgba(255, 255, 255, 0.08) !important;
-  border-color: rgba(255, 255, 255, 0.22) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
   color: #ffffff !important;
 }
 
-/* [data-hstyle="card"] .rp-target-role-badge inherits base rule — no override needed */
+/* card style inherits the base rule */
 
 [data-hstyle="full-bleed"] .rp-target-role-badge,
 [data-hstyle="fullBleed"] .rp-target-role-badge {
-  background: none !important;
-  color: var(--on-accent-muted, #ffffff) !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  color: #ffffff !important;
 }
 
 
@@ -3113,23 +3119,34 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   color: #444444 !important;
 }
 
-/* Force target role visibility on dark sidebars or dark layouts */
+/* Target role visibility — align with the surrounding theme colour */
 .rp-sidebar-dark .rp-target-role-badge,
-[data-template="premium6"] .rp-target-role-badge,
-[data-hstyle="full-bleed"] .rp-target-role-badge,
-[data-hstyle="fullBleed"] .rp-target-role-badge {
+[data-template="premium6"] .rp-target-role-badge {
   color: #FFFFFF !important;
-  background: none !important;
+  background: rgba(255,255,255,0.1) !important;
+  border-color: rgba(255,255,255,0.25) !important;
   opacity: 1 !important;
   visibility: visible !important;
 }
 
-/* Target role badge contrast: dark sidebar (minimal/card/default headerStyle) */
-.rp-sidebar-dark .rp-sidebar-header .rp-target-role-badge {
-  color: rgba(255, 255, 255, 0.9) !important;
+[data-hstyle="full-bleed"] .rp-target-role-badge,
+[data-hstyle="fullBleed"] .rp-target-role-badge {
+  color: #FFFFFF !important;
+  background: rgba(255,255,255,0.15) !important;
+  border-color: rgba(255,255,255,0.35) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
-/* Target role badge contrast: light sidebar */
+/* Seeking label must be fully visible inside dark/full-bleed contexts */
+.rp-sidebar-dark .rp-role-seeking-label,
+[data-hstyle="full-bleed"] .rp-role-seeking-label,
+[data-hstyle="fullBleed"] .rp-role-seeking-label {
+  opacity: 0.9 !important;
+  color: #ffffff !important;
+}
+
+/* Light sidebar */
 .rp-sidebar-light .rp-sidebar-header .rp-target-role-badge,
 .rp-sidebar-infographic .rp-sidebar-header .rp-target-role-badge {
   color: var(--accent-readable, #2563EB) !important;
@@ -3224,16 +3241,29 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   border: none !important;
 }
 
-/* ── Technical Profiles Explicit Colors ───────────────────────────────────── */
+/* ── Technical Profiles — Platform name inherits template theme colour ─────── */
+/* Platform NAME (no URL): inherits surrounding text colour via parent chain.    */
+/* Only the URL anchor (.rp-tech-profile-url) and its icon may remain blue-ish   */
+/* but only when NOT inside a dark/full-bleed context.                            */
+
 .rp-tech-profile-name {
-  color: #111827 !important;
+  /* Inherit from parent (rp-compact-title which itself inherits from rp-compact-head
+     → section → sidebar/main col). No hardcoded color. */
+  color: inherit;
 }
+
+/* URL anchor: blue+underline only on white/light backgrounds */
 .rp-tech-profile-url {
-  color: #2563EB !important;
+  color: var(--accent-readable, #2563EB);
+  text-decoration: underline;
+  text-decoration-thickness: 0.5px;
+  text-underline-offset: 1.5px;
 }
+
 .rp-tech-profile-date {
-  color: #4B5563 !important;
+  color: #4B5563;
 }
+
 .rp-tech-profile-highlight,
 .rp-tech-profile-ranking,
 .rp-tech-profile-desc,
@@ -3243,18 +3273,20 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-tech-profile-highlight li,
 .rp-tech-profile-ranking li,
 .rp-tech-profile-desc li {
-  color: #4B5563 !important;
+  color: #4B5563;
 }
 
-/* Sidebar Dark overrides to guarantee visibility */
+/* Dark sidebar: platform name, URL and meta all white */
 .rp-sidebar-dark .rp-tech-profile-name {
-  color: #FFFFFF !important;
+  color: inherit; /* inherits #fff from .rp-sidebar-dark chain */
 }
 .rp-sidebar-dark .rp-tech-profile-url {
-  color: #93C5FD !important;
+  /* URL still distinguishable but adapted for dark background */
+  color: rgba(255,255,255,0.9) !important;
+  text-decoration-color: rgba(255,255,255,0.4) !important;
 }
 .rp-sidebar-dark .rp-tech-profile-date {
-  color: #D1D5DB !important;
+  color: rgba(255,255,255,0.65) !important;
 }
 .rp-sidebar-dark .rp-tech-profile-highlight,
 .rp-sidebar-dark .rp-tech-profile-ranking,
@@ -3265,18 +3297,29 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-sidebar-dark .rp-tech-profile-highlight li,
 .rp-sidebar-dark .rp-tech-profile-ranking li,
 .rp-sidebar-dark .rp-tech-profile-desc li {
-  color: #E5E7EB !important;
+  color: rgba(255,255,255,0.8) !important;
 }
 
-/* Sidebar Light overrides */
+/* Full-bleed header: same white treatment as dark sidebar */
+[data-hstyle="full-bleed"] .rp-sidebar .rp-tech-profile-url,
+[data-hstyle="fullBleed"] .rp-sidebar .rp-tech-profile-url {
+  color: rgba(255,255,255,0.9) !important;
+  text-decoration-color: rgba(255,255,255,0.4) !important;
+}
+[data-hstyle="full-bleed"] .rp-sidebar .rp-tech-profile-date,
+[data-hstyle="fullBleed"] .rp-sidebar .rp-tech-profile-date {
+  color: rgba(255,255,255,0.65) !important;
+}
+
+/* Light sidebar: keep accent-readable blue for URL, inherit for name */
 .rp-sidebar-light .rp-tech-profile-name {
-  color: #111827 !important;
+  color: inherit;
 }
 .rp-sidebar-light .rp-tech-profile-url {
-  color: #2563EB !important;
+  color: var(--accent-readable, #2563EB);
 }
 .rp-sidebar-light .rp-tech-profile-date {
-  color: #4B5563 !important;
+  color: #4B5563;
 }
 .rp-sidebar-light .rp-tech-profile-highlight,
 .rp-sidebar-light .rp-tech-profile-ranking,
@@ -3287,18 +3330,18 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-sidebar-light .rp-tech-profile-highlight li,
 .rp-sidebar-light .rp-tech-profile-ranking li,
 .rp-sidebar-light .rp-tech-profile-desc li {
-  color: #4B5563 !important;
+  color: #4B5563;
 }
 
-/* Sidebar Infographic overrides */
+/* Infographic sidebar: same as light */
 .rp-sidebar-infographic .rp-tech-profile-name {
-  color: #111827 !important;
+  color: inherit;
 }
 .rp-sidebar-infographic .rp-tech-profile-url {
-  color: #2563EB !important;
+  color: var(--accent-readable, #2563EB);
 }
 .rp-sidebar-infographic .rp-tech-profile-date {
-  color: #4B5563 !important;
+  color: #4B5563;
 }
 .rp-sidebar-infographic .rp-tech-profile-highlight,
 .rp-sidebar-infographic .rp-tech-profile-ranking,
@@ -3309,5 +3352,5 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-sidebar-infographic .rp-tech-profile-highlight li,
 .rp-sidebar-infographic .rp-tech-profile-ranking li,
 .rp-sidebar-infographic .rp-tech-profile-desc li {
-  color: #4B5563 !important;
+  color: #4B5563;
 }
