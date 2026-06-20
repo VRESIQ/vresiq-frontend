@@ -1288,7 +1288,6 @@
   .email-modal,
   .editor-loading,
   .topbar-error,
-  aside,
   button {
     display: none !important;
     visibility: hidden !important;

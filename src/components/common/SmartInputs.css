@@ -114,17 +114,10 @@
 
 /* ── Date Range Picker ───────────────────────────────────────── */
 .date-range-wrap {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
   margin-top: 0.4rem;
-}
-
-@media (max-width: 480px) {
-  .date-range-wrap {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
 }
 
 .date-group {

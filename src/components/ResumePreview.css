@@ -1900,10 +1900,10 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
     break-inside: avoid !important;
   }
 
-  /* Keep sections together whenever possible */
+  /* Allow sections to split naturally across pages */
   .rp-section, section {
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
+    page-break-inside: auto !important;
+    break-inside: auto !important;
   }
 
   .rp-desc-list,
