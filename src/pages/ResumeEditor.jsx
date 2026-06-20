@@ -806,6 +806,13 @@ const ResumeEditor = () => {
             ${extraPrintStyles}
 
             /* Professional link style overrides for exported PDF */
+            .resume-preview[data-lstyle="professional"] .resume-link,
+            .resume-preview[data-lstyle="professional"] .rp-contact-link,
+            .resume-preview[data-lstyle="professional"] .rp-inline-link,
+            .resume-preview[data-lstyle="professional"] .rp-project-link,
+            .resume-preview[data-lstyle="professional"] .rp-cert-link,
+            .resume-preview[data-lstyle="professional"] .rp-tech-profile-link,
+            .resume-preview[data-lstyle="professional"] .rp-tech-profile-url,
             .resume-preview[data-lstyle="professional"] a {
               color: inherit !important;
               text-decoration: none !important;

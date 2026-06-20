@@ -242,89 +242,129 @@
 }
 
 /* Hyperlink Style overrides */
+.resume-preview[data-lstyle="professional"] .resume-link,
+.resume-preview[data-lstyle="professional"] .rp-contact-link,
+.resume-preview[data-lstyle="professional"] .rp-inline-link,
+.resume-preview[data-lstyle="professional"] .rp-project-link,
+.resume-preview[data-lstyle="professional"] .rp-cert-link,
+.resume-preview[data-lstyle="professional"] .rp-tech-profile-link,
+.resume-preview[data-lstyle="professional"] .rp-tech-profile-url,
 .resume-preview[data-lstyle="professional"] a {
-  color: inherit !important;
-  text-decoration: underline dotted !important;
-  text-decoration-color: var(--accent-readable, #1a5fb4) !important;
-  text-decoration-thickness: 0.8px !important;
-  text-underline-offset: 1.5px;
-}
-.resume-preview[data-lstyle="professional"] a:hover {
-  color: var(--accent-readable, #1a5fb4) !important;
-  text-decoration: underline dotted !important;
-}
-
-/* Contact/header links Professional Mode screen overrides */
-.resume-preview[data-lstyle="professional"] .rp-contact a,
-.resume-preview[data-lstyle="professional"] .rp-ats-contact a,
-.resume-preview[data-lstyle="professional"] .rp-contact-link {
   color: inherit !important;
   text-decoration: none !important;
   border-bottom: none !important;
-  transition: opacity 0.2s ease, text-decoration 0.2s ease;
 }
-.resume-preview[data-lstyle="professional"] .rp-contact a:hover,
-.resume-preview[data-lstyle="professional"] .rp-ats-contact a:hover,
-.resume-preview[data-lstyle="professional"] .rp-contact-link:hover {
+
+.resume-preview[data-lstyle="professional"] .resume-link:hover,
+.resume-preview[data-lstyle="professional"] .rp-contact-link:hover,
+.resume-preview[data-lstyle="professional"] .rp-inline-link:hover,
+.resume-preview[data-lstyle="professional"] .rp-project-link:hover,
+.resume-preview[data-lstyle="professional"] .rp-cert-link:hover,
+.resume-preview[data-lstyle="professional"] .rp-tech-profile-link:hover,
+.resume-preview[data-lstyle="professional"] .rp-tech-profile-url:hover,
+.resume-preview[data-lstyle="professional"] a:hover {
   color: inherit !important;
-  opacity: 0.75 !important;
+  text-decoration: none !important;
+  opacity: 0.8;
+}
+
+/* When "Professional Hyperlink" IS DISABLED (standard mode) */
+.resume-preview:not([data-lstyle="professional"]) .resume-link,
+.resume-preview:not([data-lstyle="professional"]) .rp-contact-link,
+.resume-preview:not([data-lstyle="professional"]) .rp-inline-link,
+.resume-preview:not([data-lstyle="professional"]) .rp-project-link,
+.resume-preview:not([data-lstyle="professional"]) .rp-cert-link,
+.resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-link,
+.resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-url,
+.resume-preview:not([data-lstyle="professional"]) a {
+  color: var(--hyperlink-color, #2563EB) !important;
   text-decoration: underline !important;
-  text-decoration-style: solid !important;
-  text-decoration-thickness: 1px !important;
+  text-decoration-thickness: 0.5px !important;
+  text-underline-offset: 1.5px !important;
+}
+
+.resume-preview:not([data-lstyle="professional"]) .resume-link:hover,
+.resume-preview:not([data-lstyle="professional"]) .rp-contact-link:hover,
+.resume-preview:not([data-lstyle="professional"]) .rp-inline-link:hover,
+.resume-preview:not([data-lstyle="professional"]) .rp-project-link:hover,
+.resume-preview:not([data-lstyle="professional"]) .rp-cert-link:hover,
+.resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-link:hover,
+.resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-url:hover,
+.resume-preview:not([data-lstyle="professional"]) a:hover {
+  color: var(--hyperlink-color, #2563EB) !important;
+  opacity: 0.8;
+  text-decoration: underline !important;
+}
+
+/* Preserve contrast-aware / light links on dark sidebars when not professional */
+.resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .resume-link,
+.resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .rp-contact-link,
+.resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .rp-inline-link,
+.resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .rp-project-link,
+.resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .rp-cert-link,
+.resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .rp-tech-profile-link,
+.resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .rp-tech-profile-url,
+.resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark a,
+.resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .resume-link,
+.resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .rp-contact-link,
+.resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .rp-inline-link,
+.resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .rp-project-link,
+.resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .rp-cert-link,
+.resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .rp-tech-profile-link,
+.resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .rp-tech-profile-url,
+.resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar a {
+  color: #ffffff !important;
 }
 
 @media print {
-  /* Hyperlink Style overrides for print */
+  .resume-preview[data-lstyle="professional"] .resume-link,
+  .resume-preview[data-lstyle="professional"] .rp-contact-link,
+  .resume-preview[data-lstyle="professional"] .rp-inline-link,
+  .resume-preview[data-lstyle="professional"] .rp-project-link,
+  .resume-preview[data-lstyle="professional"] .rp-cert-link,
+  .resume-preview[data-lstyle="professional"] .rp-tech-profile-link,
+  .resume-preview[data-lstyle="professional"] .rp-tech-profile-url,
   .resume-preview[data-lstyle="professional"] a {
-    color: inherit !important;
-    text-decoration: underline dotted !important;
-    text-decoration-color: var(--accent-readable, #1a5fb4) !important;
-    text-decoration-thickness: 0.8px !important;
-    text-underline-offset: 1.5px;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-
-  /* Contact/header links Professional Mode print overrides */
-  .resume-preview[data-lstyle="professional"] .rp-contact a,
-  .resume-preview[data-lstyle="professional"] .rp-ats-contact a,
-  .resume-preview[data-lstyle="professional"] .rp-contact-link {
     color: inherit !important;
     text-decoration: none !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 
-  /* Contact/header links: contrast-aware + underline preserved in print/PDF */
-  .rp-contact a,
-  .rp-ats-contact a,
-  .header-link {
-    color: var(--header-link-color, var(--accent-readable, #2563EB)) !important;
+  .resume-preview:not([data-lstyle="professional"]) .resume-link,
+  .resume-preview:not([data-lstyle="professional"]) .rp-contact-link,
+  .resume-preview:not([data-lstyle="professional"]) .rp-inline-link,
+  .resume-preview:not([data-lstyle="professional"]) .rp-project-link,
+  .resume-preview:not([data-lstyle="professional"]) .rp-cert-link,
+  .resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-link,
+  .resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-url,
+  .resume-preview:not([data-lstyle="professional"]) a {
+    color: var(--hyperlink-color, #2563EB) !important;
     text-decoration: underline !important;
     text-decoration-thickness: 0.5px !important;
-    text-underline-offset: 1.5px;
-    cursor: pointer !important;
+    text-underline-offset: 1.5px !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 
-  [data-hstyle="full-bleed"] .header-link,
-  [data-hstyle="full-bleed"] .rp-contact a,
-  .rp-sidebar-dark .header-link,
-  .rp-sidebar-dark .rp-contact a {
-    color: var(--header-link-color, #ffffff) !important;
+  .resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .resume-link,
+  .resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .rp-contact-link,
+  .resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .rp-inline-link,
+  .resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .rp-project-link,
+  .resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .rp-cert-link,
+  .resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .rp-tech-profile-link,
+  .resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .rp-tech-profile-url,
+  .resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark a,
+  .resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .resume-link,
+  .resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .rp-contact-link,
+  .resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .rp-inline-link,
+  .resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .rp-project-link,
+  .resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .rp-cert-link,
+  .resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .rp-tech-profile-link,
+  .resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar .rp-tech-profile-url,
+  .resume-preview:not([data-lstyle="professional"]) [data-hstyle="full-bleed"] .rp-sidebar a {
+    color: #ffffff !important;
   }
-
-  /* Body content links: theme-aware + underline preserved in print/PDF */
-  .resume-link {
-    color: var(--accent-readable, #2563EB) !important;
-    text-decoration: underline !important;
-    text-decoration-thickness: 0.5px !important;
-    text-underline-offset: 1.5px;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-
   .resume-preview {
     padding-bottom: 48px !important;
   }

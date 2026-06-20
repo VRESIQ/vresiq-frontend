@@ -443,7 +443,7 @@ const linkifyText = (text) => {
       href = `https://${href}`;
     }
     parts.push(
-      <a key={matchIndex} href={href} target="_blank" rel="noopener noreferrer" className="resume-link rp-compact-url">
+      <a key={matchIndex} href={href} target="_blank" rel="noopener noreferrer" className="resume-link rp-inline-link rp-compact-url">
         {matchStr} <span className="external-link-icon">↗</span>
       </a>
     );
@@ -622,13 +622,13 @@ const ProjectsSection = ({ items = [], showIcon, dec, scanMode = false, sectionN
             {[item.github, item.liveDemo].filter(hasText).length > 0 && (
               <p className="rp-links" style={{ marginTop: "2px" }}>
                 {hasText(item.github) && (
-                  <a href={getGithubUrl(item.github)} target="_blank" rel="noopener noreferrer" className="resume-link rp-compact-url">
+                  <a href={getGithubUrl(item.github)} target="_blank" rel="noopener noreferrer" className="resume-link rp-project-link rp-compact-url">
                     Github <span className="external-link-icon">↗</span>
                   </a>
                 )}
                 {hasText(item.github) && hasText(item.liveDemo) && <span className="rp-links-divider"> · </span>}
                 {hasText(item.liveDemo) && (
-                  <a href={formatUrl(item.liveDemo)} target="_blank" rel="noopener noreferrer" className="resume-link rp-compact-url">
+                  <a href={formatUrl(item.liveDemo)} target="_blank" rel="noopener noreferrer" className="resume-link rp-project-link rp-compact-url">
                     {(() => {
                       const lower = item.liveDemo.toLowerCase();
                       if (lower.includes("docs") || lower.includes("wiki") || lower.includes("documentation")) return "Documentation";
@@ -664,7 +664,7 @@ const CertsSection = ({ items = [], showIcon, dec, sectionNumber, hasBullets = t
                   href={formatUrl(item.certificateUrl)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="resume-link rp-compact-url"
+                  className="resume-link rp-cert-link rp-compact-url"
                 >
                   {item.title || "Certification"} <span className="external-link-icon">↗</span>
                 </a>
@@ -904,7 +904,7 @@ const TechnicalProfilesSection = ({ title, items = [], dec, sectionNumber, fullN
                       href={url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="resume-link rp-compact-url rp-tech-profile-url"
+                      className="resume-link rp-tech-profile-link rp-tech-profile-url rp-compact-url"
                     >
                       {platformName} <span className="external-link-icon">↗</span>
                     </a>
@@ -996,6 +996,20 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
   const accent = dec.accentColor || getDefaultAccent(templateId);
   const accentText = getAccentTextColors(accent);
   const accentReadable = getReadableAccent(accent);
+  const isBWTemplate = [
+    "template1",      // Classic
+    "premium10",      // Minimal
+    "ats_classic",    // Standard
+    "ats_entry",      // Edge
+    "ats_senior",     // Serif
+    "ats_experienced",// Prime
+    "academic_cv",    // Scholar
+    "ats_lead",       // Lead
+    "ats_intern",     // Campus
+    "engineer_ats",   // Frame
+    "swiss_minimal",  // Metro
+  ].includes(templateId);
+  const hyperlinkColor = isBWTemplate ? "#2563eb" : accentReadable;
   const photoShape = dec.photoShape || "circle";
   const progressStyle = dec.progressStyle || "bar";
   const showIcons = false;
@@ -1139,6 +1153,7 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
       style={{
         "--accent": accent,
         "--accent-readable": accentReadable,
+        "--hyperlink-color": hyperlinkColor,
         "--on-accent": accentText.primary,
         "--on-accent-muted": accentText.muted,
         "--on-accent-soft": accentText.soft,
@@ -1762,24 +1777,24 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
               <div className="rp-engineer-contacts-left">
                 {linkedinText && (
                   <div className="rp-engineer-contact-item">
-                    <strong>LinkedIn:</strong> <a href={contactInfo.linkedIn?.value || contactInfo.linkedIn} target="_blank" rel="noopener noreferrer">{linkedinText.replace(/^(https?:\/\/)?(www\.)?/i, "")}</a>
+                    <strong>LinkedIn:</strong> <a href={contactInfo.linkedIn?.value || contactInfo.linkedIn} target="_blank" rel="noopener noreferrer" className="resume-link rp-contact-link">{linkedinText.replace(/^(https?:\/\/)?(www\.)?/i, "")}</a>
                   </div>
                 )}
                 {githubText && (
                   <div className="rp-engineer-contact-item">
-                    <strong>GitHub:</strong> <a href={contactInfo.github?.value || contactInfo.github} target="_blank" rel="noopener noreferrer">{githubText.replace(/^(https?:\/\/)?(www\.)?/i, "")}</a>
+                    <strong>GitHub:</strong> <a href={contactInfo.github?.value || contactInfo.github} target="_blank" rel="noopener noreferrer" className="resume-link rp-contact-link">{githubText.replace(/^(https?:\/\/)?(www\.)?/i, "")}</a>
                   </div>
                 )}
               </div>
               <div className="rp-engineer-contacts-right">
                 {emailText && (
                   <div className="rp-engineer-contact-item">
-                    <strong>Email:</strong> <a href={`mailto:${emailText}`}>{emailText}</a>
+                    <strong>Email:</strong> <a href={`mailto:${emailText}`} className="resume-link rp-contact-link">{emailText}</a>
                   </div>
                 )}
                 {phoneText && (
                   <div className="rp-engineer-contact-item">
-                    <strong>Mobile:</strong> <a href={`tel:${phoneText}`}>{phoneText}</a>
+                    <strong>Mobile:</strong> <a href={`tel:${phoneText}`} className="resume-link rp-contact-link">{phoneText}</a>
                   </div>
                 )}
               </div>
