@@ -3172,3 +3172,91 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   background: var(--on-accent-line, rgba(255,255,255,0.25)) !important;
   border: none !important;
 }
+
+/* ── Technical Profiles Explicit Colors ───────────────────────────────────── */
+.rp-tech-profile-name {
+  color: #111827 !important;
+}
+.rp-tech-profile-url {
+  color: #2563EB !important;
+}
+.rp-tech-profile-date {
+  color: #4B5563 !important;
+}
+.rp-tech-profile-highlight,
+.rp-tech-profile-ranking,
+.rp-tech-profile-desc,
+.rp-tech-profile-highlight .rp-desc-text,
+.rp-tech-profile-ranking .rp-desc-text,
+.rp-tech-profile-desc .rp-desc-text,
+.rp-tech-profile-highlight li,
+.rp-tech-profile-ranking li,
+.rp-tech-profile-desc li {
+  color: #4B5563 !important;
+}
+
+/* Sidebar Dark overrides to guarantee visibility */
+.rp-sidebar-dark .rp-tech-profile-name {
+  color: #FFFFFF !important;
+}
+.rp-sidebar-dark .rp-tech-profile-url {
+  color: #93C5FD !important;
+}
+.rp-sidebar-dark .rp-tech-profile-date {
+  color: #D1D5DB !important;
+}
+.rp-sidebar-dark .rp-tech-profile-highlight,
+.rp-sidebar-dark .rp-tech-profile-ranking,
+.rp-sidebar-dark .rp-tech-profile-desc,
+.rp-sidebar-dark .rp-tech-profile-highlight .rp-desc-text,
+.rp-sidebar-dark .rp-tech-profile-ranking .rp-desc-text,
+.rp-sidebar-dark .rp-tech-profile-desc .rp-desc-text,
+.rp-sidebar-dark .rp-tech-profile-highlight li,
+.rp-sidebar-dark .rp-tech-profile-ranking li,
+.rp-sidebar-dark .rp-tech-profile-desc li {
+  color: #E5E7EB !important;
+}
+
+/* Sidebar Light overrides */
+.rp-sidebar-light .rp-tech-profile-name {
+  color: #111827 !important;
+}
+.rp-sidebar-light .rp-tech-profile-url {
+  color: #2563EB !important;
+}
+.rp-sidebar-light .rp-tech-profile-date {
+  color: #4B5563 !important;
+}
+.rp-sidebar-light .rp-tech-profile-highlight,
+.rp-sidebar-light .rp-tech-profile-ranking,
+.rp-sidebar-light .rp-tech-profile-desc,
+.rp-sidebar-light .rp-tech-profile-highlight .rp-desc-text,
+.rp-sidebar-light .rp-tech-profile-ranking .rp-desc-text,
+.rp-sidebar-light .rp-tech-profile-desc .rp-desc-text,
+.rp-sidebar-light .rp-tech-profile-highlight li,
+.rp-sidebar-light .rp-tech-profile-ranking li,
+.rp-sidebar-light .rp-tech-profile-desc li {
+  color: #4B5563 !important;
+}
+
+/* Sidebar Infographic overrides */
+.rp-sidebar-infographic .rp-tech-profile-name {
+  color: #111827 !important;
+}
+.rp-sidebar-infographic .rp-tech-profile-url {
+  color: #2563EB !important;
+}
+.rp-sidebar-infographic .rp-tech-profile-date {
+  color: #4B5563 !important;
+}
+.rp-sidebar-infographic .rp-tech-profile-highlight,
+.rp-sidebar-infographic .rp-tech-profile-ranking,
+.rp-sidebar-infographic .rp-tech-profile-desc,
+.rp-sidebar-infographic .rp-tech-profile-highlight .rp-desc-text,
+.rp-sidebar-infographic .rp-tech-profile-ranking .rp-desc-text,
+.rp-sidebar-infographic .rp-tech-profile-desc .rp-desc-text,
+.rp-sidebar-infographic .rp-tech-profile-highlight li,
+.rp-sidebar-infographic .rp-tech-profile-ranking li,
+.rp-sidebar-infographic .rp-tech-profile-desc li {
+  color: #4B5563 !important;
+}

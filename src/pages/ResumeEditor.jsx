@@ -516,6 +516,13 @@ const ResumeEditor = () => {
                 return newItem;
               });
             }
+            if (cs.technicalProfiles) {
+              cs.technicalProfiles = cs.technicalProfiles.map(item => {
+                const newItem = { ...item };
+                delete newItem.subtitle;
+                return newItem;
+              });
+            }
             return cs;
           })(),
         };
@@ -2136,7 +2143,9 @@ const ResumeEditor = () => {
                 const currentList = resume.customSections?.[optionalSectionEntry] || [];
                 const newItemTemplate = optionalSectionEntry === "publications"
                   ? { title: "", subtitle: "", date: "", authors: "", abstract: "", paperUrl: "" }
-                  : { title: "", subtitle: "", date: "", description: "" };
+                  : optionalSectionEntry === "technicalProfiles"
+                    ? { title: "", date: "", description: "" }
+                    : { title: "", subtitle: "", date: "", description: "" };
                 const nextList = [...currentList, newItemTemplate];
                 setResume(prev => ({
                   ...prev,
@@ -2346,32 +2355,34 @@ const ResumeEditor = () => {
                             }));
                           }}
                         />
-                        <Field
-                          label={subtitleProps.label}
-                          value={item.subtitle}
-                          placeholder={subtitleProps.placeholder}
-                          hint={subtitleProps.hint}
-                          sanitize={getSanitizer(subtitleProps.sanitizeType)}
-                          onBlur={(e) => {
-                            if (subtitleProps.sanitizeType === "url") {
-                              const normalized = normalizeUrl("website", e.target.value);
+                        {optionalSectionEntry !== "technicalProfiles" && (
+                          <Field
+                            label={subtitleProps.label}
+                            value={item.subtitle}
+                            placeholder={subtitleProps.placeholder}
+                            hint={subtitleProps.hint}
+                            sanitize={getSanitizer(subtitleProps.sanitizeType)}
+                            onBlur={(e) => {
+                              if (subtitleProps.sanitizeType === "url") {
+                                const normalized = normalizeUrl("website", e.target.value);
+                                const currentList = [...(resume.customSections?.[optionalSectionEntry] || [])];
+                                currentList[index] = { ...currentList[index], subtitle: normalized };
+                                setResume(prev => ({
+                                  ...prev,
+                                  customSections: { ...(prev.customSections || {}), [optionalSectionEntry]: currentList }
+                                }));
+                              }
+                            }}
+                            onChange={(v) => {
                               const currentList = [...(resume.customSections?.[optionalSectionEntry] || [])];
-                              currentList[index] = { ...currentList[index], subtitle: normalized };
+                              currentList[index] = { ...currentList[index], subtitle: v };
                               setResume(prev => ({
                                 ...prev,
                                 customSections: { ...(prev.customSections || {}), [optionalSectionEntry]: currentList }
                               }));
-                            }
-                          }}
-                          onChange={(v) => {
-                            const currentList = [...(resume.customSections?.[optionalSectionEntry] || [])];
-                            currentList[index] = { ...currentList[index], subtitle: v };
-                            setResume(prev => ({
-                              ...prev,
-                              customSections: { ...(prev.customSections || {}), [optionalSectionEntry]: currentList }
-                            }));
-                          }}
-                        />
+                            }}
+                          />
+                        )}
                         <Field
                           label={dateProps.label}
                           value={item.date}

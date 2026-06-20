@@ -896,30 +896,30 @@ const TechnicalProfilesSection = ({ title, items = [], dec, sectionNumber, fullN
           const hasUrl = hasText(url);
           const platformName = String(item.title);
           return (
-            <ItemWrapper key={i} className="rp-compact-item" style={{ marginBottom: "6px" }}>
+            <ItemWrapper key={i} className="rp-compact-item rp-tech-profile-item" style={{ marginBottom: "6px" }}>
               <div className="rp-compact-head rp-tech-profile-head">
-                <span className="rp-compact-title">
+                <span className="rp-compact-title rp-tech-profile-title">
                   {hasUrl ? (
                     <a
                       href={url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="resume-link rp-compact-url"
+                      className="resume-link rp-compact-url rp-tech-profile-url"
                     >
                       {platformName} <span className="external-link-icon">↗</span>
                     </a>
                   ) : (
-                    <strong>{platformName}</strong>
+                    <strong className="rp-tech-profile-name">{platformName}</strong>
                   )}
                 </span>
                 {item.date && !isUrl(item.date) && (
-                  <span className="rp-compact-date">
+                  <span className="rp-compact-date rp-tech-profile-date">
                     {formatPartialDate(item.date)}
                   </span>
                 )}
               </div>
               {hasText(item.description) && (
-                <div className="rp-item-desc" style={{ marginTop: "2px" }}>
+                <div className="rp-item-desc rp-tech-profile-desc rp-tech-profile-highlight rp-tech-profile-ranking" style={{ marginTop: "2px" }}>
                   {renderDescription(item.description, fullName)}
                 </div>
               )}
