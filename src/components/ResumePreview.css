@@ -156,24 +156,27 @@
   opacity: 0.8 !important;
 }
 
-/* Hard contrast overrides for dark/full-bleed headers or sidebars */
-[data-hstyle="full-bleed"] .header-link,
-[data-hstyle="full-bleed"] .rp-contact a,
-.rp-sidebar-dark .header-link,
-.rp-sidebar-dark .rp-contact a {
+/* Hard contrast overrides for dark/full-bleed headers or sidebars when Professional is ON */
+.resume-preview[data-lstyle="professional"] [data-hstyle="full-bleed"] .header-link,
+.resume-preview[data-lstyle="professional"] [data-hstyle="full-bleed"] .rp-contact a,
+.resume-preview[data-lstyle="professional"] .rp-sidebar-dark .header-link,
+.resume-preview[data-lstyle="professional"] .rp-sidebar-dark .rp-contact a {
   color: var(--header-link-color, #ffffff) !important;
 }
 
-[data-hstyle="full-bleed"] .header-link:hover,
-[data-hstyle="full-bleed"] .rp-contact a:hover,
-.rp-sidebar-dark .header-link:hover,
-.rp-sidebar-dark .rp-contact a:hover {
+.resume-preview[data-lstyle="professional"] [data-hstyle="full-bleed"] .header-link:hover,
+.resume-preview[data-lstyle="professional"] [data-hstyle="full-bleed"] .rp-contact a:hover,
+.resume-preview[data-lstyle="professional"] .rp-sidebar-dark .header-link:hover,
+.resume-preview[data-lstyle="professional"] .rp-sidebar-dark .rp-contact a:hover {
   color: var(--header-link-hover, rgba(255, 255, 255, 0.8)) !important;
 }
 
 /* Except when inside a dark sidebar, which always needs white/light text */
-.rp-sidebar-dark .header-link,
-.rp/* Header Contact Links: Professional ON → plain text; OFF → #2563EB blue, underlined */
+.rp-sidebar-dark .header-link {
+  /* handled by sidebar rules */
+}
+
+/* Header Contact Links: Professional ON → plain text; OFF → #2563EB blue, underlined */
 .resume-preview[data-lstyle="professional"] .header-link,
 .resume-preview[data-lstyle="professional"] .rp-contact-link,
 .resume-preview[data-lstyle="professional"] .rp-contact a,

@@ -1009,7 +1009,7 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
     "engineer_ats",   // Frame
     "swiss_minimal",  // Metro
   ].includes(templateId);
-  const hyperlinkColor = isBWTemplate ? "#2563eb" : accentReadable;
+  const hyperlinkColor = accentReadable;
   const photoShape = dec.photoShape || "circle";
   const progressStyle = dec.progressStyle || "bar";
   const showIcons = false;
