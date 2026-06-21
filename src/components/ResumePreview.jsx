@@ -1771,11 +1771,16 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
       const phoneText = getDisplayVal(contactInfo.phone);
       const linkedinText = getDisplayVal(contactInfo.linkedIn);
       const githubText = getDisplayVal(contactInfo.github);
+      const websiteText = getDisplayVal(contactInfo.website);
+      const locationText = getDisplayVal(contactInfo.location);
       
       return (
         <div className="rp-ats-container rp-engineer-ats">
           <header className="rp-engineer-header">
             <h1 className="rp-engineer-name">{name}</h1>
+            {role && <p className="rp-ats-role">{role}</p>}
+            <TargetRoleBadge role={profileInfo.targetRole} badgeClass="rp-ats-badge" />
+            
             <div className="rp-engineer-contacts-grid">
               <div className="rp-engineer-contacts-left">
                 {linkedinText && (
@@ -1788,6 +1793,11 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
                     <strong>GitHub:</strong> <a href={contactInfo.github?.value || contactInfo.github} target="_blank" rel="noopener noreferrer" className="rp-contact-link">{githubText.replace(/^(https?:\/\/)?(www\.)?/i, "")}</a>
                   </div>
                 )}
+                {websiteText && (
+                  <div className="rp-engineer-contact-item">
+                    <strong>Website:</strong> <a href={formatUrl(contactInfo.website?.value || contactInfo.website)} target="_blank" rel="noopener noreferrer" className="rp-contact-link">{websiteText.replace(/^(https?:\/\/)?(www\.)?/i, "")}</a>
+                  </div>
+                )}
               </div>
               <div className="rp-engineer-contacts-right">
                 {emailText && (
@@ -1798,6 +1808,11 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
                 {phoneText && (
                   <div className="rp-engineer-contact-item">
                     <strong>Mobile:</strong> <a href={`tel:${phoneText}`} className="rp-contact-link">{phoneText}</a>
+                  </div>
+                )}
+                {locationText && (
+                  <div className="rp-engineer-contact-item">
+                    <strong>Location:</strong> <span>{locationText}</span>
                   </div>
                 )}
               </div>
