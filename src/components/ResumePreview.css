@@ -173,43 +173,32 @@
 
 /* Except when inside a dark sidebar, which always needs white/light text */
 .rp-sidebar-dark .header-link,
-.rp-sidebar-dark .rp-contact a {
-  color: #ffffff !important;
-}
-
-.rp-sidebar-dark .header-link:hover,
-.rp-sidebar-dark .rp-contact a:hover {
-  color: rgba(255, 255, 255, 0.8) !important;
-}
-
-.rp-contact-item,
-.rp-ats-contact-item {
-  display: inline-flex;
-  align-items: baseline;
-}
-
-.rp-contact-link {
-  text-decoration: underline !important;
-  text-decoration-thickness: 0.5px !important;
-  text-underline-offset: 1.5px;
-  cursor: pointer !important;
-  white-space: nowrap;
-}
-
-.rp-contact-sep {
-  color: #6b7280;
-  padding: 0 4px;
-}
-
-/* Contact separator on dark sidebar backgrounds — keep it visible */
-.rp-sidebar-dark .rp-contact-sep {
-  color: rgba(255, 255, 255, 0.45);
-}
-/* Header Contact Links: Professional ON → #2563EB blue, underlined; OFF → plain text */
+.rp/* Header Contact Links: Professional ON → plain text; OFF → #2563EB blue, underlined */
 .resume-preview[data-lstyle="professional"] .header-link,
 .resume-preview[data-lstyle="professional"] .rp-contact-link,
 .resume-preview[data-lstyle="professional"] .rp-contact a,
 .resume-preview[data-lstyle="professional"] .rp-ats-contact a {
+  color: inherit !important;
+  text-decoration: none !important;
+  font-weight: inherit !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.resume-preview[data-lstyle="professional"] .header-link:hover,
+.resume-preview[data-lstyle="professional"] .rp-contact-link:hover,
+.resume-preview[data-lstyle="professional"] .rp-contact a:hover,
+.resume-preview[data-lstyle="professional"] .rp-ats-contact a:hover {
+  color: inherit !important;
+  text-decoration: none !important;
+  opacity: 0.8 !important;
+}
+
+/* When Professional Hyperlink is OFF, convert all header contact links to blue underlined */
+.resume-preview:not([data-lstyle="professional"]) .header-link,
+.resume-preview:not([data-lstyle="professional"]) .rp-contact-link,
+.resume-preview:not([data-lstyle="professional"]) .rp-contact a,
+.resume-preview:not([data-lstyle="professional"]) .rp-ats-contact a {
   color: #2563eb !important;
   text-decoration: underline !important;
   text-decoration-thickness: 0.5px !important;
@@ -219,47 +208,26 @@
   visibility: visible !important;
 }
 
-.resume-preview[data-lstyle="professional"] .header-link:hover,
-.resume-preview[data-lstyle="professional"] .rp-contact-link:hover,
-.resume-preview[data-lstyle="professional"] .rp-contact a:hover,
-.resume-preview[data-lstyle="professional"] .rp-ats-contact a:hover {
+.resume-preview:not([data-lstyle="professional"]) .header-link:hover,
+.resume-preview:not([data-lstyle="professional"]) .rp-contact-link:hover,
+.resume-preview:not([data-lstyle="professional"]) .rp-contact a:hover,
+.resume-preview:not([data-lstyle="professional"]) .rp-ats-contact a:hover {
   color: #1d4ed8 !important;
   opacity: 0.9 !important;
   text-decoration: underline !important;
 }
 
-/* When Professional Hyperlink is OFF, convert all header contact links to plain text */
-.resume-preview:not([data-lstyle="professional"]) .header-link,
-.resume-preview:not([data-lstyle="professional"]) .rp-contact-link,
-.resume-preview:not([data-lstyle="professional"]) .rp-contact a,
-.resume-preview:not([data-lstyle="professional"]) .rp-ats-contact a {
-  color: inherit !important;
-  text-decoration: none !important;
-  font-weight: inherit !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-.resume-preview:not([data-lstyle="professional"]) .header-link:hover,
-.resume-preview:not([data-lstyle="professional"]) .rp-contact-link:hover,
-.resume-preview:not([data-lstyle="professional"]) .rp-contact a:hover,
-.resume-preview:not([data-lstyle="professional"]) .rp-ats-contact a:hover {
-  color: inherit !important;
-  text-decoration: none !important;
-  opacity: 0.8 !important;
-}
-
-/* BODY LINKS - Professional Hyperlink ON (visually recognizable) */
+/* BODY LINKS - Professional Hyperlink ON: plain text */
 .resume-preview[data-lstyle="professional"] .resume-link:not(.rp-contact-link):not(.header-link),
 .resume-preview[data-lstyle="professional"] .rp-inline-link,
 .resume-preview[data-lstyle="professional"] .rp-project-link,
 .resume-preview[data-lstyle="professional"] .rp-cert-link,
 .resume-preview[data-lstyle="professional"] .rp-tech-profile-link,
 .resume-preview[data-lstyle="professional"] .rp-tech-profile-url {
-  color: var(--hyperlink-color, var(--accent-readable)) !important;
-  text-decoration: underline !important;
-  text-decoration-thickness: 0.5px !important;
-  text-underline-offset: 1.5px !important;
+  color: inherit !important;
+  text-decoration: none !important;
+  border-bottom: none !important;
+  font-weight: inherit !important;
 }
 
 .resume-preview[data-lstyle="professional"] .resume-link:not(.rp-contact-link):not(.header-link):hover,
@@ -268,12 +236,12 @@
 .resume-preview[data-lstyle="professional"] .rp-cert-link:hover,
 .resume-preview[data-lstyle="professional"] .rp-tech-profile-link:hover,
 .resume-preview[data-lstyle="professional"] .rp-tech-profile-url:hover {
-  color: var(--hyperlink-color, var(--accent-readable)) !important;
-  opacity: 0.85 !important;
-  text-decoration: underline !important;
+  color: inherit !important;
+  text-decoration: none !important;
+  opacity: 0.8 !important;
 }
 
-/* BODY LINKS - Professional Hyperlink OFF: accent color, no underline, never browser-default blue */
+/* BODY LINKS - Professional Hyperlink OFF: accent color, underlined, never browser-default blue */
 .resume-preview:not([data-lstyle="professional"]) .resume-link:not(.rp-contact-link):not(.header-link),
 .resume-preview:not([data-lstyle="professional"]) .rp-inline-link,
 .resume-preview:not([data-lstyle="professional"]) .rp-project-link,
@@ -281,9 +249,9 @@
 .resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-link,
 .resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-url {
   color: var(--hyperlink-color, var(--accent-readable)) !important;
-  text-decoration: none !important;
-  border-bottom: none !important;
-  font-weight: inherit !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 0.5px !important;
+  text-underline-offset: 1.5px !important;
 }
 
 .resume-preview:not([data-lstyle="professional"]) .resume-link:not(.rp-contact-link):not(.header-link):hover,
@@ -293,7 +261,7 @@
 .resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-link:hover,
 .resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-url:hover {
   color: var(--hyperlink-color, var(--accent-readable)) !important;
-  text-decoration: none !important;
+  text-decoration: underline !important;
   opacity: 0.85 !important;
 }
 
@@ -327,10 +295,8 @@
   .resume-preview[data-lstyle="professional"] .rp-cert-link,
   .resume-preview[data-lstyle="professional"] .rp-tech-profile-link,
   .resume-preview[data-lstyle="professional"] .rp-tech-profile-url {
-    color: var(--hyperlink-color, var(--accent-readable)) !important;
-    text-decoration: underline !important;
-    text-decoration-thickness: 0.5px !important;
-    text-underline-offset: 1.5px !important;
+    color: inherit !important;
+    text-decoration: none !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
@@ -342,7 +308,9 @@
   .resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-link,
   .resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-url {
     color: var(--hyperlink-color, var(--accent-readable)) !important;
-    text-decoration: none !important;
+    text-decoration: underline !important;
+    text-decoration-thickness: 0.5px !important;
+    text-underline-offset: 1.5px !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
@@ -364,15 +332,13 @@
     print-color-adjust: exact !important;
   }
 
-  /* Header Contact Links in print: Professional ON → #2563EB */
+  /* Header Contact Links in print: Professional ON → plain text */
   .resume-preview[data-lstyle="professional"] .header-link,
   .resume-preview[data-lstyle="professional"] .rp-contact-link,
   .resume-preview[data-lstyle="professional"] .rp-contact a,
   .resume-preview[data-lstyle="professional"] .rp-ats-contact a {
-    color: #2563eb !important;
-    text-decoration: underline !important;
-    text-decoration-thickness: 0.5px !important;
-    text-underline-offset: 1.5px !important;
+    color: inherit !important;
+    text-decoration: none !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
@@ -381,8 +347,10 @@
   .resume-preview:not([data-lstyle="professional"]) .rp-contact-link,
   .resume-preview:not([data-lstyle="professional"]) .rp-contact a,
   .resume-preview:not([data-lstyle="professional"]) .rp-ats-contact a {
-    color: inherit !important;
-    text-decoration: none !important;
+    color: #2563eb !important;
+    text-decoration: underline !important;
+    text-decoration-thickness: 0.5px !important;
+    text-underline-offset: 1.5px !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }

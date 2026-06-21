@@ -828,24 +828,20 @@ const ResumeEditor = () => {
             .resume-preview[data-lstyle="professional"] .rp-cert-link,
             .resume-preview[data-lstyle="professional"] .rp-tech-profile-link,
             .resume-preview[data-lstyle="professional"] .rp-tech-profile-url {
-              color: var(--hyperlink-color, var(--accent-readable)) !important;
-              text-decoration: underline !important;
-              text-decoration-thickness: 0.5px !important;
-              text-underline-offset: 1.5px !important;
+              color: inherit !important;
+              text-decoration: none !important;
             }
 
-            /* Header Contact Links in print PDF: Professional ON → #2563EB blue */
+            /* Header Contact Links in print PDF: Professional ON → plain text */
             .resume-preview[data-lstyle="professional"] .header-link,
             .resume-preview[data-lstyle="professional"] .rp-contact-link,
             .resume-preview[data-lstyle="professional"] .rp-contact a,
             .resume-preview[data-lstyle="professional"] .rp-ats-contact a {
-              color: #2563eb !important;
-              text-decoration: underline !important;
-              text-decoration-thickness: 0.5px !important;
-              text-underline-offset: 1.5px !important;
+              color: inherit !important;
+              text-decoration: none !important;
             }
 
-            /* Professional OFF: body links keep accent color, no underline; headers become plain text */
+            /* Professional OFF: body links keep accent color, underlined; headers become blue underlined */
             .resume-preview:not([data-lstyle="professional"]) .resume-link,
             .resume-preview:not([data-lstyle="professional"]) .rp-inline-link,
             .resume-preview:not([data-lstyle="professional"]) .rp-project-link,
@@ -853,14 +849,18 @@ const ResumeEditor = () => {
             .resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-link,
             .resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-url {
               color: var(--hyperlink-color, var(--accent-readable)) !important;
-              text-decoration: none !important;
+              text-decoration: underline !important;
+              text-decoration-thickness: 0.5px !important;
+              text-underline-offset: 1.5px !important;
             }
             .resume-preview:not([data-lstyle="professional"]) .header-link,
             .resume-preview:not([data-lstyle="professional"]) .rp-contact-link,
             .resume-preview:not([data-lstyle="professional"]) .rp-contact a,
             .resume-preview:not([data-lstyle="professional"]) .rp-ats-contact a {
-              color: inherit !important;
-              text-decoration: none !important;
+              color: #2563eb !important;
+              text-decoration: underline !important;
+              text-decoration-thickness: 0.5px !important;
+              text-underline-offset: 1.5px !important;
             }
 
             .resume-preview {
