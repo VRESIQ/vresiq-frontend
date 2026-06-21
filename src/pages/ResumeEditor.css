@@ -421,6 +421,8 @@
   margin: 0 auto 1rem;
   display: flex;
   justify-content: flex-end;
+  position: relative;
+  z-index: 100 !important;
 }
 
 @media (max-width: 1120px) {

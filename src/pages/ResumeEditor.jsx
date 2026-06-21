@@ -803,6 +803,22 @@ const ResumeEditor = () => {
               word-spacing: 0 !important;
             }
 
+            /* Guarantee Target Role Badge readability on export */
+            .rp-target-role-badge,
+            .rp-ats-badge,
+            .rp-ats-badge-left,
+            .rp-academic-badge {
+              background: var(--badge-bg, #f3f4f6) !important;
+              color: var(--badge-text, #1f2937) !important;
+              border-color: var(--badge-seeking, #d1d5db) !important;
+            }
+            .rp-role-seeking-label {
+              color: var(--badge-seeking, #4b5563) !important;
+            }
+            .rp-target-role-text {
+              color: var(--badge-text, #111827) !important;
+            }
+
             ${extraPrintStyles}
 
             /* Professional link style overrides for exported PDF (body only) */
@@ -1191,6 +1207,7 @@ const ResumeEditor = () => {
     const response = await exportResumePdf(id, htmlContent, isFreePlan);
     return response.data;
   };
+  window.getPDFBlob = getPDFBlob;
 
   const downloadPDF = async () => {
     const element = document.getElementById("resume-preview");

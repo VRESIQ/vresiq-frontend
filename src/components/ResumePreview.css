@@ -419,7 +419,7 @@
   border: 1.5px solid var(--accent) !important;
   border-radius: 10px !important;
   padding: 16px 24px !important;
-  margin: 12px 24px !important;
+  margin: 0 0 16px 0 !important;
   background: #fff !important;
   overflow: hidden !important;
   box-sizing: border-box !important;
@@ -535,7 +535,7 @@
   background: var(--accent) !important;
   color: var(--on-accent) !important;
   padding: 24px 40px 20px !important;
-  margin: -32px -40px 16px !important;
+  margin: 0 -40px 16px !important;
   border: 0 !important;
   border-radius: 0 !important;
 }
@@ -3171,9 +3171,9 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 [data-template="premium6"] .rp-target-role-badge,
 [data-hstyle="full-bleed"] .rp-target-role-badge,
 [data-hstyle="fullBleed"] .rp-target-role-badge {
-  color: #FFFFFF !important;
-  background: rgba(255,255,255,0.15) !important;
-  border-color: rgba(255,255,255,0.3) !important;
+  color: var(--badge-text, #ffffff) !important;
+  background: var(--badge-bg, #111410) !important;
+  border-color: var(--badge-seeking, #2a2a2a) !important;
   opacity: 1 !important;
   visibility: visible !important;
 }
@@ -3183,14 +3183,14 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 [data-hstyle="full-bleed"] .rp-role-seeking-label,
 [data-hstyle="fullBleed"] .rp-role-seeking-label {
   opacity: 1 !important;
-  color: rgba(255, 255, 255, 0.8) !important;
+  color: var(--badge-seeking, #a0a0a0) !important;
 }
 
 .rp-sidebar-dark .rp-target-role-text,
 [data-template="premium6"] .rp-target-role-text,
 [data-hstyle="full-bleed"] .rp-target-role-text,
 [data-hstyle="fullBleed"] .rp-target-role-text {
-  color: #ffffff !important;
+  color: var(--badge-text, #ffffff) !important;
   opacity: 1 !important;
 }
 
@@ -3278,17 +3278,17 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 [data-hstyle="full-bleed"] .rp-ats-badge-left,
 [data-hstyle="fullBleed"] .rp-ats-badge,
 [data-hstyle="fullBleed"] .rp-ats-badge-left {
-  color: var(--on-accent, #ffffff) !important;
-  background: var(--on-accent-line, rgba(255,255,255,0.25)) !important;
-  border-color: var(--on-accent-line, rgba(255,255,255,0.35)) !important;
+  color: var(--badge-text, #ffffff) !important;
+  background: var(--badge-bg, #111410) !important;
+  border-color: var(--badge-seeking, #2a2a2a) !important;
 }
 
 /* ── Academic CV badge — full-bleed override ─────────────────────────────── */
 [data-hstyle="full-bleed"] .rp-academic-badge,
 [data-hstyle="fullBleed"] .rp-academic-badge {
-  color: var(--on-accent, #ffffff) !important;
-  background: var(--on-accent-line, rgba(255,255,255,0.25)) !important;
-  border: none !important;
+  color: var(--badge-text, #ffffff) !important;
+  background: var(--badge-bg, #111410) !important;
+  border: 1px solid var(--badge-seeking, #2a2a2a) !important;
 }
 
 /* ── Technical Profiles — Platform name inherits template theme colour ─────── */
