@@ -1812,7 +1812,7 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
                 )}
                 {locationText && (
                   <div className="rp-engineer-contact-item">
-                    <strong>Location:</strong> <span>{locationText}</span>
+                    <strong>Location:</strong> <a href={getLocationUrl(locationText)} target="_blank" rel="noopener noreferrer" className="rp-contact-link">{locationText}</a>
                   </div>
                 )}
               </div>

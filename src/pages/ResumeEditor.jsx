@@ -828,27 +828,36 @@ const ResumeEditor = () => {
             .resume-preview[data-lstyle="professional"] .rp-cert-link,
             .resume-preview[data-lstyle="professional"] .rp-tech-profile-link,
             .resume-preview[data-lstyle="professional"] .rp-tech-profile-url {
-              color: inherit !important;
-              text-decoration: none !important;
+              color: var(--hyperlink-color, var(--accent-readable)) !important;
+              text-decoration: underline !important;
+              text-decoration-thickness: 0.5px !important;
+              text-underline-offset: 1.5px !important;
             }
 
-            /* Header Contact Links in print PDF */
+            /* Header Contact Links in print PDF when professional is ON */
             .resume-preview[data-lstyle="professional"] .header-link,
             .resume-preview[data-lstyle="professional"] .rp-contact-link,
             .resume-preview[data-lstyle="professional"] .rp-contact a,
             .resume-preview[data-lstyle="professional"] .rp-ats-contact a {
-              color: inherit !important;
-              text-decoration: none !important;
+              color: var(--header-link-color, var(--accent-readable)) !important;
+              text-decoration: underline !important;
+              text-decoration-thickness: 0.5px !important;
+              text-underline-offset: 1.5px !important;
             }
 
+            /* When Professional Hyperlinks is OFF, convert everything to plain text in print PDF */
+            .resume-preview:not([data-lstyle="professional"]) .resume-link,
+            .resume-preview:not([data-lstyle="professional"]) .rp-inline-link,
+            .resume-preview:not([data-lstyle="professional"]) .rp-project-link,
+            .resume-preview:not([data-lstyle="professional"]) .rp-cert-link,
+            .resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-link,
+            .resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-url,
             .resume-preview:not([data-lstyle="professional"]) .header-link,
             .resume-preview:not([data-lstyle="professional"]) .rp-contact-link,
             .resume-preview:not([data-lstyle="professional"]) .rp-contact a,
             .resume-preview:not([data-lstyle="professional"]) .rp-ats-contact a {
-              color: #2563EB !important;
-              text-decoration: underline !important;
-              text-decoration-thickness: 0.5px !important;
-              text-underline-offset: 1.5px !important;
+              color: inherit !important;
+              text-decoration: none !important;
             }
 
             .resume-preview {
