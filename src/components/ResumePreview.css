@@ -792,17 +792,17 @@
 }
 /* Divider variants */
 .rp-stitle[data-divider="line"] {
-  border-bottom: 1.5px solid var(--accent);
+  border-bottom: 1.5px solid var(--accent) !important;
 }
 .rp-stitle[data-divider="thick"] {
-  border-bottom: 3px solid var(--accent);
+  border-bottom: 3.5px solid var(--accent) !important;
 }
 .rp-stitle[data-divider="dots"] {
-  border-bottom: 2px dotted var(--accent);
+  border-bottom: 3.5px dotted var(--accent) !important;
 }
 .rp-stitle[data-divider="gradient"] {
-  border-bottom: 2px solid transparent;
-  border-image: linear-gradient(90deg, var(--accent), transparent) 1;
+  border-bottom: 2px solid transparent !important;
+  border-image: linear-gradient(90deg, var(--accent), transparent) 1 !important;
 }
 
 /* Section numbering */
@@ -1482,12 +1482,14 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 }
 
 .rp-premium5 .rp-stitle {
-  border-bottom: none;
   color: var(--accent-readable);
   font-size: var(--rp-fs-stitle);
   font-weight: 800;
   letter-spacing: 0.06em;
   margin-bottom: 8px;
+}
+.rp-premium5 .rp-stitle[data-divider] {
+  border-bottom: none !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -1555,7 +1557,7 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 }
 
 .rp-premium7 .rp-body { padding: 16px 28px 28px; }
-.rp-premium7 .rp-stitle { border-bottom: 2px solid var(--accent); font-size: var(--rp-fs-stitle); }
+.rp-premium7 .rp-stitle { font-size: var(--rp-fs-stitle); }
 
 /* ═══════════════════════════════════════════════════════════════════════════
    PREMIUM8 — Infographic
@@ -2415,7 +2417,6 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--accent-readable);
-  border-bottom-color: var(--accent) !important;
   padding-bottom: 2px;
   margin-top: 4px;
   margin-bottom: 12px;
@@ -2544,7 +2545,6 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  border-bottom: 2px solid #222;
   padding-bottom: 3px;
   margin-top: 18px;
   margin-bottom: 12px;
@@ -2951,7 +2951,6 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   text-transform: capitalize !important;
   letter-spacing: 0.02em !important;
   color: #111111 !important;
-  border-bottom: 1px solid var(--accent, #111111) !important;
   padding-bottom: 2px;
   margin-top: 14px !important;
   margin-bottom: 8px !important;
