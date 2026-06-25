@@ -1293,7 +1293,10 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-sidebar-dark .rp-compact-subtitle,
 .rp-sidebar-dark .rp-compact-date,
 .rp-sidebar-dark .rp-tech-profile-date,
-.rp-sidebar-dark .rp-item-sub {
+.rp-sidebar-dark .rp-item-sub,
+.rp-sidebar-dark .rp-tech-profile-desc,
+.rp-sidebar-dark .rp-tech-profile-desc p,
+.rp-sidebar-dark .rp-tech-profile-desc li {
   color: rgba(255, 255, 255, 0.7);
 }
 
