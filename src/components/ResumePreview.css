@@ -38,32 +38,11 @@
   padding-bottom: 48px;
 }
 
-/* Remove padding-top when header is full-bleed, minimal, or has native bleed to let it touch the page top edge */
+/* Remove padding-top when header is full-bleed or has native bleed to let it touch the page top edge */
 .resume-preview[data-hstyle="full-bleed"],
-.resume-preview[data-hstyle="minimal"],
 .resume-preview.rp-template3 {
   padding-top: 0 !important;
 }
-
-/* Restore 20px top padding for Card mode parent to prevent margin collapsing and top border/shadow clipping */
-.resume-preview[data-hstyle="card"] {
-  padding-top: 20px !important;
-}
-
-/* Sidebar templates (Template 2, Premium 6, Premium 8) must have ZERO top/bottom preview padding so backgrounds fill fully */
-.resume-preview[data-template="template2"],
-.resume-preview[data-template="premium6"],
-.resume-preview[data-template="premium8"] {
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-}
-
-/* Also ensure fullBleed header style on sidebar templates gets zero top margin and padding */
-.resume-preview[data-hstyle="full-bleed"],
-.resume-preview[data-hstyle="fullBleed"] {
-  padding-top: 0 !important;
-}
-
 
 .rp-section:last-child {
   margin-bottom: 0 !important;
@@ -77,24 +56,24 @@
   --rp-space-lg: 16px;
   --rp-space-xl: 24px;
 
-  --rp-section-margin-bottom: 15px;
-  --rp-item-margin-bottom: 9px;
-  --rp-divider-spacing-bottom: 4px;
+  --rp-section-margin-bottom: 22px;
+  --rp-item-margin-bottom: 14px;
+  --rp-divider-spacing-bottom: 6px;
   --rp-border-thin: 1.5px;
   --rp-border-thick: 3px;
 
   /* Typographic Design System Scale */
-  --rp-fs-base: 11px;
-  --rp-fs-name: 24px;
-  --rp-fs-role: 12px;
-  --rp-fs-stitle: 12.5px;
-  --rp-fs-item-title: 11.5px;
-  --rp-fs-item-sub: 10.5px;
-  --rp-fs-body: 10.5px;
-  --rp-fs-meta: 9.5px;
+  --rp-fs-base: 12px;
+  --rp-fs-name: 26px;
+  --rp-fs-role: 13px;
+  --rp-fs-stitle: 13.5px;
+  --rp-fs-item-title: 12.5px;
+  --rp-fs-item-sub: 11.5px;
+  --rp-fs-body: 11.5px;
+  --rp-fs-meta: 10.5px;
 
-  --rp-lh-body: 1.45;
-  --rp-lh-summary: 1.5;
+  --rp-lh-body: 1.55;
+  --rp-lh-summary: 1.6;
 
   font-size: var(--rp-fs-base);
   line-height: var(--rp-lh-body);
@@ -140,220 +119,114 @@
 
 /* ─── Hyperlink visual behavior — scoped semantic selectors ──────────────── */
 
-/* 1. CONTACT / HEADER LINKS */
+/* 1. CONTACT / HEADER LINKS
+   email, phone, LinkedIn, GitHub, website, location inside the header/contact area.
+   Standard hyperlink styling — blue + underline — matching UX requirement. */
 .rp-contact a,
-.rp-ats-contact a,
-.header-link {
-  color: inherit !important;
-  text-decoration: inherit;
+.rp-ats-contact a {
+  color: #2563EB !important;            /* Standard hyperlink blue */
+  text-decoration: underline !important;
+  text-decoration-thickness: 0.5px !important;
+  text-underline-offset: 1.5px;
   cursor: pointer !important;
   transition: color 0.15s ease;
 }
 
 .rp-contact a:hover,
-.rp-ats-contact a:hover,
-.header-link:hover {
-  opacity: 0.8 !important;
-}
-
-/* Hard contrast overrides for dark/full-bleed headers or sidebars when Professional is ON */
-.resume-preview[data-lstyle="professional"] [data-hstyle="full-bleed"] .header-link,
-.resume-preview[data-lstyle="professional"] [data-hstyle="full-bleed"] .rp-contact a,
-.resume-preview[data-lstyle="professional"] .rp-sidebar-dark .header-link,
-.resume-preview[data-lstyle="professional"] .rp-sidebar-dark .rp-contact a {
-  color: var(--header-link-color, #ffffff) !important;
-}
-
-.resume-preview[data-lstyle="professional"] [data-hstyle="full-bleed"] .header-link:hover,
-.resume-preview[data-lstyle="professional"] [data-hstyle="full-bleed"] .rp-contact a:hover,
-.resume-preview[data-lstyle="professional"] .rp-sidebar-dark .header-link:hover,
-.resume-preview[data-lstyle="professional"] .rp-sidebar-dark .rp-contact a:hover {
-  color: var(--header-link-hover, rgba(255, 255, 255, 0.8)) !important;
-}
-
-/* Except when inside a dark sidebar, which always needs white/light text */
-.rp-sidebar-dark .header-link {
-  /* handled by sidebar rules */
-}
-
-/* Header Contact Links: Professional ON → plain text; OFF → #2563EB blue, underlined */
-.resume-preview[data-lstyle="professional"] .header-link,
-.resume-preview[data-lstyle="professional"] .rp-contact-link,
-.resume-preview[data-lstyle="professional"] .rp-contact a,
-.resume-preview[data-lstyle="professional"] .rp-ats-contact a {
-  color: inherit !important;
-  text-decoration: none !important;
-  font-weight: inherit !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-.resume-preview[data-lstyle="professional"] .header-link:hover,
-.resume-preview[data-lstyle="professional"] .rp-contact-link:hover,
-.resume-preview[data-lstyle="professional"] .rp-contact a:hover,
-.resume-preview[data-lstyle="professional"] .rp-ats-contact a:hover {
-  color: inherit !important;
-  text-decoration: none !important;
-  opacity: 0.8 !important;
-}
-
-/* When Professional Hyperlink is OFF, convert all header contact links to blue underlined */
-.resume-preview:not([data-lstyle="professional"]) .header-link,
-.resume-preview:not([data-lstyle="professional"]) .rp-contact-link,
-.resume-preview:not([data-lstyle="professional"]) .rp-contact a,
-.resume-preview:not([data-lstyle="professional"]) .rp-ats-contact a {
-  color: #2563eb !important;
-  text-decoration: underline !important;
-  text-decoration-thickness: 0.5px !important;
-  text-underline-offset: 1.5px !important;
-  font-weight: 500 !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-.resume-preview:not([data-lstyle="professional"]) .header-link:hover,
-.resume-preview:not([data-lstyle="professional"]) .rp-contact-link:hover,
-.resume-preview:not([data-lstyle="professional"]) .rp-contact a:hover,
-.resume-preview:not([data-lstyle="professional"]) .rp-ats-contact a:hover {
+.rp-ats-contact a:hover {
   color: #1d4ed8 !important;
-  opacity: 0.9 !important;
   text-decoration: underline !important;
 }
 
-/* BODY LINKS - Professional Hyperlink ON: plain text */
-.resume-preview[data-lstyle="professional"] .resume-link:not(.rp-contact-link):not(.header-link),
-.resume-preview[data-lstyle="professional"] .rp-inline-link,
-.resume-preview[data-lstyle="professional"] .rp-project-link,
-.resume-preview[data-lstyle="professional"] .rp-cert-link,
-.resume-preview[data-lstyle="professional"] .rp-tech-profile-link,
-.resume-preview[data-lstyle="professional"] .rp-tech-profile-url {
-  color: inherit !important;
-  text-decoration: none !important;
-  border-bottom: none !important;
-  font-weight: inherit !important;
+.rp-contact-item,
+.rp-ats-contact-item {
+  display: inline-flex;
+  align-items: baseline;
 }
 
-.resume-preview[data-lstyle="professional"] .resume-link:not(.rp-contact-link):not(.header-link):hover,
-.resume-preview[data-lstyle="professional"] .rp-inline-link:hover,
-.resume-preview[data-lstyle="professional"] .rp-project-link:hover,
-.resume-preview[data-lstyle="professional"] .rp-cert-link:hover,
-.resume-preview[data-lstyle="professional"] .rp-tech-profile-link:hover,
-.resume-preview[data-lstyle="professional"] .rp-tech-profile-url:hover {
-  color: inherit !important;
-  text-decoration: none !important;
-  opacity: 0.8 !important;
-}
-
-/* BODY LINKS - Professional Hyperlink OFF: accent color, underlined, never browser-default blue */
-.resume-preview:not([data-lstyle="professional"]) .resume-link:not(.rp-contact-link):not(.header-link),
-.resume-preview:not([data-lstyle="professional"]) .rp-inline-link,
-.resume-preview:not([data-lstyle="professional"]) .rp-project-link,
-.resume-preview:not([data-lstyle="professional"]) .rp-cert-link,
-.resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-link,
-.resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-url {
-  color: var(--hyperlink-color, var(--accent-readable)) !important;
+.rp-contact-link {
+  color: #2563EB !important;
   text-decoration: underline !important;
   text-decoration-thickness: 0.5px !important;
-  text-underline-offset: 1.5px !important;
+  text-underline-offset: 1.5px;
+  cursor: pointer !important;
+  white-space: nowrap;
 }
 
-.resume-preview:not([data-lstyle="professional"]) .resume-link:not(.rp-contact-link):not(.header-link):hover,
-.resume-preview:not([data-lstyle="professional"]) .rp-inline-link:hover,
-.resume-preview:not([data-lstyle="professional"]) .rp-project-link:hover,
-.resume-preview:not([data-lstyle="professional"]) .rp-cert-link:hover,
-.resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-link:hover,
-.resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-url:hover {
-  color: var(--hyperlink-color, var(--accent-readable)) !important;
+.rp-contact-sep {
+  color: #6b7280;
+  padding: 0 4px;
+}
+
+/* 2. BODY / CONTENT LINKS
+   Project links, live demos, publication URLs, custom section URLs.
+   Explicit class selectors only — does NOT bleed into generic section text. */
+a.rp-project-link,
+a.rp-custom-link,
+a.rp-inline-link,
+.rp-links a {
+  color: #2563EB !important;
   text-decoration: underline !important;
-  opacity: 0.85 !important;
+  text-decoration-thickness: 0.5px !important;
+  text-underline-offset: 1.5px;
+  cursor: pointer !important;
+  transition: color 0.15s ease;
 }
 
-/* Contrast-aware overrides for dark backgrounds when Professional Hyperlinks = ON */
-.resume-preview[data-lstyle="professional"] .rp-sidebar-dark .resume-link,
-.resume-preview[data-lstyle="professional"] .rp-sidebar-dark .rp-inline-link,
-.resume-preview[data-lstyle="professional"] .rp-sidebar-dark .rp-project-link,
-.resume-preview[data-lstyle="professional"] .rp-sidebar-dark .rp-cert-link,
-.resume-preview[data-lstyle="professional"] .rp-sidebar-dark .rp-tech-profile-link,
-.resume-preview[data-lstyle="professional"] .rp-sidebar-dark .rp-tech-profile-url,
-.resume-preview[data-lstyle="professional"] .rp-sidebar-dark .rp-contact-link,
-.resume-preview[data-lstyle="professional"] .rp-sidebar-dark a,
-.resume-preview[data-lstyle="professional"] [data-hstyle="full-bleed"] .rp-sidebar .resume-link,
-.resume-preview[data-lstyle="professional"] [data-hstyle="full-bleed"] .rp-sidebar .rp-inline-link,
-.resume-preview[data-lstyle="professional"] [data-hstyle="full-bleed"] .rp-sidebar .rp-project-link,
-.resume-preview[data-lstyle="professional"] [data-hstyle="full-bleed"] .rp-sidebar .rp-cert-link,
-.resume-preview[data-lstyle="professional"] [data-hstyle="full-bleed"] .rp-sidebar .rp-tech-profile-link,
-.resume-preview[data-lstyle="professional"] [data-hstyle="full-bleed"] .rp-sidebar .rp-tech-profile-url,
-.resume-preview[data-lstyle="professional"] [data-hstyle="full-bleed"] .rp-header .header-link,
-.resume-preview[data-lstyle="professional"] [data-hstyle="full-bleed"] .rp-header .rp-contact-link,
-.resume-preview[data-lstyle="professional"] [data-hstyle="full-bleed"] .rp-header a,
-.resume-preview[data-lstyle="professional"] [data-hstyle="full-bleed"] .rp-ats-header a,
-.resume-preview[data-lstyle="professional"] [data-hstyle="full-bleed"] .rp-engineer-header a {
-  color: var(--on-accent, #ffffff) !important;
+a.rp-project-link:hover,
+a.rp-custom-link:hover,
+a.rp-inline-link:hover,
+.rp-links a:hover {
+  color: #1d4ed8 !important;
+  text-decoration: underline !important;
+}
+
+/* Hyperlink Style overrides */
+.resume-preview[data-lstyle="professional"] a {
+  color: inherit !important;
+  text-decoration: underline dotted !important;
+  text-decoration-color: var(--accent-readable, #1a5fb4) !important;
+  text-decoration-thickness: 0.8px !important;
+  text-underline-offset: 1.5px;
+}
+.resume-preview[data-lstyle="professional"] a:hover {
+  color: var(--accent-readable, #1a5fb4) !important;
+  text-decoration: underline dotted !important;
 }
 
 @media print {
-  .resume-preview[data-lstyle="professional"] .resume-link:not(.rp-contact-link):not(.header-link),
-  .resume-preview[data-lstyle="professional"] .rp-inline-link,
-  .resume-preview[data-lstyle="professional"] .rp-project-link,
-  .resume-preview[data-lstyle="professional"] .rp-cert-link,
-  .resume-preview[data-lstyle="professional"] .rp-tech-profile-link,
-  .resume-preview[data-lstyle="professional"] .rp-tech-profile-url {
+  /* Hyperlink Style overrides for print */
+  .resume-preview[data-lstyle="professional"] a {
     color: inherit !important;
-    text-decoration: none !important;
+    text-decoration: underline dotted !important;
+    text-decoration-color: var(--accent-readable, #1a5fb4) !important;
+    text-decoration-thickness: 0.8px !important;
+    text-underline-offset: 1.5px;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 
-  .resume-preview:not([data-lstyle="professional"]) .resume-link:not(.rp-contact-link):not(.header-link),
-  .resume-preview:not([data-lstyle="professional"]) .rp-inline-link,
-  .resume-preview:not([data-lstyle="professional"]) .rp-project-link,
-  .resume-preview:not([data-lstyle="professional"]) .rp-cert-link,
-  .resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-link,
-  .resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-url {
-    color: var(--hyperlink-color, var(--accent-readable)) !important;
+  /* Contact/header links: blue + underline preserved in print/PDF */
+  .rp-contact a,
+  .rp-ats-contact a {
+    color: #2563EB !important;
     text-decoration: underline !important;
     text-decoration-thickness: 0.5px !important;
-    text-underline-offset: 1.5px !important;
+    text-underline-offset: 1.5px;
+    cursor: pointer !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 
-  .resume-preview[data-lstyle="professional"] .rp-sidebar-dark .resume-link,
-  .resume-preview[data-lstyle="professional"] .rp-sidebar-dark .rp-inline-link,
-  .resume-preview[data-lstyle="professional"] .rp-sidebar-dark .rp-project-link,
-  .resume-preview[data-lstyle="professional"] .rp-sidebar-dark .rp-cert-link,
-  .resume-preview[data-lstyle="professional"] .rp-sidebar-dark .rp-tech-profile-link,
-  .resume-preview[data-lstyle="professional"] .rp-sidebar-dark .rp-tech-profile-url,
-  .resume-preview[data-lstyle="professional"] [data-hstyle="full-bleed"] .rp-sidebar .resume-link,
-  .resume-preview[data-lstyle="professional"] [data-hstyle="full-bleed"] .rp-sidebar .rp-inline-link,
-  .resume-preview[data-lstyle="professional"] [data-hstyle="full-bleed"] .rp-sidebar .rp-project-link,
-  .resume-preview[data-lstyle="professional"] [data-hstyle="full-bleed"] .rp-sidebar .rp-cert-link,
-  .resume-preview[data-lstyle="professional"] [data-hstyle="full-bleed"] .rp-sidebar .rp-tech-profile-link,
-  .resume-preview[data-lstyle="professional"] [data-hstyle="full-bleed"] .rp-sidebar .rp-tech-profile-url {
-    color: var(--on-accent, #ffffff) !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-
-  /* Header Contact Links in print: Professional ON → plain text */
-  .resume-preview[data-lstyle="professional"] .header-link,
-  .resume-preview[data-lstyle="professional"] .rp-contact-link,
-  .resume-preview[data-lstyle="professional"] .rp-contact a,
-  .resume-preview[data-lstyle="professional"] .rp-ats-contact a {
-    color: inherit !important;
-    text-decoration: none !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-
-  .resume-preview:not([data-lstyle="professional"]) .header-link,
-  .resume-preview:not([data-lstyle="professional"]) .rp-contact-link,
-  .resume-preview:not([data-lstyle="professional"]) .rp-contact a,
-  .resume-preview:not([data-lstyle="professional"]) .rp-ats-contact a {
-    color: #2563eb !important;
+  /* Body content links: blue + underline preserved in print/PDF */
+  a.rp-project-link,
+  a.rp-custom-link,
+  a.rp-inline-link,
+  .rp-links a {
+    color: #2563EB !important;
     text-decoration: underline !important;
     text-decoration-thickness: 0.5px !important;
-    text-underline-offset: 1.5px !important;
+    text-underline-offset: 1.5px;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
@@ -361,6 +234,10 @@
   .resume-preview {
     padding-bottom: 48px !important;
   }
+
+  /* Watermark rule override for @media print is no longer needed because
+     the new background-image approach renders correctly in all paged
+     contexts including Puppeteer/Chromium PDF export. */
 }
 
 /* ── Typography base ─────────────────────────────────────────────────────── */
@@ -382,36 +259,24 @@
 [data-hstyle="card"] .rp-header-executive,
 [data-hstyle="card"] .rp-header-centered,
 [data-hstyle="card"] .rp-header-tech {
-  margin: 12px 24px !important;
+  margin: 20px 24px 10px !important;
   border: 1.5px solid var(--accent) !important;
-  border-radius: 10px !important;
+  border-radius: 12px !important;
   background: #fff !important;
   color: #111410 !important;
-  padding: 16px 28px !important;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.04) !important;
+  padding: 30px 40px !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06) !important;
   position: relative;
   z-index: 10;
-  overflow: hidden !important;
-  box-sizing: border-box !important;
-  word-wrap: break-word !important;
-  overflow-wrap: anywhere !important;
-  min-width: 0 !important;
 }
 
 [data-hstyle="card"] .rp-ats-header,
-[data-hstyle="card"] .rp-ats-header-left,
-[data-hstyle="card"] .rp-academic-header,
-[data-hstyle="card"] .rp-engineer-header {
+[data-hstyle="card"] .rp-ats-header-left {
   border: 1.5px solid var(--accent) !important;
   border-radius: 10px !important;
-  padding: 16px 24px !important;
-  margin: 0 0 16px 0 !important;
+  padding: 18px 16px !important;
+  margin-bottom: 14px !important;
   background: #fff !important;
-  overflow: hidden !important;
-  box-sizing: border-box !important;
-  word-wrap: break-word !important;
-  overflow-wrap: anywhere !important;
-  min-width: 0 !important;
 }
 
 [data-hstyle="card"] .rp-header h1,
@@ -421,38 +286,19 @@
 [data-hstyle="card"] .rp-sig-name,
 [data-hstyle="card"] .rp-header-executive .rp-executive-name,
 [data-hstyle="card"] .rp-header-centered .rp-centered-name,
-[data-hstyle="card"] .rp-header-tech h1,
-[data-hstyle="card"] .rp-academic-name,
-[data-hstyle="card"] .rp-engineer-name {
+[data-hstyle="card"] .rp-header-tech h1 {
   color: #111410 !important;
-  margin-bottom: 2px !important;
-  line-height: 1.05 !important;
 }
 
 [data-hstyle="card"] .rp-role,
 [data-hstyle="card"] .rp-executive-role,
 [data-hstyle="card"] .rp-sig-role,
-[data-hstyle="card"] .rp-centered-role,
-[data-hstyle="card"] .rp-academic-role,
-[data-hstyle="card"] .rp-academic-badge {
+[data-hstyle="card"] .rp-centered-role {
   color: var(--accent-readable) !important;
-  margin-bottom: 4px !important;
 }
 
 [data-hstyle="card"] .rp-contact,
-[data-hstyle="card"] .rp-sig-contact .rp-contact,
-[data-hstyle="card"] .rp-academic-header .rp-contact,
-[data-hstyle="card"] .rp-engineer-contacts-grid {
-  color: #555 !important;
-  margin-top: 4px !important;
-  gap: 2px 12px !important;
-}
-
-[data-hstyle="card"] .rp-academic-header .rp-contact {
-  justify-content: center !important;
-}
-
-[data-hstyle="card"] .rp-academic-header .rp-contact a {
+[data-hstyle="card"] .rp-sig-contact .rp-contact {
   color: #555 !important;
 }
 
@@ -476,44 +322,11 @@
 }
 
 [data-hstyle="full-bleed"] .rp-ats-header,
-[data-hstyle="full-bleed"] .rp-ats-header-left,
-[data-hstyle="full-bleed"] .rp-academic-header,
-[data-hstyle="full-bleed"] .rp-engineer-header {
+[data-hstyle="full-bleed"] .rp-ats-header-left {
   background: var(--accent) !important;
   color: var(--on-accent) !important;
   padding: 20px 18px !important;
   margin: -8px -8px 14px !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  width: calc(100% + 16px) !important;
-  max-width: none !important;
-}
-
-[data-hstyle="full-bleed"] .rp-academic-name {
-  color: var(--on-accent) !important;
-}
-
-[data-hstyle="full-bleed"] .rp-academic-role {
-  color: var(--on-accent-muted) !important;
-}
-
-[data-hstyle="full-bleed"] .rp-academic-badge {
-  background: var(--on-accent-line) !important;
-  color: var(--on-accent) !important;
-  border: none !important;
-}
-
-[data-hstyle="full-bleed"] .rp-academic-header .rp-contact,
-[data-hstyle="full-bleed"] .rp-academic-header .rp-contact a {
-  color: var(--on-accent-soft) !important;
-}
-
-[data-hstyle="full-bleed"] .rp-engineer-name {
-  color: var(--on-accent) !important;
-}
-
-[data-hstyle="full-bleed"] .rp-engineer-contacts-grid {
-  color: var(--on-accent-soft) !important;
 }
 
 [data-hstyle="full-bleed"] .rp-ats-header .rp-ats-name,
@@ -565,175 +378,98 @@
    We target .rp-sidebar-header (the wrapper we added in JSX) to apply the styles.
    ─────────────────────────────────────────────────────────────────────────── */
 
-/* rp-sidebar-header: default = no visual treatment, just a layout wrapper.
-   Always enforce containment so content cannot escape the narrow column. */
+/* rp-sidebar-header: default = no visual treatment, just a layout wrapper */
 .rp-sidebar-header {
   margin-bottom: 12px;
-  overflow: hidden;
-  box-sizing: border-box;
-  min-width: 0;
-  word-wrap: break-word;
-  overflow-wrap: anywhere;
 }
 
 /* CARD on light sidebar (template2) — white card inset with accent border */
-/* ==========================================================================
-   MINIMAL STYLE FOR SIDEBAR TEMPLATES
-   ========================================================================== */
-.resume-preview[data-hstyle="minimal"] .rp-sidebar-header,
-.resume-preview[data-hstyle="minimal"] .rp-sidebar-light .rp-sidebar-header,
-.resume-preview[data-hstyle="minimal"] .rp-sidebar-infographic .rp-sidebar-header,
-.resume-preview[data-hstyle="minimal"] .rp-sidebar-dark .rp-sidebar-header {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-  margin: 0 0 20px 0 !important;
+[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header {
+  background: rgba(255,255,255,0.85);
+  border: 1.5px solid var(--accent);
+  border-radius: 8px;
+  padding: 12px;
+  margin: -4px -4px 14px;
 }
 
-/* Contrast styling for Minimal on light sidebars (Nova & Visual) */
-.resume-preview[data-hstyle="minimal"] .rp-sidebar-light .rp-sidebar-header .rp-sidebar-name,
-.resume-preview[data-hstyle="minimal"] .rp-sidebar-infographic .rp-sidebar-header .rp-sidebar-name {
-  color: #111111 !important;
-}
-.resume-preview[data-hstyle="minimal"] .rp-sidebar-light .rp-sidebar-header .rp-sidebar-role,
-.resume-preview[data-hstyle="minimal"] .rp-sidebar-infographic .rp-sidebar-header .rp-sidebar-role {
-  color: var(--accent-readable, #e76f51) !important;
-}
-.resume-preview[data-hstyle="minimal"] .rp-sidebar-light .rp-sidebar-header .rp-contact,
-.resume-preview[data-hstyle="minimal"] .rp-sidebar-infographic .rp-sidebar-header .rp-contact,
-.resume-preview[data-hstyle="minimal"] .rp-sidebar-light .rp-sidebar-header .rp-contact a,
-.resume-preview[data-hstyle="minimal"] .rp-sidebar-infographic .rp-sidebar-header .rp-contact a {
-  color: #444444 !important;
+/* CARD on infographic sidebar — same white card inset */
+[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header {
+  background: rgba(255,255,255,0.78);
+  border: 1.5px solid var(--accent);
+  border-radius: 8px;
+  padding: 12px;
+  margin: -4px -4px 14px;
 }
 
-/* Contrast styling for Minimal on dark sidebars (Split) */
-.resume-preview[data-hstyle="minimal"] .rp-sidebar-dark .rp-sidebar-header .rp-sidebar-name {
-  color: #ffffff !important;
-}
-.resume-preview[data-hstyle="minimal"] .rp-sidebar-dark .rp-sidebar-header .rp-sidebar-role {
-  color: rgba(255, 255, 255, 0.75) !important;
-}
-.resume-preview[data-hstyle="minimal"] .rp-sidebar-dark .rp-sidebar-header .rp-contact,
-.resume-preview[data-hstyle="minimal"] .rp-sidebar-dark .rp-sidebar-header .rp-contact a {
-  color: rgba(255, 255, 255, 0.85) !important;
+/* CARD on dark sidebar (premium6) — lighter card to contrast the dark panel */
+[data-hstyle="card"] .rp-sidebar-dark .rp-sidebar-header {
+  background: rgba(255,255,255,0.12);
+  border: 1.5px solid rgba(255,255,255,0.28);
+  border-radius: 8px;
+  padding: 12px;
+  margin: -4px -4px 14px;
 }
 
-/* ==========================================================================
-   CARD STYLE FOR SIDEBAR TEMPLATES
-   Canonical geometry + containment defined here. Color tokens (background,
-   border) split by sidebar type. Typography overrides at bottom of file in
-   the PROFESSIONAL SIDEBAR REDESIGN OVERRIDES block (~line 2860).
-   ========================================================================== */
+/* FULL-BLEED on sidebar templates — only the top identity block gets accent background.
+   We deliberately DON'T color the whole sidebar because progress bars + skill section
+   titles use var(--accent) and would become invisible against an accent background.
+   Instead, .rp-sidebar-header (the wrapper div we added in JSX) bleeds to sidebar edges. */
 
-/* ==========================================================================
-   FULL-BLEED STYLE FOR SIDEBAR TEMPLATES
-   ========================================================================== */
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar {
+/* Bleed the header block to the sidebar's left/right/top edges */
+[data-hstyle="full-bleed"] .rp-sidebar-light .rp-sidebar-header,
+[data-hstyle="full-bleed"] .rp-sidebar-infographic .rp-sidebar-header {
   background: var(--accent) !important;
-  padding-top: 0 !important;
+  margin: -28px -18px 14px;   /* perfectly matches .rp-sidebar padding */
+  padding: 32px 18px 24px;
+  border-bottom: none;
 }
 
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar-header,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar-header {
-  margin: 0 0 14px 0 !important;
-  padding: 28px 0 0 0 !important;
-  background: transparent !important;
-  border-bottom: none !important;
+/* Light sidebar: dark text on (usually bright) accent — good contrast */
+[data-hstyle="full-bleed"] .rp-sidebar-light .rp-sidebar-header .rp-sidebar-name,
+[data-hstyle="full-bleed"] .rp-sidebar-infographic .rp-sidebar-header .rp-sidebar-name {
+  color: var(--on-accent) !important;
+}
+[data-hstyle="full-bleed"] .rp-sidebar-light .rp-sidebar-header .rp-sidebar-role,
+[data-hstyle="full-bleed"] .rp-sidebar-infographic .rp-sidebar-header .rp-sidebar-role {
+  color: var(--on-accent-muted) !important;
+}
+[data-hstyle="full-bleed"] .rp-sidebar-light .rp-sidebar-header .rp-sidebar-contact,
+[data-hstyle="full-bleed"] .rp-sidebar-light .rp-sidebar-header .rp-contact,
+[data-hstyle="full-bleed"] .rp-sidebar-infographic .rp-sidebar-header .rp-sidebar-contact,
+[data-hstyle="full-bleed"] .rp-sidebar-infographic .rp-sidebar-header .rp-contact {
+  color: var(--on-accent-soft) !important;
 }
 
-/* Force high contrast white text legibility inside the full-bleed sidebar */
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar,
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-sidebar-name,
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-sidebar-role,
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-contact,
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-contact a,
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-stitle,
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-skill-name,
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-item-title,
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-item-sub,
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-item-desc,
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-item-desc ul li,
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-compact-head,
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-compact-head *,
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-summary,
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar li,
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar span,
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar p,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-sidebar-name,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-sidebar-role,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-contact,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-contact a,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-contact a,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-stitle,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-skill-name,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-item-title,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-item-sub,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-item-desc,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-item-desc ul li,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-compact-head,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-compact-head *,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-summary,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar li,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar span,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar p {
-  color: #ffffff !important;
+/* Dark sidebar (premium6): accent header block, keep WHITE text — it was already white,
+   and the accent background is typically bright so white may clash.
+   But dark-on-accent is also valid. We use white to maintain contrast with ANY accent. */
+[data-hstyle="full-bleed"] .rp-sidebar-dark .rp-sidebar-header {
+  background: var(--accent) !important;
+  margin: -28px -18px 14px;
+  padding: 32px 18px 24px;
 }
-
-/* Force specific contact details white visibility properties */
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-contact,
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-contact-item,
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-contact span,
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-contact a,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-contact,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-contact-item,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-contact span,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-contact a {
-  color: #ffffff !important;
-  opacity: 0.95 !important;
+[data-hstyle="full-bleed"] .rp-sidebar-dark .rp-sidebar-header .rp-sidebar-name {
+  color: var(--on-accent) !important;
 }
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-contact a,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-contact a {
-  color: inherit !important;
-  text-decoration-color: rgba(255,255,255,.6) !important;
+[data-hstyle="full-bleed"] .rp-sidebar-dark .rp-sidebar-header .rp-sidebar-role {
+  color: var(--on-accent-muted) !important;
 }
-
-/* Ensure sidebar section headers divider line contrast */
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-stitle,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-stitle {
-  border-bottom-color: rgba(255,255,255,0.3) !important;
-}
-
-/* Ensure skill rating dots and progress bars remain beautifully visible on the accent background */
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .dot,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .dot {
-  border-color: rgba(255, 255, 255, 0.6) !important;
-}
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .dot.filled,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .dot.filled {
-  background: rgba(255, 255, 255, 0.85) !important;
-}
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-bar,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-bar {
-  background: rgba(255, 255, 255, 0.2) !important;
-}
-.resume-preview[data-hstyle="full-bleed"] .rp-sidebar .rp-bar span,
-.resume-preview[data-hstyle="fullBleed"] .rp-sidebar .rp-bar span {
-  background: rgba(255, 255, 255, 0.9) !important;
+[data-hstyle="full-bleed"] .rp-sidebar-dark .rp-sidebar-header .rp-sidebar-contact,
+[data-hstyle="full-bleed"] .rp-sidebar-dark .rp-sidebar-header .rp-contact {
+  color: var(--on-accent-soft) !important;
 }
 
 
 /* ── Common header base ──────────────────────────────────────────────────── */
 .rp-header {
-  padding: 18px 36px 14px;
+  padding: 28px 36px;
 }
+
 
 .rp-header h1 {
   font-size: var(--rp-fs-name);
   font-weight: 700;
-  margin: 0 0 2px;
+  margin: 0 0 4px;
   line-height: 1.1;
   color: #111;
 }
@@ -742,25 +478,25 @@
   font-size: var(--rp-fs-role);
   font-weight: 600;
   color: var(--accent-readable);
-  margin: 0 0 6px;
+  margin: 0 0 10px;
 }
 
 .rp-body {
-  padding: 0 36px 24px;
+  padding: 0 36px 36px;
 }
 
 /* ── Contact row ─────────────────────────────────────────────────────────── */
 .rp-contact {
   display: flex;
   flex-wrap: wrap;
-  gap: 3px 12px;
+  gap: 4px 14px;
   font-size: var(--rp-fs-meta);
   color: #444;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 .rp-contact-inline .rp-contact {
-  margin-top: 6px;
+  margin-top: 8px;
 }
 
 /* ── Section title ───────────────────────────────────────────────────────── */
@@ -771,22 +507,23 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--accent-readable);
-  margin: 0 0 8px;
-  padding-bottom: 4px;
+  margin: 0 0 12px;
+  padding-bottom: 6px;
 }
+
 /* Divider variants */
 .rp-stitle[data-divider="line"] {
-  border-bottom: 1.5px solid var(--accent) !important;
+  border-bottom: 1.5px solid var(--accent);
 }
 .rp-stitle[data-divider="thick"] {
-  border-bottom: 3.5px solid var(--accent) !important;
+  border-bottom: 3px solid var(--accent);
 }
 .rp-stitle[data-divider="dots"] {
-  border-bottom: 3.5px dotted var(--accent) !important;
+  border-bottom: 2px dotted var(--accent);
 }
 .rp-stitle[data-divider="gradient"] {
-  border-bottom: 2px solid transparent !important;
-  border-image: linear-gradient(90deg, var(--accent), transparent) 1 !important;
+  border-bottom: 2px solid transparent;
+  border-image: linear-gradient(90deg, var(--accent), transparent) 1;
 }
 
 /* Section numbering */
@@ -916,37 +653,18 @@
   font-size: var(--rp-fs-body);
 }
 
-.rp-tech-profile-head {
-  gap: 12px;
-  min-width: 0;
-}
-
-.rp-compact-title {
-  min-width: 0;
-  flex: 1 1 auto;
-  color: inherit;
-}
-
-.rp-compact-url {
-  color: inherit;
-}
-
 .rp-compact-subtitle {
   font-size: var(--rp-fs-body);
   color: #555;
   font-weight: 400;
 }
 
-.rp-item-date,
 .rp-compact-date {
   font-size: var(--rp-fs-body);
   color: #555;
   font-weight: 400;
   white-space: nowrap;
   flex-shrink: 0;
-  flex: 0 0 auto;
-  text-align: right;
-  margin-left: auto;
 }
 
 /* ── Skills ──────────────────────────────────────────────────────────────── */
@@ -1062,16 +780,36 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 }
 
 @media print {
-  /* Hide the HTML-embedded watermark in print mode to prevent duplicates.
-     Puppeteer's footerTemplate will handle watermark rendering on every page instead. */
+  /* PDF Rendering: The watermark-footer is now positioned as a fixed footer
+     that appears at the bottom of every page. Fixed positioning in print media
+     will cause the element to repeat on each page, giving multi-page support. */
   .watermark-footer {
-    display: none !important;
+    position: fixed !important;
+    bottom: 8px !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 9999 !important;
+    width: 100% !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 0.35 !important;
   }
 }
 
-/* Location link uses shared rp-contact-link rules. Span fallback for non-clickable location: */
-.rp-contact span.rp-contact-link,
-.rp-ats-contact span.rp-contact-link,
+/* Location link — standard hyperlink styling (Google Maps clickable) */
+.rp-contact a.rp-contact-item-text,
+.rp-ats-contact a.rp-contact-item-text {
+  color: #2563EB !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 0.5px !important;
+  text-underline-offset: 1.5px;
+  cursor: pointer !important;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+}
+/* Span fallback (non-clickable location) */
 .rp-contact span.rp-contact-item-text,
 .rp-ats-contact span.rp-contact-item-text {
   color: inherit;
@@ -1140,16 +878,6 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   flex-direction: column;
   gap: 5px;
   font-size: 11px;
-}
-
-/* Sidebar contact links must wrap inside the narrow column — never overflow */
-.rp-sidebar-contact .rp-contact a,
-.rp-sidebar-contact .rp-contact-link,
-.rp-sidebar .rp-contact-link {
-  white-space: normal !important;
-  overflow-wrap: anywhere !important;
-  word-break: break-word !important;
-  min-width: 0 !important;
 }
 
 .rp-main-col { padding: 28px 28px 28px 24px; }
@@ -1281,28 +1009,18 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-premium3 .rp-header-compact {
   background: #f7f9f7;
   color: #111410;
-  padding: 12px 24px;
+  padding: 18px 24px;
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
   gap: 16px;
   border-top: 5px solid var(--accent);
   border-bottom: 1px solid #e5e7e2;
 }
 
-.resume-preview[data-hstyle="minimal"] .rp-premium3 .rp-header-compact {
-  border-top: none !important;
-  background: transparent !important;
-  padding: 18px 24px 8px !important;
-}
-
-[data-hstyle="card"] .rp-premium3 .rp-header-compact {
-  border-top: none !important;
-}
-
-.rp-premium3 .rp-header-compact h1 { font-size: 22px; color: #111410; margin-bottom: 0px !important; }
-.rp-premium3 .rp-header-compact .rp-role { color: var(--accent-readable); font-size: 11px; margin: 0px 0px 2px !important; }
-.rp-premium3 .rp-header-compact .rp-contact { color: #555; margin: 0; justify-content: flex-end; align-items: flex-end; }
+.rp-premium3 .rp-header-compact h1 { font-size: 22px; color: #111410; }
+.rp-premium3 .rp-header-compact .rp-role { color: var(--accent-readable); font-size: 11px; margin: 2px 0 0; }
+.rp-premium3 .rp-header-compact .rp-contact { color: #555; margin: 0; justify-content: flex-end; }
 
 .rp-compact-grid {
   display: grid;
@@ -1448,13 +1166,6 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-premium5 .rp-header-accentbar {
   padding: 24px 36px 16px;
   border-top: 6px solid var(--accent);
-  flex-direction: column !important;
-  align-items: flex-start !important;
-}
-
-.rp-header-accentbar .rp-contact {
-  margin-top: 8px !important;
-  justify-content: flex-start !important;
 }
 
 .rp-accentbar-name-block h1 { font-size: 30px; margin: 0 0 4px; }
@@ -1466,14 +1177,12 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 }
 
 .rp-premium5 .rp-stitle {
+  border-bottom: none;
   color: var(--accent-readable);
   font-size: var(--rp-fs-stitle);
   font-weight: 800;
   letter-spacing: 0.06em;
   margin-bottom: 8px;
-}
-.rp-premium5 .rp-stitle[data-divider] {
-  border-bottom: none !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -1492,32 +1201,11 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-sidebar-dark .rp-sidebar-role { color: rgba(255,255,255,0.65); }
 .rp-sidebar-dark .rp-contact { color: rgba(255,255,255,0.72); flex-direction: column; font-size: 10.5px; gap: 4px; }
 .rp-sidebar-dark .rp-stitle { color: rgba(255,255,255,0.55); border-bottom-color: rgba(255,255,255,0.2); }
-.rp-sidebar-dark .rp-item-head,
-.rp-sidebar-dark .rp-item-head strong,
-.rp-sidebar-dark .rp-item-head span,
-.rp-sidebar-dark .rp-compact-head,
-.rp-sidebar-dark .rp-compact-head *,
-.rp-sidebar-dark .rp-item-sub,
-.rp-sidebar-dark .rp-item-sub span,
-.rp-sidebar-dark .rp-compact-date,
-.rp-sidebar-dark .rp-compact-subtitle {
-  color: rgba(255,255,255,0.9);
-}
 .rp-sidebar-dark .rp-skill-name { color: rgba(255,255,255,0.9); }
 .rp-sidebar-dark .rp-bar { background: rgba(255,255,255,0.15); }
 .rp-sidebar-dark .rp-bar span { background: rgba(255,255,255,0.8); }
 .rp-sidebar-dark .rp-dots .dot { border-color: rgba(255,255,255,0.6); background: transparent; }
 .rp-sidebar-dark .rp-dots .dot.filled { background: rgba(255,255,255,0.85); }
-.rp-sidebar-dark .rp-desc-list,
-.rp-sidebar-dark .rp-item-desc ul,
-.rp-sidebar-dark .rp-desc-list li,
-.rp-sidebar-dark .rp-item-desc li,
-.rp-sidebar-dark .rp-desc-list li::marker,
-.rp-sidebar-dark .rp-item-desc ul > li::marker,
-.rp-sidebar-dark .rp-desc-list li::before,
-.rp-sidebar-dark .rp-item-desc ul > li::before {
-  color: rgba(255,255,255,0.9) !important;
-}
 .rp-premium6 .rp-photo { border: 3px solid rgba(255,255,255,0.3); }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -1541,7 +1229,7 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 }
 
 .rp-premium7 .rp-body { padding: 16px 28px 28px; }
-.rp-premium7 .rp-stitle { font-size: var(--rp-fs-stitle); }
+.rp-premium7 .rp-stitle { border-bottom: 2px solid var(--accent); font-size: var(--rp-fs-stitle); }
 
 /* ═══════════════════════════════════════════════════════════════════════════
    PREMIUM8 — Infographic
@@ -1652,7 +1340,7 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 @media print {
   @page {
     size: letter;
-    margin-top: 0px;
+    margin-top: 40px;
     margin-bottom: 48px;
     margin-left: 0;
     margin-right: 0;
@@ -1717,7 +1405,12 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
     white-space: nowrap !important;
   }
 
-
+  .rp-contact-link {
+    color: #1a5fb4 !important;
+    text-decoration: underline !important;
+    text-decoration-thickness: 0.5px !important;
+    text-underline-offset: 1.5px;
+  }
   
   /* Force grid and column spacing in templates */
   /* Enforce proper text contrast */
@@ -1770,40 +1463,19 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
     margin-bottom: 12px !important;
   }
 
-  .rp-sidebar .rp-contact {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 4px !important;
-    margin-bottom: 12px !important;
-  }
-
-  /* Contact items: nowrap prevents phone numbers and emails from splitting
-     mid-value. Use .rp-contact-item (class selector) to beat the span
-     descendant selector [.rp-contact span] which has higher specificity. */
-  .rp-contact .rp-contact-item {
+  .rp-contact span,
+  .rp-ats-contact-item {
     display: inline !important;
-    white-space: nowrap !important;
-    margin-right: 12px !important;
     float: none !important;
-  }
-
-  .rp-sidebar .rp-contact .rp-contact-item {
-    display: flex !important;
-    white-space: nowrap !important;
-    margin-right: 0 !important;
-    float: none !important;
-  }
-
-  .rp-contact .rp-contact-sep {
-    display: inline !important;
+    margin-right: 14px !important;
     white-space: normal !important;
-    margin: 0 2px !important;
   }
 
   .rp-contact a,
   .rp-ats-contact a,
-  .header-link,
-  .resume-link {
+  .rp-links a,
+  a.rp-project-link,
+  a.rp-custom-link {
     display: inline !important;
     position: static !important;
     float: none !important;
@@ -1907,10 +1579,10 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
     break-inside: avoid !important;
   }
 
-  /* Allow sections to split naturally across pages */
+  /* Keep sections together whenever possible */
   .rp-section, section {
-    page-break-inside: auto !important;
-    break-inside: auto !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
   }
 
   .rp-desc-list,
@@ -1927,17 +1599,13 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
     break-inside: avoid !important;
   }
 
-  .rp-desc-list li::marker,
-  .rp-item-desc ul > li::marker {
-    color: currentColor !important;
-  }
-
   .resume-preview:not([data-bullet="none"]) .rp-desc-list > li,
   .resume-preview:not([data-bullet="none"]) .rp-item-desc ul > li {
     display: list-item !important;
   }
 
   /* Force block layout instead of CSS grid/flex/table to prevent multi-page column collapse and whitespace gaps in Chromium */
+  .rp-layout-sidebar,
   .rp-compact-grid,
   .rp-layout-twocol,
   .rp-ats-twocol,
@@ -1954,6 +1622,7 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
     clear: both !important;
   }
 
+  .rp-layout-sidebar::after,
   .rp-compact-grid::after,
   .rp-layout-twocol::after,
   .rp-ats-twocol::after,
@@ -1982,6 +1651,8 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
     margin: 0 !important;
   }
 
+  .rp-layout-sidebar > .rp-sidebar,
+  .rp-layout-sidebar > .rp-main-col,
   .rp-compact-grid > .rp-main-col,
   .rp-compact-grid > .rp-aside-col,
   .rp-layout-twocol > .rp-main-col,
@@ -1997,93 +1668,6 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
     margin: 0 0 16px 0 !important;
     border: none !important;
     padding: 0 !important;
-  }
-
-  /* Keep split layout sidebar column structure on print.
-     Must use flex (not grid) — Chromium's PDF engine collapses multi-page grid columns.
-     align-items:stretch on the parent makes both columns match the tallest column height,
-     exactly like the screen display:grid behaviour.
-     min-height:100% on the sidebar explicitly overrides the generic height:auto !important
-     rule so Chromium's flex engine honours the cross-axis stretch. */
-  .rp-layout-sidebar {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: stretch !important;
-    width: 100% !important;
-    height: auto !important;
-  }
-
-  .rp-layout-sidebar > .rp-sidebar {
-    width: 210px !important;
-    flex-shrink: 0 !important;
-    float: none !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-self: stretch !important;
-    /* Override the generic .rp-sidebar { height:auto !important } so Chromium
-       respects the flex cross-axis stretch and fills to the main column height. */
-    min-height: 100% !important;
-    margin: 0 !important;
-    box-sizing: border-box !important;
-  }
-
-  .rp-layout-sidebar > .rp-main-col {
-    flex-grow: 1 !important;
-    width: calc(100% - 210px) !important;
-    float: none !important;
-    display: block !important;
-    margin: 0 !important;
-    box-sizing: border-box !important;
-  }
-
-  .rp-sidebar-dark .rp-sidebar-name,
-  .rp-sidebar-dark .rp-sidebar-role,
-  .rp-sidebar-dark .rp-contact,
-  .rp-sidebar-dark .rp-contact a,
-  .rp-sidebar-dark .rp-contact-link,
-  .rp-sidebar-dark .rp-stitle,
-  .rp-sidebar-dark .rp-skill-name,
-  .rp-sidebar-dark .rp-skill-level,
-  .rp-sidebar-dark .rp-item-head,
-  .rp-sidebar-dark .rp-item-head strong,
-  .rp-sidebar-dark .rp-item-sub,
-  .rp-sidebar-dark .rp-item-sub span,
-  .rp-sidebar-dark .rp-item-desc,
-  .rp-sidebar-dark .rp-item-desc li,
-  .rp-sidebar-dark .rp-item-desc strong,
-  .rp-sidebar-dark .rp-compact-head,
-  .rp-sidebar-dark .rp-compact-head *,
-  .rp-sidebar-dark .rp-summary,
-  .rp-sidebar-dark .rp-tags .rp-tag,
-  .rp-sidebar-dark .rp-compact-date,
-  .rp-sidebar-dark .rp-compact-subtitle,
-  .rp-sidebar-dark .rp-target-role-badge,
-  .rp-sidebar-dark .rp-role-seeking-label,
-  .rp-sidebar-dark .rp-desc-list li::marker,
-  .rp-sidebar-dark .rp-item-desc ul > li::marker {
-    color: #ffffff !important;
-  }
-
-  [data-hstyle="full-bleed"] .rp-sidebar,
-  [data-hstyle="full-bleed"] .rp-sidebar *,
-  [data-hstyle="fullBleed"] .rp-sidebar,
-  [data-hstyle="fullBleed"] .rp-sidebar * {
-    color: #ffffff !important;
-  }
-
-  [data-hstyle="full-bleed"] .rp-sidebar .rp-compact-head,
-  [data-hstyle="full-bleed"] .rp-sidebar .rp-compact-head *,
-  [data-hstyle="fullBleed"] .rp-sidebar .rp-compact-head,
-  [data-hstyle="fullBleed"] .rp-sidebar .rp-compact-head * {
-    color: #ffffff !important;
-    opacity: 1 !important;
-  }
-
-  [data-hstyle="full-bleed"] .rp-sidebar .rp-desc-list li::marker,
-  [data-hstyle="full-bleed"] .rp-sidebar .rp-item-desc ul > li::marker,
-  [data-hstyle="fullBleed"] .rp-sidebar .rp-desc-list li::marker,
-  [data-hstyle="fullBleed"] .rp-sidebar .rp-item-desc ul > li::marker {
-    color: #ffffff !important;
   }
 }
 
@@ -2128,77 +1712,29 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 
 /* Target Role Styling in Preview */
 .rp-target-role-badge {
-  display: inline-flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 4px;
-  font-size: 12px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.02em !important;
-  background: #f3f4f6 !important;
-  border: 1px solid #d1d5db !important;
-  color: #1f2937 !important;
-  /* min-height + line-height prevent card-style headers from clipping 'Seeking:' */
-  padding: 4px 10px !important;
-  min-height: 24px !important;
-  border-radius: 999px !important;
-  margin-top: 6px !important;
-  box-shadow: none !important;
-  text-transform: none !important;
-  line-height: 1.4 !important;
-}
-
-/* "Seeking: " prefix label — distinguishes target role from current designation. */
-.rp-role-seeking-label {
-  font-size: 0.75em;
+  display: inline-block;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #4b5563 !important;
-  opacity: 1 !important; /* Do NOT use opacity */
-  margin-right: 2px;
-  white-space: nowrap;
+  letter-spacing: 0.1em;
+  background: var(--accent);
+  color: var(--on-accent);
+  padding: 3px 10px;
+  border-radius: 4px;
+  margin-top: 6px;
+  font-family: var(--rp-font-heading, sans-serif);
 }
 
-.rp-target-role-text {
-  color: #111827 !important;
-  font-weight: 700 !important;
+/* Let's style the badge for other header styles too */
+[data-hstyle="card"] .rp-target-role-badge {
+  background: var(--accent) !important;
+  color: #111410 !important;
 }
 
-/* Preserve readability of the seeking label on dark/full-bleed backgrounds */
-.rp-sidebar-dark .rp-role-seeking-label,
-[data-hstyle="full-bleed"] .rp-role-seeking-label,
-[data-hstyle="fullBleed"] .rp-role-seeking-label {
-  color: rgba(255, 255, 255, 0.8) !important;
-  opacity: 1 !important;
+[data-hstyle="full-bleed"] .rp-target-role-badge {
+  background: var(--on-accent) !important;
+  color: var(--accent-readable) !important;
 }
-
-.rp-sidebar-dark .rp-target-role-text,
-[data-hstyle="full-bleed"] .rp-target-role-text,
-[data-hstyle="fullBleed"] .rp-target-role-text {
-  color: #ffffff !important;
-}
-
-/* Sidebar target role badge — smaller to fit narrow column */
-.rp-sidebar .rp-target-role-badge {
-  font-size: 11.5px !important;
-  margin-top: 3px !important;
-  letter-spacing: 0 !important;
-}
-
-.rp-sidebar-dark .rp-target-role-badge {
-  background: rgba(255, 255, 255, 0.15) !important;
-  border-color: rgba(255, 255, 255, 0.3) !important;
-  color: #ffffff !important;
-}
-
-[data-hstyle="full-bleed"] .rp-target-role-badge,
-[data-hstyle="fullBleed"] .rp-target-role-badge {
-  background: rgba(255, 255, 255, 0.15) !important;
-  border-color: rgba(255, 255, 255, 0.3) !important;
-  color: #ffffff !important;
-}
-
 
 /* Pulse animation for key scanning landmarks */
 @keyframes rp-scan-pulse {
@@ -2221,13 +1757,8 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 }
 
 @media print {
-  .resume-preview:not([data-hstyle="card"]) {
-    padding-top: 0 !important;
-  }
-  .resume-preview[data-hstyle="card"] {
-    padding-top: 20px !important;
-  }
   .resume-preview {
+    padding-top: 0 !important;
     padding-bottom: 0 !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
@@ -2285,12 +1816,12 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 /* ATS headers */
 .rp-ats-header {
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 18px;
 }
 
 .rp-ats-header-left {
   text-align: left;
-  margin-bottom: 10px;
+  margin-bottom: 18px;
 }
 
 .rp-ats-name {
@@ -2393,14 +1924,14 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-ats-senior .rp-stitle,
 .rp-ats-lead .rp-stitle,
 .rp-ats-intern .rp-stitle,
-.rp-ats-experienced .rp-stitle,
-.rp-engineer-ats .rp-stitle {
+.rp-ats-experienced .rp-stitle {
   font-family: var(--rp-font-heading, "Inter", sans-serif);
   font-size: var(--rp-fs-stitle);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--accent-readable);
+  border-bottom-color: var(--accent) !important;
   padding-bottom: 2px;
   margin-top: 4px;
   margin-bottom: 12px;
@@ -2491,7 +2022,7 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 
 /* ── Academic CV Template Family ────────────────────────────────────────── */
 .rp-academic_cv {
-  padding: 32px 40px;
+  padding: 40px 48px;
 }
 
 .rp-academic-header {
@@ -2529,6 +2060,7 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+  border-bottom: 2px solid #222;
   padding-bottom: 3px;
   margin-top: 18px;
   margin-bottom: 12px;
@@ -2575,7 +2107,6 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   padding-left: 18px;
   margin: 4px 0 0;
   list-style-type: disc;       /* default — overridden by [data-bullet] on root */
-  list-style-position: outside;
   font-size: var(--rp-fs-body);
   color: #333;
   font-weight: 400;
@@ -2589,11 +2120,6 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   font-size: var(--rp-fs-body);
   color: #333;
   font-weight: 400;
-}
-
-.resume-preview .rp-desc-list li::marker,
-.resume-preview .rp-item-desc ul > li::marker {
-  color: currentColor;
 }
 
 .resume-preview:not([data-bullet="none"]) .rp-desc-list > li,
@@ -2632,7 +2158,7 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .resume-preview[data-bullet="dash"] .rp-desc-list li,
 .resume-preview[data-bullet="dash"] .rp-item-desc ul li { position: relative; }
 .resume-preview[data-bullet="dash"] .rp-desc-list li::before,
-.resume-preview[data-bullet="dash"] .rp-item-desc ul li::before { content: '–'; position: absolute; left: -14px; top: 0; color: currentColor; }
+.resume-preview[data-bullet="dash"] .rp-item-desc ul li::before { content: '–'; position: absolute; left: -14px; top: 0; color: #555; }
 
 /* Arrow: suppress default marker, inject accent-colored › via ::before */
 .resume-preview[data-bullet="arrow"] .rp-desc-list,
@@ -2640,7 +2166,7 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .resume-preview[data-bullet="arrow"] .rp-desc-list li,
 .resume-preview[data-bullet="arrow"] .rp-item-desc ul li { position: relative; }
 .resume-preview[data-bullet="arrow"] .rp-desc-list li::before,
-.resume-preview[data-bullet="arrow"] .rp-item-desc ul li::before { content: '›'; position: absolute; left: -14px; top: 0; color: currentColor; font-weight: 700; }
+.resume-preview[data-bullet="arrow"] .rp-item-desc ul li::before { content: '›'; position: absolute; left: -14px; top: 0; color: var(--accent); font-weight: 700; }
 
 /* None: suppress default marker and remove padding */
 .resume-preview[data-bullet="none"] .rp-desc-list,
@@ -2700,664 +2226,4 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-header-accentbar,
 .rp-header-tech {
   display: flex;
-}
-
-/* ── Consulting BCG (McKinsey Style) ────────────────────────────────────── */
-.rp-consulting-bcg {
-  padding: 30px 45px 15px;
-}
-.rp-consulting-bcg .rp-ats-name-serif {
-  font-size: 26px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 2px;
-}
-.rp-consulting-bcg .rp-ats-role-serif {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-.rp-consulting-bcg .rp-ats-contact {
-  justify-content: center;
-  font-size: 10px;
-  margin-top: 4px;
-}
-
-/* ── Tech FAANG ─────────────────────────────────────────────────────────── */
-.rp-tech-faang {
-  padding: 30px 45px 15px;
-}
-.rp-tech-faang .rp-ats-name {
-  font-size: 26px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  margin-bottom: 2px;
-}
-.rp-tech-faang .rp-ats-role-left {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--accent-readable);
-  margin-bottom: 6px;
-}
-.rp-tech-faang .rp-ats-contact {
-  font-size: 10px;
-  gap: 4px 12px;
-}
-
-/* ── Harvard ATS ────────────────────────────────────────────────────────── */
-.rp-harvard-ats {
-  padding: 32px 48px 12px;
-}
-.rp-harvard-ats .rp-ats-name-serif {
-  font-size: 24px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  margin-bottom: 2px;
-}
-.rp-harvard-ats .rp-ats-role-serif {
-  font-size: 11.5px;
-  letter-spacing: 0.05em;
-  font-style: italic;
-  margin-bottom: 6px;
-}
-.rp-harvard-ats .rp-ats-contact {
-  font-size: 10px;
-  margin-top: 4px;
-}
-.rp-harvard-ats .rp-rule {
-  border: none;
-  border-top: 1.5px solid #222;
-  margin: 8px 48px;
-}
-
-/* ── Swiss Minimal ──────────────────────────────────────────────────────── */
-.rp-swiss-minimal {
-  padding: 35px 45px 15px;
-}
-.rp-swiss-minimal .rp-ats-name {
-  font-size: 28px;
-  font-weight: 300;
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-}
-.rp-swiss-minimal .rp-ats-role-left {
-  font-size: 11px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  font-weight: 500;
-  color: #666;
-  margin-bottom: 8px;
-}
-.rp-swiss-minimal .rp-ats-contact {
-  font-size: 9.5px;
-  color: #666;
-  border-top: 1px solid #eee;
-  padding-top: 8px;
-}
-
-/* Hardening: ensure all text elements inside any template preview wrap cleanly and never break container bounds */
-.resume-preview,
-.resume-preview *,
-.rp-section,
-.rp-item,
-.rp-item-desc,
-.rp-contact,
-.rp-links,
-.rp-citation-item,
-.rp-compact-item,
-.rp-publication-meta,
-.rp-citation-authors {
-  overflow-wrap: anywhere !important;
-  word-break: break-word !important;
-  word-wrap: break-word !important;
-  max-width: 100% !important;
-  min-width: 0 !important;
-  box-sizing: border-box !important;
-}
-
-/* Hard contrast and visibility for publications and other lists */
-.rp-citation-item, .rp-compact-item {
-  color: #111111 !important;
-  opacity: 1 !important;
-}
-
-.rp-publication-title, .rp-citation-title {
-  color: #111111 !important;
-  opacity: 1 !important;
-  font-weight: 700 !important;
-}
-
-.rp-publication-meta, .rp-publication-authors, .rp-publication-abstract, .rp-citation-authors, .rp-citation-prefix, .rp-citation-date {
-  color: #333333 !important;
-  opacity: 1 !important;
-}
-
-/* Ensure links and text block styling inside ResumePreview does not overflow */
-.resume-preview a,
-.resume-preview p,
-.resume-preview span,
-.resume-preview li,
-.resume-preview h1,
-.resume-preview h2,
-.resume-preview h3,
-.resume-preview h4,
-.resume-preview strong {
-  overflow-wrap: anywhere !important;
-  word-break: break-word !important;
-  word-wrap: break-word !important;
-  min-width: 0 !important;
-}
-
-
-
-/* ─── Frame (Engineer ATS / Devaguru Inspired) Layout ─── */
-.rp-engineer-ats {
-  font-family: 'Georgia', 'Times New Roman', serif !important;
-  padding: 32px 40px;
-  color: #111111;
-  --rp-fs-base: 10.5px;
-  --rp-fs-name: 26px;
-  --rp-fs-stitle: 12px;
-  --rp-fs-item-title: 11px;
-  --rp-fs-item-sub: 10.5px;
-  --rp-fs-body: 10.5px;
-  --rp-fs-meta: 10px;
-  --rp-lh-body: 1.35;
-  font-size: var(--rp-fs-base);
-  line-height: var(--rp-lh-body);
-}
-
-.rp-engineer-ats h1,
-.rp-engineer-ats h2,
-.rp-engineer-ats h3,
-.rp-engineer-ats strong,
-.rp-engineer-ats a,
-.rp-engineer-ats p,
-.rp-engineer-ats li,
-.rp-engineer-ats span {
-  font-family: 'Georgia', 'Times New Roman', serif !important;
-}
-
-.rp-engineer-header {
-  text-align: center;
-  margin-bottom: 16px;
-}
-
-.rp-engineer-name {
-  font-size: var(--rp-fs-name) !important;
-  font-weight: normal !important;
-  color: #111111 !important;
-  margin: 0 0 6px;
-}
-
-.rp-engineer-contacts-grid {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  font-size: 10.5px;
-  margin-top: 6px;
-}
-
-.rp-engineer-contacts-left {
-  text-align: left;
-}
-
-.rp-engineer-contacts-right {
-  text-align: right;
-}
-
-.rp-engineer-contact-item {
-  margin-bottom: 2px;
-  color: #111111;
-}
-
-.rp-engineer-contact-item strong {
-  font-weight: bold !important;
-}
-
-/* Thin full-width section dividers */
-.rp-engineer-ats .rp-stitle {
-  font-size: var(--rp-fs-stitle) !important;
-  font-weight: bold !important;
-  text-transform: capitalize !important;
-  letter-spacing: 0.02em !important;
-  color: #111111 !important;
-  padding-bottom: 2px;
-  margin-top: 14px !important;
-  margin-bottom: 8px !important;
-}
-
-/* Experience Hierarchy Visual Row Swap */
-.rp-engineer-ats .rp-experience-list .rp-item {
-  display: flex !important;
-  flex-direction: column !important;
-  margin-bottom: 10px !important;
-}
-
-.rp-engineer-ats .rp-experience-list .rp-item-sub {
-  order: 1 !important;
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: baseline !important;
-  width: 100% !important;
-}
-
-.rp-engineer-ats .rp-experience-list .rp-item-sub span:first-child {
-  font-weight: bold !important;
-  color: #111111 !important;
-}
-
-.rp-engineer-ats .rp-experience-list .rp-item-head {
-  order: 2 !important;
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: baseline !important;
-  width: 100% !important;
-  margin-top: 1px !important;
-}
-
-.rp-engineer-ats .rp-experience-list .rp-item-head strong {
-  font-weight: normal !important;
-  color: #444444 !important;
-  font-style: italic !important;
-}
-
-.rp-engineer-ats .rp-experience-list .rp-item-head span {
-  font-size: 10px;
-  color: #444444;
-}
-
-/* General Layout Tights */
-.rp-engineer-ats .rp-item {
-  margin-bottom: 10px !important;
-}
-
-.rp-engineer-ats .rp-item-head {
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: baseline !important;
-  width: 100% !important;
-}
-
-.rp-engineer-ats .rp-item-sub {
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: baseline !important;
-  width: 100% !important;
-  margin-top: 1px !important;
-}
-
-.rp-engineer-ats .rp-education-gpa {
-  margin-top: 1px !important;
-}
-
-/* Bullets spacing and circular bullets for experience */
-.rp-engineer-ats .rp-item-desc {
-  margin-top: 2px !important;
-}
-
-.rp-engineer-ats .rp-item-desc ul {
-  margin-top: 2px !important;
-  margin-bottom: 0 !important;
-  padding-left: 18px !important;
-}
-
-.rp-engineer-ats .rp-item-desc ul > li {
-  margin-bottom: 1px !important;
-  line-height: 1.35 !important;
-}
-
-.rp-engineer-ats .rp-experience-list .rp-item-desc ul > li,
-.rp-engineer-ats .rp-projects-list .rp-item-desc ul > li {
-  list-style-type: circle !important;
-}
-
-/* ==========================================================================
-   PROFESSIONAL SIDEBAR REDESIGN OVERRIDES
-   ========================================================================== */
-
-/* Consolidated sidebar styles are handled below in light vs dark sensitivity rules */
-
-/* ── Card sidebar header — CANONICAL DEFINITION ──────────────────────────
-   This is the single source of truth for card-style sidebar header geometry,
-   color, and containment. All three sidebar variants (light, infographic, dark)
-   share geometry; colors are split by sidebar type.
-   ─────────────────────────────────────────────────────────────────────────── */
-
-/* Shared geometry + containment for all card sidebar types */
-.resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header,
-.resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header,
-.resume-preview[data-hstyle="card"] .rp-sidebar-dark .rp-sidebar-header {
-  border-radius: 12px !important;
-  padding: 20px 24px !important;
-  margin: 20px 12px 28px 12px !important;
-  overflow: hidden !important;
-  box-sizing: border-box !important;
-  min-width: 0 !important;
-  word-wrap: break-word !important;
-  overflow-wrap: anywhere !important;
-}
-
-/* Light / infographic sidebar card: white background with subtle border */
-.resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header,
-.resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header {
-  background: #ffffff !important;
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
-}
-
-/* Dark sidebar card: translucent overlay with bright border */
-.resume-preview[data-hstyle="card"] .rp-sidebar-dark .rp-sidebar-header {
-  background: rgba(255, 255, 255, 0.08) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
-}
-
-/* Typography hierarchy inside card header style */
-.resume-preview[data-hstyle="card"] .rp-sidebar .rp-sidebar-header .rp-sidebar-name {
-  font-size: 22px !important;
-  font-weight: 700 !important;
-  line-height: 1.2 !important;
-  word-wrap: break-word !important;
-  overflow-wrap: anywhere !important;
-}
-
-.resume-preview[data-hstyle="card"] .rp-sidebar-dark .rp-sidebar-header .rp-sidebar-name {
-  color: #FFFFFF !important;
-}
-
-.resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header .rp-sidebar-name,
-.resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header .rp-sidebar-name {
-  color: #111111 !important;
-}
-
-.resume-preview[data-hstyle="card"] .rp-sidebar .rp-sidebar-header .rp-sidebar-role {
-  font-size: 12.5px !important;
-  font-weight: 600 !important;
-  margin-top: 6px !important;
-  line-height: 1.25 !important;
-  word-wrap: break-word !important;
-  overflow-wrap: anywhere !important;
-}
-
-.resume-preview[data-hstyle="card"] .rp-sidebar-dark .rp-sidebar-header .rp-sidebar-role {
-  color: rgba(255, 255, 255, 0.95) !important;
-}
-
-.resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header .rp-sidebar-role,
-.resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header .rp-sidebar-role {
-  color: var(--accent-readable, #2563EB) !important;
-}
-
-.resume-preview[data-hstyle="card"] .rp-sidebar .rp-sidebar-header .rp-contact {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 8px !important;
-  margin-top: 12px !important;
-  font-size: 11px !important;
-  word-wrap: break-word !important;
-  overflow-wrap: anywhere !important;
-  min-width: 0 !important;
-}
-
-.resume-preview[data-hstyle="card"] .rp-sidebar .rp-sidebar-header .rp-contact a {
-  font-size: 11px !important;
-  word-wrap: break-word !important;
-  overflow-wrap: anywhere !important;
-  min-width: 0 !important;
-}
-
-.resume-preview[data-hstyle="card"] .rp-sidebar-dark .rp-sidebar-header .rp-contact,
-.resume-preview[data-hstyle="card"] .rp-sidebar-dark .rp-sidebar-header .rp-contact a {
-  color: rgba(255, 255, 255, 0.9) !important;
-}
-
-.resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header .rp-contact,
-.resume-preview[data-hstyle="card"] .rp-sidebar-light .rp-sidebar-header .rp-contact a,
-.resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header .rp-contact,
-.resume-preview[data-hstyle="card"] .rp-sidebar-infographic .rp-sidebar-header .rp-contact a {
-  color: #444444 !important;
-}
-
-/* Target role visibility — align with the surrounding theme colour */
-.rp-sidebar-dark .rp-target-role-badge,
-[data-template="premium6"] .rp-target-role-badge,
-[data-hstyle="full-bleed"] .rp-target-role-badge,
-[data-hstyle="fullBleed"] .rp-target-role-badge {
-  color: var(--badge-text, #ffffff) !important;
-  background: var(--badge-bg, #111410) !important;
-  border-color: var(--badge-seeking, #2a2a2a) !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-.rp-sidebar-dark .rp-role-seeking-label,
-[data-template="premium6"] .rp-role-seeking-label,
-[data-hstyle="full-bleed"] .rp-role-seeking-label,
-[data-hstyle="fullBleed"] .rp-role-seeking-label {
-  opacity: 1 !important;
-  color: var(--badge-seeking, #a0a0a0) !important;
-}
-
-.rp-sidebar-dark .rp-target-role-text,
-[data-template="premium6"] .rp-target-role-text,
-[data-hstyle="full-bleed"] .rp-target-role-text,
-[data-hstyle="fullBleed"] .rp-target-role-text {
-  color: var(--badge-text, #ffffff) !important;
-  opacity: 1 !important;
-}
-
-/* Light sidebar */
-.rp-sidebar-light .rp-sidebar-header .rp-target-role-badge,
-.rp-sidebar-infographic .rp-sidebar-header .rp-target-role-badge {
-  color: #1f2937 !important;
-  background: #f3f4f6 !important;
-  border: 1px solid #d1d5db !important;
-}
-
-/* Base link styling inside dark sidebars to ensure readability */
-.rp-sidebar-dark a {
-  color: #FFFFFF !important;
-  opacity: 0.95 !important;
-  text-decoration: underline !important;
-  text-decoration-color: rgba(255, 255, 255, 0.5) !important;
-}
-
-.rp-sidebar-dark a:hover {
-  color: rgba(255, 255, 255, 0.8) !important;
-}
-
-/* Base link styling inside light sidebars to ensure readability */
-.rp-sidebar-light a, .rp-sidebar-infographic a {
-  color: var(--accent-readable, #2563EB) !important;
-  opacity: 1 !important;
-  text-decoration: underline !important;
-  text-decoration-color: var(--accent-readable, #2563EB) !important;
-}
-
-.rp-sidebar-light a:hover, .rp-sidebar-infographic a:hover {
-  color: var(--accent, #1d4ed8) !important;
-}
-
-/* Increase contrast for secondary/meta text inside technical profiles & sidebars */
-.rp-sidebar-dark .rp-skill-level,
-.rp-sidebar-dark .rp-skill-bar-wrap small,
-.rp-sidebar-dark .rp-interests-list li,
-.rp-sidebar-dark .rp-tags .rp-tag,
-.rp-sidebar-dark .rp-item-desc,
-.rp-sidebar-dark .rp-compact-date,
-.rp-sidebar-dark .rp-compact-title,
-.rp-sidebar-dark .rp-compact-url {
-  color: #E5E7EB !important;
-  opacity: 1 !important;
-}
-
-.rp-sidebar-light .rp-skill-level,
-.rp-sidebar-light .rp-skill-bar-wrap small,
-.rp-sidebar-light .rp-interests-list li,
-.rp-sidebar-light .rp-tags .rp-tag,
-.rp-sidebar-light .rp-item-desc,
-.rp-sidebar-light .rp-compact-date,
-.rp-sidebar-light .rp-compact-title,
-.rp-sidebar-light .rp-compact-url,
-.rp-sidebar-infographic .rp-skill-level,
-.rp-sidebar-infographic .rp-skill-bar-wrap small,
-.rp-sidebar-infographic .rp-interests-list li,
-.rp-sidebar-infographic .rp-tags .rp-tag,
-.rp-sidebar-infographic .rp-item-desc,
-.rp-sidebar-infographic .rp-compact-date,
-.rp-sidebar-infographic .rp-compact-title,
-.rp-sidebar-infographic .rp-compact-url {
-  color: #1F2937 !important;
-  opacity: 1 !important;
-}
-
-/* Split technical profile rows need explicit contrast for compact title blocks. */
-.rp-sidebar-dark .rp-compact-head,
-.rp-sidebar-dark .rp-compact-head strong,
-.rp-sidebar-dark .rp-compact-head span,
-.rp-sidebar-dark .rp-compact-head a {
-  color: rgba(255, 255, 255, 0.92) !important;
-  opacity: 1 !important;
-}
-
-/* Light sidebar card background/border defined in canonical block above (~line 2867).
-   This comment replaces the redundant third definition that was causing cascade confusion. */
-
-/* ── ATS Badge — full-bleed header style visibility ──────────────────────── */
-/* When the header has a full-bleed accent background, the default badge colors
-   (light background, accent text) become invisible. Override to use on-accent palette. */
-[data-hstyle="full-bleed"] .rp-ats-badge,
-[data-hstyle="full-bleed"] .rp-ats-badge-left,
-[data-hstyle="fullBleed"] .rp-ats-badge,
-[data-hstyle="fullBleed"] .rp-ats-badge-left {
-  color: var(--badge-text, #ffffff) !important;
-  background: var(--badge-bg, #111410) !important;
-  border-color: var(--badge-seeking, #2a2a2a) !important;
-}
-
-/* ── Academic CV badge — full-bleed override ─────────────────────────────── */
-[data-hstyle="full-bleed"] .rp-academic-badge,
-[data-hstyle="fullBleed"] .rp-academic-badge {
-  color: var(--badge-text, #ffffff) !important;
-  background: var(--badge-bg, #111410) !important;
-  border: 1px solid var(--badge-seeking, #2a2a2a) !important;
-}
-
-/* ── Technical Profiles — Platform name inherits template theme colour ─────── */
-/* Platform NAME (no URL): inherits surrounding text colour via parent chain.    */
-/* Only the URL anchor (.rp-tech-profile-url) and its icon may remain blue-ish   */
-/* but only when NOT inside a dark/full-bleed context.                            */
-
-.rp-tech-profile-name {
-  /* Inherit from parent (rp-compact-title which itself inherits from rp-compact-head
-     → section → sidebar/main col). No hardcoded color. */
-  color: inherit;
-}
-
-/* URL anchor: blue+underline only on white/light backgrounds */
-.rp-tech-profile-url {
-  color: var(--accent-readable, #2563EB);
-  text-decoration: underline;
-  text-decoration-thickness: 0.5px;
-  text-underline-offset: 1.5px;
-}
-
-.rp-tech-profile-date {
-  color: #4B5563;
-}
-
-.rp-tech-profile-highlight,
-.rp-tech-profile-ranking,
-.rp-tech-profile-desc,
-.rp-tech-profile-highlight .rp-desc-text,
-.rp-tech-profile-ranking .rp-desc-text,
-.rp-tech-profile-desc .rp-desc-text,
-.rp-tech-profile-highlight li,
-.rp-tech-profile-ranking li,
-.rp-tech-profile-desc li {
-  color: #4B5563;
-}
-
-/* Dark sidebar: platform name, URL and meta all white */
-.rp-sidebar-dark .rp-tech-profile-name {
-  color: inherit; /* inherits #fff from .rp-sidebar-dark chain */
-}
-.rp-sidebar-dark .rp-tech-profile-url {
-  /* URL still distinguishable but adapted for dark background */
-  color: rgba(255,255,255,0.9) !important;
-  text-decoration-color: rgba(255,255,255,0.4) !important;
-}
-.rp-sidebar-dark .rp-tech-profile-date {
-  color: rgba(255,255,255,0.65) !important;
-}
-.rp-sidebar-dark .rp-tech-profile-highlight,
-.rp-sidebar-dark .rp-tech-profile-ranking,
-.rp-sidebar-dark .rp-tech-profile-desc,
-.rp-sidebar-dark .rp-tech-profile-highlight .rp-desc-text,
-.rp-sidebar-dark .rp-tech-profile-ranking .rp-desc-text,
-.rp-sidebar-dark .rp-tech-profile-desc .rp-desc-text,
-.rp-sidebar-dark .rp-tech-profile-highlight li,
-.rp-sidebar-dark .rp-tech-profile-ranking li,
-.rp-sidebar-dark .rp-tech-profile-desc li {
-  color: rgba(255,255,255,0.8) !important;
-}
-
-/* Full-bleed header: same white treatment as dark sidebar */
-[data-hstyle="full-bleed"] .rp-sidebar .rp-tech-profile-url,
-[data-hstyle="fullBleed"] .rp-sidebar .rp-tech-profile-url {
-  color: rgba(255,255,255,0.9) !important;
-  text-decoration-color: rgba(255,255,255,0.4) !important;
-}
-[data-hstyle="full-bleed"] .rp-sidebar .rp-tech-profile-date,
-[data-hstyle="fullBleed"] .rp-sidebar .rp-tech-profile-date {
-  color: rgba(255,255,255,0.65) !important;
-}
-
-/* Light sidebar: keep accent-readable blue for URL, inherit for name */
-.rp-sidebar-light .rp-tech-profile-name {
-  color: inherit;
-}
-.rp-sidebar-light .rp-tech-profile-url {
-  color: var(--accent-readable, #2563EB);
-}
-.rp-sidebar-light .rp-tech-profile-date {
-  color: #4B5563;
-}
-.rp-sidebar-light .rp-tech-profile-highlight,
-.rp-sidebar-light .rp-tech-profile-ranking,
-.rp-sidebar-light .rp-tech-profile-desc,
-.rp-sidebar-light .rp-tech-profile-highlight .rp-desc-text,
-.rp-sidebar-light .rp-tech-profile-ranking .rp-desc-text,
-.rp-sidebar-light .rp-tech-profile-desc .rp-desc-text,
-.rp-sidebar-light .rp-tech-profile-highlight li,
-.rp-sidebar-light .rp-tech-profile-ranking li,
-.rp-sidebar-light .rp-tech-profile-desc li {
-  color: #4B5563;
-}
-
-/* Infographic sidebar: same as light */
-.rp-sidebar-infographic .rp-tech-profile-name {
-  color: inherit;
-}
-.rp-sidebar-infographic .rp-tech-profile-url {
-  color: var(--accent-readable, #2563EB);
-}
-.rp-sidebar-infographic .rp-tech-profile-date {
-  color: #4B5563;
-}
-.rp-sidebar-infographic .rp-tech-profile-highlight,
-.rp-sidebar-infographic .rp-tech-profile-ranking,
-.rp-sidebar-infographic .rp-tech-profile-desc,
-.rp-sidebar-infographic .rp-tech-profile-highlight .rp-desc-text,
-.rp-sidebar-infographic .rp-tech-profile-ranking .rp-desc-text,
-.rp-sidebar-infographic .rp-tech-profile-desc .rp-desc-text,
-.rp-sidebar-infographic .rp-tech-profile-highlight li,
-.rp-sidebar-infographic .rp-tech-profile-ranking li,
-.rp-sidebar-infographic .rp-tech-profile-desc li {
-  color: #4B5563;
 }

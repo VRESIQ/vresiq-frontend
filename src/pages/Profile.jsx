@@ -232,8 +232,6 @@ const Profile = () => {
             <div style={{ display: "grid", gap: "1rem" }}>
               {[
                 { name: "Google", key: "google" },
-                { name: "Microsoft", key: "microsoft" },
-                { name: "Apple", key: "apple" },
                 { name: "Phone", key: "phone" }
               ].map(provider => {
                 const isLinked = providers[provider.key];
