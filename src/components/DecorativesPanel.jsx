@@ -196,46 +196,36 @@ const DecorativesPanel = ({ decoratives = {}, onChange }) => {
       </div>
 
       <div className="dec-toggles">
-        <label className="dec-toggle">
-          <input
-            type="checkbox"
-            checked={decoratives.pageBorder === "true"}
-            onChange={(e) => set("pageBorder", e.target.checked ? "true" : "false")}
-          />
-          <span>Page border</span>
-        </label>
-        <label className="dec-toggle">
-          <input
-            type="checkbox"
-            checked={decoratives.sectionNumbers === "true"}
-            onChange={(e) => set("sectionNumbers", e.target.checked ? "true" : "false")}
-          />
-          <span>Section numbers</span>
-        </label>
-        <label className="dec-toggle">
-          <input
-            type="checkbox"
-            checked={decoratives.highDensity === "true"}
-            onChange={(e) => set("highDensity", e.target.checked ? "true" : "false")}
-          />
-          <span>High-Density Spacing</span>
-        </label>
-        <label className="dec-toggle">
-          <input
-            type="checkbox"
-            checked={decoratives.linkStyle === "professional"}
-            onChange={(e) => set("linkStyle", e.target.checked ? "professional" : "standard")}
-          />
-          <span>Professional hyperlinks</span>
-        </label>
-        <label className="dec-toggle">
-          <input
-            type="checkbox"
-            checked={decoratives.accentLinks !== "false"}
-            onChange={(e) => set("accentLinks", e.target.checked ? "true" : "false")}
-          />
-          <span>Accent-colored links</span>
-        </label>
+        <ToggleSwitch
+          id="page-border"
+          label="Page border"
+          checked={decoratives.pageBorder === "true"}
+          onChange={(e) => set("pageBorder", e.target.checked ? "true" : "false")}
+        />
+        <ToggleSwitch
+          id="section-numbers"
+          label="Section numbers"
+          checked={decoratives.sectionNumbers === "true"}
+          onChange={(e) => set("sectionNumbers", e.target.checked ? "true" : "false")}
+        />
+        <ToggleSwitch
+          id="high-density"
+          label="High-Density Spacing"
+          checked={decoratives.highDensity === "true"}
+          onChange={(e) => set("highDensity", e.target.checked ? "true" : "false")}
+        />
+        <ToggleSwitch
+          id="link-style"
+          label="Professional hyperlinks"
+          checked={decoratives.linkStyle === "professional"}
+          onChange={(e) => set("linkStyle", e.target.checked ? "professional" : "standard")}
+        />
+        <ToggleSwitch
+          id="accent-links"
+          label="Accent-colored links"
+          checked={decoratives.accentLinks !== "false"}
+          onChange={(e) => set("accentLinks", e.target.checked ? "true" : "false")}
+        />
       </div>
     </div>
   );
