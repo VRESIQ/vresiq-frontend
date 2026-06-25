@@ -204,28 +204,53 @@ a.rp-inline-link,
   transition: color 0.15s ease;
 }
 
-/* Underlined & Theme Accent Color when Professional Hyperlink is OFF */
-.resume-preview:not([data-lstyle="professional"]) .resume-link,
-.resume-preview:not([data-lstyle="professional"]) a.rp-project-link,
-.resume-preview:not([data-lstyle="professional"]) a.rp-custom-link,
-.resume-preview:not([data-lstyle="professional"]) a.rp-inline-link,
-.resume-preview:not([data-lstyle="professional"]) .rp-links a,
-.resume-preview:not([data-lstyle="professional"]) .rp-cert-link,
-.resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-link {
+/* Underlined & Theme Accent Color when Professional Hyperlink is OFF and Accent-colored Links is ON */
+.resume-preview:not([data-lstyle="professional"])[data-accentlinks="true"] .resume-link,
+.resume-preview:not([data-lstyle="professional"])[data-accentlinks="true"] a.rp-project-link,
+.resume-preview:not([data-lstyle="professional"])[data-accentlinks="true"] a.rp-custom-link,
+.resume-preview:not([data-lstyle="professional"])[data-accentlinks="true"] a.rp-inline-link,
+.resume-preview:not([data-lstyle="professional"])[data-accentlinks="true"] .rp-links a,
+.resume-preview:not([data-lstyle="professional"])[data-accentlinks="true"] .rp-cert-link,
+.resume-preview:not([data-lstyle="professional"])[data-accentlinks="true"] .rp-tech-profile-link {
   color: var(--hyperlink-color, #2563EB) !important;
   text-decoration: underline !important;
   text-decoration-thickness: 0.5px !important;
   text-underline-offset: 1.5px !important;
 }
 
-.resume-preview:not([data-lstyle="professional"]) .resume-link:hover,
-.resume-preview:not([data-lstyle="professional"]) a.rp-project-link:hover,
-.resume-preview:not([data-lstyle="professional"]) a.rp-custom-link:hover,
-.resume-preview:not([data-lstyle="professional"]) a.rp-inline-link:hover,
-.resume-preview:not([data-lstyle="professional"]) .rp-links a:hover,
-.resume-preview:not([data-lstyle="professional"]) .rp-cert-link:hover,
-.resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-link:hover {
+.resume-preview:not([data-lstyle="professional"])[data-accentlinks="true"] .resume-link:hover,
+.resume-preview:not([data-lstyle="professional"])[data-accentlinks="true"] a.rp-project-link:hover,
+.resume-preview:not([data-lstyle="professional"])[data-accentlinks="true"] a.rp-custom-link:hover,
+.resume-preview:not([data-lstyle="professional"])[data-accentlinks="true"] a.rp-inline-link:hover,
+.resume-preview:not([data-lstyle="professional"])[data-accentlinks="true"] .rp-links a:hover,
+.resume-preview:not([data-lstyle="professional"])[data-accentlinks="true"] .rp-cert-link:hover,
+.resume-preview:not([data-lstyle="professional"])[data-accentlinks="true"] .rp-tech-profile-link:hover {
   opacity: 0.8 !important;
+  text-decoration: underline !important;
+}
+
+/* Underlined & Classic Browser Blue Color when Professional Hyperlink is OFF and Accent-colored Links is OFF */
+.resume-preview:not([data-lstyle="professional"])[data-accentlinks="false"] .resume-link,
+.resume-preview:not([data-lstyle="professional"])[data-accentlinks="false"] a.rp-project-link,
+.resume-preview:not([data-lstyle="professional"])[data-accentlinks="false"] a.rp-custom-link,
+.resume-preview:not([data-lstyle="professional"])[data-accentlinks="false"] a.rp-inline-link,
+.resume-preview:not([data-lstyle="professional"])[data-accentlinks="false"] .rp-links a,
+.resume-preview:not([data-lstyle="professional"])[data-accentlinks="false"] .rp-cert-link,
+.resume-preview:not([data-lstyle="professional"])[data-accentlinks="false"] .rp-tech-profile-link {
+  color: #2563EB !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 0.5px !important;
+  text-underline-offset: 1.5px !important;
+}
+
+.resume-preview:not([data-lstyle="professional"])[data-accentlinks="false"] .resume-link:hover,
+.resume-preview:not([data-lstyle="professional"])[data-accentlinks="false"] a.rp-project-link:hover,
+.resume-preview:not([data-lstyle="professional"])[data-accentlinks="false"] a.rp-custom-link:hover,
+.resume-preview:not([data-lstyle="professional"])[data-accentlinks="false"] a.rp-inline-link:hover,
+.resume-preview:not([data-lstyle="professional"])[data-accentlinks="false"] .rp-links a:hover,
+.resume-preview:not([data-lstyle="professional"])[data-accentlinks="false"] .rp-cert-link:hover,
+.resume-preview:not([data-lstyle="professional"])[data-accentlinks="false"] .rp-tech-profile-link:hover {
+  color: #1d4ed8 !important;
   text-decoration: underline !important;
 }
 
@@ -275,14 +300,29 @@ a.rp-inline-link,
     print-color-adjust: exact !important;
   }
 
-  .resume-preview:not([data-lstyle="professional"]) a.rp-project-link,
-  .resume-preview:not([data-lstyle="professional"]) a.rp-custom-link,
-  .resume-preview:not([data-lstyle="professional"]) a.rp-inline-link,
-  .resume-preview:not([data-lstyle="professional"]) .rp-links a,
-  .resume-preview:not([data-lstyle="professional"]) .rp-cert-link,
-  .resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-link,
-  .resume-preview:not([data-lstyle="professional"]) a {
+  .resume-preview:not([data-lstyle="professional"])[data-accentlinks="true"] a.rp-project-link,
+  .resume-preview:not([data-lstyle="professional"])[data-accentlinks="true"] a.rp-custom-link,
+  .resume-preview:not([data-lstyle="professional"])[data-accentlinks="true"] a.rp-inline-link,
+  .resume-preview:not([data-lstyle="professional"])[data-accentlinks="true"] .rp-links a,
+  .resume-preview:not([data-lstyle="professional"])[data-accentlinks="true"] .rp-cert-link,
+  .resume-preview:not([data-lstyle="professional"])[data-accentlinks="true"] .rp-tech-profile-link,
+  .resume-preview:not([data-lstyle="professional"])[data-accentlinks="true"] a {
     color: var(--hyperlink-color, #2563EB) !important;
+    text-decoration: underline !important;
+    text-decoration-thickness: 0.5px !important;
+    text-underline-offset: 1.5px !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .resume-preview:not([data-lstyle="professional"])[data-accentlinks="false"] a.rp-project-link,
+  .resume-preview:not([data-lstyle="professional"])[data-accentlinks="false"] a.rp-custom-link,
+  .resume-preview:not([data-lstyle="professional"])[data-accentlinks="false"] a.rp-inline-link,
+  .resume-preview:not([data-lstyle="professional"])[data-accentlinks="false"] .rp-links a,
+  .resume-preview:not([data-lstyle="professional"])[data-accentlinks="false"] .rp-cert-link,
+  .resume-preview:not([data-lstyle="professional"])[data-accentlinks="false"] .rp-tech-profile-link,
+  .resume-preview:not([data-lstyle="professional"])[data-accentlinks="false"] a {
+    color: #2563EB !important;
     text-decoration: underline !important;
     text-decoration-thickness: 0.5px !important;
     text-underline-offset: 1.5px !important;

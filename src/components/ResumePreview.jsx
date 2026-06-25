@@ -1180,6 +1180,7 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
       data-hstyle={dec.headerStyle || "minimal"}
       data-bullet={dec.bulletStyle || "disc"}
       data-lstyle={dec.linkStyle || "standard"}
+      data-accentlinks={dec.accentLinks !== "false" ? "true" : "false"}
     >
       {renderTemplate({
         templateId,
@@ -1955,6 +1956,7 @@ function normalizeDecoratives(raw = {}) {
   next.headerStyle = next.headerStyle || "minimal";
   next.photoShape = next.photoShape || "circle";
   next.progressStyle = next.progressStyle || "bar";
+  next.accentLinks = next.accentLinks !== "false" ? "true" : "false";
   if (!next.accentColor || typeof next.accentColor !== "string") delete next.accentColor;
   return next;
 }

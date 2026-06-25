@@ -213,6 +213,14 @@ const DecorativesPanel = ({ decoratives = {}, onChange }) => {
           />
           <span>Professional hyperlinks</span>
         </label>
+        <label className="dec-toggle">
+          <input
+            type="checkbox"
+            checked={decoratives.accentLinks !== "false"}
+            onChange={(e) => set("accentLinks", e.target.checked ? "true" : "false")}
+          />
+          <span>Accent-colored links</span>
+        </label>
       </div>
     </div>
   );
