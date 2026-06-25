@@ -1,0 +1,87 @@
+.toggle-switch-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+}
+
+.toggle-switch-label-text {
+  font-size: 0.88rem;
+  color: var(--ink, #111);
+  cursor: pointer;
+  user-select: none;
+}
+
+[data-theme="dark"] .toggle-switch-label-text {
+  color: var(--ink, #fff) !important;
+}
+
+/* The switch - container */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+/* Hide default HTML checkbox */
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider track */
+.toggle-switch-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #9ca3af; /* Neutral gray track (OFF) */
+  transition: background-color 200ms ease;
+  border-radius: 24px;
+}
+
+/* The slider thumb */
+.toggle-switch-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+/* Checked state - Track color */
+.toggle-switch input:checked + .toggle-switch-slider {
+  background-color: var(--accent-dark, #10b981); /* Brand green (ON) */
+}
+
+/* Dark theme active track color override */
+[data-theme="dark"] .toggle-switch input:checked + .toggle-switch-slider {
+  background-color: var(--accent, #b8ff2c) !important;
+  box-shadow: 0 0 8px rgba(184, 255, 44, 0.3);
+}
+
+/* Thumb sliding animation */
+.toggle-switch input:checked + .toggle-switch-slider:before {
+  transform: translateX(20px);
+}
+
+/* Keyboard focus styling */
+.toggle-switch input:focus-visible + .toggle-switch-slider {
+  outline: 2px solid var(--accent-dark, #10b981);
+  outline-offset: 2px;
+}
+
+[data-theme="dark"] .toggle-switch input:focus-visible + .toggle-switch-slider {
+  outline-color: var(--accent, #b8ff2c) !important;
+}

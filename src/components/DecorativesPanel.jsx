@@ -1,4 +1,5 @@
 import "./DecorativesPanel.css";
+import ToggleSwitch from "./common/ToggleSwitch";
 
 const DIVIDER_OPTIONS = [
   { value: "line",     label: "Line" },
@@ -74,14 +75,14 @@ const DecorativesPanel = ({ decoratives = {}, onChange }) => {
   return (
     <div className="dec-panel">
       <div className="dec-group">
-        <label className="dec-toggle" style={{ marginBottom: useCustomAccent ? "12px" : "0" }}>
-          <input
-            type="checkbox"
+        <div style={{ marginBottom: useCustomAccent ? "12px" : "0" }}>
+          <ToggleSwitch
+            id="use-custom-accent"
+            label="Use Custom Accent Color"
             checked={useCustomAccent}
             onChange={(e) => set("useCustomAccent", e.target.checked ? "true" : "false")}
           />
-          <span>Use Custom Accent Color</span>
-        </label>
+        </div>
 
         {useCustomAccent && (
           <div className="dec-color-picker-block" style={{ marginTop: "8px" }}>
