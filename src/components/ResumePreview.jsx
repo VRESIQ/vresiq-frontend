@@ -1789,41 +1789,48 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
       return (
         <div className="rp-ats-container rp-engineer-ats">
           <header className="rp-engineer-header">
-            <h1 className="rp-engineer-name">{name}</h1>
-            {role && <p className="rp-ats-role">{role}</p>}
-            <TargetRoleBadge role={profileInfo.targetRole} badgeClass="rp-ats-badge" />
-            
-            <div className="rp-engineer-contacts-grid">
-              {linkedinText && (
-                <div className="rp-engineer-contact-item">
-                  <strong>LinkedIn:</strong> <a href={contactInfo.linkedIn?.value || contactInfo.linkedIn} target="_blank" rel="noopener noreferrer" className="rp-contact-link">{linkedinText.replace(/^(https?:\/\/)?(www\.)?/i, "")}</a>
-                </div>
-              )}
-              {emailText && (
-                <div className="rp-engineer-contact-item">
-                  <strong>Email:</strong> <a href={`mailto:${emailText}`} className="rp-contact-link">{emailText}</a>
-                </div>
-              )}
-              {githubText && (
-                <div className="rp-engineer-contact-item">
-                  <strong>GitHub:</strong> <a href={contactInfo.github?.value || contactInfo.github} target="_blank" rel="noopener noreferrer" className="rp-contact-link">{githubText.replace(/^(https?:\/\/)?(www\.)?/i, "")}</a>
-                </div>
-              )}
-              {phoneText && (
-                <div className="rp-engineer-contact-item">
-                  <strong>Mobile:</strong> <a href={`tel:${phoneText}`} className="rp-contact-link">{phoneText}</a>
-                </div>
-              )}
-              {websiteText && (
-                <div className="rp-engineer-contact-item">
-                  <strong>Website:</strong> <a href={formatUrl(contactInfo.website?.value || contactInfo.website)} target="_blank" rel="noopener noreferrer" className="rp-contact-link">{websiteText.replace(/^(https?:\/\/)?(www\.)?/i, "")}</a>
-                </div>
-              )}
-              {locationText && (
-                <div className="rp-engineer-contact-item">
-                  <strong>Location:</strong> <a href={getLocationUrl(locationText)} target="_blank" rel="noopener noreferrer" className="rp-contact-link">{locationText}</a>
-                </div>
-              )}
+            <div className="rp-engineer-identity">
+              <h1 className="rp-engineer-name">{name}</h1>
+              {role && <p className="rp-ats-role">{role}</p>}
+              <TargetRoleBadge role={profileInfo.targetRole} badgeClass="rp-ats-badge" />
+            </div>
+
+            <div className="rp-engineer-contacts-row">
+              <div className="rp-engineer-contacts-left">
+                {linkedinText && (
+                  <div className="rp-engineer-contact-item">
+                    <strong>LinkedIn:</strong> <a href={contactInfo.linkedIn?.value || contactInfo.linkedIn} target="_blank" rel="noopener noreferrer" className="rp-contact-link">{linkedinText.replace(/^(https?:\/\/)?(www\.)?/i, "")}</a>
+                  </div>
+                )}
+                {githubText && (
+                  <div className="rp-engineer-contact-item">
+                    <strong>GitHub:</strong> <a href={contactInfo.github?.value || contactInfo.github} target="_blank" rel="noopener noreferrer" className="rp-contact-link">{githubText.replace(/^(https?:\/\/)?(www\.)?/i, "")}</a>
+                  </div>
+                )}
+                {websiteText && (
+                  <div className="rp-engineer-contact-item">
+                    <strong>Website:</strong> <a href={formatUrl(contactInfo.website?.value || contactInfo.website)} target="_blank" rel="noopener noreferrer" className="rp-contact-link">{websiteText.replace(/^(https?:\/\/)?(www\.)?/i, "")}</a>
+                  </div>
+                )}
+              </div>
+
+              <div className="rp-engineer-contacts-right">
+                {emailText && (
+                  <div className="rp-engineer-contact-item">
+                    <strong>Email:</strong> <a href={`mailto:${emailText}`} className="rp-contact-link">{emailText}</a>
+                  </div>
+                )}
+                {phoneText && (
+                  <div className="rp-engineer-contact-item">
+                    <strong>Mobile:</strong> <a href={`tel:${phoneText}`} className="rp-contact-link">{phoneText}</a>
+                  </div>
+                )}
+                {locationText && (
+                  <div className="rp-engineer-contact-item">
+                    <strong>Location:</strong> <a href={getLocationUrl(locationText)} target="_blank" rel="noopener noreferrer" className="rp-contact-link">{locationText}</a>
+                  </div>
+                )}
+              </div>
             </div>
           </header>
           <main className="rp-ats-body">{getSections('all')}</main>
