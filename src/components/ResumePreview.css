@@ -38,10 +38,25 @@
   padding-bottom: 48px;
 }
 
-/* Remove padding-top when header is full-bleed or has native bleed to let it touch the page top edge */
+/* Remove padding-top when header is full-bleed, minimal, or has native bleed to let it touch the page top edge */
 .resume-preview[data-hstyle="full-bleed"],
+.resume-preview[data-hstyle="fullBleed"],
+.resume-preview[data-hstyle="minimal"],
 .resume-preview.rp-template3 {
   padding-top: 0 !important;
+}
+
+/* Restore 20px top padding for Card mode parent to prevent margin collapsing and top border/shadow clipping */
+.resume-preview[data-hstyle="card"] {
+  padding-top: 20px !important;
+}
+
+/* Sidebar templates (Template 2, Premium 6, Premium 8) must have ZERO top/bottom preview padding so backgrounds fill fully */
+.resume-preview[data-template="template2"],
+.resume-preview[data-template="premium6"],
+.resume-preview[data-template="premium8"] {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 .rp-section:last-child {
@@ -2226,4 +2241,29 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-header-accentbar,
 .rp-header-tech {
   display: flex;
+}
+
+/* Template-specific container page padding restoration to fix top-spacing layout regression */
+.rp-consulting-bcg {
+  padding: 30px 45px 15px !important;
+}
+
+.rp-tech-faang {
+  padding: 30px 45px 15px !important;
+}
+
+.rp-harvard-ats {
+  padding: 32px 48px 12px !important;
+}
+
+.rp-swiss-minimal {
+  padding: 35px 45px 15px !important;
+}
+
+.rp-engineer-ats {
+  padding: 32px 40px !important;
+}
+
+.rp-academic_cv {
+  padding: 32px 40px !important;
 }
