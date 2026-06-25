@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login, resendVerification } from "../api";
+import { login, resendVerification, getProfile } from "../api";
 import { useAuth } from "../context/AuthContext";
 import SocialAuth from "../components/SocialAuth";
 import "./Auth.css";
@@ -13,6 +13,35 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [resendStatus, setResendStatus] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+    const refreshToken = params.get("refreshToken");
+    const errorParam = params.get("error");
+
+    if (errorParam) {
+      setError(errorParam);
+    } else if (token && refreshToken) {
+      setLoading(true);
+      sessionStorage.setItem("token", token);
+      localStorage.setItem("refreshToken", refreshToken);
+      getProfile()
+        .then((res) => {
+          loginUser({ ...res.data, token, refreshToken });
+          navigate("/dashboard");
+        })
+        .catch((err) => {
+          console.error(err);
+          setError("OAuth login failed during profile retrieval.");
+          sessionStorage.removeItem("token");
+          localStorage.removeItem("refreshToken");
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }, [navigate, loginUser]);
 
   const handleChange = (e) =>
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));

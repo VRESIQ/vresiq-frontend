@@ -26,37 +26,11 @@ const SocialAuth = ({ onError }) => {
   const [verificationCode, setVerificationCode] = useState("");
   const [confirmationResult, setConfirmationResult] = useState(null);
 
-  const handleSocialLogin = async (providerName) => {
+  const handleSocialLogin = (providerName) => {
     setLoading(true);
     onError("");
-
-    try {
-      let provider;
-      let loginApi;
-
-      if (providerName === "google") {
-        provider = googleProvider;
-        loginApi = googleLogin;
-      } else if (providerName === "microsoft") {
-        provider = microsoftProvider;
-        loginApi = microsoftLogin;
-      } else if (providerName === "apple") {
-        provider = appleProvider;
-        loginApi = appleLogin;
-      }
-
-      const result = await signInWithPopup(auth, provider);
-      const token = await result.user.getIdToken();
-      
-      const res = await loginApi(token);
-      loginUser(res.data);
-      navigate("/dashboard");
-    } catch (err) {
-      console.error(err);
-      onError(err.response?.data?.message || err.message || `Login with ${providerName} failed.`);
-    } finally {
-      setLoading(false);
-    }
+    const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL || "").trim();
+    window.location.href = `${apiBaseUrl}/oauth2/authorization/${providerName}`;
   };
 
   const handlePhoneSubmit = async (e) => {
