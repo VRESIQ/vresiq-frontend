@@ -3,6 +3,8 @@ import { loadTemplateFont, getFontVars, FONT_MAP } from "../utils/fonts";
 import "./ResumePreview.css";
 import { formatPartialDate, formatDateRange } from "../utils/formatters";
 
+import { formatPhoneNumberIntl } from "react-phone-number-input";
+
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 const hasText = (v) => {
   if (v === null || v === undefined) return false;
@@ -19,7 +21,15 @@ const cleanEmail = (email) => {
 
 const cleanPhone = (phone) => {
   if (!phone) return "";
-  return String(phone).trim().replace(/^tel:/i, "");
+  const raw = String(phone).trim().replace(/^tel:/i, "");
+  if (raw.startsWith("+")) {
+    try {
+      return formatPhoneNumberIntl(raw) || raw;
+    } catch (e) {
+      return raw;
+    }
+  }
+  return raw;
 };
 
 const formatUrl = (url) => {

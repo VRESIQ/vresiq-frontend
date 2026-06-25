@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import PhoneNumberInput from "./PhoneNumberInput";
 import { 
   googleLogin, 
   microsoftLogin, 
@@ -110,12 +111,11 @@ const SocialAuth = ({ onError }) => {
           {!confirmationResult ? (
             <form onSubmit={handlePhoneSubmit}>
               <div className="field" style={{ marginBottom: "0.75rem" }}>
-                <label>Phone Number (with Country Code)</label>
-                <input 
-                  type="tel" 
+                <label>Phone Number</label>
+                <PhoneNumberInput 
                   value={phoneNumber} 
-                  onChange={(e) => setPhoneNumber(e.target.value)} 
-                  placeholder="+1 555 555 5555" 
+                  onChange={setPhoneNumber} 
+                  placeholder="Enter phone number" 
                   required
                 />
               </div>
