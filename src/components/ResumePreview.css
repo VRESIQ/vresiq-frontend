@@ -2474,7 +2474,7 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-engineer-contacts-row {
   width: 100%;
   max-width: 480px;
-  margin: 12px auto 0;
+  margin: 24px auto 0;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
