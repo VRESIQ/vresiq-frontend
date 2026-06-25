@@ -137,20 +137,14 @@
 /* 1. CONTACT / HEADER LINKS
    email, phone, LinkedIn, GitHub, website, location inside the header/contact area.
    Standard hyperlink styling — blue + underline — matching UX requirement. */
+/* 1. CONTACT / HEADER LINKS */
 .rp-contact a,
-.rp-ats-contact a {
-  color: #2563EB !important;            /* Standard hyperlink blue */
-  text-decoration: underline !important;
-  text-decoration-thickness: 0.5px !important;
-  text-underline-offset: 1.5px;
+.rp-ats-contact a,
+.rp-contact-link,
+.header-link {
   cursor: pointer !important;
   transition: color 0.15s ease;
-}
-
-.rp-contact a:hover,
-.rp-ats-contact a:hover {
-  color: #1d4ed8 !important;
-  text-decoration: underline !important;
+  color: inherit !important;
 }
 
 .rp-contact-item,
@@ -159,89 +153,137 @@
   align-items: baseline;
 }
 
-.rp-contact-link {
-  color: #2563EB !important;
-  text-decoration: underline !important;
-  text-decoration-thickness: 0.5px !important;
-  text-underline-offset: 1.5px;
-  cursor: pointer !important;
-  white-space: nowrap;
-}
-
 .rp-contact-sep {
   color: #6b7280;
   padding: 0 4px;
 }
 
-/* 2. BODY / CONTENT LINKS
-   Project links, live demos, publication URLs, custom section URLs.
-   Explicit class selectors only — does NOT bleed into generic section text. */
-a.rp-project-link,
-a.rp-custom-link,
-a.rp-inline-link,
-.rp-links a {
+/* Underlined & Blue when Professional Hyperlink is OFF */
+.resume-preview:not([data-lstyle="professional"]) .rp-contact a,
+.resume-preview:not([data-lstyle="professional"]) .rp-ats-contact a,
+.resume-preview:not([data-lstyle="professional"]) .rp-contact-link,
+.resume-preview:not([data-lstyle="professional"]) .header-link {
   color: #2563EB !important;
   text-decoration: underline !important;
   text-decoration-thickness: 0.5px !important;
-  text-underline-offset: 1.5px;
-  cursor: pointer !important;
-  transition: color 0.15s ease;
+  text-underline-offset: 1.5px !important;
 }
 
-a.rp-project-link:hover,
-a.rp-custom-link:hover,
-a.rp-inline-link:hover,
-.rp-links a:hover {
+.resume-preview:not([data-lstyle="professional"]) .rp-contact a:hover,
+.resume-preview:not([data-lstyle="professional"]) .rp-ats-contact a:hover,
+.resume-preview:not([data-lstyle="professional"]) .rp-contact-link:hover,
+.resume-preview:not([data-lstyle="professional"]) .header-link:hover {
   color: #1d4ed8 !important;
   text-decoration: underline !important;
 }
 
-/* Hyperlink Style overrides */
+/* No underline and inherit color when Professional Hyperlink is ON */
+.resume-preview[data-lstyle="professional"] .rp-contact a,
+.resume-preview[data-lstyle="professional"] .rp-ats-contact a,
+.resume-preview[data-lstyle="professional"] .rp-contact-link,
+.resume-preview[data-lstyle="professional"] .header-link {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+.resume-preview[data-lstyle="professional"] .rp-contact a:hover,
+.resume-preview[data-lstyle="professional"] .rp-ats-contact a:hover,
+.resume-preview[data-lstyle="professional"] .rp-contact-link:hover,
+.resume-preview[data-lstyle="professional"] .header-link:hover {
+  opacity: 0.8 !important;
+  text-decoration: none !important;
+}
+
+/* 2. BODY / CONTENT LINKS */
+a.rp-project-link,
+a.rp-custom-link,
+a.rp-inline-link,
+.rp-links a,
+.rp-cert-link,
+.rp-tech-profile-link {
+  cursor: pointer !important;
+  transition: color 0.15s ease;
+}
+
+/* Underlined & Theme Accent Color when Professional Hyperlink is OFF */
+.resume-preview:not([data-lstyle="professional"]) a.rp-project-link,
+.resume-preview:not([data-lstyle="professional"]) a.rp-custom-link,
+.resume-preview:not([data-lstyle="professional"]) a.rp-inline-link,
+.resume-preview:not([data-lstyle="professional"]) .rp-links a,
+.resume-preview:not([data-lstyle="professional"]) .rp-cert-link,
+.resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-link {
+  color: var(--hyperlink-color, #2563EB) !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 0.5px !important;
+  text-underline-offset: 1.5px !important;
+}
+
+.resume-preview:not([data-lstyle="professional"]) a.rp-project-link:hover,
+.resume-preview:not([data-lstyle="professional"]) a.rp-custom-link:hover,
+.resume-preview:not([data-lstyle="professional"]) a.rp-inline-link:hover,
+.resume-preview:not([data-lstyle="professional"]) .rp-links a:hover,
+.resume-preview:not([data-lstyle="professional"]) .rp-cert-link:hover,
+.resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-link:hover {
+  opacity: 0.8 !important;
+  text-decoration: underline !important;
+}
+
+/* No underline and inherit color when Professional Hyperlink is ON */
+.resume-preview[data-lstyle="professional"] a.rp-project-link,
+.resume-preview[data-lstyle="professional"] a.rp-custom-link,
+.resume-preview[data-lstyle="professional"] a.rp-inline-link,
+.resume-preview[data-lstyle="professional"] .rp-links a,
+.resume-preview[data-lstyle="professional"] .rp-cert-link,
+.resume-preview[data-lstyle="professional"] .rp-tech-profile-link,
 .resume-preview[data-lstyle="professional"] a {
   color: inherit !important;
-  text-decoration: underline dotted !important;
-  text-decoration-color: var(--accent-readable, #1a5fb4) !important;
-  text-decoration-thickness: 0.8px !important;
-  text-underline-offset: 1.5px;
+  text-decoration: none !important;
 }
+.resume-preview[data-lstyle="professional"] a.rp-project-link:hover,
+.resume-preview[data-lstyle="professional"] a.rp-custom-link:hover,
+.resume-preview[data-lstyle="professional"] a.rp-inline-link:hover,
+.resume-preview[data-lstyle="professional"] .rp-links a:hover,
+.resume-preview[data-lstyle="professional"] .rp-cert-link:hover,
+.resume-preview[data-lstyle="professional"] .rp-tech-profile-link:hover,
 .resume-preview[data-lstyle="professional"] a:hover {
-  color: var(--accent-readable, #1a5fb4) !important;
-  text-decoration: underline dotted !important;
+  opacity: 0.8 !important;
+  text-decoration: none !important;
+}
+
+/* Preserve contrast-aware links on dark sidebars when not professional */
+.resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .resume-link,
+.resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .rp-contact-link,
+.resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .rp-tech-profile-link,
+.resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .rp-cert-link,
+.resume-preview:not([data-lstyle="professional"]) .rp-sidebar-dark .rp-custom-link {
+  color: #60a5fa !important;
+  text-decoration: underline !important;
 }
 
 @media print {
-  /* Hyperlink Style overrides for print */
+  .resume-preview[data-lstyle="professional"] a.rp-project-link,
+  .resume-preview[data-lstyle="professional"] a.rp-custom-link,
+  .resume-preview[data-lstyle="professional"] a.rp-inline-link,
+  .resume-preview[data-lstyle="professional"] .rp-links a,
+  .resume-preview[data-lstyle="professional"] .rp-cert-link,
+  .resume-preview[data-lstyle="professional"] .rp-tech-profile-link,
   .resume-preview[data-lstyle="professional"] a {
     color: inherit !important;
-    text-decoration: underline dotted !important;
-    text-decoration-color: var(--accent-readable, #1a5fb4) !important;
-    text-decoration-thickness: 0.8px !important;
-    text-underline-offset: 1.5px;
+    text-decoration: none !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 
-  /* Contact/header links: blue + underline preserved in print/PDF */
-  .rp-contact a,
-  .rp-ats-contact a {
-    color: #2563EB !important;
+  .resume-preview:not([data-lstyle="professional"]) a.rp-project-link,
+  .resume-preview:not([data-lstyle="professional"]) a.rp-custom-link,
+  .resume-preview:not([data-lstyle="professional"]) a.rp-inline-link,
+  .resume-preview:not([data-lstyle="professional"]) .rp-links a,
+  .resume-preview:not([data-lstyle="professional"]) .rp-cert-link,
+  .resume-preview:not([data-lstyle="professional"]) .rp-tech-profile-link,
+  .resume-preview:not([data-lstyle="professional"]) a {
+    color: var(--hyperlink-color, #2563EB) !important;
     text-decoration: underline !important;
     text-decoration-thickness: 0.5px !important;
-    text-underline-offset: 1.5px;
-    cursor: pointer !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-
-  /* Body content links: blue + underline preserved in print/PDF */
-  a.rp-project-link,
-  a.rp-custom-link,
-  a.rp-inline-link,
-  .rp-links a {
-    color: #2563EB !important;
-    text-decoration: underline !important;
-    text-decoration-thickness: 0.5px !important;
-    text-underline-offset: 1.5px;
+    text-underline-offset: 1.5px !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
