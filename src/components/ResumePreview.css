@@ -2428,3 +2428,95 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-academic_cv {
   padding: 32px 40px !important;
 }
+
+/* Frame (engineer_ats) Header Redesign */
+.rp-engineer-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+
+.rp-engineer-name {
+  font-family: var(--rp-font-heading, "Inter", sans-serif);
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--accent-readable);
+  margin: 0 0 6px;
+  text-align: center;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.rp-engineer-header .rp-ats-role {
+  font-size: 13px;
+  font-weight: 600;
+  color: #555555;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+
+.rp-engineer-header .rp-ats-badge {
+  margin: 4px 0 16px;
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.rp-engineer-contacts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 40px;
+  width: 100%;
+  max-width: 540px;
+  margin: 16px auto 0;
+  padding: 12px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.rp-engineer-contact-item {
+  white-space: nowrap;
+}
+
+.rp-engineer-contacts-grid .rp-engineer-contact-item:nth-child(odd) {
+  text-align: right;
+  justify-self: end;
+}
+
+.rp-engineer-contacts-grid .rp-engineer-contact-item:nth-child(even) {
+  text-align: left;
+  justify-self: start;
+}
+
+.rp-engineer-contact-item strong {
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #666666;
+  margin-right: 6px;
+}
+
+.rp-engineer-contact-item .rp-contact-link {
+  font-size: 11px;
+  font-weight: 500;
+}
+
+@media (max-width: 600px) {
+  .rp-engineer-contacts-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 8px;
+    padding: 10px 0;
+  }
+  .rp-engineer-contacts-grid .rp-engineer-contact-item:nth-child(odd),
+  .rp-engineer-contacts-grid .rp-engineer-contact-item:nth-child(even) {
+    text-align: center;
+    justify-self: center;
+  }
+}
+
