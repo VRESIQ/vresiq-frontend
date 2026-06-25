@@ -129,15 +129,6 @@ export const rewriteContent = (content, tone = "professional") =>
   axiosInstance.post("/api/ai/rewrite", { content, tone });
 
 // ─── SOCIAL AUTH & PROVIDERS ──────────────────────────────
-export const googleLogin = (token) =>
-  axiosInstance.post("/api/auth/oauth/google", { token });
-
-export const microsoftLogin = (token) =>
-  axiosInstance.post("/api/auth/oauth/microsoft", { token });
-
-export const appleLogin = (token, email = null, name = null) =>
-  axiosInstance.post("/api/auth/oauth/apple", { token, email, name });
-
 export const verifyPhoneOtp = (token, phone) =>
   axiosInstance.post("/api/auth/phone/verify", { token, phone });
 

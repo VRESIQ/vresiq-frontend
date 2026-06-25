@@ -1,9 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { 
   getAuth, 
-  GoogleAuthProvider, 
-  OAuthProvider, 
-  signInWithPopup, 
   RecaptchaVerifier, 
   signInWithPhoneNumber 
 } from "firebase/auth";
@@ -20,13 +17,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 
-// Providers
-export const googleProvider = new GoogleAuthProvider();
-export const microsoftProvider = new OAuthProvider("microsoft.com");
-export const appleProvider = new OAuthProvider("apple.com");
-
 export { 
-  signInWithPopup, 
   RecaptchaVerifier, 
   signInWithPhoneNumber 
 };

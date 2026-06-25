@@ -3,18 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import PhoneNumberInput from "./PhoneNumberInput";
 import { 
-  googleLogin, 
-  microsoftLogin, 
-  appleLogin, 
   verifyPhoneOtp 
 } from "../api";
 import { 
   auth, 
-  googleProvider, 
-  microsoftProvider, 
-  appleProvider, 
-  signInWithPopup,
-  RecaptchaVerifier,
+  RecaptchaVerifier, 
   signInWithPhoneNumber
 } from "../utils/firebase";
 
