@@ -128,6 +128,25 @@ export const verifyCertification = (name) =>
 export const rewriteContent = (content, tone = "professional") =>
   axiosInstance.post("/api/ai/rewrite", { content, tone });
 
+// ─── SOCIAL AUTH & PROVIDERS ──────────────────────────────
+export const googleLogin = (token) =>
+  axiosInstance.post("/api/auth/oauth/google", { token });
+
+export const microsoftLogin = (token) =>
+  axiosInstance.post("/api/auth/oauth/microsoft", { token });
+
+export const appleLogin = (token, email = null, name = null) =>
+  axiosInstance.post("/api/auth/oauth/apple", { token, email, name });
+
+export const verifyPhoneOtp = (token, phone) =>
+  axiosInstance.post("/api/auth/phone/verify", { token, phone });
+
+export const getProviders = () =>
+  axiosInstance.get("/api/auth/providers");
+
+export const unlinkProvider = (provider) =>
+  axiosInstance.post("/api/auth/providers/unlink", { provider });
+
 // ─── ADMIN ───────────────────────────────────────────────
 export const getAdminAnalytics = () => axiosInstance.get("/api/admin/analytics", { skipLoader: true });
 export const getAdminUsers = () => axiosInstance.get("/api/admin/users", { skipLoader: true });

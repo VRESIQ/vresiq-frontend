@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from "../api";
 import { sanitizeStrictText } from "../utils/inputSanitizers";
+import SocialAuth from "../components/SocialAuth";
 import "./Auth.css";
 
 const Register = () => {
@@ -74,6 +75,8 @@ const Register = () => {
 
         {error && <div className="auth-error">{error}</div>}
         {success && <div className="auth-success">{success}</div>}
+
+        <SocialAuth onError={setError} />
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="field">

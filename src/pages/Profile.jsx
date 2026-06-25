@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { updateProfile, uploadProfileImage, deleteProfile } from "../api";
+import { updateProfile, uploadProfileImage, deleteProfile, getProviders, unlinkProvider } from "../api";
 import { useAuth } from "../context/AuthContext";
 import NavLogo from "../components/NavLogo";
 import ThemeToggle from "../components/ThemeToggle";
@@ -27,6 +27,36 @@ const Profile = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [confirmEmail, setConfirmEmail] = useState("");
   const [deleting, setDeleting] = useState(false);
+  const [providers, setProviders] = useState({
+    google: false,
+    microsoft: false,
+    apple: false,
+    phone: false,
+    local: false
+  });
+
+  useEffect(() => {
+    const fetchProviders = async () => {
+      try {
+        const res = await getProviders();
+        setProviders(res.data);
+      } catch (err) {
+        console.error("Failed to load connected providers", err);
+      }
+    };
+    fetchProviders();
+  }, []);
+
+  const handleUnlink = async (providerName) => {
+    if (!window.confirm(`Are you sure you want to disconnect your ${providerName} account?`)) return;
+    try {
+      await unlinkProvider(providerName.toLowerCase());
+      setProviders(prev => ({ ...prev, [providerName.toLowerCase()]: false }));
+      setMessage({ text: `${providerName} account unlinked successfully.`, type: "success" });
+    } catch (err) {
+      setMessage({ text: err.response?.data?.message || `Failed to unlink ${providerName}.`, type: "error" });
+    }
+  };
 
   const plan = user?.subscriptionPlan || "Basic";
   const initials = (name || user?.email || "U").slice(0, 2).toUpperCase();
@@ -193,6 +223,50 @@ const Profile = () => {
               </button>
             </div>
           </form>
+
+          <div className="connected-accounts-card" style={{ marginTop: "2rem", marginBottom: "2rem", border: "1px solid var(--line)", borderRadius: "var(--radius)", padding: "1.5rem", background: "var(--paper)" }}>
+            <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: 700, color: "var(--ink)" }}>Connected Accounts</h3>
+            <p style={{ fontSize: "0.85rem", color: "var(--muted)", marginTop: "0.25rem", marginBottom: "1.2rem" }}>
+              Manage third-party authentication services linked to your VResIQ account.
+            </p>
+            <div style={{ display: "grid", gap: "1rem" }}>
+              {[
+                { name: "Google", key: "google" },
+                { name: "Microsoft", key: "microsoft" },
+                { name: "Apple", key: "apple" },
+                { name: "Phone", key: "phone" }
+              ].map(provider => {
+                const isLinked = providers[provider.key];
+                return (
+                  <div key={provider.key} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: "0.75rem", borderBottom: "1px solid var(--line)" }}>
+                    <div>
+                      <span style={{ fontWeight: 650, color: "var(--ink)" }}>{provider.name}</span>
+                      <div style={{ fontSize: "0.8rem", color: isLinked ? "#16a34a" : "var(--muted)" }}>
+                        {isLinked ? "Connected" : "Not connected"}
+                      </div>
+                    </div>
+                    {isLinked ? (
+                      <button 
+                        type="button" 
+                        style={{ padding: "0.35rem 0.75rem", fontSize: "0.82rem", background: "transparent", border: "1px solid var(--line)", borderRadius: "var(--radius)", color: "var(--danger)", cursor: "pointer" }}
+                        onClick={() => handleUnlink(provider.name)}
+                      >
+                        Disconnect
+                      </button>
+                    ) : (
+                      <button 
+                        type="button" 
+                        style={{ padding: "0.35rem 0.75rem", fontSize: "0.82rem", background: "var(--wash)", color: "var(--ink)", border: "1px solid var(--line)", borderRadius: "var(--radius)", cursor: "pointer" }}
+                        onClick={() => alert(`To link a new provider, sign in using ${provider.name} on the login page with the same email address.`)}
+                      >
+                        Connect
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
 
           <div className="danger-zone-card">
             <h3>Danger Zone</h3>
