@@ -69,15 +69,22 @@ const PhoneNumberInput = ({
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [touched, setTouched] = useState(false);
+  const [activeIdx, setActiveIdx] = useState(0);
 
   const containerRef = useRef(null);
   const dropdownRef = useRef(null);
+  const buttonRef = useRef(null);
+  const optionRefs = useRef([]);
+  const lastValueRef = useRef(value);
 
-  // Sync internal state if value prop changes from outside
+  // Sync internal state ONLY when the value prop changes from outside (not from user typing)
   useEffect(() => {
-    const updated = parseValue(value);
-    setSelectedCountry(updated.country);
-    setLocalNumber(updated.local);
+    if (value !== lastValueRef.current) {
+      const updated = parseValue(value);
+      setSelectedCountry(updated.country);
+      setLocalNumber(updated.local);
+      lastValueRef.current = value;
+    }
   }, [value]);
 
   // Handle click outside to close dropdown
@@ -100,10 +107,10 @@ const PhoneNumberInput = ({
 
   const handleNumberChange = (e) => {
     const rawVal = e.target.value;
-    // Allow digits, spaces, hyphens, and brackets for visual local entry
     const cleanVal = rawVal.replace(/[^\d\s\-()]/g, "");
     setLocalNumber(cleanVal);
     const e164 = getE164Value(selectedCountry, cleanVal);
+    lastValueRef.current = e164;
     onChange(e164);
   };
 
@@ -112,18 +119,15 @@ const PhoneNumberInput = ({
     setDropdownOpen(false);
     setSearch("");
     const e164 = getE164Value(countryCode, localNumber);
+    lastValueRef.current = e164;
     onChange(e164);
+    if (buttonRef.current) {
+      buttonRef.current.focus();
+    }
   };
 
   const handleBlur = () => {
     setTouched(true);
-  };
-
-  // Keyboard navigation inside dropdown
-  const handleKeyDown = (e) => {
-    if (e.key === "Escape") {
-      setDropdownOpen(false);
-    }
   };
 
   const dialCode = getCountryCallingCode(selectedCountry);
@@ -138,6 +142,49 @@ const PhoneNumberInput = ({
     return name.includes(query) || code.includes(query) || prefix.includes(query);
   });
 
+  // Reset active list index on search changes
+  useEffect(() => {
+    setActiveIdx(0);
+  }, [search]);
+
+  // Scroll active country dropdown item into view
+  useEffect(() => {
+    if (dropdownOpen && optionRefs.current[activeIdx]) {
+      optionRefs.current[activeIdx].scrollIntoView({
+        block: "nearest",
+        behavior: "auto"
+      });
+    }
+  }, [activeIdx, dropdownOpen]);
+
+  // Keyboard navigation inside container
+  const handleKeyDown = (e) => {
+    if (!dropdownOpen) {
+      if (e.key === "Enter" || e.key === " " || e.key === "ArrowDown") {
+        e.preventDefault();
+        setDropdownOpen(true);
+      }
+      return;
+    }
+
+    if (e.key === "Escape") {
+      e.preventDefault();
+      setDropdownOpen(false);
+      if (buttonRef.current) buttonRef.current.focus();
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setActiveIdx((prev) => Math.min(prev + 1, filteredCountries.length - 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActiveIdx((prev) => Math.max(prev - 1, 0));
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (filteredCountries[activeIdx]) {
+        handleCountrySelect(filteredCountries[activeIdx]);
+      }
+    }
+  };
+
   // Validation checking
   const currentE164 = getE164Value(selectedCountry, localNumber);
   const isValid = currentE164 ? isValidPhoneNumber(currentE164) : true;
@@ -147,6 +194,7 @@ const PhoneNumberInput = ({
     <div className="phone-input-container" ref={containerRef} onKeyDown={handleKeyDown}>
       <div className="phone-input-wrap">
         <button
+          ref={buttonRef}
           type="button"
           className="phone-country-btn"
           onClick={() => !disabled && setDropdownOpen((o) => !o)}
@@ -197,20 +245,25 @@ const PhoneNumberInput = ({
               aria-label="Search countries"
             />
             <div className="phone-country-list">
-              {filteredCountries.map((c) => {
+              {filteredCountries.map((c, index) => {
                 const OptionFlag = flags[c];
                 const countryName = en[c] || c;
                 const callingCode = getCountryCallingCode(c);
                 const isSelected = c === selectedCountry;
+                const isActive = index === activeIdx;
 
                 return (
                   <button
                     key={c}
+                    ref={(el) => (optionRefs.current[index] = el)}
                     type="button"
                     role="option"
                     aria-selected={isSelected}
-                    className={`phone-country-option ${isSelected ? "active" : ""}`}
+                    className={`phone-country-option ${isSelected ? "active" : ""} ${isActive ? "focused" : ""}`}
                     onClick={() => handleCountrySelect(c)}
+                    style={{
+                      backgroundColor: isActive ? "var(--wash-2, #ebebdf)" : isSelected ? "var(--wash, #f5f5f5)" : "transparent"
+                    }}
                   >
                     <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                       {OptionFlag && (
