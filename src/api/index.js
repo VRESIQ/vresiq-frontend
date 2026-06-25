@@ -128,9 +128,7 @@ export const verifyCertification = (name) =>
 export const rewriteContent = (content, tone = "professional") =>
   axiosInstance.post("/api/ai/rewrite", { content, tone });
 
-// ─── SOCIAL AUTH & PROVIDERS ──────────────────────────────
-export const verifyPhoneOtp = (token, phone) =>
-  axiosInstance.post("/api/auth/phone/verify", { token, phone });
+
 
 export const getProviders = () =>
   axiosInstance.get("/api/auth/providers");
