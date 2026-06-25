@@ -1003,7 +1003,8 @@ const TargetRoleBadge = ({ role, badgeClass = "rp-target-role-badge" }) => {
 const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
   const templateId = resume.template || "template1";
   const dec = normalizeDecoratives(resume.decoratives || {});
-  const accent = dec.accentColor || getDefaultAccent(templateId);
+  const useCustomAccent = dec.useCustomAccent === "true";
+  const accent = (useCustomAccent && dec.accentColor) ? dec.accentColor : getDefaultAccent(templateId);
   const accentText = getAccentTextColors(accent);
   const accentReadable = getReadableAccent(accent);
   const isBWTemplate = [
@@ -1957,6 +1958,7 @@ function normalizeDecoratives(raw = {}) {
   next.photoShape = next.photoShape || "circle";
   next.progressStyle = next.progressStyle || "bar";
   next.accentLinks = next.accentLinks !== "false" ? "true" : "false";
+  next.useCustomAccent = next.useCustomAccent === "true" ? "true" : "false";
   if (!next.accentColor || typeof next.accentColor !== "string") delete next.accentColor;
   return next;
 }

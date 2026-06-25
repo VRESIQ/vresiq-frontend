@@ -66,6 +66,7 @@ const getContrastRatioAgainstWhite = (hex) => {
 const DecorativesPanel = ({ decoratives = {}, onChange }) => {
   const set = (key, value) => onChange({ ...decoratives, [key]: value });
 
+  const useCustomAccent = decoratives.useCustomAccent === "true";
   const activeColor = decoratives.accentColor || "#111410";
   const contrast = getContrastRatioAgainstWhite(activeColor);
   const isLowContrast = contrast < 4.5;
@@ -73,27 +74,40 @@ const DecorativesPanel = ({ decoratives = {}, onChange }) => {
   return (
     <div className="dec-panel">
       <div className="dec-group">
-        <label className="dec-label">Accent color</label>
-        <div className="dec-color-row">
+        <label className="dec-toggle" style={{ marginBottom: useCustomAccent ? "12px" : "0" }}>
           <input
-            type="color"
-            value={activeColor}
-            onChange={(e) => set("accentColor", e.target.value)}
-            className="dec-color-input"
+            type="checkbox"
+            checked={useCustomAccent}
+            onChange={(e) => set("useCustomAccent", e.target.checked ? "true" : "false")}
           />
-          <span className="dec-color-hex">{activeColor}</span>
-        </div>
-        {isLowContrast && (
-          <div className="dec-contrast-warning" style={{
-            marginTop: "8px",
-            padding: "8px 12px",
-            background: "rgba(249, 115, 22, 0.1)",
-            border: "1px solid rgba(249, 115, 22, 0.2)",
-            borderRadius: "6px",
-            fontSize: "0.75rem",
-            color: "#fdba74"
-          }}>
-            Contrast Warning: {contrast.toFixed(1)}:1. WCAG AA requires at least 4.5:1 for readable body text on light backgrounds.
+          <span>Use Custom Accent Color</span>
+        </label>
+
+        {useCustomAccent && (
+          <div className="dec-color-picker-block" style={{ marginTop: "8px" }}>
+            <label className="dec-label">Accent color</label>
+            <div className="dec-color-row">
+              <input
+                type="color"
+                value={activeColor}
+                onChange={(e) => set("accentColor", e.target.value)}
+                className="dec-color-input"
+              />
+              <span className="dec-color-hex">{activeColor}</span>
+            </div>
+            {isLowContrast && (
+              <div className="dec-contrast-warning" style={{
+                marginTop: "8px",
+                padding: "8px 12px",
+                background: "rgba(249, 115, 22, 0.1)",
+                border: "1px solid rgba(249, 115, 22, 0.2)",
+                borderRadius: "6px",
+                fontSize: "0.75rem",
+                color: "#fdba74"
+              }}>
+                Contrast Warning: {contrast.toFixed(1)}:1. WCAG AA requires at least 4.5:1 for readable body text on light backgrounds.
+              </div>
+            )}
           </div>
         )}
       </div>
