@@ -1212,16 +1212,89 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   gap: 14px;
 }
 
-.rp-sidebar-dark .rp-sidebar-name { color: #fff; font-size: 17px; }
-.rp-sidebar-dark .rp-sidebar-role { color: rgba(255,255,255,0.65); }
-.rp-sidebar-dark .rp-contact { color: rgba(255,255,255,0.72); flex-direction: column; font-size: 10.5px; gap: 4px; }
-.rp-sidebar-dark .rp-stitle { color: rgba(255,255,255,0.55); border-bottom-color: rgba(255,255,255,0.2); }
-.rp-sidebar-dark .rp-skill-name { color: rgba(255,255,255,0.9); }
-.rp-sidebar-dark .rp-bar { background: rgba(255,255,255,0.15); }
-.rp-sidebar-dark .rp-bar span { background: rgba(255,255,255,0.8); }
-.rp-sidebar-dark .rp-dots .dot { border-color: rgba(255,255,255,0.6); background: transparent; }
-.rp-sidebar-dark .rp-dots .dot.filled { background: rgba(255,255,255,0.85); }
-.rp-premium6 .rp-photo { border: 3px solid rgba(255,255,255,0.3); }
+/* Brightest: Headings and name */
+.rp-sidebar-dark .rp-sidebar-name {
+  color: #ffffff;
+  font-size: 17px;
+}
+.rp-sidebar-dark .rp-stitle {
+  color: #ffffff;
+  border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Primary Content: High Contrast (#f9fafb) */
+.rp-sidebar-dark .rp-skill-name,
+.rp-sidebar-dark .rp-skill-level,
+.rp-sidebar-dark .rp-skill-row small,
+.rp-sidebar-dark .rp-desc-list li,
+.rp-sidebar-dark .rp-interests-list li,
+.rp-sidebar-dark .rp-tech-profiles-list li,
+.rp-sidebar-dark .rp-certs-list li,
+.rp-sidebar-dark .rp-awards-list li,
+.rp-sidebar-dark .rp-skill-list li,
+.rp-sidebar-dark .rp-item-desc,
+.rp-sidebar-dark .rp-tech-profile-name,
+.rp-sidebar-dark .rp-tech-profiles-list strong,
+.rp-sidebar-dark .rp-certs-list strong,
+.rp-sidebar-dark .rp-awards-list strong,
+.rp-sidebar-dark .rp-tag,
+.rp-sidebar-dark .rp-compact-title,
+.rp-sidebar-dark .rp-custom-link:not(a),
+.rp-sidebar-dark .rp-contact-item:not(a) {
+  color: #f9fafb;
+}
+
+/* Secondary Metadata: Slightly Muted but Readable (rgba(255, 255, 255, 0.7)) */
+.rp-sidebar-dark .rp-sidebar-role,
+.rp-sidebar-dark .rp-contact,
+.rp-sidebar-dark .rp-contact-sep,
+.rp-sidebar-dark .rp-compact-subtitle,
+.rp-sidebar-dark .rp-compact-date,
+.rp-sidebar-dark .rp-tech-profile-date,
+.rp-sidebar-dark .rp-item-sub {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Links: Distinguishable and accessible (#60a5fa) */
+.rp-sidebar-dark .resume-link,
+.rp-sidebar-dark .rp-contact-link,
+.rp-sidebar-dark .rp-tech-profile-link,
+.rp-sidebar-dark .rp-cert-link,
+.rp-sidebar-dark .rp-custom-link {
+  color: #60a5fa !important;
+  text-decoration: underline !important;
+}
+.rp-sidebar-dark .resume-link:hover,
+.rp-sidebar-dark .rp-contact-link:hover,
+.rp-sidebar-dark .rp-tech-profile-link:hover,
+.rp-sidebar-dark .rp-cert-link:hover,
+.rp-sidebar-dark .rp-custom-link:hover {
+  color: #93c5fd !important;
+}
+
+/* Bullets: Ensure matching high contrast */
+.rp-sidebar-dark .rp-desc-list li::marker,
+.rp-sidebar-dark .rp-interests-list li::marker,
+.rp-sidebar-dark .rp-tech-profiles-list li::marker,
+.rp-sidebar-dark .rp-certs-list li::marker,
+.rp-sidebar-dark .rp-awards-list li::marker,
+.rp-sidebar-dark .rp-skill-list li::marker {
+  color: #f9fafb;
+}
+.rp-sidebar-dark .rp-desc-list li::before,
+.rp-sidebar-dark .rp-interests-list li::before,
+.rp-sidebar-dark .rp-tech-profiles-list li::before,
+.rp-sidebar-dark .rp-certs-list li::before,
+.rp-sidebar-dark .rp-awards-list li::before,
+.rp-sidebar-dark .rp-skill-list li::before {
+  color: #f9fafb;
+}
+
+.rp-sidebar-dark .rp-bar { background: rgba(255, 255, 255, 0.15); }
+.rp-sidebar-dark .rp-bar span { background: rgba(255, 255, 255, 0.8); }
+.rp-sidebar-dark .rp-dots .dot { border-color: rgba(255, 255, 255, 0.6); background: transparent; }
+.rp-sidebar-dark .rp-dots .dot.filled { background: rgba(255, 255, 255, 0.85); }
+.rp-premium6 .rp-photo { border: 3px solid rgba(255, 255, 255, 0.3); }
 
 /* ═══════════════════════════════════════════════════════════════════════════
    PREMIUM7 — Card Sections
