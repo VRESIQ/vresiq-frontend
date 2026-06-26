@@ -2226,6 +2226,64 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   color: #333;
 }
 
+.rp-academic-contact {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 14px;
+  font-size: var(--rp-fs-meta, 10.5px);
+  margin: 8px 0 0;
+  width: 100%;
+}
+
+.rp-academic-contact-item {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.rp-academic-bullet {
+  color: #888888;
+  margin-left: 14px;
+  user-select: none;
+}
+
+@media (max-width: 900px) {
+  .rp-academic-contact {
+    gap: 10px;
+    font-size: 10px;
+  }
+  .rp-academic-bullet {
+    margin-left: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .rp-academic-contact {
+    gap: 8px;
+    font-size: 9.5px;
+  }
+  .rp-academic-bullet {
+    margin-left: 8px;
+  }
+}
+
+@media (max-width: 600px) {
+  .rp-academic-contact {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px 10px;
+    font-size: 10px;
+  }
+  .rp-academic-contact-item {
+    white-space: normal;
+  }
+  .rp-academic-bullet {
+    display: none;
+  }
+}
+
 .rp-academic-body {
   width: 100% !important;
 }

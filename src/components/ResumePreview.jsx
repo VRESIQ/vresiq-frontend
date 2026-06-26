@@ -297,6 +297,49 @@ const AtsContactRow = ({ c = {} }) => {
   );
 };
 
+const ScholarContactRow = ({ c = {} }) => {
+  const links = buildContactEntries(c);
+  if (!links.length) return null;
+  
+  const orderMap = {
+    email: 0,
+    phone: 1,
+    location: 2,
+    linkedin: 3,
+    github: 4,
+    website: 5
+  };
+
+  const filteredLinks = links
+    .filter(link => orderMap[link.key] !== undefined)
+    .sort((a, b) => orderMap[a.key] - orderMap[b.key]);
+
+  if (!filteredLinks.length) return null;
+
+  return (
+    <div className="rp-academic-contact">
+      {filteredLinks.map((link, idx) => (
+        <span key={link.key} className="rp-academic-contact-item">
+          {link.href ? (
+            <a
+              href={link.href}
+              target={link.target}
+              rel={link.target === "_blank" ? "noopener noreferrer" : undefined}
+              onClick={link.href.startsWith("mailto:") || link.href.startsWith("tel:") ? handleContactClick : undefined}
+              className={link.className}
+            >
+              {link.text}
+            </a>
+          ) : (
+            link.text
+          )}
+          {idx < filteredLinks.length - 1 && <span className="rp-academic-bullet">|</span>}
+        </span>
+      ))}
+    </div>
+  );
+};
+
 const SkillBar = ({ name, progress = 0, style }) => {
   if (style === "dots") {
     const filled = Math.round((progress / 100) * 5);
@@ -1709,7 +1752,7 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
             <h1 className="rp-academic-name">{name}</h1>
             {role && <p className="rp-academic-role">{role}</p>}
             {profileInfo.targetRole && <div className="rp-academic-badge">{profileInfo.targetRole}</div>}
-            <AtsContactRow c={contactInfo} />
+            <ScholarContactRow c={contactInfo} />
           </header>
           <main className="rp-academic-body">{getSections('all')}</main>
         </div>
