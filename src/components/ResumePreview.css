@@ -2197,7 +2197,7 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 }
 
 /* ── Academic CV Template Family ────────────────────────────────────────── */
-.rp-academic_cv {
+.rp-academic-cv {
   padding: 40px 48px;
 }
 
@@ -2230,7 +2230,7 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   width: 100% !important;
 }
 
-.rp-academic_cv .rp-stitle {
+.rp-academic-cv .rp-stitle {
   font-family: var(--rp-font-heading, serif);
   font-size: var(--rp-fs-stitle);
   font-weight: 700;
@@ -2425,7 +2425,7 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   padding: 32px 40px !important;
 }
 
-.rp-academic_cv {
+.rp-academic-cv {
   padding: 32px 40px !important;
 }
 

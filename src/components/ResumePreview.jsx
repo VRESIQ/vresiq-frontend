@@ -1704,7 +1704,7 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
     // ── academic_cv ────────────────────────────────────────────────────────
     case "academic_cv":
       return (
-        <div className="rp-ats-container rp-academic_cv">
+        <div className="rp-ats-container rp-academic-cv">
           <header className="rp-academic-header">
             <h1 className="rp-academic-name">{name}</h1>
             {role && <p className="rp-academic-role">{role}</p>}
