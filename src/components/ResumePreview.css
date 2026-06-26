@@ -401,6 +401,13 @@ a.rp-inline-link,
   color: #555 !important;
 }
 
+[data-hstyle="card"] .rp-ats-badge,
+[data-hstyle="card"] .rp-ats-badge-left {
+  background: var(--accent) !important;
+  color: var(--on-accent) !important;
+  border-color: transparent !important;
+}
+
 /* full-bleed: forces accent background color across the entire header */
 [data-hstyle="full-bleed"] .rp-header,
 [data-hstyle="full-bleed"] .rp-header-classic,
@@ -443,6 +450,13 @@ a.rp-inline-link,
   color: var(--on-accent-soft) !important;
 }
 
+[data-hstyle="full-bleed"] .rp-ats-badge,
+[data-hstyle="full-bleed"] .rp-ats-badge-left {
+  background: var(--on-accent) !important;
+  color: var(--accent-readable) !important;
+  border-color: transparent !important;
+}
+
 [data-hstyle="full-bleed"] .rp-header h1,
 [data-hstyle="full-bleed"] .rp-header-classic h1,
 [data-hstyle="full-bleed"] .rp-header-accentbar h1,
@@ -464,6 +478,11 @@ a.rp-inline-link,
 [data-hstyle="full-bleed"] .rp-contact,
 [data-hstyle="full-bleed"] .rp-sig-contact .rp-contact {
   color: var(--on-accent-soft) !important;
+}
+
+[data-hstyle="full-bleed"] .rp-contact a,
+[data-hstyle="full-bleed"] .rp-ats-contact a {
+  color: var(--on-accent) !important;
 }
 
 /* full-bleed on Signature template: also make the rule white */
@@ -1071,6 +1090,11 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   margin: 0 0 5px;
 }
 
+[data-hstyle="full-bleed"].rp-premium1 .rp-contact,
+[data-hstyle="full-bleed"].rp-premium1 .rp-contact a {
+  color: #e2ede4 !important;
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════
    PREMIUM2 — Executive
    Centered name, serif, thin rules, formal
@@ -1114,7 +1138,16 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   margin: 12px 0;
 }
 
-.rp-premium2 .rp-contact { justify-content: center; }
+.rp-premium2 .rp-contact {
+  justify-content: center;
+  font-size: 10.5px;
+}
+[data-hstyle="full-bleed"].rp-premium2 .rp-contact {
+  font-size: 10px;
+}
+.rp-premium2 .rp-contact-sep {
+  padding: 0 3px;
+}
 .rp-premium2 .rp-stitle {
   text-align: left;
   letter-spacing: 0.12em;
@@ -1140,13 +1173,34 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-premium3 .rp-header-compact {
   background: #f7f9f7;
   color: #111410;
-  padding: 18px 24px;
+  padding: 18px 20px 18px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 16px;
   border-top: 5px solid var(--accent);
   border-bottom: 1px solid #e5e7e2;
+}
+
+@media (max-width: 768px) {
+  .rp-premium3 .rp-header-compact {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .rp-premium3 .rp-header-compact .rp-contact {
+    justify-content: flex-start;
+    margin-top: 10px;
+  }
+}
+[data-hstyle="card"] .rp-premium3 .rp-header-compact {
+  margin-left: 24px !important;
+  margin-right: 20px !important;
+  padding-left: 24px !important;
+  padding-right: 20px !important;
+}
+[data-hstyle="full-bleed"] .rp-premium3 .rp-header-compact {
+  padding-left: 24px !important;
+  padding-right: 20px !important;
 }
 
 .rp-premium3 .rp-header-compact h1 { font-size: 22px; color: #111410; }
@@ -1230,10 +1284,23 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-sig-contact .rp-contact {
   flex-direction: column;
   align-items: flex-end;
-  gap: 4px;
+  gap: 5px;
   font-size: 10.5px;
   color: #444;
   margin: 0;
+  text-align: right;
+}
+.rp-sig-contact .rp-contact .rp-contact-sep {
+  display: none !important;
+}
+.rp-sig-contact .rp-contact-item {
+  display: flex !important;
+  align-items: center;
+  gap: 6px;
+  justify-content: flex-end;
+  border-right: 1.5px solid var(--accent);
+  padding-right: 8px;
+  margin-right: -8px;
 }
 
 /* Body: generous but not extreme padding */
@@ -1295,11 +1362,41 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
    Thick colored left-border accent on each section
    ═══════════════════════════════════════════════════════════════════════════ */
 .rp-premium5 .rp-header-accentbar {
-  padding: 24px 36px 16px;
+  padding: 24px 36px 18px;
   border-top: 6px solid var(--accent);
 }
 
-.rp-accentbar-name-block h1 { font-size: 30px; margin: 0 0 4px; }
+.rp-premium5 .rp-accentbar-name-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+}
+.rp-premium5 .rp-accentbar-name-block h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.15;
+}
+.rp-premium5 .rp-accentbar-name-block .rp-role {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-readable);
+  margin: 0;
+}
+.rp-premium5 .rp-target-role-badge {
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+.rp-premium5 .rp-contact {
+  margin-top: 12px;
+  gap: 6px 14px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  padding-top: 10px;
+}
+[data-hstyle="full-bleed"].rp-premium5 .rp-contact {
+  border-top: 1px solid var(--on-accent-line) !important;
+}
 
 .rp-accentlines .rp-section {
   padding-left: 14px;
@@ -1513,10 +1610,14 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   font-family: var(--rp-font-mono, monospace);
   font-size: 10px;
   color: #555;
-  flex-direction: column;
-  gap: 3px;
-  text-align: right;
+  flex-direction: row !important;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 4px 12px;
   margin: 0;
+}
+.rp-premium10 .rp-tech-contact .rp-contact-sep {
+  display: none !important;
 }
 
 .rp-tech-body .rp-stitle {
@@ -1938,7 +2039,8 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 /* Let's style the badge for other header styles too */
 [data-hstyle="card"] .rp-target-role-badge {
   background: var(--accent) !important;
-  color: #111410 !important;
+  color: var(--on-accent) !important;
+  padding: 4px 10px !important;
 }
 
 [data-hstyle="full-bleed"] .rp-target-role-badge {
@@ -2086,6 +2188,14 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   font-size: 10.5px;
   color: #444444;
   margin: 6px 0 0;
+}
+
+.rp-tech-faang .rp-ats-contact,
+.rp-swiss-minimal .rp-ats-contact,
+.rp-ats-entry .rp-ats-contact,
+.rp-ats-lead .rp-ats-contact,
+.rp-ats-experienced .rp-ats-contact {
+  justify-content: center !important;
 }
 
 .rp-ats-header .rp-ats-contact {
