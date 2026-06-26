@@ -2431,8 +2431,12 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 
 /* Frame (engineer_ats) Header Visual Layout Reconstruction (DevGuru style) */
 .rp-engineer-header {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  margin-bottom: 12px;
+  box-sizing: border-box;
+  margin: 0 0 12px;
+  padding: 0;
 }
 
 .rp-engineer-identity {
@@ -2441,6 +2445,7 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   align-items: center;
   text-align: center;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .rp-engineer-name {
@@ -2472,12 +2477,13 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 }
 
 .rp-engineer-contacts-row {
-  width: 100%;
-  max-width: 480px;
-  margin: 24px auto 0;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 24px 0 0;
+  padding: 0;
 }
 
 .rp-engineer-contacts-left {
@@ -2485,6 +2491,9 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   flex-direction: column;
   gap: 3px;
   text-align: left;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .rp-engineer-contacts-right {
@@ -2492,11 +2501,16 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   flex-direction: column;
   gap: 3px;
   text-align: left;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .rp-engineer-contact-item {
   font-size: 10.5px;
   color: #444444;
+  display: flex;
+  align-items: baseline;
 }
 
 .rp-engineer-contact-item strong {
@@ -2504,7 +2518,10 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: #666666;
-  margin-right: 4px;
+  margin-right: 8px;
+  display: inline-block;
+  width: 80px;
+  flex-shrink: 0;
 }
 
 .rp-engineer-contact-item .rp-contact-link {
@@ -2513,14 +2530,8 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 
 @media (max-width: 600px) {
   .rp-engineer-contacts-row {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-  }
-  .rp-engineer-contacts-left,
-  .rp-engineer-contacts-right {
-    text-align: center;
+    flex-wrap: wrap;
+    gap: 12px;
   }
 }
 
