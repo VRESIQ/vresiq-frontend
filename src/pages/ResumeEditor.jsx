@@ -1496,6 +1496,36 @@ const ResumeEditor = () => {
                     hint="Your target role."
                   />
                   <div className="field">
+                    <label>Role Display Mode</label>
+                    <select
+                      value={resume.decoratives?.showTargetRole || "true"}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setResume((prev) => ({
+                          ...prev,
+                          decoratives: {
+                            ...(prev.decoratives || {}),
+                            showTargetRole: val
+                          }
+                        }));
+                      }}
+                      className="editor-select"
+                      style={{
+                        width: "100%",
+                        marginTop: "0.4rem",
+                        minHeight: "46px",
+                        padding: "0.7rem 0.85rem",
+                        boxSizing: "border-box"
+                      }}
+                    >
+                      <option value="true">Current Role & Target Role (Option A)</option>
+                      <option value="false">Designation Only (Option B)</option>
+                    </select>
+                    <small className="field-hint" style={{ marginTop: "0.25rem", color: "var(--muted)", display: "block" }}>
+                      Choose whether to show both roles or hide Target Role completely.
+                    </small>
+                  </div>
+                  <div className="field">
                 <label>Profile photo</label>
                 <input
                   ref={photoInputRef}
@@ -1978,7 +2008,8 @@ const ResumeEditor = () => {
           )}
 
           {activeSection === "Customization" && (
-            <Section title="Templates">
+            <Section title="Customization" subtitle="Templates • Fonts • Decoratives">
+              <h3 className="decoratives-heading" style={{ marginTop: 0 }}>Templates</h3>
               {/* Free users only see Classic. Everything else is Pro. */}
               <TemplateGroup title="Free template" templates={FREE_TEMPLATES} current={resume.template} onChoose={chooseTemplate} />
 
@@ -2745,7 +2776,7 @@ const ResumeEditor = () => {
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
-const Section = ({ title, children, onAdd }) => {
+const Section = ({ title, subtitle, children, onAdd }) => {
   const containerRef = useRef(null);
   const prevCountRef = useRef(0);
   const hasMountedRef = useRef(false);
@@ -2778,9 +2809,12 @@ const Section = ({ title, children, onAdd }) => {
 
   return (
     <section className="editor-section" ref={containerRef}>
-      <div className="section-header">
-        <h2>{title}</h2>
-        {onAdd && <button className="btn-add" onClick={onAdd}>Add</button>}
+      <div className="section-header" style={subtitle ? { flexDirection: "column", alignItems: "flex-start" } : {}}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
+          <h2>{title}</h2>
+          {onAdd && <button className="btn-add" onClick={onAdd}>Add</button>}
+        </div>
+        {subtitle && <small className="section-subtitle" style={{ color: "var(--muted)", marginTop: "0.25rem", fontSize: "0.85rem", fontWeight: 500 }}>{subtitle}</small>}
       </div>
       {children}
       {onAdd && (

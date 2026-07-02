@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useRef, useLayoutEffect } from "react";
+import { useEffect, useMemo, useState, useRef, useLayoutEffect, createContext, useContext } from "react";
 import { loadTemplateFont, getFontVars, FONT_MAP } from "../utils/fonts";
 import "./ResumePreview.css";
 import { formatPartialDate, formatDateRange } from "../utils/formatters";
@@ -1029,10 +1029,13 @@ const MembershipsSection = ({ title, items = [], dec, sectionNumber, fullName, h
 const Photo = ({ src, shape = "circle" }) =>
   src ? <img src={src} alt="Profile" className={`rp-photo rp-photo-${shape}`} /> : null;
 
+const PreviewContext = createContext({ showTargetRole: "true" });
+
 // Renders a target role with a visible "Seeking:" semantic label so recruiters
 // cannot confuse it with the candidate's current designation.
 const TargetRoleBadge = ({ role, badgeClass = "rp-target-role-badge" }) => {
-  if (!role) return null;
+  const { showTargetRole } = useContext(PreviewContext);
+  if (!role || showTargetRole === "false") return null;
   return (
     <div className={badgeClass}>
       <span className="rp-role-seeking-label" aria-label="Seeking:">Seeking: </span>
@@ -1287,81 +1290,83 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
   };
 
   return (
-    <article
-      id="resume-preview"
-      ref={resumeRef}
-      className={`resume-preview rp-${templateId} ${scanMode ? "rp-scan-mode-active" : ""} ${dec.highDensity === "true" ? "rp-high-density" : ""}`}
-      style={{
-        "--accent": accent,
-        "--accent-readable": accentReadable,
-        "--hyperlink-color": hyperlinkColor,
-        "--on-accent": accentText.primary,
-        "--on-accent-muted": accentText.muted,
-        "--on-accent-soft": accentText.soft,
-        "--on-accent-line": accentText.line,
-        "--badge-bg": accentText.primary === "#ffffff" ? "#ffffff" : "#111410",
-        "--badge-text": accentText.primary === "#ffffff" ? "#111410" : "#ffffff",
-        "--badge-seeking": accentText.primary === "#ffffff" ? "#4b5563" : "#d1d5db",
-        "--header-link-color": (dec.headerStyle === "card" || dec.headerStyle === "minimal" || !dec.headerStyle) ? accentReadable : (accentText.primary === "#ffffff" ? "#ffffff" : accentReadable),
-        "--header-link-hover": (dec.headerStyle === "card" || dec.headerStyle === "minimal" || !dec.headerStyle) ? accent : (accentText.primary === "#ffffff" ? accentText.muted : accent),
-        "--page-border": pageBorder ? `1px solid ${accent}` : "none",
-        "--section-margin-reduction": `${reductions.section}px`,
-        "--project-margin-reduction": `${reductions.project}px`,
-        "--experience-margin-reduction": `${reductions.experience}px`,
-        "--bullet-margin-reduction": `${reductions.bullet}px`,
-        "--education-margin-reduction": `${reductions.education}px`,
-        "--heading-top-reduction": `${reductions.section * 0.8}px`,
-        "--heading-bottom-reduction": `${reductions.section * 0.6}px`,
-        ...fontVars,
-      }}
-      data-template={templateId}
-      data-hstyle={dec.headerStyle || "minimal"}
-      data-bullet={dec.bulletStyle || "disc"}
-      data-lstyle={dec.linkStyle || "standard"}
-      data-accentlinks={dec.accentLinks !== "false" ? "true" : "false"}
-    >
-      <div className="rp-content-wrapper" ref={wrapperRef} style={{ display: "flow-root" }}>
-        {renderTemplate({
-          templateId,
-          profileInfo,
-          contactInfo,
-          photo,
-          photoShape,
-          getSections,
-          dec,
-          commonProps,
-          resume,
-          progressStyle
-        })}
-      </div>
-
-      {scanMode && (
-        <>
-          <svg className="rp-scan-mode-overlay-svg" viewBox="0 0 816 1056" preserveAspectRatio="none">
-            <path
-              d="M 50 120 L 750 120 M 50 120 L 50 450 L 550 450 M 50 450 L 50 900"
-              fill="none"
-              stroke={accentReadable}
-              strokeWidth="2.5"
-              strokeDasharray="6,6"
-              opacity="0.45"
-            />
-          </svg>
-          <div className="rp-scan-landmark" style={{ top: "113px", left: "43px" }} />
-          <div className="rp-scan-landmark" style={{ top: "113px", left: "743px" }} />
-          <div className="rp-scan-landmark" style={{ top: "443px", left: "43px" }} />
-          <div className="rp-scan-landmark" style={{ top: "443px", left: "543px" }} />
-          <div className="rp-scan-landmark" style={{ top: "893px", left: "43px" }} />
-        </>
-      )}
-
-      {isFreePlan && (
-        <div className="watermark-footer" aria-hidden="true">
-          Made with VRESIQ
+    <PreviewContext.Provider value={{ showTargetRole: dec.showTargetRole }}>
+      <article
+        id="resume-preview"
+        ref={resumeRef}
+        className={`resume-preview rp-${templateId} ${scanMode ? "rp-scan-mode-active" : ""} ${dec.highDensity === "true" ? "rp-high-density" : ""}`}
+        style={{
+          "--accent": accent,
+          "--accent-readable": accentReadable,
+          "--hyperlink-color": hyperlinkColor,
+          "--on-accent": accentText.primary,
+          "--on-accent-muted": accentText.muted,
+          "--on-accent-soft": accentText.soft,
+          "--on-accent-line": accentText.line,
+          "--badge-bg": accentText.primary === "#ffffff" ? "#ffffff" : "#111410",
+          "--badge-text": accentText.primary === "#ffffff" ? "#111410" : "#ffffff",
+          "--badge-seeking": accentText.primary === "#ffffff" ? "#4b5563" : "#d1d5db",
+          "--header-link-color": (dec.headerStyle === "card" || dec.headerStyle === "minimal" || !dec.headerStyle) ? accentReadable : (accentText.primary === "#ffffff" ? "#ffffff" : accentReadable),
+          "--header-link-hover": (dec.headerStyle === "card" || dec.headerStyle === "minimal" || !dec.headerStyle) ? accent : (accentText.primary === "#ffffff" ? accentText.muted : accent),
+          "--page-border": pageBorder ? `1px solid ${accent}` : "none",
+          "--section-margin-reduction": `${reductions.section}px`,
+          "--project-margin-reduction": `${reductions.project}px`,
+          "--experience-margin-reduction": `${reductions.experience}px`,
+          "--bullet-margin-reduction": `${reductions.bullet}px`,
+          "--education-margin-reduction": `${reductions.education}px`,
+          "--heading-top-reduction": `${reductions.section * 0.8}px`,
+          "--heading-bottom-reduction": `${reductions.section * 0.6}px`,
+          ...fontVars,
+        }}
+        data-template={templateId}
+        data-hstyle={dec.headerStyle || "minimal"}
+        data-bullet={dec.bulletStyle || "disc"}
+        data-lstyle={dec.linkStyle || "standard"}
+        data-accentlinks={dec.accentLinks !== "false" ? "true" : "false"}
+      >
+        <div className="rp-content-wrapper" ref={wrapperRef} style={{ display: "flow-root" }}>
+          {renderTemplate({
+            templateId,
+            profileInfo,
+            contactInfo,
+            photo,
+            photoShape,
+            getSections,
+            dec,
+            commonProps,
+            resume,
+            progressStyle
+          })}
         </div>
-      )}
 
-    </article>
+        {scanMode && (
+          <>
+            <svg className="rp-scan-mode-overlay-svg" viewBox="0 0 816 1056" preserveAspectRatio="none">
+              <path
+                d="M 50 120 L 750 120 M 50 120 L 50 450 L 550 450 M 50 450 L 50 900"
+                fill="none"
+                stroke={accentReadable}
+                strokeWidth="2.5"
+                strokeDasharray="6,6"
+                opacity="0.45"
+              />
+            </svg>
+            <div className="rp-scan-landmark" style={{ top: "113px", left: "43px" }} />
+            <div className="rp-scan-landmark" style={{ top: "113px", left: "743px" }} />
+            <div className="rp-scan-landmark" style={{ top: "443px", left: "43px" }} />
+            <div className="rp-scan-landmark" style={{ top: "443px", left: "543px" }} />
+            <div className="rp-scan-landmark" style={{ top: "893px", left: "43px" }} />
+          </>
+        )}
+
+        {isFreePlan && (
+          <div className="watermark-footer" aria-hidden="true">
+            Made with VRESIQ
+          </div>
+        )}
+
+      </article>
+    </PreviewContext.Provider>
   );
 };
 
