@@ -1061,14 +1061,19 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
     
     const el = resumeRef.current;
     
-    // Reset all CSS properties to measure default height
-    el.style.setProperty("--section-margin-reduction", "0px");
-    el.style.setProperty("--project-margin-reduction", "0px");
-    el.style.setProperty("--experience-margin-reduction", "0px");
-    el.style.setProperty("--bullet-margin-reduction", "0px");
-    el.style.setProperty("--education-margin-reduction", "0px");
-    el.style.setProperty("--heading-top-reduction", "0px");
-    el.style.setProperty("--heading-bottom-reduction", "0px");
+    // Helper to apply reductions to DOM
+    const applyReductions = (sec, proj, exp, bull, edu) => {
+      el.style.setProperty("--section-margin-reduction", `${sec}px`);
+      el.style.setProperty("--project-margin-reduction", `${proj}px`);
+      el.style.setProperty("--experience-margin-reduction", `${exp}px`);
+      el.style.setProperty("--bullet-margin-reduction", `${bull}px`);
+      el.style.setProperty("--education-margin-reduction", `${edu}px`);
+      el.style.setProperty("--heading-top-reduction", `${sec * 0.8}px`);
+      el.style.setProperty("--heading-bottom-reduction", `${sec * 0.6}px`);
+    };
+
+    // Reset to default (no reduction) to measure initial layout
+    applyReductions(0, 0, 0, 0, 0);
     
     if (dec.highDensity !== "true") {
       setReductions({ section: 0, project: 0, experience: 0, bullet: 0, education: 0 });
@@ -1079,109 +1084,52 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
     const pageHeight = 1056;
     const defaultHeight = wrapperRef.current.offsetHeight;
     
+    // If it already fits on one page, no reduction needed
     if (defaultHeight <= pageHeight) {
       setReductions({ section: 0, project: 0, experience: 0, bullet: 0, education: 0 });
       return;
     }
     
-    let overflow = defaultHeight - pageHeight;
+    // Try up to 10 steps of progressive reduction, verifying if it forces a reflow to fit page 1
+    let targetStep = -1;
+    for (let step = 1; step <= 10; step++) {
+      const secVal = step * 1.0;
+      const projVal = step * 0.4;
+      const expVal = step * 0.8;
+      const bullVal = step * 0.25;
+      const eduVal = step * 0.4;
+      
+      applyReductions(secVal, projVal, expVal, bullVal, eduVal);
+      
+      // Force layout reflow and measure
+      const heightAfterStep = wrapperRef.current.offsetHeight;
+      if (heightAfterStep <= pageHeight) {
+        targetStep = step;
+        break;
+      }
+    }
     
-    // If the overflow is large (multiple sections, e.g. > 130px), do NOT aggressively compress. Keep it as clean 2-page resume.
-    if (overflow > 130) {
+    if (targetStep !== -1) {
+      // It successfully fit on page 1!
+      const secVal = targetStep * 1.0;
+      const projVal = targetStep * 0.4;
+      const expVal = targetStep * 0.8;
+      const bullVal = targetStep * 0.25;
+      const eduVal = targetStep * 0.4;
+      
+      applyReductions(secVal, projVal, expVal, bullVal, eduVal);
+      setReductions({
+        section: secVal,
+        project: projVal,
+        experience: expVal,
+        bullet: bullVal,
+        education: eduVal
+      });
+    } else {
+      // If it still overflows after max compression, reset to 0 to keep balanced 2-page styling
+      applyReductions(0, 0, 0, 0, 0);
       setReductions({ section: 0, project: 0, experience: 0, bullet: 0, education: 0 });
-      return;
     }
-    
-    // Collect elements count
-    const numSections = el.querySelectorAll(".rp-section").length || 1;
-    const numProjects = el.querySelectorAll(".rp-projects-list .rp-item").length || 1;
-    const numExperience = el.querySelectorAll(".rp-experience-list .rp-item, .rp-experience-list .rp-timeline-item").length || 1;
-    const numBullets = el.querySelectorAll(".rp-desc-list li, .rp-item-desc ul li").length || 1;
-    const numEducation = el.querySelectorAll(".rp-education-list .rp-item").length || 1;
-    
-    let R = overflow;
-    let secRed = 0;
-    let projRed = 0;
-    let expRed = 0;
-    let bullRed = 0;
-    let eduRed = 0;
-    
-    // 1. Section Spacing (max 10px per section)
-    if (R > 0) {
-      const maxSec = numSections * 10;
-      if (R <= maxSec) {
-        secRed = R / numSections;
-        R = 0;
-      } else {
-        secRed = 10;
-        R -= maxSec;
-      }
-    }
-    
-    // 2. Projects Spacing (max 4px per project item)
-    if (R > 0) {
-      const maxProj = numProjects * 4;
-      if (R <= maxProj) {
-        projRed = R / numProjects;
-        R = 0;
-      } else {
-        projRed = 4;
-        R -= maxProj;
-      }
-    }
-    
-    // 3. Experience Spacing (max 8px per experience item)
-    if (R > 0) {
-      const maxExp = numExperience * 8;
-      if (R <= maxExp) {
-        expRed = R / numExperience;
-        R = 0;
-      } else {
-        expRed = 8;
-        R -= maxExp;
-      }
-    }
-    
-    // 4. Bullet Spacing (max 2.5px per bullet)
-    if (R > 0) {
-      const maxBull = numBullets * 2.5;
-      if (R <= maxBull) {
-        bullRed = R / numBullets;
-        R = 0;
-      } else {
-        bullRed = 2.5;
-        R -= maxBull;
-      }
-    }
-    
-    // 5. Education Spacing (max 4px per education item)
-    if (R > 0) {
-      const maxEdu = numEducation * 4;
-      if (R <= maxEdu) {
-        eduRed = R / numEducation;
-        R = 0;
-      } else {
-        eduRed = 4;
-        R -= maxEdu;
-      }
-    }
-    
-    // Set variables directly on the DOM element for synchronous reflow before React state syncs
-    el.style.setProperty("--section-margin-reduction", `${secRed}px`);
-    el.style.setProperty("--project-margin-reduction", `${projRed}px`);
-    el.style.setProperty("--experience-margin-reduction", `${expRed}px`);
-    el.style.setProperty("--bullet-margin-reduction", `${bullRed}px`);
-    el.style.setProperty("--education-margin-reduction", `${eduRed}px`);
-    el.style.setProperty("--heading-top-reduction", `${secRed * 0.8}px`);
-    el.style.setProperty("--heading-bottom-reduction", `${secRed * 0.6}px`);
-    
-    setReductions({
-      section: secRed,
-      project: projRed,
-      experience: expRed,
-      bullet: bullRed,
-      education: eduRed
-    });
   }, [resume, dec.highDensity, templateId]);
 
   const useCustomAccent = dec.useCustomAccent === "true";
