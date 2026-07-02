@@ -614,7 +614,7 @@ const EducationSection = ({ items = [], showIcon, dec, sectionNumber, fullName, 
       <STitle showIcon={showIcon} dec={dec} sectionNumber={sectionNumber}>Education</STitle>
       <Wrapper className={wrapperClass}>
         {items.map((item, i) => (
-          <ItemWrapper key={i} className="rp-item" style={hasBullets ? { marginBottom: "6px" } : {}}>
+          <ItemWrapper key={i} className="rp-item" style={hasBullets ? { marginBottom: "var(--education-item-margin, 6px)" } : {}}>
             <div className="rp-item-head">
               <strong>{item.institution || "Institution"}</strong>
               {hasText(item.location) && <span className="rp-item-location">{item.location}</span>}
@@ -651,7 +651,7 @@ const ProjectsSection = ({ items = [], showIcon, dec, scanMode = false, sectionN
       <STitle showIcon={showIcon} dec={dec} sectionNumber={sectionNumber}>Projects</STitle>
       <Wrapper className={wrapperClass}>
         {items.map((item, i) => (
-          <ItemWrapper key={i} className="rp-item" style={{ marginBottom: "6px" }}>
+          <ItemWrapper key={i} className="rp-item" style={{ marginBottom: "var(--project-item-margin, 6px)" }}>
             {(() => {
               const titleText = item.title || "Project";
               if (titleText.includes(" | ")) {
@@ -1046,7 +1046,13 @@ const TargetRoleBadge = ({ role, badgeClass = "rp-target-role-badge" }) => {
 const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
   const templateId = resume.template || "template1";
   const dec = normalizeDecoratives(resume.decoratives || {});
-  const [densityLevel, setDensityLevel] = useState(0);
+  const [reductions, setReductions] = useState({
+    section: 0,
+    project: 0,
+    experience: 0,
+    bullet: 0,
+    education: 0
+  });
   const resumeRef = useRef(null);
   const wrapperRef = useRef(null);
 
@@ -1055,64 +1061,127 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
     
     const el = resumeRef.current;
     
-    // Reset all progressive density levels
-    el.classList.remove(
-      "rp-hd-level-1",
-      "rp-hd-level-2",
-      "rp-hd-level-3",
-      "rp-hd-level-4",
-      "rp-hd-level-5"
-    );
+    // Reset all CSS properties to measure default height
+    el.style.setProperty("--section-margin-reduction", "0px");
+    el.style.setProperty("--project-margin-reduction", "0px");
+    el.style.setProperty("--experience-margin-reduction", "0px");
+    el.style.setProperty("--bullet-margin-reduction", "0px");
+    el.style.setProperty("--education-margin-reduction", "0px");
+    el.style.setProperty("--heading-top-reduction", "0px");
+    el.style.setProperty("--heading-bottom-reduction", "0px");
     
     if (dec.highDensity !== "true") {
-      setDensityLevel(0);
+      setReductions({ section: 0, project: 0, experience: 0, bullet: 0, education: 0 });
       return;
     }
     
     // Page height limit (11 inches * 96 DPI = 1056px)
     const pageHeight = 1056;
-    let currentHeight = wrapperRef.current.offsetHeight;
+    const defaultHeight = wrapperRef.current.offsetHeight;
     
-    if (currentHeight <= pageHeight) {
-      setDensityLevel(0);
+    if (defaultHeight <= pageHeight) {
+      setReductions({ section: 0, project: 0, experience: 0, bullet: 0, education: 0 });
       return;
     }
     
-    // Try Level 1 spacing
-    el.classList.add("rp-hd-level-1");
-    currentHeight = wrapperRef.current.offsetHeight;
-    if (currentHeight <= pageHeight) {
-      setDensityLevel(1);
+    let overflow = defaultHeight - pageHeight;
+    
+    // If the overflow is large (multiple sections, e.g. > 130px), do NOT aggressively compress. Keep it as clean 2-page resume.
+    if (overflow > 130) {
+      setReductions({ section: 0, project: 0, experience: 0, bullet: 0, education: 0 });
       return;
     }
     
-    // Try Level 2 spacing
-    el.classList.add("rp-hd-level-2");
-    currentHeight = wrapperRef.current.offsetHeight;
-    if (currentHeight <= pageHeight) {
-      setDensityLevel(2);
-      return;
+    // Collect elements count
+    const numSections = el.querySelectorAll(".rp-section").length || 1;
+    const numProjects = el.querySelectorAll(".rp-projects-list .rp-item").length || 1;
+    const numExperience = el.querySelectorAll(".rp-experience-list .rp-item, .rp-experience-list .rp-timeline-item").length || 1;
+    const numBullets = el.querySelectorAll(".rp-desc-list li, .rp-item-desc ul li").length || 1;
+    const numEducation = el.querySelectorAll(".rp-education-list .rp-item").length || 1;
+    
+    let R = overflow;
+    let secRed = 0;
+    let projRed = 0;
+    let expRed = 0;
+    let bullRed = 0;
+    let eduRed = 0;
+    
+    // 1. Section Spacing (max 10px per section)
+    if (R > 0) {
+      const maxSec = numSections * 10;
+      if (R <= maxSec) {
+        secRed = R / numSections;
+        R = 0;
+      } else {
+        secRed = 10;
+        R -= maxSec;
+      }
     }
     
-    // Try Level 3 spacing
-    el.classList.add("rp-hd-level-3");
-    currentHeight = wrapperRef.current.offsetHeight;
-    if (currentHeight <= pageHeight) {
-      setDensityLevel(3);
-      return;
+    // 2. Projects Spacing (max 4px per project item)
+    if (R > 0) {
+      const maxProj = numProjects * 4;
+      if (R <= maxProj) {
+        projRed = R / numProjects;
+        R = 0;
+      } else {
+        projRed = 4;
+        R -= maxProj;
+      }
     }
     
-    // Try Level 4 spacing
-    el.classList.add("rp-hd-level-4");
-    currentHeight = wrapperRef.current.offsetHeight;
-    if (currentHeight <= pageHeight) {
-      setDensityLevel(4);
-      return;
+    // 3. Experience Spacing (max 8px per experience item)
+    if (R > 0) {
+      const maxExp = numExperience * 8;
+      if (R <= maxExp) {
+        expRed = R / numExperience;
+        R = 0;
+      } else {
+        expRed = 8;
+        R -= maxExp;
+      }
     }
     
-    // Try Level 5 spacing
-    el.classList.add("rp-hd-level-5");
-    setDensityLevel(5);
+    // 4. Bullet Spacing (max 2.5px per bullet)
+    if (R > 0) {
+      const maxBull = numBullets * 2.5;
+      if (R <= maxBull) {
+        bullRed = R / numBullets;
+        R = 0;
+      } else {
+        bullRed = 2.5;
+        R -= maxBull;
+      }
+    }
+    
+    // 5. Education Spacing (max 4px per education item)
+    if (R > 0) {
+      const maxEdu = numEducation * 4;
+      if (R <= maxEdu) {
+        eduRed = R / numEducation;
+        R = 0;
+      } else {
+        eduRed = 4;
+        R -= maxEdu;
+      }
+    }
+    
+    // Set variables directly on the DOM element for synchronous reflow before React state syncs
+    el.style.setProperty("--section-margin-reduction", `${secRed}px`);
+    el.style.setProperty("--project-margin-reduction", `${projRed}px`);
+    el.style.setProperty("--experience-margin-reduction", `${expRed}px`);
+    el.style.setProperty("--bullet-margin-reduction", `${bullRed}px`);
+    el.style.setProperty("--education-margin-reduction", `${eduRed}px`);
+    el.style.setProperty("--heading-top-reduction", `${secRed * 0.8}px`);
+    el.style.setProperty("--heading-bottom-reduction", `${secRed * 0.6}px`);
+    
+    setReductions({
+      section: secRed,
+      project: projRed,
+      experience: expRed,
+      bullet: bullRed,
+      education: eduRed
+    });
   }, [resume, dec.highDensity, templateId]);
 
   const useCustomAccent = dec.useCustomAccent === "true";
@@ -1273,7 +1342,7 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
     <article
       id="resume-preview"
       ref={resumeRef}
-      className={`resume-preview rp-${templateId} ${scanMode ? "rp-scan-mode-active" : ""} ${dec.highDensity === "true" ? `rp-high-density rp-hd-level-${densityLevel}` : ""}`}
+      className={`resume-preview rp-${templateId} ${scanMode ? "rp-scan-mode-active" : ""} ${dec.highDensity === "true" ? "rp-high-density" : ""}`}
       style={{
         "--accent": accent,
         "--accent-readable": accentReadable,
@@ -1288,6 +1357,13 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
         "--header-link-color": (dec.headerStyle === "card" || dec.headerStyle === "minimal" || !dec.headerStyle) ? accentReadable : (accentText.primary === "#ffffff" ? "#ffffff" : accentReadable),
         "--header-link-hover": (dec.headerStyle === "card" || dec.headerStyle === "minimal" || !dec.headerStyle) ? accent : (accentText.primary === "#ffffff" ? accentText.muted : accent),
         "--page-border": pageBorder ? `1px solid ${accent}` : "none",
+        "--section-margin-reduction": `${reductions.section}px`,
+        "--project-margin-reduction": `${reductions.project}px`,
+        "--experience-margin-reduction": `${reductions.experience}px`,
+        "--bullet-margin-reduction": `${reductions.bullet}px`,
+        "--education-margin-reduction": `${reductions.education}px`,
+        "--heading-top-reduction": `${reductions.section * 0.8}px`,
+        "--heading-bottom-reduction": `${reductions.section * 0.6}px`,
         ...fontVars,
       }}
       data-template={templateId}
