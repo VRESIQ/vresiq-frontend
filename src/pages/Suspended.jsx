@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import NavLogo from "../components/NavLogo";
 import { SUPPORT_EMAIL } from "../constants/config";
@@ -5,17 +6,100 @@ import "./Legal.css";
 import "./Pricing.css";
 
 const Suspended = () => {
-  const subject = encodeURIComponent("Suspended Account Assistance");
-  const body = encodeURIComponent(
+  const [showModal, setShowModal] = useState(false);
+  const [toast, setToast] = useState("");
+  
+  const triggerButtonRef = useRef(null);
+  const modalRef = useRef(null);
+  const toastTimeoutRef = useRef(null);
+
+  const rawSubject = "Suspended Account Assistance";
+  const rawBody = (
     "- Name:\n" +
     "- Registered Email:\n" +
     "- Issue: Account Suspension Inquiry\n" +
-    "- Additional Details:\n"
+    "- Additional Details:"
   );
-  const mailtoUrl = `mailto:${SUPPORT_EMAIL}?subject=${subject}&body=${body}`;
+
+  const triggerToast = (message) => {
+    if (toastTimeoutRef.current) {
+      clearTimeout(toastTimeoutRef.current);
+    }
+    setToast(message);
+    toastTimeoutRef.current = setTimeout(() => {
+      setToast("");
+      toastTimeoutRef.current = null;
+    }, 2000);
+  };
+
+  const handleCopy = (text, label) => {
+    navigator.clipboard.writeText(text);
+    triggerToast(`${label} copied to clipboard!`);
+  };
+
+  const handleCopyAll = () => {
+    const combinedText = (
+      `To: ${SUPPORT_EMAIL}\n` +
+      `Subject: ${rawSubject}\n\n` +
+      `Message Body:\n${rawBody}`
+    );
+    navigator.clipboard.writeText(combinedText);
+    triggerToast("All details copied to clipboard!");
+  };
+
+  const handleOpenGmail = () => {
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${SUPPORT_EMAIL}&su=${encodeURIComponent(rawSubject)}&body=${encodeURIComponent(rawBody)}`;
+    window.open(gmailUrl, "_blank", "noopener,noreferrer");
+  };
+
+  // Trapping keyboard focus, closing on Escape, and body scroll prevention
+  useEffect(() => {
+    if (showModal) {
+      document.body.style.overflow = "hidden";
+      
+      const focusableElements = modalRef.current?.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex="0"]'
+      );
+      if (focusableElements && focusableElements.length > 0) {
+        focusableElements[0].focus();
+      }
+
+      const handleKeyDown = (e) => {
+        if (e.key === "Escape") {
+          setShowModal(false);
+          return;
+        }
+
+        if (e.key === "Tab" && focusableElements) {
+          const firstElement = focusableElements[0];
+          const lastElement = focusableElements[focusableElements.length - 1];
+
+          if (e.shiftKey) {
+            if (document.activeElement === firstElement) {
+              lastElement.focus();
+              e.preventDefault();
+            }
+          } else {
+            if (document.activeElement === lastElement) {
+              firstElement.focus();
+              e.preventDefault();
+            }
+          }
+        }
+      };
+
+      document.addEventListener("keydown", handleKeyDown);
+      return () => {
+        document.removeEventListener("keydown", handleKeyDown);
+        document.body.style.overflow = "unset";
+      };
+    } else {
+      triggerButtonRef.current?.focus();
+    }
+  }, [showModal]);
 
   return (
-    <div className="legal-page premium-shell">
+    <div className="legal-page premium-shell" style={{ position: "relative", minHeight: "100vh" }}>
       <nav className="pricing-nav">
         <NavLogo className="pricing-logo" />
         <div className="pricing-nav-links">
@@ -40,8 +124,10 @@ const Suspended = () => {
             Please contact support for assistance.
           </p>
 
-          <a
-            href={mailtoUrl}
+          <button
+            type="button"
+            ref={triggerButtonRef}
+            onClick={() => setShowModal(true)}
             className="btn-create"
             style={{
               display: "inline-block",
@@ -55,7 +141,7 @@ const Suspended = () => {
             }}
           >
             Contact Support
-          </a>
+          </button>
 
           <div
             className="manual-contact-card"
@@ -72,7 +158,7 @@ const Suspended = () => {
             }}
           >
             <span style={{ display: "block", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.05em", opacity: 0.8, marginBottom: "0.4rem" }}>
-              Need Help?
+              Quick Contact
             </span>
             Email:
             <br />
@@ -80,6 +166,238 @@ const Suspended = () => {
           </div>
         </div>
       </div>
+
+      {/* In-Browser Support Modal */}
+      {showModal && (
+        <div
+          className="modal-overlay"
+          style={{
+            display: "grid",
+            placeItems: "center",
+            position: "fixed",
+            inset: 0,
+            background: "rgba(17, 20, 16, 0.85)",
+            zIndex: 1000,
+            padding: "1rem"
+          }}
+          onClick={() => setShowModal(false)}
+        >
+          <div
+            className="modal"
+            ref={modalRef}
+            style={{
+              background: "#161814",
+              border: "1px solid rgba(255, 255, 255, 0.12)",
+              borderRadius: "8px",
+              padding: "2rem",
+              width: "100%",
+              maxWidth: "520px",
+              textAlign: "left",
+              boxSizing: "border-box"
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 style={{ fontSize: "1.45rem", color: "#ffffff", marginBottom: "0.75rem" }}>Contact Support</h2>
+            <p style={{ fontSize: "0.9rem", color: "rgba(255, 255, 255, 0.75)", marginBottom: "1.5rem", lineHeight: "1.4" }}>
+              Please copy the details below to email us manually, or use the Gmail button to compose immediately.
+            </p>
+
+            {/* Email Field */}
+            <div style={{ marginBottom: "1rem" }}>
+              <label style={{ display: "block", fontSize: "0.78rem", color: "var(--accent, #648c00)", textTransform: "uppercase", fontWeight: "bold", marginBottom: "0.35rem" }}>Support Email</label>
+              <div style={{ display: "flex", gap: "0.5rem" }}>
+                <input
+                  readOnly
+                  value={SUPPORT_EMAIL}
+                  style={{
+                    flex: 1,
+                    padding: "0.6rem 0.8rem",
+                    background: "rgba(255, 255, 255, 0.05)",
+                    border: "1px solid rgba(255, 255, 255, 0.12)",
+                    color: "#ffffff",
+                    borderRadius: "4px",
+                    fontSize: "0.9rem"
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => handleCopy(SUPPORT_EMAIL, "Email")}
+                  style={{
+                    padding: "0.6rem 1.2rem",
+                    background: "rgba(255, 255, 255, 0.08)",
+                    border: "1px solid rgba(255,255,255,0.15)",
+                    color: "#ffffff",
+                    fontWeight: "bold",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    fontSize: "0.85rem"
+                  }}
+                >
+                  Copy
+                </button>
+              </div>
+            </div>
+
+            {/* Subject Field */}
+            <div style={{ marginBottom: "1rem" }}>
+              <label style={{ display: "block", fontSize: "0.78rem", color: "var(--accent, #648c00)", textTransform: "uppercase", fontWeight: "bold", marginBottom: "0.35rem" }}>Subject</label>
+              <div style={{ display: "flex", gap: "0.5rem" }}>
+                <input
+                  readOnly
+                  value={rawSubject}
+                  style={{
+                    flex: 1,
+                    padding: "0.6rem 0.8rem",
+                    background: "rgba(255, 255, 255, 0.05)",
+                    border: "1px solid rgba(255, 255, 255, 0.12)",
+                    color: "#ffffff",
+                    borderRadius: "4px",
+                    fontSize: "0.9rem"
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => handleCopy(rawSubject, "Subject")}
+                  style={{
+                    padding: "0.6rem 1.2rem",
+                    background: "rgba(255, 255, 255, 0.08)",
+                    border: "1px solid rgba(255,255,255,0.15)",
+                    color: "#ffffff",
+                    fontWeight: "bold",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    fontSize: "0.85rem"
+                  }}
+                >
+                  Copy
+                </button>
+              </div>
+            </div>
+
+            {/* Message Body Field */}
+            <div style={{ marginBottom: "1.5rem" }}>
+              <label style={{ display: "block", fontSize: "0.78rem", color: "var(--accent, #648c00)", textTransform: "uppercase", fontWeight: "bold", marginBottom: "0.35rem" }}>Suggested Message Body</label>
+              <textarea
+                readOnly
+                value={rawBody}
+                rows={5}
+                style={{
+                  width: "100%",
+                  padding: "0.6rem 0.8rem",
+                  background: "rgba(255, 255, 255, 0.05)",
+                  border: "1px solid rgba(255, 255, 255, 0.12)",
+                  color: "#ffffff",
+                  borderRadius: "4px",
+                  fontFamily: "monospace",
+                  fontSize: "0.88rem",
+                  resize: "none",
+                  marginBottom: "0.5rem",
+                  boxSizing: "border-box"
+                }}
+              />
+              <button
+                type="button"
+                onClick={() => handleCopy(rawBody, "Message template")}
+                style={{
+                  width: "100%",
+                  padding: "0.6rem",
+                  background: "rgba(255, 255, 255, 0.08)",
+                  border: "1px solid rgba(255,255,255,0.15)",
+                  color: "#ffffff",
+                  fontWeight: "bold",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                  fontSize: "0.88rem"
+                }}
+              >
+                Copy Message Body
+              </button>
+            </div>
+
+            {/* Action Bar */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+              <div style={{ display: "flex", gap: "0.5rem" }}>
+                <button
+                  type="button"
+                  onClick={handleCopyAll}
+                  style={{
+                    flex: 1,
+                    padding: "0.75rem",
+                    background: "rgba(100, 140, 0, 0.15)",
+                    border: "1px solid var(--accent, #648c00)",
+                    color: "var(--accent, #648c00)",
+                    fontWeight: "bold",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    fontSize: "0.9rem"
+                  }}
+                >
+                  Copy All Details
+                </button>
+                
+                <button
+                  type="button"
+                  onClick={handleOpenGmail}
+                  style={{
+                    flex: 1,
+                    padding: "0.75rem",
+                    background: "var(--accent, #648c00)",
+                    border: "none",
+                    color: "#000000",
+                    fontWeight: "bold",
+                    borderRadius: "4px",
+                    cursor: "pointer",
+                    fontSize: "0.9rem"
+                  }}
+                >
+                  Open Gmail
+                </button>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setShowModal(false)}
+                style={{
+                  width: "100%",
+                  padding: "0.7rem",
+                  background: "transparent",
+                  border: "1px solid rgba(255, 255, 255, 0.2)",
+                  color: "#ffffff",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                  fontSize: "0.9rem",
+                  marginTop: "0.25rem"
+                }}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Success Toast Banner */}
+      {toast && (
+        <div
+          style={{
+            position: "fixed",
+            bottom: "2rem",
+            left: "50%",
+            transform: "translateX(-50%)",
+            background: "var(--accent, #648c00)",
+            color: "#000000",
+            padding: "0.6rem 1.5rem",
+            borderRadius: "50px",
+            fontWeight: "bold",
+            fontSize: "0.92rem",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
+            zIndex: 2000,
+            transition: "all 0.2s ease"
+          }}
+        >
+          {toast}
+        </div>
+      )}
     </div>
   );
 };
