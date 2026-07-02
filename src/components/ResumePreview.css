@@ -2498,36 +2498,61 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 
 /* ── High-Density Spacing Compression Engine ────────────────────────────── */
 .resume-preview.rp-high-density {
-  --rp-fs-base: 11px;
-  --rp-fs-name: 22px;
-  --rp-fs-role: 12px;
-  --rp-fs-stitle: 12px;
-  --rp-fs-item-title: 11px;
-  --rp-fs-item-sub: 10px;
-  --rp-fs-body: 10px;
-  --rp-fs-meta: 9.5px;
-  --rp-lh-body: 1.35;
-  --rp-lh-summary: 1.4;
+  /* High-density active class base container rules */
 }
 
-.rp-high-density .rp-section {
+/* ── Progressive Density Spacing Checklist (Fit-to-Page Priority) ── */
+
+/* Level 1: Section spacing */
+.resume-preview.rp-high-density.rp-hd-level-1 .rp-section,
+.resume-preview.rp-high-density.rp-hd-level-1 section,
+.resume-preview.rp-high-density.rp-hd-level-2 .rp-section,
+.resume-preview.rp-high-density.rp-hd-level-2 section,
+.resume-preview.rp-high-density.rp-hd-level-3 .rp-section,
+.resume-preview.rp-high-density.rp-hd-level-3 section,
+.resume-preview.rp-high-density.rp-hd-level-4 .rp-section,
+.resume-preview.rp-high-density.rp-hd-level-4 section,
+.resume-preview.rp-high-density.rp-hd-level-5 .rp-section,
+.resume-preview.rp-high-density.rp-hd-level-5 section {
   margin-bottom: 12px !important;
 }
-
-.rp-high-density .rp-item {
+.resume-preview.rp-high-density.rp-hd-level-1 .rp-stitle,
+.resume-preview.rp-high-density.rp-hd-level-2 .rp-stitle,
+.resume-preview.rp-high-density.rp-hd-level-3 .rp-stitle,
+.resume-preview.rp-high-density.rp-hd-level-4 .rp-stitle,
+.resume-preview.rp-high-density.rp-hd-level-5 .rp-stitle {
+  margin-top: 10px !important;
   margin-bottom: 6px !important;
 }
 
-.rp-high-density .rp-stitle {
-  margin-top: 10px !important;
-  margin-bottom: 8px !important;
+/* Level 2: Projects spacing */
+.resume-preview.rp-high-density.rp-hd-level-2 .rp-projects-list .rp-item,
+.resume-preview.rp-high-density.rp-hd-level-3 .rp-projects-list .rp-item,
+.resume-preview.rp-high-density.rp-hd-level-4 .rp-projects-list .rp-item,
+.resume-preview.rp-high-density.rp-hd-level-5 .rp-projects-list .rp-item {
+  margin-bottom: 2px !important;
 }
 
-.rp-high-density .rp-item-desc {
-  margin-top: 3px !important;
+/* Level 3: Experience spacing */
+.resume-preview.rp-high-density.rp-hd-level-3 .rp-experience-list .rp-item,
+.resume-preview.rp-high-density.rp-hd-level-3 .rp-experience-list .rp-timeline-item,
+.resume-preview.rp-high-density.rp-hd-level-4 .rp-experience-list .rp-item,
+.resume-preview.rp-high-density.rp-hd-level-4 .rp-experience-list .rp-timeline-item,
+.resume-preview.rp-high-density.rp-hd-level-5 .rp-experience-list .rp-item,
+.resume-preview.rp-high-density.rp-hd-level-5 .rp-experience-list .rp-timeline-item {
+  margin-bottom: 6px !important;
 }
 
-.rp-high-density .rp-desc-list li {
+/* Level 4: Bullet spacing */
+.resume-preview.rp-high-density.rp-hd-level-4 .rp-desc-list li,
+.resume-preview.rp-high-density.rp-hd-level-4 .rp-item-desc ul li,
+.resume-preview.rp-high-density.rp-hd-level-5 .rp-desc-list li,
+.resume-preview.rp-high-density.rp-hd-level-5 .rp-item-desc ul li {
+  margin-bottom: 1.5px !important;
+}
+
+/* Level 5: Education spacing */
+.resume-preview.rp-high-density.rp-hd-level-5 .rp-education-list .rp-item {
   margin-bottom: 2px !important;
 }
 

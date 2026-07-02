@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState, useRef, useLayoutEffect } from "react";
 import { loadTemplateFont, getFontVars, FONT_MAP } from "../utils/fonts";
 import "./ResumePreview.css";
 import { formatPartialDate, formatDateRange } from "../utils/formatters";
@@ -1046,6 +1046,75 @@ const TargetRoleBadge = ({ role, badgeClass = "rp-target-role-badge" }) => {
 const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
   const templateId = resume.template || "template1";
   const dec = normalizeDecoratives(resume.decoratives || {});
+  const [densityLevel, setDensityLevel] = useState(0);
+  const resumeRef = useRef(null);
+  const wrapperRef = useRef(null);
+
+  useLayoutEffect(() => {
+    if (!wrapperRef.current || !resumeRef.current) return;
+    
+    const el = resumeRef.current;
+    
+    // Reset all progressive density levels
+    el.classList.remove(
+      "rp-hd-level-1",
+      "rp-hd-level-2",
+      "rp-hd-level-3",
+      "rp-hd-level-4",
+      "rp-hd-level-5"
+    );
+    
+    if (dec.highDensity !== "true") {
+      setDensityLevel(0);
+      return;
+    }
+    
+    // Page height limit (11 inches * 96 DPI = 1056px)
+    const pageHeight = 1056;
+    let currentHeight = wrapperRef.current.offsetHeight;
+    
+    if (currentHeight <= pageHeight) {
+      setDensityLevel(0);
+      return;
+    }
+    
+    // Try Level 1 spacing
+    el.classList.add("rp-hd-level-1");
+    currentHeight = wrapperRef.current.offsetHeight;
+    if (currentHeight <= pageHeight) {
+      setDensityLevel(1);
+      return;
+    }
+    
+    // Try Level 2 spacing
+    el.classList.add("rp-hd-level-2");
+    currentHeight = wrapperRef.current.offsetHeight;
+    if (currentHeight <= pageHeight) {
+      setDensityLevel(2);
+      return;
+    }
+    
+    // Try Level 3 spacing
+    el.classList.add("rp-hd-level-3");
+    currentHeight = wrapperRef.current.offsetHeight;
+    if (currentHeight <= pageHeight) {
+      setDensityLevel(3);
+      return;
+    }
+    
+    // Try Level 4 spacing
+    el.classList.add("rp-hd-level-4");
+    currentHeight = wrapperRef.current.offsetHeight;
+    if (currentHeight <= pageHeight) {
+      setDensityLevel(4);
+      return;
+    }
+    
+    // Try Level 5 spacing
+    el.classList.add("rp-hd-level-5");
+    setDensityLevel(5);
+  }, [resume, dec.highDensity, templateId]);
+
   const useCustomAccent = dec.useCustomAccent === "true";
   const accent = (useCustomAccent && dec.accentColor) ? dec.accentColor : getDefaultAccent(templateId);
   const accentText = getAccentTextColors(accent);
@@ -1203,7 +1272,8 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
   return (
     <article
       id="resume-preview"
-      className={`resume-preview rp-${templateId} ${scanMode ? "rp-scan-mode-active" : ""} ${dec.highDensity === "true" ? "rp-high-density" : ""}`}
+      ref={resumeRef}
+      className={`resume-preview rp-${templateId} ${scanMode ? "rp-scan-mode-active" : ""} ${dec.highDensity === "true" ? `rp-high-density rp-hd-level-${densityLevel}` : ""}`}
       style={{
         "--accent": accent,
         "--accent-readable": accentReadable,
@@ -1226,18 +1296,20 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
       data-lstyle={dec.linkStyle || "standard"}
       data-accentlinks={dec.accentLinks !== "false" ? "true" : "false"}
     >
-      {renderTemplate({
-        templateId,
-        profileInfo,
-        contactInfo,
-        photo,
-        photoShape,
-        getSections,
-        dec,
-        commonProps,
-        resume,
-        progressStyle
-      })}
+      <div className="rp-content-wrapper" ref={wrapperRef} style={{ display: "flow-root" }}>
+        {renderTemplate({
+          templateId,
+          profileInfo,
+          contactInfo,
+          photo,
+          photoShape,
+          getSections,
+          dec,
+          commonProps,
+          resume,
+          progressStyle
+        })}
+      </div>
 
       {scanMode && (
         <>
