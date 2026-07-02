@@ -1735,4 +1735,8 @@ label {
   word-break: break-word !important;
 }
 
+.summary-field textarea {
+  min-height: 180px !important;
+}
+
 

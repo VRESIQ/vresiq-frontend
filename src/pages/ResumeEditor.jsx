@@ -1543,6 +1543,7 @@ const ResumeEditor = () => {
                 sanitize={sanitizeStrictText}
                 onChange={(v) => updateField("profileInfo", "summary", v)} 
                 textarea 
+                className="summary-field"
               />
             </Section>
           )}
@@ -2795,7 +2796,7 @@ const Section = ({ title, children, onAdd }) => {
   );
 };
 
-const Field = ({ label, value, onChange, onBlur, textarea, sanitize, inputMode, maxLength, placeholder, hint }) => {
+const Field = ({ label, value, onChange, onBlur, textarea, sanitize, inputMode, maxLength, placeholder, hint, className }) => {
   const handleChange = (nextValue) => {
     onChange(sanitize ? sanitize(nextValue) : nextValue);
   };
@@ -2812,7 +2813,7 @@ const Field = ({ label, value, onChange, onBlur, textarea, sanitize, inputMode, 
   };
 
   return (
-    <div className="field">
+    <div className={`field ${className || ""}`}>
       <div className="field-label-row">
         <label>{label}</label>
       </div>
