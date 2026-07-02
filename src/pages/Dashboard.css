@@ -348,6 +348,7 @@
 .template-selector {
   display: flex;
   overflow-x: auto;
+  overflow-y: hidden;
   gap: 0.75rem;
   padding: 0.5rem 0.25rem 1rem 0.25rem;
   scrollbar-width: thin;
@@ -399,34 +400,42 @@
 
 .mini-art span {
   display: block;
-  height: 5px;
-  border-radius: 99px;
-  background: #d8d5ca;
+  height: 4px;
+  background: var(--line);
+  border-radius: 1px;
 }
 
-.mini-art span:first-child {
+.mini-art span:first-of-type {
   width: 60%;
-  background: var(--ink);
+}
+
+.mini-art span:nth-of-type(2) {
+  width: 80%;
+}
+
+.mini-art span:last-of-type {
+  width: 40%;
 }
 
 .template-mini > span:last-of-type {
   display: block;
-  font-size: 0.78rem;
-  font-weight: 680;
+  font-size: 0.82rem;
+  font-weight: 550;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .template-mini small {
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
+  top: 6px;
+  right: 6px;
   font-size: 0.62rem;
-  font-weight: 800;
-  color: var(--accent-dark);
+  font-weight: 760;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  background: rgba(100, 140, 0, 0.12);
-  border: 1px solid rgba(100, 140, 0, 0.25);
-  padding: 1px 5px;
+  background: var(--accent-light);
+  color: var(--accent-dark);
+  padding: 1px 4px;
   border-radius: 3px;
   line-height: 1;
 }
@@ -435,6 +444,12 @@
   display: flex;
   justify-content: flex-end;
   gap: 0.75rem;
+  padding: 1rem clamp(1.25rem, 3vw, 2rem);
+  background: inherit;
+  border-top: 1px solid var(--line, rgba(0, 0, 0, 0.08));
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
 }
 
 .btn-cancel {

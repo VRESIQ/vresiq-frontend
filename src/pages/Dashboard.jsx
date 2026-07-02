@@ -309,10 +309,6 @@ const Dashboard = () => {
       {showModal && (
         <div className="modal-overlay" onClick={() => setShowModal(false)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-head">
-              <p>New resume</p>
-              <h2>Name the version</h2>
-            </div>
             <form onSubmit={handleCreate} className="modal-form" onKeyDown={handleKeyDown}>
               <div className="modal-body">
                 <div className="modal-head">
