@@ -20,7 +20,12 @@ const Login = () => {
     const refreshToken = params.get("refreshToken");
     const errorParam = params.get("error");
 
-    if (errorParam) {
+    if (errorParam === "ACCOUNT_SUSPENDED") {
+      sessionStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
+      navigate("/suspended");
+      return;
+    } else if (errorParam) {
       setError(errorParam);
     } else if (token && refreshToken) {
       setLoading(true);

@@ -64,7 +64,15 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleToggleStatus = async (userId) => {
+  const handleToggleStatus = async (userId, email, isActive) => {
+    const actionText = isActive ? "suspend" : "resume";
+    const confirmMessage = isActive
+      ? `Are you sure you want to suspend user "${email}"? They will lose all access immediately.`
+      : `Are you sure you want to resume user "${email}"?`;
+
+    if (!window.confirm(confirmMessage)) {
+      return;
+    }
     setActioningUser(userId);
     setError("");
     try {
@@ -73,23 +81,36 @@ const AdminDashboard = () => {
         prev.map((u) => (u._id === userId ? { ...u, active: res.data.active } : u))
       );
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to update user access.");
+      setError(err.response?.data?.message || `Failed to ${actionText} user.`);
     } finally {
       setActioningUser("");
     }
   };
 
   const handleDeleteUser = async (userId, email) => {
-    if (!window.confirm(`Are you absolutely sure you want to delete user "${email}"?\nThis will permanently purge all their resumes, stats, and billing records cascadingly.`)) {
+    const confirmation = window.prompt(
+      `WARNING: You are about to permanently delete the account for "${email}".\n\n` +
+      `This action is IRREVERSIBLE and will permanently remove:\n` +
+      `- The user account profile\n` +
+      `- All saved resumes and documents\n` +
+      `- All associated payment records and AI stats\n\n` +
+      `To confirm this, please type "DELETE" below:`
+    );
+
+    if (confirmation !== "DELETE") {
+      if (confirmation !== null) {
+        alert("Delete action cancelled or verification failed. You must type \"DELETE\" exactly.");
+      }
       return;
     }
+
     setActioningUser(userId);
     setError("");
     try {
       await deleteUserAdmin(userId);
       setUsers((prev) => prev.filter((u) => u._id !== userId));
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to delete user.");
+      setError(err.response?.data?.message || "Failed to permanently delete user.");
     } finally {
       setActioningUser("");
     }
@@ -298,12 +319,12 @@ const AdminDashboard = () => {
                             </td>
                             <td style={{ textAlign: "right" }}>
                               <button
-                                onClick={() => handleToggleStatus(u._id)}
-                                className={`btn-admin-action ${u.active ? "suspend" : "enable"}`}
+                                onClick={() => handleToggleStatus(u._id, u.email, u.active)}
+                                className={`btn-admin-action ${u.active ? "suspend" : "resume"}`}
                                 disabled={actioningUser === u._id || u.email === user?.email}
                                 title={u.email === user?.email ? "Self-action blocked" : ""}
                               >
-                                {u.active ? "Suspend" : "Enable"}
+                                {u.active ? "Suspend" : "Resume"}
                               </button>
                               <button
                                 onClick={() => handleDeleteUser(u._id, u.email)}
@@ -311,7 +332,7 @@ const AdminDashboard = () => {
                                 disabled={actioningUser === u._id || u.email === user?.email}
                                 title={u.email === user?.email ? "Self-action blocked" : ""}
                               >
-                                Purge
+                                Permanently Delete
                               </button>
                             </td>
                           </tr>

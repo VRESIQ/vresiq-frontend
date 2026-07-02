@@ -13,39 +13,7 @@ Request Flow: Dashboard (Mount) -> getUserResumes() API -> Response -> State ren
 Data Flow: User Profile details -> Template selectors -> createResume payload
 Learn: React hooks (useMemo, useEffect), conditional component locking, UI Skeleton loaders
 */
-const FREE_TEMPLATES = [
-  { id: "template1", name: "Classic" },
-];
-
-const PREMIUM_TEMPLATES = [
-  { id: "template2",  name: "Nova" },
-  { id: "template3",  name: "Horizon" },
-  { id: "premium1",  name: "Prestige" },
-  { id: "premium2",  name: "Executive" },
-  { id: "premium3",  name: "Elite" },
-  { id: "premium4",  name: "Signature" },
-  { id: "premium5",  name: "Apex" },
-  { id: "premium6",  name: "Split" },
-  { id: "premium7",  name: "Block" },
-  { id: "premium8",  name: "Visual" },
-  { id: "premium9",  name: "Centered" },
-  { id: "premium10", name: "Minimal" },
-  { id: "consulting_bcg", name: "Consulting BCG" },
-  { id: "tech_faang", name: "Tech FAANG" },
-  { id: "harvard_ats", name: "Harvard ATS" },
-  { id: "swiss_minimal", name: "Swiss Minimal" },
-  { id: "ats_classic",     name: "Standard" },
-  { id: "ats_entry",       name: "Edge" },
-  { id: "ats_senior",      name: "Serif" },
-  { id: "ats_lead",        name: "Lead" },
-  { id: "ats_intern",      name: "Campus" },
-  { id: "ats_experienced", name: "Prime" },
-  { id: "academic_cv",     name: "Scholar" },
-];
-
-const ALL_TEMPLATE_MAP = Object.fromEntries(
-  [...FREE_TEMPLATES, ...PREMIUM_TEMPLATES].map((t) => [t.id, t.name])
-);
+import { FREE_TEMPLATES, PREMIUM_TEMPLATES, ALL_TEMPLATE_MAP } from "../constants/templates";
 
 const TemplateMini = ({ id, locked, selected, onClick }) => (
   <button
@@ -74,8 +42,8 @@ const Dashboard = () => {
   const [selectedTemplate, setSelectedTemplate] = useState("template1");
   const [showModal, setShowModal] = useState(false);
   const [deleteError, setDeleteError] = useState("");
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const scrollContainerRef = useRef(null);
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -87,6 +55,46 @@ const Dashboard = () => {
       document.body.classList.remove("drawer-open");
     };
   }, [isMenuOpen]);
+
+  // Handle selected template scroll alignment
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      const selectedEl = scrollContainerRef.current.querySelector(".template-mini.selected");
+      if (selectedEl) {
+        selectedEl.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "nearest"
+        });
+      }
+    }
+  }, [selectedTemplate, showModal]);
+
+  const handleWheel = (e) => {
+    if (e.deltaY !== 0 && scrollContainerRef.current) {
+      e.preventDefault();
+      scrollContainerRef.current.scrollLeft += e.deltaY;
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (!showModal) return;
+    if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+      e.preventDefault();
+      const allTemplates = [...FREE_TEMPLATES, ...PREMIUM_TEMPLATES];
+      const currentIndex = allTemplates.findIndex((t) => t.id === selectedTemplate);
+      let nextIndex = currentIndex;
+      if (e.key === "ArrowRight") {
+        nextIndex = Math.min(allTemplates.length - 1, currentIndex + 1);
+      } else {
+        nextIndex = Math.max(0, currentIndex - 1);
+      }
+      const nextTemplate = allTemplates[nextIndex];
+      if (nextTemplate) {
+        setSelectedTemplate(nextTemplate.id);
+      }
+    }
+  };
 
   const isFreePlan = user?.subscriptionPlan?.toLowerCase() !== "premium";
   const hasReachedLimit = isFreePlan && resumes.length >= 1;
@@ -305,41 +313,47 @@ const Dashboard = () => {
               <p>New resume</p>
               <h2>Name the version</h2>
             </div>
-            <form onSubmit={handleCreate}>
-              <input
-                autoFocus
-                type="text"
-                placeholder="Software Engineer – Product"
-                value={newTitle}
-                onChange={(e) => setNewTitle(e.target.value)}
-                maxLength={60}
-                required
-              />
-
-              <div className="template-picker">
-                <p>Choose template</p>
-                <div className="template-grid">
-                  {FREE_TEMPLATES.map((t) => (
-                    <TemplateMini
-                      key={t.id}
-                      id={t.id}
-                      selected={selectedTemplate === t.id}
-                      onClick={() => setSelectedTemplate(t.id)}
-                    />
-                  ))}
-                  {PREMIUM_TEMPLATES.map((t) => (
-                    <TemplateMini
-                      key={t.id}
-                      id={t.id}
-                      locked={isFreePlan}
-                      selected={selectedTemplate === t.id}
-                      onClick={() => setSelectedTemplate(t.id)}
-                    />
-                  ))}
+            <form onSubmit={handleCreate} className="modal-form" onKeyDown={handleKeyDown}>
+              <div className="modal-body">
+                <div className="modal-head">
+                  <p>New resume</p>
+                  <h2>Name the version</h2>
                 </div>
-              </div>
+                <input
+                  autoFocus
+                  type="text"
+                  placeholder="Software Engineer – Product"
+                  value={newTitle}
+                  onChange={(e) => setNewTitle(e.target.value)}
+                  maxLength={60}
+                  required
+                />
 
-              {createError && <p className="field-error">{createError}</p>}
+                <div className="template-picker">
+                  <p>Choose template</p>
+                  <div className="template-selector" ref={scrollContainerRef} onWheel={handleWheel}>
+                    {FREE_TEMPLATES.map((t) => (
+                      <TemplateMini
+                        key={t.id}
+                        id={t.id}
+                        selected={selectedTemplate === t.id}
+                        onClick={() => setSelectedTemplate(t.id)}
+                      />
+                    ))}
+                    {PREMIUM_TEMPLATES.map((t) => (
+                      <TemplateMini
+                        key={t.id}
+                        id={t.id}
+                        locked={isFreePlan}
+                        selected={selectedTemplate === t.id}
+                        onClick={() => setSelectedTemplate(t.id)}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {createError && <p className="field-error">{createError}</p>}
+              </div>
 
               <div className="modal-actions">
                 <button type="button" onClick={() => setShowModal(false)} className="btn-cancel">

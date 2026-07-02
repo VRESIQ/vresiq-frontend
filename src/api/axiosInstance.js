@@ -78,6 +78,12 @@ axiosInstance.interceptors.response.use(
     if (!originalRequest?.skipLoader) {
       loadingService.stop(originalRequest?.url, originalRequest?.method);
     }
+    if (error.response?.data?.error === "ACCOUNT_SUSPENDED") {
+      sessionStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
+      window.location.href = "/suspended";
+      return Promise.reject(error);
+    }
     
     const isUnauthorized = error.response?.status === 401;
 

@@ -19,6 +19,7 @@ import Pricing from "./pages/Pricing";
 import Profile from "./pages/Profile";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
+import Suspended from "./pages/Suspended";
 
 // Lazy load heavy pages
 import { lazy, Suspense, useEffect } from "react";
@@ -159,6 +160,7 @@ function App() {
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
+            <Route path="/suspended" element={<Suspended />} />
 
             {/* Protected */}
             <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
