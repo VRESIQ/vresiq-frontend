@@ -176,7 +176,9 @@ const Suspended = () => {
             placeItems: "center",
             position: "fixed",
             inset: 0,
-            background: "rgba(17, 20, 16, 0.85)",
+            background: "rgba(8, 10, 8, 0.72)",
+            backdropFilter: "blur(8px)",
+            WebkitBackdropFilter: "blur(8px)",
             zIndex: 1000,
             padding: "1rem"
           }}
@@ -186,25 +188,38 @@ const Suspended = () => {
             className="modal"
             ref={modalRef}
             style={{
-              background: "#161814",
-              border: "1px solid rgba(255, 255, 255, 0.12)",
-              borderRadius: "8px",
-              padding: "2rem",
+              position: "relative",
+              background: "linear-gradient(180deg, #23271f 0%, #1d211b 100%)",
+              border: "1px solid rgba(180, 255, 80, 0.18)",
+              borderRadius: "16px",
+              padding: "2.5rem",
               width: "100%",
               maxWidth: "520px",
               textAlign: "left",
-              boxSizing: "border-box"
+              boxSizing: "border-box",
+              boxShadow: "0 24px 64px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.05)"
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 style={{ fontSize: "1.45rem", color: "#ffffff", marginBottom: "0.75rem" }}>Contact Support</h2>
-            <p style={{ fontSize: "0.9rem", color: "rgba(255, 255, 255, 0.75)", marginBottom: "1.5rem", lineHeight: "1.4" }}>
+            {/* Top highlight line */}
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                borderRadius: "inherit",
+                borderTop: "1px solid rgba(255, 255, 255, 0.08)",
+                pointerEvents: "none"
+              }}
+            />
+
+            <h2 style={{ fontSize: "1.45rem", color: "#ffffff", marginBottom: "1.2rem" }}>Contact Support</h2>
+            <p style={{ fontSize: "0.9rem", color: "rgba(255, 255, 255, 0.75)", marginBottom: "1.8rem", lineHeight: "1.4" }}>
               Please copy the details below to email us manually, or use the Gmail button to compose immediately.
             </p>
 
             {/* Email Field */}
-            <div style={{ marginBottom: "1rem" }}>
-              <label style={{ display: "block", fontSize: "0.78rem", color: "var(--accent, #648c00)", textTransform: "uppercase", fontWeight: "bold", marginBottom: "0.35rem" }}>Support Email</label>
+            <div style={{ marginBottom: "1.5rem" }}>
+              <label style={{ display: "block", fontSize: "0.78rem", color: "rgba(180, 255, 80, 0.75)", textTransform: "uppercase", fontWeight: "bold", marginBottom: "0.35rem" }}>Support Email</label>
               <div style={{ display: "flex", gap: "0.5rem" }}>
                 <input
                   readOnly
@@ -239,8 +254,8 @@ const Suspended = () => {
             </div>
 
             {/* Subject Field */}
-            <div style={{ marginBottom: "1rem" }}>
-              <label style={{ display: "block", fontSize: "0.78rem", color: "var(--accent, #648c00)", textTransform: "uppercase", fontWeight: "bold", marginBottom: "0.35rem" }}>Subject</label>
+            <div style={{ marginBottom: "1.5rem" }}>
+              <label style={{ display: "block", fontSize: "0.78rem", color: "rgba(180, 255, 80, 0.75)", textTransform: "uppercase", fontWeight: "bold", marginBottom: "0.35rem" }}>Subject</label>
               <div style={{ display: "flex", gap: "0.5rem" }}>
                 <input
                   readOnly
@@ -275,8 +290,8 @@ const Suspended = () => {
             </div>
 
             {/* Message Body Field */}
-            <div style={{ marginBottom: "1.5rem" }}>
-              <label style={{ display: "block", fontSize: "0.78rem", color: "var(--accent, #648c00)", textTransform: "uppercase", fontWeight: "bold", marginBottom: "0.35rem" }}>Suggested Message Body</label>
+            <div style={{ marginBottom: "2rem" }}>
+              <label style={{ display: "block", fontSize: "0.78rem", color: "rgba(180, 255, 80, 0.75)", textTransform: "uppercase", fontWeight: "bold", marginBottom: "0.35rem" }}>Suggested Message Body</label>
               <textarea
                 readOnly
                 value={rawBody}
