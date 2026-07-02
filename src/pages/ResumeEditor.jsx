@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useMemo } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { getResumeById, updateResume, uploadProfileImage, sendResumeByEmail, exportResumePdf } from "../api";
+import { getResumeById, updateResume, uploadProfileImage, sendResumeByEmail, exportResumePdf, refineResume } from "../api";
 import ResumePreview from "../components/ResumePreview";
 
 import DecorativesPanel from "../components/DecorativesPanel";
@@ -328,7 +328,21 @@ const ResumeEditor = () => {
   const [showAtsPanel, setShowAtsPanel] = useState(false);
   const [atsBadgeVisible, setAtsBadgeVisible] = useState(true);
   const [atsBadgePos, setAtsBadgePos] = useState({ top: 32, left: 32 });
-  const [latestAtsReport, setLatestAtsReport] = useState(null);
+  /**
+   * savedAtsReport — the backend-confirmed authoritative ATS report.
+   * Sources (in order of precedence, all produce identical scores):
+   *   1. Hydrated from resume.lastAtsScore on page load (zero extra call)
+   *   2. Updated silently after every auto-save / manual save
+   *   3. Updated when user clicks Run ATS Check in AiRefinePanel
+   *
+   * When null: badge shows localReport (live preview) labelled "Preview".
+   * When set: badge shows savedAtsReport.atsScore labelled "Saved ✓".
+   *
+   * hasUnsavedChanges overrides the display to "Preview" even when
+   * savedAtsReport exists, because the live score is more accurate.
+   */
+  const [savedAtsReport, setSavedAtsReport] = useState(null);
+  const [atsSyncing, setAtsSyncing] = useState(false);
   const atsBadgeDragRef = useRef(null);
   const atsBadgePointerRef = useRef({ active: false, moved: false, startX: 0, startY: 0, originLeft: 0, originTop: 0 });
   const photoInputRef = useRef(null);
@@ -499,6 +513,18 @@ const ResumeEditor = () => {
         setBaselineResume(JSON.stringify(normalized));
         setLastSaved(new Date());
 
+        // Hydrate the ATS badge from the persisted score — zero extra network call.
+        // lastAtsScore is set by the backend whenever Run ATS Check succeeds.
+        if (data.lastAtsScore != null) {
+          setSavedAtsReport({
+            atsScore: data.lastAtsScore,
+            score:    data.lastAtsScore,
+            category: data.lastAtsCategory || null,
+            issues:   [],
+            overallFeedback: null,
+          });
+        }
+
         // Initialize history stack with loaded state
         historyStack.current = [JSON.stringify(normalized)];
         pointer.current = 0;
@@ -540,11 +566,11 @@ const ResumeEditor = () => {
   // Restore ATS badge visibility on template change, score change, or new ATS Refine result
   const currentTemplate = resume?.template;
   const currentLocalScore = localReport ? localReport.score : null;
-  const currentLatestScore = latestAtsReport ? latestAtsReport.atsScore : null;
+  const currentSavedScore = savedAtsReport ? savedAtsReport.atsScore : null;
 
   useEffect(() => {
     setAtsBadgeVisible(true);
-  }, [currentTemplate, currentLocalScore, currentLatestScore]);
+  }, [currentTemplate, currentLocalScore, currentSavedScore]);
 
   useEffect(() => {
     const clampBadgeToPreview = () => {
@@ -599,6 +625,11 @@ const ResumeEditor = () => {
         setLastSaved(new Date());
         setSaved(true);
         setTimeout(() => setSaved(false), 2000);
+        // Silently sync the authoritative ATS score after every save (Pro only).
+        // This keeps savedAtsReport current without any user action.
+        if (!isFreePlan) {
+          syncAtsAfterSave(id);
+        }
       } catch (err) {
         setSaveError(err.response?.data?.message || "Could not auto-save changes.");
       } finally {
@@ -609,6 +640,24 @@ const ResumeEditor = () => {
     return () => clearTimeout(delayDebounce);
   }, [resume, baselineResume, hasUnsavedChanges, id]);
 
+  /**
+   * Silently fetches the authoritative backend ATS score after a save and
+   * stores it in savedAtsReport. Fires and forgets — errors are swallowed
+   * because the badge already shows a live preview from localReport.
+   */
+  const syncAtsAfterSave = async (resumeId) => {
+    if (atsSyncing) return;
+    try {
+      setAtsSyncing(true);
+      const res = await refineResume(resumeId);
+      setSavedAtsReport(res.data);
+    } catch (_) {
+      // Silent — badge falls back to localReport preview automatically.
+    } finally {
+      setAtsSyncing(false);
+    }
+  };
+
   const save = async () => {
     setSaving(true);
     setSaveError("");
@@ -618,6 +667,10 @@ const ResumeEditor = () => {
       setLastSaved(new Date());
       setSaved(true);
       setTimeout(() => setSaved(false), 2200);
+      // Sync authoritative ATS score after manual save too (Pro only).
+      if (!isFreePlan) {
+        syncAtsAfterSave(id);
+      }
     } catch (err) {
       setSaveError(err.response?.data?.message || "Could not save this resume.");
     } finally {
@@ -2184,7 +2237,7 @@ const ResumeEditor = () => {
                   <p className="editor-note" style={{ marginBottom: "1.5rem" }}>
                     Analyze your resume against industry standards and get AI-powered suggestions to beat the bots.
                   </p>
-                  <AiRefinePanel resumeId={id} onResult={(result) => setLatestAtsReport(result)} />
+                  <AiRefinePanel resumeId={id} onResult={(result) => setSavedAtsReport(result)} />
                 </div>
               ) : (
                 <div className="template-locked-notice">
@@ -2522,17 +2575,18 @@ const ResumeEditor = () => {
           <ResumePreview resume={resume} isFreePlan={isFreePlan} />
 
 
-          {/* ATS Floating Score Badge — draggable + removable */}
+          {/* ATS Floating Score Badge
+               — "Saved ✓"  when savedAtsReport exists and no unsaved edits
+               — "Preview"  while editing (unsaved changes) or no saved report yet
+               Both states use scores computed by the same algorithm; the only
+               difference is confirmed-by-backend vs live-in-browser. */}
           {(() => {
-            const atsReport = latestAtsReport
-              ? {
-                  score: latestAtsReport.atsScore,
-                  overallFeedback: latestAtsReport.overallFeedback,
-                  category: latestAtsReport.category,
-                  issues: latestAtsReport.issues || [],
-                }
+            // True when the badge should show the confirmed backend score.
+            const showSaved = savedAtsReport && !hasUnsavedChanges;
+            const atsReport = showSaved
+              ? savedAtsReport
               : (localReport || { score: 0, issues: [] });
-            const atsScore = atsReport.score;
+            const atsScore  = atsReport.score ?? atsReport.atsScore ?? 0;
             const scoreClass = atsScore >= 85 ? "good" : atsScore >= 60 ? "warn" : "poor";
 
             return atsBadgeVisible ? (
@@ -2601,7 +2655,9 @@ const ResumeEditor = () => {
                   >
                     <div className="ats-score-badge-circle">
                       <span className="ats-score-badge-val">{atsScore}</span>
-                      <span className="ats-score-badge-lbl">ATS</span>
+                      <span className="ats-score-badge-lbl" style={{ fontSize: "0.52rem", letterSpacing: "0.02em" }}>
+                        {showSaved ? "Saved ✓" : "Preview"}
+                      </span>
                     </div>
                   </button>
                   {/* Remove button */}
