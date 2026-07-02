@@ -185,16 +185,19 @@ const Suspended = () => {
           onClick={() => setShowModal(false)}
         >
           <div
-            className="modal"
+            className="suspended-modal"
             ref={modalRef}
             style={{
               position: "relative",
               background: "linear-gradient(180deg, #23271f 0%, #1d211b 100%)",
               border: "1px solid rgba(180, 255, 80, 0.18)",
               borderRadius: "16px",
-              padding: "2.5rem",
               width: "100%",
               maxWidth: "520px",
+              maxHeight: "calc(100vh - 4rem)",
+              display: "flex",
+              flexDirection: "column",
+              overflow: "hidden",
               textAlign: "left",
               boxSizing: "border-box",
               boxShadow: "0 24px 64px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.05)"
@@ -208,129 +211,143 @@ const Suspended = () => {
                 inset: 0,
                 borderRadius: "inherit",
                 borderTop: "1px solid rgba(255, 255, 255, 0.08)",
-                pointerEvents: "none"
+                pointerEvents: "none",
+                zIndex: 15
               }}
             />
 
-            <h2 style={{ fontSize: "1.45rem", color: "#ffffff", marginBottom: "1.2rem" }}>Contact Support</h2>
-            <p style={{ fontSize: "0.9rem", color: "rgba(255, 255, 255, 0.75)", marginBottom: "1.8rem", lineHeight: "1.4" }}>
-              Please copy the details below to email us manually, or use the Gmail button to compose immediately.
-            </p>
+            {/* Scrollable body */}
+            <div style={{ padding: "2.5rem 2.5rem 0.5rem 2.5rem", overflowY: "auto", flex: 1 }}>
+              <h2 style={{ fontSize: "1.45rem", color: "#ffffff", marginBottom: "1.2rem" }}>Contact Support</h2>
+              <p style={{ fontSize: "0.9rem", color: "rgba(255, 255, 255, 0.75)", marginBottom: "1.8rem", lineHeight: "1.4" }}>
+                Please copy the details below to email us manually, or use the Gmail button to compose immediately.
+              </p>
 
-            {/* Email Field */}
-            <div style={{ marginBottom: "1.5rem" }}>
-              <label style={{ display: "block", fontSize: "0.78rem", color: "rgba(180, 255, 80, 0.75)", textTransform: "uppercase", fontWeight: "bold", marginBottom: "0.35rem" }}>Support Email</label>
-              <div style={{ display: "flex", gap: "0.5rem" }}>
-                <input
+              {/* Email Field */}
+              <div style={{ marginBottom: "1.5rem" }}>
+                <label style={{ display: "block", fontSize: "0.78rem", color: "rgba(180, 255, 80, 0.75)", textTransform: "uppercase", fontWeight: "bold", marginBottom: "0.35rem" }}>Support Email</label>
+                <div style={{ display: "flex", gap: "0.5rem" }}>
+                  <input
+                    readOnly
+                    value={SUPPORT_EMAIL}
+                    style={{
+                      flex: 1,
+                      padding: "0.6rem 0.8rem",
+                      background: "rgba(255, 255, 255, 0.05)",
+                      border: "1px solid rgba(255, 255, 255, 0.12)",
+                      color: "#ffffff",
+                      borderRadius: "4px",
+                      fontSize: "0.9rem"
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleCopy(SUPPORT_EMAIL, "Email")}
+                    style={{
+                      padding: "0.6rem 1.2rem",
+                      background: "rgba(255, 255, 255, 0.08)",
+                      border: "1px solid rgba(255,255,255,0.15)",
+                      color: "#ffffff",
+                      fontWeight: "bold",
+                      borderRadius: "4px",
+                      cursor: "pointer",
+                      fontSize: "0.85rem"
+                    }}
+                  >
+                    Copy
+                  </button>
+                </div>
+              </div>
+
+              {/* Subject Field */}
+              <div style={{ marginBottom: "1.5rem" }}>
+                <label style={{ display: "block", fontSize: "0.78rem", color: "rgba(180, 255, 80, 0.75)", textTransform: "uppercase", fontWeight: "bold", marginBottom: "0.35rem" }}>Subject</label>
+                <div style={{ display: "flex", gap: "0.5rem" }}>
+                  <input
+                    readOnly
+                    value={rawSubject}
+                    style={{
+                      flex: 1,
+                      padding: "0.6rem 0.8rem",
+                      background: "rgba(255, 255, 255, 0.05)",
+                      border: "1px solid rgba(255, 255, 255, 0.12)",
+                      color: "#ffffff",
+                      borderRadius: "4px",
+                      fontSize: "0.9rem"
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleCopy(rawSubject, "Subject")}
+                    style={{
+                      padding: "0.6rem 1.2rem",
+                      background: "rgba(255, 255, 255, 0.08)",
+                      border: "1px solid rgba(255,255,255,0.15)",
+                      color: "#ffffff",
+                      fontWeight: "bold",
+                      borderRadius: "4px",
+                      cursor: "pointer",
+                      fontSize: "0.85rem"
+                    }}
+                  >
+                    Copy
+                  </button>
+                </div>
+              </div>
+
+              {/* Message Body Field */}
+              <div style={{ marginBottom: "2rem" }}>
+                <label style={{ display: "block", fontSize: "0.78rem", color: "rgba(180, 255, 80, 0.75)", textTransform: "uppercase", fontWeight: "bold", marginBottom: "0.35rem" }}>Suggested Message Body</label>
+                <textarea
                   readOnly
-                  value={SUPPORT_EMAIL}
+                  value={rawBody}
+                  rows={5}
                   style={{
-                    flex: 1,
+                    width: "100%",
                     padding: "0.6rem 0.8rem",
                     background: "rgba(255, 255, 255, 0.05)",
                     border: "1px solid rgba(255, 255, 255, 0.12)",
                     color: "#ffffff",
                     borderRadius: "4px",
-                    fontSize: "0.9rem"
+                    fontFamily: "monospace",
+                    fontSize: "0.88rem",
+                    resize: "none",
+                    marginBottom: "0.5rem",
+                    boxSizing: "border-box"
                   }}
                 />
                 <button
                   type="button"
-                  onClick={() => handleCopy(SUPPORT_EMAIL, "Email")}
+                  onClick={() => handleCopy(rawBody, "Message template")}
                   style={{
-                    padding: "0.6rem 1.2rem",
+                    width: "100%",
+                    padding: "0.6rem",
                     background: "rgba(255, 255, 255, 0.08)",
                     border: "1px solid rgba(255,255,255,0.15)",
                     color: "#ffffff",
                     fontWeight: "bold",
                     borderRadius: "4px",
                     cursor: "pointer",
-                    fontSize: "0.85rem"
+                    fontSize: "0.88rem"
                   }}
                 >
-                  Copy
+                  Copy Message Body
                 </button>
               </div>
             </div>
 
-            {/* Subject Field */}
-            <div style={{ marginBottom: "1.5rem" }}>
-              <label style={{ display: "block", fontSize: "0.78rem", color: "rgba(180, 255, 80, 0.75)", textTransform: "uppercase", fontWeight: "bold", marginBottom: "0.35rem" }}>Subject</label>
-              <div style={{ display: "flex", gap: "0.5rem" }}>
-                <input
-                  readOnly
-                  value={rawSubject}
-                  style={{
-                    flex: 1,
-                    padding: "0.6rem 0.8rem",
-                    background: "rgba(255, 255, 255, 0.05)",
-                    border: "1px solid rgba(255, 255, 255, 0.12)",
-                    color: "#ffffff",
-                    borderRadius: "4px",
-                    fontSize: "0.9rem"
-                  }}
-                />
-                <button
-                  type="button"
-                  onClick={() => handleCopy(rawSubject, "Subject")}
-                  style={{
-                    padding: "0.6rem 1.2rem",
-                    background: "rgba(255, 255, 255, 0.08)",
-                    border: "1px solid rgba(255,255,255,0.15)",
-                    color: "#ffffff",
-                    fontWeight: "bold",
-                    borderRadius: "4px",
-                    cursor: "pointer",
-                    fontSize: "0.85rem"
-                  }}
-                >
-                  Copy
-                </button>
-              </div>
-            </div>
-
-            {/* Message Body Field */}
-            <div style={{ marginBottom: "2rem" }}>
-              <label style={{ display: "block", fontSize: "0.78rem", color: "rgba(180, 255, 80, 0.75)", textTransform: "uppercase", fontWeight: "bold", marginBottom: "0.35rem" }}>Suggested Message Body</label>
-              <textarea
-                readOnly
-                value={rawBody}
-                rows={5}
-                style={{
-                  width: "100%",
-                  padding: "0.6rem 0.8rem",
-                  background: "rgba(255, 255, 255, 0.05)",
-                  border: "1px solid rgba(255, 255, 255, 0.12)",
-                  color: "#ffffff",
-                  borderRadius: "4px",
-                  fontFamily: "monospace",
-                  fontSize: "0.88rem",
-                  resize: "none",
-                  marginBottom: "0.5rem",
-                  boxSizing: "border-box"
-                }}
-              />
-              <button
-                type="button"
-                onClick={() => handleCopy(rawBody, "Message template")}
-                style={{
-                  width: "100%",
-                  padding: "0.6rem",
-                  background: "rgba(255, 255, 255, 0.08)",
-                  border: "1px solid rgba(255,255,255,0.15)",
-                  color: "#ffffff",
-                  fontWeight: "bold",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                  fontSize: "0.88rem"
-                }}
-              >
-                Copy Message Body
-              </button>
-            </div>
-
-            {/* Action Bar */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            {/* Fixed Footer Actions */}
+            <div
+              style={{
+                padding: "1.5rem 2.5rem 2.5rem 2.5rem",
+                background: "transparent",
+                borderTop: "1px solid rgba(255, 255, 255, 0.08)",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.5rem",
+                zIndex: 10
+              }}
+            >
               <div style={{ display: "flex", gap: "0.5rem" }}>
                 <button
                   type="button"
