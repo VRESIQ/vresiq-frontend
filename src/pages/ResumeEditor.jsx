@@ -853,10 +853,10 @@ const ResumeEditor = () => {
               text-decoration-thickness: 0.5px !important;
               text-underline-offset: 1.5px !important;
             }
-            .resume-preview:not([data-lstyle="professional"]) .header-link,
-            .resume-preview:not([data-lstyle="professional"]) .rp-contact-link,
-            .resume-preview:not([data-lstyle="professional"]) .rp-contact a,
-            .resume-preview:not([data-lstyle="professional"]) .rp-ats-contact a {
+            .resume-preview:not([data-lstyle="professional"]):not(.rp-premium1):not(.rp-premium9):not(.rp-tech-faang) .header-link,
+            .resume-preview:not([data-lstyle="professional"]):not(.rp-premium1):not(.rp-premium9):not(.rp-tech-faang) .rp-contact-link,
+            .resume-preview:not([data-lstyle="professional"]):not(.rp-premium1):not(.rp-premium9):not(.rp-tech-faang) .rp-contact a,
+            .resume-preview:not([data-lstyle="professional"]):not(.rp-premium1):not(.rp-premium9):not(.rp-tech-faang) .rp-ats-contact a {
               color: #2563eb !important;
               text-decoration: underline !important;
               text-decoration-thickness: 0.5px !important;
