@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { createResume, deleteResume, getUserResumes } from "../api";
 import { useAuth } from "../context/AuthContext";
