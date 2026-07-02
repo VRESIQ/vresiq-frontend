@@ -323,7 +323,6 @@ const normalizeProfileInfo = (profileInfo = {}) => {
   const { profilePreviewUrl, ...rest } = profileInfo || {};
   return {
     ...emptyResume.profileInfo,
-    targetRole: profileInfo.targetRole || "",
     ...rest,
     ProfilePreviewUrl: rest.ProfilePreviewUrl || profilePreviewUrl || "",
   };
@@ -1486,45 +1485,7 @@ const ResumeEditor = () => {
               {activeSection === "Profile" && (
                 <Section title="Profile">
                   <Field label="Full name" value={resume.profileInfo.fullName} placeholder="John Doe" hint="Enter your full name." sanitize={sanitizeName} onChange={(v) => updateField("profileInfo", "fullName", v)} />
-                  <Field label="Designation" value={resume.profileInfo.designation} placeholder="Software Engineer" hint="Your current role or designation." sanitize={sanitizeRole} onChange={(v) => updateField("profileInfo", "designation", v)} />
-                  <Field 
-                    label="Target Role" 
-                    value={resume.profileInfo.targetRole} 
-                    sanitize={sanitizeRole} 
-                    onChange={(v) => updateField("profileInfo", "targetRole", v)} 
-                    placeholder="Frontend Developer" 
-                    hint="Your target role."
-                  />
-                  <div className="field">
-                    <label>Role Display Mode</label>
-                    <select
-                      value={resume.decoratives?.showTargetRole || "true"}
-                      onChange={(e) => {
-                        const val = e.target.value;
-                        setResume((prev) => ({
-                          ...prev,
-                          decoratives: {
-                            ...(prev.decoratives || {}),
-                            showTargetRole: val
-                          }
-                        }));
-                      }}
-                      className="editor-select"
-                      style={{
-                        width: "100%",
-                        marginTop: "0.4rem",
-                        minHeight: "46px",
-                        padding: "0.7rem 0.85rem",
-                        boxSizing: "border-box"
-                      }}
-                    >
-                      <option value="true">Current Role & Target Role (Option A)</option>
-                      <option value="false">Designation Only (Option B)</option>
-                    </select>
-                    <small className="field-hint" style={{ marginTop: "0.25rem", color: "var(--muted)", display: "block" }}>
-                      Choose whether to show both roles or hide Target Role completely.
-                    </small>
-                  </div>
+                  <Field label="Designation" value={resume.profileInfo.designation} placeholder="Software Engineer" hint="Your professional title." sanitize={sanitizeRole} onChange={(v) => updateField("profileInfo", "designation", v)} />
                   <div className="field">
                 <label>Profile photo</label>
                 <input
@@ -2814,7 +2775,7 @@ const Section = ({ title, subtitle, children, onAdd }) => {
           <h2>{title}</h2>
           {onAdd && <button className="btn-add" onClick={onAdd}>Add</button>}
         </div>
-        {subtitle && <small className="section-subtitle" style={{ color: "var(--muted)", marginTop: "0.25rem", fontSize: "0.85rem", fontWeight: 500 }}>{subtitle}</small>}
+        {subtitle && <small className="section-subtitle" style={{ color: "var(--accent)", marginTop: "0.25rem", fontSize: "0.85rem", fontWeight: 500 }}>{subtitle}</small>}
       </div>
       {children}
       {onAdd && (
