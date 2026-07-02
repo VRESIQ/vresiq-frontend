@@ -310,8 +310,8 @@ const Home = () => {
             <Link to={user ? "/dashboard" : "/login"}>
               {user ? "Dashboard" : "Sign in"}
             </Link>
-            <a href="/legal.html#privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
-            <a href="/legal.html#terms" target="_blank" rel="noopener noreferrer">Terms of Service</a>
+            <Link to="/privacy">Privacy Policy</Link>
+            <Link to="/terms">Terms of Service</Link>
           </div>
         </div>
         <div className="footer-bottom" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px" }}>

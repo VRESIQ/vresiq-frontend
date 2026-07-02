@@ -12,7 +12,8 @@ import {
   getAdminResumes,
   deleteAdminResume,
   getAdminPayments,
-  getAdminAiStats
+  getAdminAiStats,
+  updateAdminSubscription
 } from "../api";
 import "./AdminDashboard.css";
 
@@ -89,6 +90,26 @@ const AdminDashboard = () => {
       setUsers((prev) => prev.filter((u) => u._id !== userId));
     } catch (err) {
       setError(err.response?.data?.message || "Failed to delete user.");
+    } finally {
+      setActioningUser("");
+    }
+  };
+
+  const handleChangeSubscription = async (userId, newPlan) => {
+    if (!window.confirm("Are you sure you want to change this user's subscription?")) {
+      fetchData();
+      return;
+    }
+    setActioningUser(userId);
+    setError("");
+    try {
+      const res = await updateAdminSubscription(userId, newPlan);
+      setUsers((prev) =>
+        prev.map((u) => (u._id === userId ? { ...u, subscriptionPlan: res.data.subscriptionPlan } : u))
+      );
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to update user subscription.");
+      fetchData();
     } finally {
       setActioningUser("");
     }
@@ -252,9 +273,22 @@ const AdminDashboard = () => {
                             <td><strong>{u.name}</strong></td>
                             <td>{u.email}</td>
                             <td>
-                              <span className={`plan-badge ${u.subscriptionPlan}`}>
-                                {u.subscriptionPlan || "basic"}
-                              </span>
+                              <select
+                                value={u.subscriptionPlan?.toLowerCase() === "premium" ? "premium" : "basic"}
+                                onChange={(e) => handleChangeSubscription(u._id, e.target.value)}
+                                className="admin-plan-select"
+                                disabled={actioningUser === u._id}
+                                style={{
+                                  padding: "0.25rem 0.5rem",
+                                  borderRadius: "4px",
+                                  backgroundColor: "rgba(255,255,255,0.05)",
+                                  border: "1px solid rgba(255,255,255,0.15)",
+                                  color: "var(--text-color, #ffffff)"
+                                }}
+                              >
+                                <option value="basic">Basic</option>
+                                <option value="premium">Premium</option>
+                              </select>
                             </td>
                             <td>{u.emailVerified ? "Yes" : "No"}</td>
                             <td>

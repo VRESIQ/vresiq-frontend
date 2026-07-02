@@ -145,3 +145,4 @@ export const getAdminResumes = () => axiosInstance.get("/api/admin/resumes", { s
 export const deleteAdminResume = (resumeId) => axiosInstance.delete(`/api/admin/resumes/${resumeId}`, { skipLoader: true });
 export const getAdminPayments = () => axiosInstance.get("/api/admin/payments", { skipLoader: true });
 export const getAdminAiStats = () => axiosInstance.get("/api/admin/ai-stats", { skipLoader: true });
+export const updateAdminSubscription = (userId, plan) => axiosInstance.put(`/api/admin/users/${userId}/subscription?plan=${plan}`, {}, { skipLoader: true });

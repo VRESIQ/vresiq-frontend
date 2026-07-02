@@ -17,6 +17,8 @@ import VerifyEmail from "./pages/VerifyEmail";
 import Dashboard from "./pages/Dashboard";
 import Pricing from "./pages/Pricing";
 import Profile from "./pages/Profile";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
 
 // Lazy load heavy pages
 import { lazy, Suspense, useEffect } from "react";
@@ -155,6 +157,8 @@ function App() {
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/pricing" element={<Pricing />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
 
             {/* Protected */}
             <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
