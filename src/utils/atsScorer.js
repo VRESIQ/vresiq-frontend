@@ -28,9 +28,7 @@
  *
  * Used by: ResumeEditor.jsx (localReport useMemo — preview only)
  */
-
-import RULES from "../assets/atsRules.json";
-
+import RULES from "../assets/atsRules.json" with { type: "json" };
 // ─── Destructure all config from the single source of truth ──────────────────
 const D  = RULES.deductions;   // point deductions
 const T  = RULES.thresholds;   // length/count thresholds

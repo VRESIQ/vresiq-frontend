@@ -516,13 +516,8 @@ const ResumeEditor = () => {
         // Hydrate the ATS badge from the persisted score — zero extra network call.
         // lastAtsScore is set by the backend whenever Run ATS Check succeeds.
         if (data.lastAtsScore != null) {
-          setSavedAtsReport({
-            atsScore: data.lastAtsScore,
-            score:    data.lastAtsScore,
-            category: data.lastAtsCategory || null,
-            issues:   [],
-            overallFeedback: null,
-          });
+          const report = computeAtsReport(normalized);
+          setSavedAtsReport(report);
         }
 
         // Initialize history stack with loaded state
@@ -625,10 +620,12 @@ const ResumeEditor = () => {
         setLastSaved(new Date());
         setSaved(true);
         setTimeout(() => setSaved(false), 2000);
-        // Silently sync the authoritative ATS score after every save (Pro only).
+        // Silently sync the authoritative ATS score after every save.
         // This keeps savedAtsReport current without any user action.
         if (!isFreePlan) {
           syncAtsAfterSave(id);
+        } else {
+          setSavedAtsReport(computeAtsReport(resume));
         }
       } catch (err) {
         setSaveError(err.response?.data?.message || "Could not auto-save changes.");
