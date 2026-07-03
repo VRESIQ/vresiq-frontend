@@ -310,33 +310,145 @@ const detectCareerStage = (resume) => {
   return "Mid-Level";
 };
 
-const filterMissingKeywords = (missing, fullText, category, stage) => {
+const detectCareerPath = (resume, designation, fullText) => {
+  const lowerDes = designation.toLowerCase();
   const lowerText = fullText.toLowerCase();
+  const skills = (resume.skills || []).map(s => (s.name || "").toLowerCase());
+
+  const paths = {
+    "Backend Java": {
+      terms: ["java", "spring", "hibernate", "junit", "maven", "gradle", "jpa", "spring boot"],
+      skills: ["java", "spring boot", "spring", "hibernate", "jpa", "maven"]
+    },
+    "Frontend": {
+      terms: ["react", "typescript", "redux", "next.js", "nextjs", "vue", "angular", "css", "html", "figma", "ui/ux", "responsive design", "tailwind"],
+      skills: ["react", "typescript", "javascript", "vue", "angular", "css", "html", "tailwind", "next.js", "nextjs"]
+    },
+    "Machine Learning": {
+      terms: ["tensorflow", "pytorch", "scikit-learn", "pandas", "numpy", "deep learning", "keras", "machine learning", "nlp", "computer vision", "data science"],
+      skills: ["tensorflow", "pytorch", "scikit-learn", "pandas", "numpy", "machine learning"]
+    },
+    "DevOps": {
+      terms: ["docker", "kubernetes", "ci/cd", "terraform", "github actions", "jenkins", "aws", "azure", "gcp", "prometheus", "grafana", "ansible", "devops"],
+      skills: ["docker", "kubernetes", "terraform", "jenkins", "aws", "devops", "ci/cd"]
+    },
+    "QA": {
+      terms: ["selenium", "junit", "testng", "postman", "api testing", "cypress", "qa", "testing", "automation testing"],
+      skills: ["selenium", "junit", "testng", "postman", "cypress", "automation testing", "qa"]
+    },
+    "Data Analyst": {
+      terms: ["sql", "power bi", "excel", "tableau", "statistics", "pandas", "bi analyst", "etl", "data analyst", "data analytics"],
+      skills: ["sql", "power bi", "excel", "tableau", "data analyst", "pandas"]
+    }
+  };
+
+  let bestPath = "General Software Engineer";
+  let maxScore = 0;
+
+  for (const [name, path] of Object.entries(paths)) {
+    let score = 0;
+    for (const term of path.terms) {
+      if (lowerDes.includes(term)) {
+        score += 12;
+      }
+    }
+    for (const sk of skills) {
+      if (path.skills.includes(sk)) {
+        score += 4;
+      }
+    }
+    for (const term of path.terms) {
+      if (lowerText.includes(term)) {
+        score += 1;
+      }
+    }
+    if (score > maxScore) {
+      maxScore = score;
+      bestPath = name;
+    }
+  }
+
+  if (maxScore < 8) {
+    return "General Software Engineer";
+  }
+
+  return bestPath;
+};
+
+const filterMissingKeywords = (missing, fullText, category, stage, resume = {}) => {
+  const lowerText = fullText.toLowerCase();
+  const designation = resume.profileInfo?.designation || "";
+  const careerPath = detectCareerPath(resume, designation, fullText);
   const isJuniorOrStudent = stage === "Student" || stage === "Fresher" || stage === "Junior";
-  
+
   return missing.filter(kw => {
     const kwLower = kw.toLowerCase();
-    
-    if (kwLower === "spring boot") {
-      return lowerText.includes("java");
+
+    // 1. General logical adjacency rules (apply to all paths)
+    if (kwLower === "spring boot" && !lowerText.includes("java")) {
+      return false;
     }
-    if (kwLower === "typescript") {
-      return lowerText.includes("react") || lowerText.includes("javascript");
+    if (kwLower === "typescript" && !lowerText.includes("react") && !lowerText.includes("javascript")) {
+      return false;
     }
-    if (["pandas", "numpy", "scikit-learn"].includes(kwLower)) {
-      return lowerText.includes("python") || lowerText.includes("machine learning") || lowerText.includes("ml");
+    if (["pandas", "numpy", "scikit-learn", "tensorflow", "pytorch"].includes(kwLower) && !lowerText.includes("python") && !lowerText.includes("machine learning") && !lowerText.includes("ml")) {
+      return false;
     }
-    if (kwLower === "kubernetes") {
-      return lowerText.includes("docker");
+    if (kwLower === "kubernetes" && !lowerText.includes("docker")) {
+      return false;
     }
-    
+    if (kwLower === "microservices" && !lowerText.includes("rest api") && !lowerText.includes("backend") && !lowerText.includes("spring") && !lowerText.includes("node")) {
+      return false;
+    }
+
+    // 2. Career Path filtering for "software engineer"
+    if (category.toLowerCase() === "software engineer") {
+      if (careerPath === "Backend Java") {
+        const forbidden = ["react", "typescript", "vue", "angular", "figma", "sass", "less", "html", "css", "adobe xd"];
+        if (forbidden.includes(kwLower) && !lowerText.includes("javascript") && !lowerText.includes("react")) {
+          return false;
+        }
+      } else if (careerPath === "Frontend") {
+        const forbidden = ["spring boot", "hibernate", "kubernetes", "docker", "microservices", "c++", "c#", "java"];
+        if (forbidden.includes(kwLower) && !lowerText.includes("node") && !lowerText.includes("python") && !lowerText.includes("java")) {
+          return false;
+        }
+      } else if (careerPath === "Machine Learning") {
+        const forbidden = ["react", "typescript", "javascript", "docker", "kubernetes", "spring boot", "hibernate", "angular", "vue", "html", "css"];
+        if (forbidden.includes(kwLower) && !lowerText.includes("mlops") && !lowerText.includes("docker")) {
+          return false;
+        }
+      } else if (careerPath === "DevOps") {
+        const forbidden = ["react", "typescript", "javascript", "spring boot", "hibernate", "angular", "vue", "html", "css"];
+        if (forbidden.includes(kwLower)) {
+          return false;
+        }
+      } else if (careerPath === "QA") {
+        const forbidden = ["react", "typescript", "docker", "kubernetes", "spring boot", "hibernate", "microservices", "aws", "azure", "gcp"];
+        if (forbidden.includes(kwLower)) {
+          return false;
+        }
+      } else if (careerPath === "Data Analyst") {
+        const forbidden = ["react", "typescript", "docker", "kubernetes", "spring boot", "hibernate", "microservices", "aws", "gcp", "azure"];
+        if (forbidden.includes(kwLower)) {
+          return false;
+        }
+      } else if (careerPath === "General Software Engineer") {
+        const specialized = ["spring boot", "hibernate", "react", "typescript", "kubernetes", "tensorflow", "pytorch", "scikit-learn", "vue", "angular", "pandas", "numpy"];
+        if (specialized.includes(kwLower)) {
+          return false;
+        }
+      }
+    }
+
+    // 3. Junior/Student generic infrastructure filtering
     if (isJuniorOrStudent) {
       if (["kubernetes", "docker", "microservices", "ci/cd", "aws", "system design"].includes(kwLower)) {
         const infra = ["linux", "git", "rest api", "sql", "cloud", "backend"];
         return infra.some(term => lowerText.includes(term));
       }
     }
-    
+
     return true;
   });
 };
@@ -638,7 +750,7 @@ const checkKeywords = (resume, category, issues, stage) => {
   let missing  = keywords.filter(kw => !fullText.includes(kw.toLowerCase()));
   if (missing.length === 0) return 0;
 
-  missing = filterMissingKeywords(missing, fullText, category, stage);
+  missing = filterMissingKeywords(missing, fullText, category, stage, resume);
   if (missing.length === 0) return 0;
 
   const ratio = missing.length / keywords.length;
