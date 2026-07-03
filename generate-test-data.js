@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-console.log("[JS Test Data Generator] Generating 100 test resumes...");
+console.log("[JS Test Data Generator] Generating 250 test resumes...");
 
 const resumes = [];
 
@@ -27,52 +27,52 @@ const baseResume = (title, designation, summary, email) => ({
   interests: []
 });
 
-for (let i = 1; i <= 100; i++) {
+for (let i = 1; i <= 250; i++) {
   let title = `Test Persona ${i}`;
   let des = "";
   let sum = "";
   let email = `persona${i}@test.com`;
 
   // Determine stage and designation based on index blocks
-  if (i <= 10) {
-    // 1-10 Students
+  if (i <= 30) {
+    // 1-30 Students
     const studentFields = ["CS", "Healthcare", "Finance", "Mechanical", "Civil", "Chemistry", "Electrical", "Biology", "Physics", "Math"];
     des = `${studentFields[(i - 1) % studentFields.length]} Student Candidate`;
     sum = "Motivated academic student looking to secure a summer internship to apply technical coursework.";
-  } else if (i <= 20) {
-    // 11-20 Freshers
+  } else if (i <= 60) {
+    // 31-60 Freshers
     const fresherRoles = ["Software Engineer Graduate", "Associate Nurse", "Junior Accountant", "Graduate Marketer", "Mechanical Associate", "Civil Engineer Graduate", "Junior Clerk", "HR Assistant", "Sales Trainee", "Support Agent"];
-    des = fresherRoles[(i - 11) % fresherRoles.length];
+    des = fresherRoles[(i - 31) % fresherRoles.length];
     sum = "Entry level professional seeking to leverage academic capstones and hands-on laboratory experience.";
-  } else if (i <= 30) {
-    // 21-30 Junior
-    const juniorRoles = ["Junior Java Developer", "Junior QA Engineer", "Junior UI Designer", "Junior Business Analyst", "Marketing Coordinator", "Junior Systems Admin", "Junior Copywriter", "Junior Accountant", "Junior Support Specialist", "Junior Electrician"];
-    des = juniorRoles[(i - 21) % juniorRoles.length];
-    sum = "Junior specialist with 1-2 years of experience assisting in design, deployment, and testing workflows.";
-  } else if (i <= 50) {
-    // 31-50 Mid-Level
-    const midRoles = ["Full Stack Developer", "Data Scientist", "Mechanical Engineer", "Civil Engineer", "Research Scientist", "Sales Executive", "Financial Analyst", "DevOps Engineer", "Automation Tester", "Technical Writer", "Android Developer", "Network Engineer", "Cyber Security Analyst", "UI/UX Designer", "Product Designer", "Business Analyst", "Marketing Manager", "Finance Manager", "HR Generalist", "Academic Researcher"];
-    des = midRoles[(i - 31) % midRoles.length];
-    sum = "Experienced professional delivering business value, technical solutions, and cross-functional project success.";
-  } else if (i <= 65) {
-    // 51-65 Senior / Lead / Manager
-    const seniorRoles = ["Senior Software Engineer", "Lead Developer", "Engineering Manager", "Principal Architect", "Senior DevOps Engineer", "Lead QA Tester", "Senior Product Manager", "Marketing Director", "Finance Director", "Senior Mechanical Designer", "Lead Civil Inspector", "Clinical Director", "Government Director", "Principal Researcher", "Lead HR Business Partner"];
-    des = seniorRoles[(i - 51) % seniorRoles.length];
-    sum = "Orchestrating system architecture, leading cross-functional teams, managing budgets, and driving product scale.";
-  } else if (i <= 80) {
-    // 66-80 Career Switchers
-    const switchers = ["Career Switcher - Sales to CS", "Career Switcher - Teacher to UX", "Career Switcher - Nurse to Tech", "Career Switcher - Accountant to PM", "Career Switcher - Retail to HR", "Career Switcher - Support to QA", "Career Switcher - Mechanical to Software", "Career Switcher - Chemist to Data Analyst", "Career Switcher - Clerk to Marketing", "Career Switcher - Designer to Developer", "Career Switcher - Sales to Marketing", "Career Switcher - HR to Recruiter", "Career Switcher - Finance to Business Analyst", "Career Switcher - Developer to Technical Writer", "Career Switcher - General"];
-    des = switchers[(i - 66) % switchers.length];
-    sum = "Adaptive professional transitioning domain experience towards strategic new career pathways.";
   } else if (i <= 90) {
-    // 81-90 Sector-Specific
+    // 61-90 Junior
+    const juniorRoles = ["Junior Java Developer", "Junior QA Engineer", "Junior UI Designer", "Junior Business Analyst", "Marketing Coordinator", "Junior Systems Admin", "Junior Copywriter", "Junior Accountant", "Junior Support Specialist", "Junior Electrician"];
+    des = juniorRoles[(i - 61) % juniorRoles.length];
+    sum = "Junior specialist with 1-2 years of experience assisting in design, deployment, and testing workflows.";
+  } else if (i <= 150) {
+    // 91-150 Mid-Level
+    const midRoles = ["Full Stack Developer", "Data Scientist", "Mechanical Engineer", "Civil Engineer", "Research Scientist", "Sales Executive", "Financial Analyst", "DevOps Engineer", "Automation Tester", "Technical Writer", "Android Developer", "Network Engineer", "Cyber Security Analyst", "UI/UX Designer", "Product Designer", "Business Analyst", "Marketing Manager", "Finance Manager", "HR Generalist", "Academic Researcher"];
+    des = midRoles[(i - 91) % midRoles.length];
+    sum = "Experienced professional delivering business value, technical solutions, and cross-functional project success.";
+  } else if (i <= 180) {
+    // 151-180 Senior / Lead / Manager
+    const seniorRoles = ["Senior Software Engineer", "Lead Developer", "Engineering Manager", "Principal Architect", "Senior DevOps Engineer", "Lead QA Tester", "Senior Product Manager", "Marketing Director", "Finance Director", "Senior Mechanical Designer", "Lead Civil Inspector", "Clinical Director", "Government Director", "Principal Researcher", "Lead HR Business Partner"];
+    des = seniorRoles[(i - 151) % seniorRoles.length];
+    sum = "Orchestrating system architecture, leading cross-functional teams, managing budgets, and driving product scale.";
+  } else if (i <= 210) {
+    // 181-210 Career Switchers
+    const switchers = ["Career Switcher - Sales to CS", "Career Switcher - Teacher to UX", "Career Switcher - Nurse to Tech", "Career Switcher - Accountant to PM", "Career Switcher - Retail to HR", "Career Switcher - Support to QA", "Career Switcher - Mechanical to Software", "Career Switcher - Chemist to Data Analyst", "Career Switcher - Clerk to Marketing", "Career Switcher - Designer to Developer", "Career Switcher - Sales to Marketing", "Career Switcher - HR to Recruiter", "Career Switcher - Finance to Business Analyst", "Career Switcher - Developer to Technical Writer", "Career Switcher - General"];
+    des = switchers[(i - 181) % switchers.length];
+    sum = "Adaptive professional transitioning domain experience towards strategic new career pathways.";
+  } else if (i <= 235) {
+    // 211-235 Sector-Specific
     const sectors = ["Registered Nurse (Healthcare)", "Investment Banker (Finance)", "HVAC Engineer (Mechanical)", "Policy Advisor (Government)", "Environmental Consultant (Civil)", "Lab Technician (Research)", "HR Compliance Officer (Government)", "Stock Broker (Finance)", "Aeronautical Engineer (Mechanical)", "Clinical Researcher (Healthcare)"];
-    des = sectors[(i - 81) % sectors.length];
+    des = sectors[(i - 211) % sectors.length];
     sum = "Sector specialist managing compliance, technical guidelines, and industrial workflows.";
   } else {
-    // 91-100 Edge Cases & Stress Tests
+    // 236-250 Edge Cases & Stress Tests
     const edgeCases = ["Empty Resume Case", "Huge Resume Case", "Unicode Heavy Spec 🚀", "Invalid Date Order Resume", "Duplicate Skills & Entries", "General Resume Target", "Unknown Designation", "Highly Bloated Profile", "Minimal Student Case", "Maximal Senior Profile"];
-    des = edgeCases[(i - 91) % edgeCases.length];
+    des = edgeCases[(i - 236) % edgeCases.length];
     sum = "Edge case profile for testing layout validation, character encodings, and date orders.";
   }
 
@@ -146,4 +146,4 @@ for (let i = 1; i <= 100; i++) {
 
 const destPath = path.resolve("../resumes.json");
 fs.writeFileSync(destPath, JSON.stringify(resumes, null, 2), "utf-8");
-console.log(`[JS Test Data Generator] Success! Wrote 100 resumes to ${destPath}`);
+console.log(`[JS Test Data Generator] Success! Wrote 250 resumes to ${destPath}`);

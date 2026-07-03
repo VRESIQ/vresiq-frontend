@@ -103,6 +103,10 @@ try {
           console.error(`  ❌ Index ${j} Points mismatch! JS: ${jsIssue.points}, Java: ${javaIssue.points}`);
           issueMatches = false;
         }
+        if (jsIssue.confidence !== javaIssue.confidence) {
+          console.error(`  ❌ Index ${j} Confidence mismatch! JS: ${jsIssue.confidence}, Java: ${javaIssue.confidence}`);
+          issueMatches = false;
+        }
         if (jsIssue.suggestion !== javaIssue.suggestion) {
           console.error(`  ❌ Index ${j} Suggestion mismatch!\n    JS: "${jsIssue.suggestion}"\n    Java: "${javaIssue.suggestion}"`);
           issueMatches = false;
@@ -113,6 +117,23 @@ try {
         } else {
           overallSuccess = false;
         }
+      }
+
+      // 6. Check strengths list
+      if (!js.strengths || !java.strengths) {
+        console.error(`❌ Strengths array missing! JS: ${!!js.strengths}, Java: ${!!java.strengths}`);
+        overallSuccess = false;
+      } else if (js.strengths.length !== java.strengths.length) {
+        console.error(`❌ Strengths count mismatch! JS: ${js.strengths.length}, Java: ${java.strengths.length}`);
+        overallSuccess = false;
+      } else {
+        for (let k = 0; k < js.strengths.length; k++) {
+          if (js.strengths[k] !== java.strengths[k]) {
+            console.error(`❌ Strength index ${k} mismatch! JS: "${js.strengths[k]}", Java: "${java.strengths[k]}"`);
+            overallSuccess = false;
+          }
+        }
+        console.log(`✅ Strengths list matches (${js.strengths.length} items)`);
       }
     }
 

@@ -168,21 +168,22 @@ const formatRecruiterSuggestion = (type, section, original, points, suggestion, 
   return `Reason: ${suggestion}\nWhy it matters: Helps maintain layout quality, ATS readability, and recruiter compliance.\nActionable improvement: Adjust this section to use clean text, valid URLs, or clear dates.\nRecruiter impact: Reduces manual screening friction.\nExample: Verify section completeness.`;
 };
 
-const issue = (issues, type, section, original, points, suggestion, severity) => {
+const issue = (issues, type, section, original, points, suggestion, severity, confidence = 90) => {
+  if (confidence < 70) return 0;
   const formattedSuggestion = formatRecruiterSuggestion(type, section, original, points, suggestion, severity);
-  issues.push({ type, section, original: asText(original), suggestion: formattedSuggestion, severity, points });
+  issues.push({ type, section, original: asText(original), suggestion: formattedSuggestion, severity, points, confidence });
   return points;
 };
 
-const required = (issues, type, section, value, points, fix) => {
+const required = (issues, type, section, value, points, fix, confidence = 90) => {
   if (hasText(value)) return 0;
-  return issue(issues, type, section, "", points, fix, points >= 5 ? "error" : "warning");
+  return issue(issues, type, section, "", points, fix, points >= 5 ? "error" : "warning", confidence);
 };
 
 const optUrl = (url, section, fix, issues) => {
   const t = asText(url);
   if (!t) return 0;
-  return URL_RE.test(t) ? 0 : issue(issues, "invalid_url", section, t, D.invalidUrl, fix, "tip");
+  return URL_RE.test(t) ? 0 : issue(issues, "invalid_url", section, t, D.invalidUrl, fix, "tip", 90);
 };
 
 // ─── Full-text builder for keyword matching ───────────────────────────────────
@@ -455,12 +456,134 @@ const filterMissingKeywords = (missing, fullText, category, stage, resume = {}) 
 
 // ─── Section checkers ─────────────────────────────────────────────────────────
 
+export const analyzeResumeIntelligence = (resume) => {
+  const text = allText(resume).toLowerCase();
+  const designation = asText(resume.profileInfo?.designation || "");
+  const targetRole = asText(resume.profileInfo?.targetRole || resume.profileInfo?.designation || "General Resume");
+  const summary = asText(resume.profileInfo?.summary || "");
+  const skills = (resume.skills || []).map(s => asText(s.name).toLowerCase());
+  
+  const stage = detectCareerStage(resume);
+
+  const hasInternship = (resume.customSections?.internships || []).length > 0 || 
+    designation.toLowerCase().includes("intern") || 
+    (resume.workExperience || []).some(w => asText(w.role).toLowerCase().includes("intern") || asText(w.company).toLowerCase().includes("intern"));
+
+  const hasFreelancing = text.includes("freelance") || text.includes("contractor") || text.includes("consultant");
+
+  const hasOpenSource = text.includes("open source") || text.includes("contribution") || (resume.projects || []).some(p => hasText(p.github));
+
+  const hasResearch = text.includes("research assistant") || text.includes("publication") || text.includes("research paper") || text.includes("scientific");
+
+  const hasHackathons = text.includes("hackathon") || text.includes("competition") || text.includes("codefest");
+
+  const hasLeadership = text.includes("lead ") || text.includes("manage") || text.includes("direct") || text.includes("mentor") || text.includes("orchestrated") || text.includes("supervised");
+
+  const hasCertifications = (resume.certifications || []).length > 0;
+
+  const specialization = detectCareerPath(resume, designation, text);
+
+  let totalMonths = 0;
+  (resume.workExperience || []).forEach(w => {
+    const startVal = parseMonthYear(w.startDate);
+    const endVal = w.endDate && w.endDate.toLowerCase().includes("present") ? CURRENT_YEAR * 12 + new Date().getMonth() + 1 : parseMonthYear(w.endDate);
+    if (startVal && endVal && endVal >= startVal) {
+      totalMonths += (endVal - startVal + 1);
+    }
+  });
+  const yearsOfExperience = Math.round((totalMonths / 12) * 10) / 10;
+
+  let primaryLanguage = "General";
+  if (text.includes("python")) primaryLanguage = "Python";
+  else if (text.includes("java")) primaryLanguage = "Java";
+  else if (text.includes("javascript") || text.includes("typescript") || text.includes("node.js")) primaryLanguage = "JavaScript";
+  else if (text.includes("c++")) primaryLanguage = "C++";
+  else if (text.includes("c#")) primaryLanguage = "C#";
+
+  let frameworkEcosystem = "General";
+  if (text.includes("spring")) frameworkEcosystem = "Spring";
+  else if (text.includes("react")) frameworkEcosystem = "React";
+  else if (text.includes("angular")) frameworkEcosystem = "Angular";
+  else if (text.includes("django") || text.includes("flask")) frameworkEcosystem = "Django/Flask";
+
+  let domain = "General";
+  if (specialization === "Machine Learning" || text.includes("ai ") || text.includes("deep learning")) domain = "Data/AI";
+  else if (specialization === "DevOps" || text.includes("aws") || text.includes("cloud")) domain = "Cloud/DevOps";
+  else if (specialization === "Frontend" || text.includes("web development")) domain = "Web";
+  else if (text.includes("clinical") || text.includes("healthcare") || text.includes("nurse")) domain = "Healthcare";
+  else if (text.includes("finance") || text.includes("bank") || text.includes("valuation")) domain = "Finance";
+
+  let industry = "Tech";
+  if (text.includes("healthcare") || text.includes("medical")) industry = "Healthcare";
+  else if (text.includes("bank") || text.includes("finance") || text.includes("investment")) industry = "Finance";
+  else if (text.includes("government") || text.includes("policy")) industry = "Government";
+  else if (text.includes("mechanical") || text.includes("automotive")) industry = "Automotive";
+
+  let projComplexity = "Low";
+  let complexKeywords = 0;
+  ["architecture", "performance", "database", "scale", "concurrency", "deployment", "docker", "kubernetes", "cloud", "security"].forEach(k => {
+    if (text.includes(k)) complexKeywords++;
+  });
+  if (complexKeywords > 5) projComplexity = "High";
+  else if (complexKeywords > 2) projComplexity = "Medium";
+
+  let metricsCount = 0;
+  const matchMetrics = text.match(new RegExp(HAS_METRIC_RE.source, "gi"));
+  if (matchMetrics) metricsCount = matchMetrics.length;
+
+  let achievementQuality = Math.min(100, Math.max(40, 40 + metricsCount * 15));
+  let writingQuality = 100;
+  const fillerMatches = text.match(new RegExp(FILLER_WORDS_RE.source, "gi"));
+  if (fillerMatches) writingQuality = Math.max(40, 100 - fillerMatches.length * 8);
+
+  let technicalDepth = Math.min(100, Math.max(30, 30 + skills.length * 5 + complexKeywords * 6));
+  
+  let atsCompatibility = 100;
+  const dec = resume.decoratives || {};
+  if (asText(dec.dividerStyle) === "dots" || asText(dec.dividerStyle) === "gradient") atsCompatibility -= 10;
+  if (asText(dec.progressStyle) === "bar" || asText(dec.progressStyle) === "dots") atsCompatibility -= 15;
+  if (hasText(resume.fontPairing) && resume.fontPairing !== "inter") atsCompatibility -= 10;
+
+  let formattingQuality = atsCompatibility;
+  let parserSafety = 100;
+  if (!hasText(resume.profileInfo?.fullName)) parserSafety -= 30;
+  if (!hasText(resume.contactInfo?.email)) parserSafety -= 30;
+
+  let resumeConfidenceScore = Math.round((technicalDepth + writingQuality + achievementQuality) / 3);
+
+  return {
+    stage,
+    yearsOfExperience,
+    targetRole,
+    specialization,
+    hasInternship,
+    hasFreelancing,
+    hasOpenSource,
+    hasResearch,
+    hasHackathons,
+    hasLeadership,
+    hasCertifications,
+    primaryLanguage,
+    frameworkEcosystem,
+    domain,
+    industry,
+    projComplexity,
+    achievementQuality,
+    writingQuality,
+    technicalDepth,
+    atsCompatibility,
+    formattingQuality,
+    parserSafety,
+    resumeConfidenceScore
+  };
+};
+
 const checkProfile = (profile, issues, stage) => {
   let pts = 0;
   pts += required(issues, "missing_name", "Profile > Full name", profile.fullName, D.missingName,
-    "Add your professional or legal name at the top of your resume. ATS systems use this identifier to create your candidate profile.");
+    "Add your professional or legal name at the top of your resume. ATS systems use this identifier to create your candidate profile.", 100);
   pts += required(issues, "missing_designation", "Profile > Designation", profile.designation, D.missingDesignation,
-    "Add a target designation title. This anchors your resume in the database and enables role-based keywords matching.");
+    "Add a target designation title. This anchors your resume in the database and enables role-based keywords matching.", 95);
 
   const summary = asText(profile.summary);
   if (!hasText(summary)) {
@@ -472,11 +595,11 @@ const checkProfile = (profile, issues, stage) => {
     } else {
       missingDesc = "For experienced roles, add quantified business impact, leadership scope, users supported, or performance metrics.";
     }
-    pts += issue(issues, "missing_summary", "Profile > Summary", "", D.missingSummary, missingDesc, "error");
+    pts += issue(issues, "missing_summary", "Profile > Summary", "", D.missingSummary, missingDesc, "error", 90);
   } else {
     if (summary.length < T.minSummaryLen) {
       pts += issue(issues, "short_summary", "Profile > Summary", summary, D.shortSummary,
-        "Expand your summary to at least 80 characters. Describe your primary strengths, target role, and highest value achievement.", "warning");
+        "Expand your summary to at least 80 characters. Describe your primary strengths, target role, and highest value achievement.", "warning", 80);
     }
     if (!HAS_METRIC_RE.test(summary)) {
       let suggestion = "Add one concrete metric, such as users supported, team size, budget managed, or project outcomes.";
@@ -487,11 +610,12 @@ const checkProfile = (profile, issues, stage) => {
       } else {
         suggestion = "For experienced roles, add quantified business impact, users supported, revenue, or system performance metrics to your summary.";
       }
-      pts += issue(issues, "summary_no_metric", "Profile > Summary", short(summary), D.summaryNoMetric, suggestion, "tip");
+      const conf = (stage === "Student" || stage === "Fresher") ? 75 : 95;
+      pts += issue(issues, "summary_no_metric", "Profile > Summary", short(summary), D.summaryNoMetric, suggestion, "tip", conf);
     }
     if (FILLER_WORDS_RE.test(summary)) {
       pts += issue(issues, "summary_filler", "Profile > Summary", first(FILLER_WORDS_RE, summary), D.summaryFiller,
-        "Replace vague buzzwords (like 'hard-working' or 'passionate') with concrete achievements or technical skills.", "warning");
+        "Replace vague buzzwords (like 'hard-working' or 'passionate') with concrete achievements or technical skills.", "warning", 85);
     }
   }
   return pts;
@@ -502,21 +626,21 @@ const checkContact = (contact, issues) => {
   const email = asText(contact.email);
   if (!hasText(email)) {
     pts += issue(issues, "missing_email", "Contact > Email", "", D.missingEmail,
-      "Add a professional email address. ATS and recruiters need a direct contact field.", "error");
+      "Add a professional email address. ATS and recruiters need a direct contact field.", "error", 100);
   } else if (!EMAIL_RE.test(email)) {
     pts += issue(issues, "invalid_email", "Contact > Email", email, D.invalidEmail,
-      "Use a valid email format such as name@example.com.", "error");
+      "Use a valid email format such as name@example.com.", "error", 100);
   }
   const phone = asText(contact.phone);
   if (!hasText(phone)) {
     pts += issue(issues, "missing_phone", "Contact > Phone", "", D.missingPhone,
-      "Add a phone number with country code.", "warning");
+      "Add a phone number with country code.", "warning", 95);
   } else if (phone.replace(/\D/g, "").length < 8) {
     pts += issue(issues, "invalid_phone", "Contact > Phone", phone, D.invalidPhone,
-      "Use a complete phone number. Include country code and enough digits.", "warning");
+      "Use a complete phone number. Include country code and enough digits.", "warning", 95);
   }
   pts += required(issues, "missing_location", "Contact > Location", contact.location, D.missingLocation,
-    "Add city and country or region. Many ATS filters use location.");
+    "Add city and country or region. Many ATS filters use location.", 85);
   pts += optUrl(contact.linkedIn, "Contact > LinkedIn",
     "Use a full LinkedIn URL such as https://linkedin.com/in/username.", issues);
   pts += optUrl(contact.github, "Contact > GitHub",
@@ -528,71 +652,77 @@ const checkContact = (contact, issues) => {
 
 const checkDateRange = (start, end, section, issues, allowPresent) => {
   let pts = 0;
-  if (!hasText(start)) pts += issue(issues, "missing_start_date", `${section} > Start date`, "", D.missingStartDate, "Add a start month and year.", "warning");
-  if (!hasText(end))   pts += issue(issues, "missing_end_date",   `${section} > End date`,   "", D.missingEndDate,   allowPresent ? "Add an end month/year or mark it as Present." : "Add an end month and year.", "warning");
+  if (!hasText(start)) pts += issue(issues, "missing_start_date", `${section} > Start date`, "", D.missingStartDate, "Add a start month and year.", "warning", 90);
+  if (!hasText(end))   pts += issue(issues, "missing_end_date",   `${section} > End date`,   "", D.missingEndDate,   allowPresent ? "Add an end month/year or mark it as Present." : "Add an end month and year.", "warning", 90);
   if (!hasText(start) || !hasText(end)) return pts;
   if (asText(end).toLowerCase() === "present") {
-    if (!allowPresent) pts += issue(issues, "invalid_end_date", `${section} > End date`, end, D.invalidEndDate, "Use a real end month and year for this section.", "warning");
+    if (!allowPresent) pts += issue(issues, "invalid_end_date", `${section} > End date`, end, D.invalidEndDate, "Use a real end month and year for this section.", "warning", 90);
     return pts;
   }
   const sv = parseMonthYear(start), ev = parseMonthYear(end);
-  if (sv === null) pts += issue(issues, "invalid_start_date", `${section} > Start date`, start, D.invalidStartDate, "Use the editor date format: month plus four-digit year.", "warning");
-  if (ev === null) pts += issue(issues, "invalid_end_date",   `${section} > End date`,   end,   D.invalidEndDate,   "Use the editor date format: month plus four-digit year.", "warning");
-  if (sv !== null && ev !== null && sv > ev) pts += issue(issues, "date_order", `${section} > Dates`, `${asText(start)} to ${asText(end)}`, D.dateOrder, "Start date is after end date. Correct the timeline before applying.", "error");
+  if (sv === null) pts += issue(issues, "invalid_start_date", `${section} > Start date`, start, D.invalidStartDate, "Use the editor date format: month plus four-digit year.", "warning", 85);
+  if (ev === null) pts += issue(issues, "invalid_end_date",   `${section} > End date`,   end,   D.invalidEndDate,   "Use the editor date format: month plus four-digit year.", "warning", 85);
+  if (sv !== null && ev !== null && sv > ev) pts += issue(issues, "date_order", `${section} > Dates`, `${asText(start)} to ${asText(end)}`, D.dateOrder, "Start date is after end date. Correct the timeline before applying.", "error", 95);
   return pts;
 };
 
-const checkQuality = (text, section, minLen, requireMetric, issues) => {
+const checkQuality = (text, section, minLen, requireMetric, issues, stage) => {
   let pts = 0;
   const v = asText(text);
-  if (v.length < minLen)              pts += issue(issues, "short_description",   section, v,                          D.shortDescription,  "Add more detail: action, tools, scope, and result.", "warning");
-  if (!ACTION_VERB_RE.test(v))        pts += issue(issues, "missing_action_verb", section, short(v),                   D.missingActionVerb, "Start at least one sentence or bullet with a strong action verb such as Built, Led, Improved, Reduced, or Automated.", "tip");
-  if (requireMetric && !HAS_METRIC_RE.test(v)) pts += issue(issues, "missing_metric", section, short(v),             D.missingMetric,     "Add a number or measurable result, for example: Reduced latency by 40% or Supported 10K users.", "warning");
-  if (PASSIVE_VOICE_RE.test(v))       pts += issue(issues, "passive_voice",        section, first(PASSIVE_VOICE_RE,v), D.passiveVoice,      "Rewrite this in active voice. Use a direct action verb and state your impact.", "warning");
-  if (FILLER_WORDS_RE.test(v))        pts += issue(issues, "filler_word",          section, first(FILLER_WORDS_RE,v), D.fillerWord,        "Remove vague wording and replace it with a concrete action or result.", "warning");
+  if (v.length < minLen)              pts += issue(issues, "short_description",   section, v,                          D.shortDescription,  "Add more detail: action, tools, scope, and result.", "warning", 80);
+  if (!ACTION_VERB_RE.test(v))        pts += issue(issues, "missing_action_verb", section, short(v),                   D.missingActionVerb, "Start at least one sentence or bullet with a strong action verb such as Built, Led, Improved, Reduced, or Automated.", "tip", 85);
+  
+  if (requireMetric && !HAS_METRIC_RE.test(v)) {
+    const conf = (stage === "Student" || stage === "Fresher") ? 75 : 95;
+    pts += issue(issues, "missing_metric", section, short(v),             D.missingMetric,     "Add a number or measurable result, for example: Reduced latency by 40% or Supported 10K users.", "warning", conf);
+  }
+  
+  if (PASSIVE_VOICE_RE.test(v))       pts += issue(issues, "passive_voice",        section, first(PASSIVE_VOICE_RE,v), D.passiveVoice,      "Rewrite this in active voice. Use a direct action verb and state your impact.", "warning", 90);
+  if (FILLER_WORDS_RE.test(v))        pts += issue(issues, "filler_word",          section, first(FILLER_WORDS_RE,v), D.fillerWord,        "Remove vague wording and replace it with a concrete action or result.", "warning", 85);
   return pts;
 };
 
-const checkExperience = (experience, issues, resume = {}) => {
+const checkExperience = (experience, issues, resume = {}, stage) => {
+  const intel = analyzeResumeIntelligence(resume);
+  const bypass = intel.hasInternship || intel.hasFreelancing || intel.hasOpenSource || intel.hasResearch || intel.hasHackathons;
+  
   if (experience.length === 0) {
-    const hasInternships = (resume.customSections?.internships || []).length > 0;
-    const hasProjects    = (resume.projects || []).length > 0;
-    if (hasInternships || hasProjects) {
-      return 0; // Bypass missing experience penalty if they have projects or internships
+    if (bypass) {
+      return 0; // Suppress missing experience penalty entirely
     }
-    return issue(issues, "missing_experience", "Experience", "", D.missingExperience, "Add at least one professional role, internship, or technical project to demonstrate hands-on application of your skills.", "error");
+    return issue(issues, "missing_experience", "Experience", "", D.missingExperience, "Add at least one professional role, internship, or technical project to demonstrate hands-on application of your skills.", "error", 95);
   }
   let pts = 0;
   experience.forEach((job, idx) => {
     const lbl = `Experience ${idx + 1}`;
-    pts += required(issues, "missing_company", `${lbl} > Company`, job.company, D.missingCompany, "Add the company or organization name.");
-    pts += required(issues, "missing_role",    `${lbl} > Role`,    job.role,    D.missingRole,    "Add the role title exactly as you want recruiters and ATS to read it.");
+    pts += required(issues, "missing_company", `${lbl} > Company`, job.company, D.missingCompany, "Add the company or organization name.", 90);
+    pts += required(issues, "missing_role",    `${lbl} > Role`,    job.role,    D.missingRole,    "Add the role title exactly as you want recruiters and ATS to read it.", 90);
     pts += checkDateRange(job.startDate, job.endDate, lbl, issues, true);
     const desc = asText(job.description);
     if (!hasText(desc)) {
-      pts += issue(issues, "missing_experience_description", `${lbl} > Description`, "", D.missingExperienceDescription, "Add 2-4 bullets or sentences covering action, tools, and measurable impact.", "error");
+      pts += issue(issues, "missing_experience_description", `${lbl} > Description`, "", D.missingExperienceDescription, "Add 2-4 bullets or sentences covering action, tools, and measurable impact.", "error", 95);
     } else {
-      pts += checkQuality(desc, `${lbl} > Description`, T.minExperienceDescLen, true, issues);
+      pts += checkQuality(desc, `${lbl} > Description`, T.minExperienceDescLen, true, issues, stage);
     }
   });
   return pts;
 };
 
 const checkEducation = (education, issues) => {
-  if (education.length === 0) return issue(issues, "missing_education", "Education", "", D.missingEducation, "Add education, training, bootcamp, or equivalent credential. If not applicable, add your strongest formal training.", "warning");
+  if (education.length === 0) return issue(issues, "missing_education", "Education", "", D.missingEducation, "Add education, training, bootcamp, or equivalent credential. If not applicable, add your strongest formal training.", "warning", 90);
   let pts = 0;
   education.forEach((item, idx) => {
     const lbl = `Education ${idx + 1}`;
-    pts += required(issues, "missing_degree",      `${lbl} > Degree`,      item.degree,      D.missingDegree,      "Add the degree, certificate, or course name.");
-    pts += required(issues, "missing_institution", `${lbl} > Institution`, item.institution, D.missingInstitution, "Add the school, university, or training provider.");
+    pts += required(issues, "missing_degree",      `${lbl} > Degree`,      item.degree,      D.missingDegree,      "Add the degree, certificate, or course name.", 90);
+    pts += required(issues, "missing_institution", `${lbl} > Institution`, item.institution, D.missingInstitution, "Add the school, university, or training provider.", 90);
     pts += checkDateRange(item.startDate, item.endDate, lbl, issues, false);
   });
   return pts;
 };
 
 const checkProgress = (progress, section, issues) => {
-  if (progress === null || progress === undefined) return issue(issues, "missing_progress", section, "", D.missingProgress, "Set a proficiency value or remove the visual proficiency control for ATS-first resumes.", "tip");
-  if (progress < 0 || progress > 100)              return issue(issues, "invalid_progress", section, String(progress), D.invalidProgress, "Keep proficiency between 0 and 100.", "tip");
+  if (progress === null || progress === undefined) return issue(issues, "missing_progress", section, "", D.missingProgress, "Set a proficiency value or remove the visual proficiency control for ATS-first resumes.", "tip", 80);
+  if (progress < 0 || progress > 100)              return issue(issues, "invalid_progress", section, String(progress), D.invalidProgress, "Keep proficiency between 0 and 100.", "tip", 80);
   return 0;
 };
 
@@ -605,18 +735,18 @@ const normalizeSkillName = (name) => {
 };
 
 const checkSkills = (skills, issues) => {
-  if (skills.length === 0) return issue(issues, "missing_skills", "Skills", "", D.missingSkills, "Add 8-12 concrete skills. ATS keyword matching depends heavily on this section.", "error");
+  if (skills.length === 0) return issue(issues, "missing_skills", "Skills", "", D.missingSkills, "Add 8-12 concrete skills. ATS keyword matching depends heavily on this section.", "error", 100);
   let pts = 0;
   if (skills.length < T.tooFewSkillsCount) {
-    pts += issue(issues, "too_few_skills", "Skills", String(skills.length), D.tooFewSkills, `Only ${skills.length} skills are listed. Add enough hard skills to match the target role.`, "warning");
+    pts += issue(issues, "too_few_skills", "Skills", String(skills.length), D.tooFewSkills, `Only ${skills.length} skills are listed. Add enough hard skills to match the target role.`, "warning", 85);
   }
   const seen = new Set();
   skills.forEach((sk, idx) => {
     const name = asText(sk.name), lbl = `Skills ${idx + 1}`;
-    if (!hasText(name)) { pts += issue(issues, "blank_skill", `${lbl} > Name`, "", D.blankSkill, "Remove the blank skill row or enter a specific skill name.", "error"); return; }
+    if (!hasText(name)) { pts += issue(issues, "blank_skill", `${lbl} > Name`, "", D.blankSkill, "Remove the blank skill row or enter a specific skill name.", "error", 95); return; }
     const norm = normalizeSkillName(name);
     if (seen.has(norm)) {
-      pts += issue(issues, "duplicate_skill", `${lbl} > Name`, name, D.duplicateSkill, `Remove duplicate skill listing: "${name}". Keep one clear normalized entry per skill to maintain a clean layout.`, "tip");
+      pts += issue(issues, "duplicate_skill", `${lbl} > Name`, name, D.duplicateSkill, `Remove duplicate skill listing: "${name}". Keep one clear normalized entry per skill to maintain a clean layout.`, "tip", 95);
     }
     seen.add(norm);
     pts += checkProgress(sk.progress, `${lbl} > Proficiency`, issues);
@@ -630,17 +760,28 @@ const checkProjects = (projects, experience, issues, stage) => {
     return 0; // Never ask for projects if strong experience exists for seniors
   }
   if (projects.length === 0 && experience.length <= 1) {
-    return issue(issues, "missing_projects", "Projects", "", D.missingProjects, "Add one or two strong projects to showcase hands-on work if your experience is light.", "warning");
+    return issue(issues, "missing_projects", "Projects", "", D.missingProjects, "Add one or two strong projects to showcase hands-on work if your experience is light.", "warning", 90);
   }
   let pts = 0;
   projects.forEach((proj, idx) => {
     const lbl = `Projects ${idx + 1}`;
-    pts += required(issues, "missing_project_title", `${lbl} > Title`, proj.title, D.missingProjectTitle, "Add a concise project title.");
+    pts += required(issues, "missing_project_title", `${lbl} > Title`, proj.title, D.missingProjectTitle, "Add a concise project title.", 90);
     const desc = asText(proj.description);
     if (!hasText(desc)) {
-      pts += issue(issues, "missing_project_description", `${lbl} > Description`, "", D.missingProjectDescription, "Add what the project does, what you used, and what improved.", "warning");
+      pts += issue(issues, "missing_project_description", `${lbl} > Description`, "", D.missingProjectDescription, "Add what the project does, what you used, and what improved.", "warning", 90);
     } else {
-      pts += checkQuality(desc, `${lbl} > Description`, T.minProjectDescLen, false, issues);
+      pts += checkQuality(desc, `${lbl} > Description`, T.minProjectDescLen, false, issues, stage);
+      
+      // Portfolio portfolio-style checks (problem statement, technologies, deployment, testing, complexity)
+      const lowerDesc = desc.toLowerCase();
+      if (!lowerDesc.includes("architecture") && !lowerDesc.includes("design") && !lowerDesc.includes("built") && !lowerDesc.includes("implement")) {
+        pts += issue(issues, "project_architecture_weak", `${lbl} > Description`, short(desc), 0,
+          "Reason: Project details lack architectural or implementation depth.\nWhy it matters: Recruiters evaluate engineering scope through structural choices.\nActionable improvement: Clarify the problem statement and design choices in your project description.\nRecruiter impact: Demonstrates software engineering maturity and logical planning.\nExample: 'Designed a multi-tier microservices architecture using Spring Cloud.'", "tip", 80);
+      }
+      if (!lowerDesc.includes("deploy") && !lowerDesc.includes("aws") && !lowerDesc.includes("docker") && !lowerDesc.includes("kubernetes") && !lowerDesc.includes("cloud") && !lowerDesc.includes("vercel") && !lowerDesc.includes("github actions")) {
+        pts += issue(issues, "project_deployment_missing", `${lbl} > Description`, short(desc), 0,
+          "Reason: Missing details about deployment or cloud environment.\nWhy it matters: Showing your application runs in production validates end-to-end delivery skills.\nActionable improvement: Document how the application is built, deployed, or hosted.\nRecruiter impact: Proves you can manage software beyond local execution.\nExample: 'Deployed on AWS ECS using Docker containers and GitHub Actions.'", "tip", 80);
+      }
     }
     pts += optUrl(proj.github,  `${lbl} > GitHub URL`,   "Use a valid repository URL or leave the field empty.", issues);
     pts += optUrl(proj.liveDemo,`${lbl} > Live demo URL`, "Use a valid live demo URL or leave the field empty.", issues);
@@ -649,10 +790,10 @@ const checkProjects = (projects, experience, issues, stage) => {
 };
 
 const checkYear = (year, section, issues) => {
-  if (!hasText(year)) return issue(issues, "missing_cert_year", section, "", D.missingCertYear, "Add the completion year or remove the year field if unknown.", "tip");
-  if (!/^\d{4}$/.test(asText(year))) return issue(issues, "invalid_year", section, asText(year), D.invalidYear, "Use a four-digit year.", "warning");
+  if (!hasText(year)) return issue(issues, "missing_cert_year", section, "", D.missingCertYear, "Add the completion year or remove the year field if unknown.", "tip", 80);
+  if (!/^\d{4}$/.test(asText(year))) return issue(issues, "invalid_year", section, asText(year), D.invalidYear, "Use a four-digit year.", "warning", 85);
   const n = parseInt(asText(year), 10);
-  if (n < 1950 || n > CURRENT_YEAR + 10) return issue(issues, "year_out_of_range", section, asText(year), D.yearOutOfRange, "Use a realistic year.", "warning");
+  if (n < 1950 || n > CURRENT_YEAR + 10) return issue(issues, "year_out_of_range", section, asText(year), D.yearOutOfRange, "Use a realistic year.", "warning", 85);
   return 0;
 };
 
@@ -660,8 +801,8 @@ const checkCertifications = (certs, issues) => {
   let pts = 0;
   certs.forEach((c, idx) => {
     const lbl = `Certifications ${idx + 1}`;
-    pts += required(issues, "missing_cert_title",  `${lbl} > Title`,  c.title,  D.missingCertTitle,  "Add the certification name or remove the blank certification row.");
-    pts += required(issues, "missing_cert_issuer", `${lbl} > Issuer`, c.issuer, D.missingCertIssuer, "Add the issuer so ATS and recruiters can verify the credential.");
+    pts += required(issues, "missing_cert_title",  `${lbl} > Title`,  c.title,  D.missingCertTitle,  "Add the certification name or remove the blank certification row.", 90);
+    pts += required(issues, "missing_cert_issuer", `${lbl} > Issuer`, c.issuer, D.missingCertIssuer, "Add the issuer so ATS and recruiters can verify the credential.", 90);
     pts += checkYear(c.year, `${lbl} > Year`, issues);
   });
   return pts;
@@ -672,8 +813,8 @@ const checkLanguages = (languages, issues) => {
   const seen = new Set();
   languages.forEach((lang, idx) => {
     const name = asText(lang.name), lbl = `Languages ${idx + 1}`;
-    if (!hasText(name)) { pts += issue(issues, "blank_language", `${lbl} > Name`, "", D.blankLanguage, "Remove the blank language row or enter a language name.", "tip"); return; }
-    if (seen.has(name.toLowerCase())) pts += issue(issues, "duplicate_language", `${lbl} > Name`, name, D.duplicateLanguage, "Remove duplicate language entries.", "tip");
+    if (!hasText(name)) { pts += issue(issues, "blank_language", `${lbl} > Name`, "", D.blankLanguage, "Remove the blank language row or enter a language name.", "tip", 80); return; }
+    if (seen.has(name.toLowerCase())) pts += issue(issues, "duplicate_language", `${lbl} > Name`, name, D.duplicateLanguage, "Remove duplicate language entries.", "tip", 80);
     seen.add(name.toLowerCase());
     pts += checkProgress(lang.progress, `${lbl} > Proficiency`, issues);
   });
@@ -685,13 +826,13 @@ const checkInterests = (interests, issues) => {
   const seen = new Set();
   interests.forEach((interest, idx) => {
     const val = asText(interest), lbl = `Interests ${idx + 1}`;
-    if (!hasText(val)) { pts += issue(issues, "blank_interest", lbl, "", D.blankInterest, "Remove blank interest rows.", "tip"); return; }
-    if (seen.has(val.toLowerCase())) pts += issue(issues, "duplicate_interest", lbl, val, D.duplicateInterest, "Remove duplicate interests.", "tip");
+    if (!hasText(val)) { pts += issue(issues, "blank_interest", lbl, "", D.blankInterest, "Remove blank interest rows.", "tip", 80); return; }
+    if (seen.has(val.toLowerCase())) pts += issue(issues, "duplicate_interest", lbl, val, D.duplicateInterest, "Remove duplicate interests.", "tip", 80);
     seen.add(val.toLowerCase());
   });
   if (interests.length > T.tooManyInterestsCount) {
     pts += issue(issues, "too_many_interests", "Interests", String(interests.length), D.tooManyInterests,
-      "Keep interests short or remove them for ATS-first resumes. Use the space for experience, skills, or projects.", "tip");
+      "Keep interests short or remove them for ATS-first resumes. Use the space for experience, skills, or projects.", "tip", 80);
   }
   return pts;
 };
@@ -704,41 +845,41 @@ const checkPresentation = (resume, profile, issues) => {
     const name = RULES.templateNames[template] || template;
     pts += issue(issues, "template_parse_risk", "Customization > Template", name, risk,
       "For ATS uploads, use Classic or Minimal. Keep visual templates for human-facing PDFs.",
-      risk >= 6 ? "warning" : "tip");
+      risk >= 6 ? "warning" : "tip", 80);
   }
   const photoUrl   = asText(profile.profilePreviewUrl || profile.profileImageUrl);
   const dec        = resume.decoratives || {};
   const photoShape = asText(dec.photoShape);
   if (hasText(photoUrl) && photoShape !== "none") {
     pts += issue(issues, "profile_photo_parse_risk", "Profile > Photo", "Photo attached", D.profilePhotoParseRisk,
-      "Remove the photo for ATS-first resumes. Photos are often ignored and can reduce parser consistency.", "warning");
+      "Remove the photo for ATS-first resumes. Photos are often ignored and can reduce parser consistency.", "warning", 90);
   }
   const headerStyle = asText(dec.headerStyle);
   if (headerStyle === "full-bleed" || headerStyle === "card") {
     pts += issue(issues, "decorative_header", "Customization > Header style", headerStyle, D.decorativeHeader,
-      "Use Minimal header style for ATS uploads. Decorative headers can change read order in some parsers.", "tip");
+      "Use Minimal header style for ATS uploads. Decorative headers can change read order in some parsers.", "tip", 80);
   }
   if (String(dec.sectionIcons) === "true") {
     pts += issue(issues, "section_icons", "Customization > Section icons", "Enabled", D.sectionIcons,
-      "Disable section icons for ATS uploads. Icons can be parsed as stray characters.", "warning");
+      "Disable section icons for ATS uploads. Icons can be parsed as stray characters.", "warning", 80);
   }
   if (String(dec.sectionNumbers) === "true") {
     pts += issue(issues, "section_numbers", "Customization > Section numbers", "Enabled", D.sectionNumbers,
-      "Disable section numbers if the resume is being uploaded to an ATS. Plain section headings parse cleaner.", "tip");
+      "Disable section numbers if the resume is being uploaded to an ATS. Plain section headings parse cleaner.", "tip", 80);
   }
   const divStyle = asText(dec.dividerStyle);
   if (divStyle === "dots" || divStyle === "gradient") {
     pts += issue(issues, "decorative_divider", "Customization > Divider style", divStyle, D.decorativeDivider,
-      "Use a simple line divider or no divider for ATS uploads.", "tip");
+      "Use a simple line divider or no divider for ATS uploads.", "tip", 80);
   }
   const progStyle = asText(dec.progressStyle);
   if (progStyle === "bar" || progStyle === "dots") {
     pts += issue(issues, "visual_progress", "Customization > Skill progress style", progStyle, D.visualProgress,
-      "ATS reads skill names, not bars or dots. Keep the skill names textual and do not rely on visual proficiency.", "tip");
+      "ATS reads skill names, not bars or dots. Keep the skill names textual and do not rely on visual proficiency.", "tip", 80);
   }
   if (hasText(resume.fontPairing) && resume.fontPairing !== "inter") {
     pts += issue(issues, "custom_font", "Customization > Font", resume.fontPairing, D.customFont,
-      "Use a common system-like font for ATS uploads. Keep custom fonts for human-facing versions.", "tip");
+      "Use a common system-like font for ATS uploads. Keep custom fonts for human-facing versions.", "tip", 80);
   }
   return pts;
 };
@@ -759,7 +900,7 @@ const checkKeywords = (resume, category, issues, stage) => {
   
   const suggestion = `Including key technical terms for a ${category} role helps parser matching. If you have experience with these adjacent concepts, consider adding them to your skills or project descriptions: ${top.join(", ")}. Otherwise, focus on clarifying your core strengths.`;
 
-  return issue(issues, "keyword_gap", "Role keywords", "Missing: " + top.join(", "), pts, suggestion, pts >= 10 ? "warning" : "tip");
+  return issue(issues, "keyword_gap", "Role keywords", "Missing: " + top.join(", "), pts, suggestion, pts >= 10 ? "warning" : "tip", 90);
 };
 
 // ─── Main export ──────────────────────────────────────────────────────────────
@@ -781,7 +922,7 @@ export const computeAtsReport = (resume = {}) => {
   let deductions = 0;
   deductions += checkProfile(profile, issues, stage);
   deductions += checkContact(contact, issues);
-  deductions += checkExperience(experience, issues, resume);
+  deductions += checkExperience(experience, issues, resume, stage);
   deductions += checkEducation(education, issues);
   deductions += checkSkills(skills, issues);
   deductions += checkProjects(projects, experience, issues, stage);
@@ -796,24 +937,44 @@ export const computeAtsReport = (resume = {}) => {
     deductions += checkKeywords(resume, category.toLowerCase(), issues, stage);
   }
 
-  // Identical formula to RefineService.java line 139
   const score = Math.max(0, Math.min(100, 100 - deductions));
 
-  // Identical sort to RefineService.java (errors first, then by descending points)
   const rank = (s) => (s === "error" ? 0 : s === "warning" ? 1 : 2);
   issues.sort((a, b) => rank(a.severity) - rank(b.severity) || (b.points || 0) - (a.points || 0));
 
-  const errors   = issues.filter(i => i.severity === "error").length;
-  const warnings = issues.filter(i => i.severity === "warning").length;
   const roleStr  = category ? ` for a ${category} role` : "";
   let overallFeedback;
-  if      (score >= SB.strong)   overallFeedback = `Strong ATS-ready structure${roleStr}. Fix the remaining small parser risks before uploading.`;
-  else if (score >= SB.good)     overallFeedback = `Good foundation${roleStr}. Address ${errors} critical issue(s) and ${warnings} warning(s) to reduce ATS risk.`;
-  else if (score >= SB.moderate) overallFeedback = `Moderate ATS risk${roleStr}. Focus first on missing required fields, measurable experience, and parser-friendly layout.`;
-  else                           overallFeedback = `High ATS risk${roleStr}. Fill missing sections, simplify formatting, and rewrite weak bullets before applying.`;
+  if      (score >= 95) overallFeedback = `Exceptional recruiter-grade resume structure${roleStr}. Excellent focus, technical depth, and metrics.`;
+  else if (score >= 90) overallFeedback = `Highly Competitive candidate profile${roleStr}. Formatted well with strong impact alignment.`;
+  else if (score >= 80) overallFeedback = `Good ATS foundation${roleStr}. Address the remaining warning(s) and tip(s) to optimize.`;
+  else if (score >= 70) overallFeedback = `Average performance${roleStr}. Enhance your project details and experience bullets to stand out.`;
+  else if (score >= 60) overallFeedback = `Needs Improvement${roleStr}. Resolve critical issues and warnings to lower ATS risk.`;
+  else                  overallFeedback = `Major Resume Issues detected${roleStr}. High formatting and missing fields risk; overhaul structure before applying.`;
+
+  // Strengths detection
+  const strengths = [];
+  const intel = analyzeResumeIntelligence(resume);
+  if (experience.length >= 3 && intel.yearsOfExperience >= 5) {
+    strengths.push("Good technical progression & career stability");
+  }
+  if (intel.achievementQuality > 75) {
+    strengths.push("Strong measurable achievements with business metrics");
+  }
+  if (intel.technicalDepth > 75) {
+    strengths.push("Excellent project complexity & technical depth");
+  }
+  if (intel.specialization !== "General Software Engineer" && intel.specialization !== "General Resume") {
+    strengths.push(`Clear specialization alignment: ${intel.specialization}`);
+  }
+  if (intel.atsCompatibility === 100) {
+    strengths.push("Well-structured layout with optimal parser safety");
+  }
+  if (strengths.length === 0) {
+    strengths.push("Well-structured ATS-ready formatting foundations");
+  }
 
   // atsScore alias ensures compatibility with the backend RefineResponse field name
-  return { score, atsScore: score, issues, overallFeedback, category };
+  return { score, atsScore: score, issues, overallFeedback, category, strengths };
 };
 
 // Re-export category keywords and rules for any component that needs to
