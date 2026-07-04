@@ -340,12 +340,29 @@ const ScholarContactRow = ({ c = {} }) => {
   );
 };
 
+const renderParsedSkillText = (nameText) => {
+  if (!nameText) return "";
+  const colonIdx = nameText.indexOf(":");
+  if (colonIdx !== -1) {
+    const category = nameText.substring(0, colonIdx + 1);
+    const skills = nameText.substring(colonIdx + 1);
+    return (
+      <>
+        <span className="rp-skill-category" style={{ fontWeight: 700 }}>{category}</span>
+        <span className="rp-skill-items" style={{ fontWeight: 400 }}>{skills}</span>
+      </>
+    );
+  }
+  return <span className="rp-skill-items" style={{ fontWeight: 400 }}>{nameText}</span>;
+};
+
 const SkillBar = ({ name, progress = 0, style }) => {
+  const displayName = renderParsedSkillText(name);
   if (style === "dots") {
     const filled = Math.round((progress / 100) * 5);
     return (
       <div className="rp-skill-row">
-        <span className="rp-skill-name">{name}</span>
+        <span className="rp-skill-name">{displayName}</span>
         <span className="rp-dots">
           {Array.from({ length: 5 }).map((_, i) => (
             <span key={i} className={i < filled ? "dot filled" : "dot"} />
@@ -358,7 +375,7 @@ const SkillBar = ({ name, progress = 0, style }) => {
     const level = progress >= 80 ? "Expert" : progress >= 60 ? "Proficient" : progress >= 40 ? "Intermediate" : "Beginner";
     return (
       <div className="rp-skill-row">
-        <span className="rp-skill-name">{name}</span>
+        <span className="rp-skill-name">{displayName}</span>
         <span className="rp-skill-level">{level}</span>
       </div>
     );
@@ -366,7 +383,7 @@ const SkillBar = ({ name, progress = 0, style }) => {
   // default: bar
   return (
     <div className="rp-skill-bar-wrap">
-      <div className="rp-skill-row"><span className="rp-skill-name">{name}</span><small>{progress}%</small></div>
+      <div className="rp-skill-row"><span className="rp-skill-name">{displayName}</span><small>{progress}%</small></div>
       <div className="rp-bar"><span style={{ width: `${progress}%` }} /></div>
     </div>
   );
@@ -395,7 +412,7 @@ const ProgressSection = ({ title, items = [], style, showIcon, dec, templateId, 
         <ul className="rp-desc-list">
           {items.map((item, i) => (
             <li key={i} style={{ marginBottom: "4px" }}>
-              <strong>{item.name || ""}</strong>
+              {renderParsedSkillText(item.name)}
             </li>
           ))}
         </ul>
@@ -415,7 +432,7 @@ const ProgressSection = ({ title, items = [], style, showIcon, dec, templateId, 
           {items.map((item, i) => (
             <ItemWrapper key={i} style={hasBullets ? { marginBottom: "6px" } : {}}>
               <div className="rp-skill-row">
-                <span className="rp-skill-name" style={{ fontWeight: 600 }}>{item.name || ""}</span>
+                {renderParsedSkillText(item.name)}
               </div>
             </ItemWrapper>
           ))}
