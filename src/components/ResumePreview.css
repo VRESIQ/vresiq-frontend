@@ -1108,6 +1108,47 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   text-decoration: none !important;
 }
 
+/* Prestige Template: Clickable Contact Links Restoration */
+.resume-preview.rp-premium1:not([data-hstyle="full-bleed"]) .rp-contact-link-email,
+.resume-preview.rp-premium1:not([data-hstyle="full-bleed"]) .rp-contact-link-linkedin,
+.resume-preview.rp-premium1:not([data-hstyle="full-bleed"]) .rp-contact-link-github,
+.resume-preview.rp-premium1:not([data-hstyle="full-bleed"]) .rp-contact-link-website,
+.resume-preview.rp-premium1:not([data-hstyle="full-bleed"]) .rp-contact-link-leetcode,
+.resume-preview.rp-premium1:not([data-hstyle="full-bleed"]) .rp-contact-link-hackerrank {
+  color: #2563EB !important;
+  text-decoration: underline !important;
+}
+
+.resume-preview.rp-premium1:not([data-hstyle="full-bleed"]) .rp-contact-link-email:hover,
+.resume-preview.rp-premium1:not([data-hstyle="full-bleed"]) .rp-contact-link-linkedin:hover,
+.resume-preview.rp-premium1:not([data-hstyle="full-bleed"]) .rp-contact-link-github:hover,
+.resume-preview.rp-premium1:not([data-hstyle="full-bleed"]) .rp-contact-link-website:hover,
+.resume-preview.rp-premium1:not([data-hstyle="full-bleed"]) .rp-contact-link-leetcode:hover,
+.resume-preview.rp-premium1:not([data-hstyle="full-bleed"]) .rp-contact-link-hackerrank:hover {
+  color: #1d4ed8 !important;
+  text-decoration: underline !important;
+}
+
+.resume-preview.rp-premium1[data-hstyle="full-bleed"] .rp-contact-link-email,
+.resume-preview.rp-premium1[data-hstyle="full-bleed"] .rp-contact-link-linkedin,
+.resume-preview.rp-premium1[data-hstyle="full-bleed"] .rp-contact-link-github,
+.resume-preview.rp-premium1[data-hstyle="full-bleed"] .rp-contact-link-website,
+.resume-preview.rp-premium1[data-hstyle="full-bleed"] .rp-contact-link-leetcode,
+.resume-preview.rp-premium1[data-hstyle="full-bleed"] .rp-contact-link-hackerrank {
+  color: var(--on-accent, #ffffff) !important;
+  text-decoration: underline !important;
+}
+
+.resume-preview.rp-premium1[data-hstyle="full-bleed"] .rp-contact-link-email:hover,
+.resume-preview.rp-premium1[data-hstyle="full-bleed"] .rp-contact-link-linkedin:hover,
+.resume-preview.rp-premium1[data-hstyle="full-bleed"] .rp-contact-link-github:hover,
+.resume-preview.rp-premium1[data-hstyle="full-bleed"] .rp-contact-link-website:hover,
+.resume-preview.rp-premium1[data-hstyle="full-bleed"] .rp-contact-link-leetcode:hover,
+.resume-preview.rp-premium1[data-hstyle="full-bleed"] .rp-contact-link-hackerrank:hover {
+  opacity: 0.8 !important;
+  text-decoration: underline !important;
+}
+
 
 /* ═══════════════════════════════════════════════════════════════════════════
    PREMIUM2 — Executive
