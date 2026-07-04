@@ -107,12 +107,13 @@ export const sendResumeByEmail = ({ recipientEmail, subject, message, pdfFile })
 
 export const exportResumePdf = (id, htmlContent, isFreePlan = true) =>
   axiosInstance.post(`/api/resumes/${id}/export-pdf`, { htmlContent, isFreePlan: String(isFreePlan) }, {
-    responseType: "blob"
+    responseType: "blob",
+    loadingMode: "fullscreen"
   });
 
 // ─── AI / ATS REFINE ─────────────────────────────────────
-export const refineResume = (resumeId) =>
-  axiosInstance.post(`/api/ai/refine/${resumeId}`);
+export const refineResume = (resumeId, loadingMode = "fullscreen") =>
+  axiosInstance.post(`/api/ai/refine/${resumeId}`, {}, { loadingMode });
 // Pro only. Returns: { atsScore, overallFeedback, category, issues: [{ type, section, original, suggestion, severity, points }] }
 
 // ─── VERIFICATION ────────────────────────────────────────
@@ -126,7 +127,7 @@ export const verifyCertification = (name) =>
   axiosInstance.get(`/api/verify/certification?name=${name}`, { skipLoader: true });
 
 export const rewriteContent = (content, tone = "professional") =>
-  axiosInstance.post("/api/ai/rewrite", { content, tone });
+  axiosInstance.post("/api/ai/rewrite", { content, tone }, { loadingMode: "fullscreen" });
 
 
 

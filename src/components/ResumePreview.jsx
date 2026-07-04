@@ -372,7 +372,7 @@ const SkillBar = ({ name, progress = 0, style }) => {
   );
 };
 
-const ProgressSection = ({ title, items = [], style, showIcon, dec, templateId, sectionNumber, hasBullets = true }) => {
+const ProgressSection = ({ title, items = [], style, showIcon, dec, templateId, sectionNumber, hasBullets = true, skillsMode = "individual" }) => {
   if (!items.length) return null;
   const isAts = templateId && templateId.startsWith("ats_");
 
@@ -406,6 +406,23 @@ const ProgressSection = ({ title, items = [], style, showIcon, dec, templateId, 
   const Wrapper = hasBullets ? "ul" : "div";
   const ItemWrapper = hasBullets ? "li" : "div";
   const wrapperClass = hasBullets ? "rp-desc-list rp-skill-list" : "rp-skill-list";
+
+  if (skillsMode === "category") {
+    return (
+      <section className="rp-section">
+        <STitle showIcon={showIcon} dec={dec} sectionNumber={sectionNumber}>{title}</STitle>
+        <Wrapper className={wrapperClass}>
+          {items.map((item, i) => (
+            <ItemWrapper key={i} style={hasBullets ? { marginBottom: "6px" } : {}}>
+              <div className="rp-skill-row">
+                <span className="rp-skill-name" style={{ fontWeight: 600 }}>{item.name || ""}</span>
+              </div>
+            </ItemWrapper>
+          ))}
+        </Wrapper>
+      </section>
+    );
+  }
 
   return (
     <section className="rp-section">
@@ -1446,7 +1463,7 @@ const renderSectionsForColumn = (columnType, order, visibility, resume, commonPr
       case "education":
         return <EducationSection key="education" items={resume.education || []} {...propsWithNum} hasBullets={bulletConfig.education !== false} />;
       case "skills":
-        return <ProgressSection key="skills" title="Skills" items={resume.skills || []} style={commonProps.dec.progressStyle} {...propsWithNum} hasBullets={bulletConfig.skills !== false} />;
+        return <ProgressSection key="skills" title="Skills" items={resume.skills || []} style={commonProps.dec.progressStyle} skillsMode={resume.decoratives?.skillsMode || "individual"} {...propsWithNum} hasBullets={bulletConfig.skills !== false} />;
       case "projects":
         return <ProjectsSection key="projects" items={resume.projects || []} {...propsWithNum} hasBullets={bulletConfig.projects !== false} />;
       case "certifications":

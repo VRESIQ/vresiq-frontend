@@ -64,7 +64,7 @@ const getContrastRatioAgainstWhite = (hex) => {
   }
 };
 
-const DecorativesPanel = ({ decoratives = {}, onChange }) => {
+const DecorativesPanel = ({ decoratives = {}, onChange, skillsMode = "individual" }) => {
   const set = (key, value) => onChange({ ...decoratives, [key]: value });
 
   const useCustomAccent = decoratives.useCustomAccent === "true";
@@ -163,21 +163,23 @@ const DecorativesPanel = ({ decoratives = {}, onChange }) => {
 
 
 
-      <div className="dec-group">
-        <label className="dec-label">Skill progress style</label>
-        <div className="dec-chips">
-          {PROGRESS_OPTIONS.map((o) => (
-            <button
-              key={o.value}
-              type="button"
-              className={`dec-chip ${(decoratives.progressStyle || "bar") === o.value ? "active" : ""}`}
-              onClick={() => set("progressStyle", o.value)}
-            >
-              {o.label}
-            </button>
-          ))}
+      {skillsMode !== "category" && (
+        <div className="dec-group">
+          <label className="dec-label">Skill progress style</label>
+          <div className="dec-chips">
+            {PROGRESS_OPTIONS.map((o) => (
+              <button
+                key={o.value}
+                type="button"
+                className={`dec-chip ${(decoratives.progressStyle || "bar") === o.value ? "active" : ""}`}
+                onClick={() => set("progressStyle", o.value)}
+              >
+                {o.label}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="dec-group">
         <label className="dec-label">Bullet style</label>

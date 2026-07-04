@@ -370,6 +370,13 @@ const ResumeEditor = () => {
   const handleSkillsModeChange = (mode) => {
     setSkillsMode(mode);
     localStorage.setItem("skillsEditingMode", mode);
+    setResume(prev => ({
+      ...prev,
+      decoratives: {
+        ...(prev.decoratives || {}),
+        skillsMode: mode
+      }
+    }));
   };
 
   const hasUnsavedChanges = baselineResume !== null && JSON.stringify(resume) !== baselineResume;
@@ -518,6 +525,7 @@ const ResumeEditor = () => {
         };
         setResume(normalized);
         setBaselineResume(JSON.stringify(normalized));
+        setSkillsMode(normalized.decoratives?.skillsMode || localStorage.getItem("skillsEditingMode") || "individual");
         setLastSaved(new Date());
 
         // Hydrate the ATS badge from the persisted score — zero extra network call.
@@ -2177,6 +2185,7 @@ const ResumeEditor = () => {
                   <DecorativesPanel
                     decoratives={resume.decoratives || {}}
                     onChange={(dec) => setResume((prev) => ({ ...prev, decoratives: dec }))}
+                    skillsMode={skillsMode}
                   />
                 </div>
               )}

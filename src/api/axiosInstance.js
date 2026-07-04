@@ -39,7 +39,7 @@ axiosInstance.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
     if (!config.skipLoader) {
-      loadingService.start(config.url, config.method);
+      loadingService.start(config.url, config.method, config.loadingMode);
     }
     return config;
   },

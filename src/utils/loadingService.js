@@ -10,11 +10,11 @@ export const loadingService = {
       onChangeCallbacks = onChangeCallbacks.filter(cb => cb !== callback);
     };
   },
-  start(url = "", method = "GET") {
+  start(url = "", method = "GET", loadingMode = "normal") {
     // Prevent duplicate entries of the same operation url
     const exists = activeRequests.some(r => r.url === url && r.method === method);
     if (!exists) {
-      activeRequests.push({ url, method, timestamp: Date.now() });
+      activeRequests.push({ url, method, timestamp: Date.now(), loadingMode });
       this.notify();
     }
   },
