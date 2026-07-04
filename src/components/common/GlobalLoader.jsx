@@ -114,8 +114,13 @@ const GlobalLoader = () => {
   const primaryReq = requests[0];
   const url = primaryReq.url || "";
   const method = primaryReq.method || "GET";
+  const loadingMode = primaryReq.loadingMode || "normal";
 
-  const isHeavy = url.includes("/api/ai/") || 
+  if (loadingMode === "background") {
+    return renderToasts();
+  }
+
+  const isHeavy = loadingMode === "fullscreen" ||
                   url.includes("/api/email/") || 
                   url.includes("/export-pdf") || 
                   url.includes("pdf") || 

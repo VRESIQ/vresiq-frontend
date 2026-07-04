@@ -665,7 +665,7 @@ const ResumeEditor = () => {
     if (atsSyncing) return true;
     try {
       setAtsSyncing(true);
-      const res = await refineResume(resumeId);
+      const res = await refineResume(resumeId, "background");
       setSavedAtsReport(res.data);
       return true;
     } catch (_) {
