@@ -11,6 +11,7 @@ import ContactField from "../components/common/ContactField";
 import { useAuth } from "../context/AuthContext";
 import { sanitizeStrictText, sanitizeYear, sanitizeName, sanitizeRole, sanitizeURL, sanitizeDigits, sanitizeFlexibleDate, isNumericPattern, sanitizeTextOnly, sanitizeDecimal, smartNormalizeUrl, sanitizeRawText, sanitizeLocation } from "../utils/inputSanitizers";
 import { computeAtsReport } from "../utils/atsScorer";
+import { toastService } from "../utils/toastService";
 import "./ResumeEditor.css";
 
 const CustomizableContactField = ({ platform, label, value, onChange, placeholder, hint, isPhone = false }) => {
@@ -364,6 +365,12 @@ const ResumeEditor = () => {
 
   const [baselineResume, setBaselineResume] = useState(null);
   const [lastSaved, setLastSaved] = useState(null);
+  const [skillsMode, setSkillsMode] = useState(() => localStorage.getItem("skillsEditingMode") || "individual");
+
+  const handleSkillsModeChange = (mode) => {
+    setSkillsMode(mode);
+    localStorage.setItem("skillsEditingMode", mode);
+  };
 
   const hasUnsavedChanges = baselineResume !== null && JSON.stringify(resume) !== baselineResume;
 
@@ -620,15 +627,20 @@ const ResumeEditor = () => {
         setLastSaved(new Date());
         setSaved(true);
         setTimeout(() => setSaved(false), 2000);
+        toastService.show("Changes Saved");
         // Silently sync the authoritative ATS score after every save.
         // This keeps savedAtsReport current without any user action.
         if (!isFreePlan) {
-          syncAtsAfterSave(id);
+          const atsSuccess = await syncAtsAfterSave(id);
+          if (!atsSuccess) {
+            toastService.show("Resume saved successfully. Unable to refresh ATS score.", "warning");
+          }
         } else {
           setSavedAtsReport(computeAtsReport(resume));
         }
       } catch (err) {
         setSaveError(err.response?.data?.message || "Could not auto-save changes.");
+        toastService.show("Could not auto-save changes.", "warning");
       } finally {
         setSaving(false);
       }
@@ -639,17 +651,17 @@ const ResumeEditor = () => {
 
   /**
    * Silently fetches the authoritative backend ATS score after a save and
-   * stores it in savedAtsReport. Fires and forgets — errors are swallowed
-   * because the badge already shows a live preview from localReport.
+   * stores it in savedAtsReport. Returns boolean indicating success.
    */
   const syncAtsAfterSave = async (resumeId) => {
-    if (atsSyncing) return;
+    if (atsSyncing) return true;
     try {
       setAtsSyncing(true);
       const res = await refineResume(resumeId);
       setSavedAtsReport(res.data);
+      return true;
     } catch (_) {
-      // Silent — badge falls back to localReport preview automatically.
+      return false;
     } finally {
       setAtsSyncing(false);
     }
@@ -664,12 +676,17 @@ const ResumeEditor = () => {
       setLastSaved(new Date());
       setSaved(true);
       setTimeout(() => setSaved(false), 2200);
+      toastService.show("Changes Saved");
       // Sync authoritative ATS score after manual save too (Pro only).
       if (!isFreePlan) {
-        syncAtsAfterSave(id);
+        const atsSuccess = await syncAtsAfterSave(id);
+        if (!atsSuccess) {
+          toastService.show("Resume saved successfully. Unable to refresh ATS score.", "warning");
+        }
       }
     } catch (err) {
       setSaveError(err.response?.data?.message || "Could not save this resume.");
+      toastService.show("Could not save changes.", "warning");
     } finally {
       setSaving(false);
     }
@@ -1735,12 +1752,113 @@ const ResumeEditor = () => {
                   Show bullet points for this section
                 </label>
               </div>
-              {resume.skills.map((item, index) => (
-                <ListCard key={index} title={item.name || makeListTitle("skills", index)} onRemove={() => removeListItem("skills", index)}>
-                  <Field label="Skill" value={item.name} placeholder="Java" hint="Separate skills with commas." sanitize={sanitizeRawText} onChange={(v) => updateListItem("skills", index, "name", v)} />
-                  <RangeField label="Proficiency" value={item.progress} onChange={(v) => updateListItem("skills", index, "progress", v)} />
-                </ListCard>
-              ))}
+
+              <div className="skills-mode-selector">
+                <span className="skills-mode-title">Editing Style</span>
+                <div className="skills-mode-grid">
+                  <button
+                    type="button"
+                    className={`skills-mode-card ${skillsMode === "individual" ? "selected" : ""}`}
+                    onClick={() => handleSkillsModeChange("individual")}
+                  >
+                    <span className="skills-mode-card-title">
+                      <input
+                        type="radio"
+                        checked={skillsMode === "individual"}
+                        readOnly
+                      />
+                      Individual Skills
+                    </span>
+                    <span className="skills-mode-card-desc">
+                      Each category is edited separately. (Default)
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    className={`skills-mode-card ${skillsMode === "category" ? "selected" : ""}`}
+                    onClick={() => handleSkillsModeChange("category")}
+                  >
+                    <span className="skills-mode-card-title">
+                      <input
+                        type="radio"
+                        checked={skillsMode === "category"}
+                        readOnly
+                      />
+                      Category Skills
+                    </span>
+                    <span className="skills-mode-card-desc">
+                      Organize skills using category titles and comma-separated skills.
+                    </span>
+                  </button>
+                </div>
+              </div>
+
+              {skillsMode === "category" ? (
+                resume.skills.map((item, index) => {
+                  const name = item.name || "";
+                  const colonIdx = name.indexOf(":");
+                  const categoryValue = colonIdx !== -1 ? name.substring(0, colonIdx).trim() : "";
+                  const skillsValue = colonIdx !== -1 ? name.substring(colonIdx + 1).trim() : name.trim();
+
+                  const handleCategoryChange = (newCategory) => {
+                    const newName = newCategory ? `${newCategory}: ${skillsValue}` : skillsValue;
+                    updateListItem("skills", index, "name", newName);
+                  };
+
+                  const handleSkillsChange = (newSkills) => {
+                    const cleaned = newSkills.replace(/,,+/g, ",").replace(/, ,+/g, ", ");
+                    const newName = categoryValue ? `${categoryValue}: ${cleaned}` : cleaned;
+                    updateListItem("skills", index, "name", newName);
+                  };
+
+                  const handleSkillsBlur = (e) => {
+                    const val = e.target.value;
+                    const normalized = val
+                      .split(",")
+                      .map(s => s.trim())
+                      .filter(Boolean)
+                      .join(", ");
+                    const newName = categoryValue ? `${categoryValue}: ${normalized}` : normalized;
+                    updateListItem("skills", index, "name", newName);
+                  };
+
+                  return (
+                    <ListCard
+                      key={index}
+                      title={categoryValue || skillsValue || makeListTitle("skills", index)}
+                      onRemove={() => removeListItem("skills", index)}
+                    >
+                      <Field
+                        label="Category Title"
+                        value={categoryValue}
+                        placeholder="Languages, Web Development, etc."
+                        onChange={handleCategoryChange}
+                      />
+                      <Field
+                        label="Skills"
+                        value={skillsValue}
+                        placeholder="Java, Python, HTML, JavaScript"
+                        hint="Separate skills with commas."
+                        onChange={handleSkillsChange}
+                        onBlur={handleSkillsBlur}
+                      />
+                      <RangeField
+                        label="Proficiency"
+                        value={item.progress}
+                        onChange={(v) => updateListItem("skills", index, "progress", v)}
+                      />
+                    </ListCard>
+                  );
+                })
+              ) : (
+                resume.skills.map((item, index) => (
+                  <ListCard key={index} title={item.name || makeListTitle("skills", index)} onRemove={() => removeListItem("skills", index)}>
+                    <Field label="Skill" value={item.name} placeholder="Java" hint="Separate skills with commas." sanitize={sanitizeRawText} onChange={(v) => updateListItem("skills", index, "name", v)} />
+                    <RangeField label="Proficiency" value={item.progress} onChange={(v) => updateListItem("skills", index, "progress", v)} />
+                  </ListCard>
+                ))
+              )}
             </Section>
           )}
 
