@@ -1668,6 +1668,40 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   color: var(--on-accent) !important;
   opacity: 1 !important;
 }
+
+/* Centered Template: Visual Consistency for all contact items */
+.resume-preview.rp-premium9:not([data-hstyle="full-bleed"]) .rp-contact a,
+.resume-preview.rp-premium9:not([data-hstyle="full-bleed"]) .rp-contact span:not(.rp-contact-sep),
+.resume-preview.rp-premium9:not([data-hstyle="full-bleed"]) .rp-contact-link,
+.resume-preview.rp-premium9:not([data-hstyle="full-bleed"]) .header-link {
+  color: #2563EB !important;
+  text-decoration: underline !important;
+}
+
+.resume-preview.rp-premium9:not([data-hstyle="full-bleed"]) .rp-contact a:hover,
+.resume-preview.rp-premium9:not([data-hstyle="full-bleed"]) .rp-contact span:not(.rp-contact-sep):hover,
+.resume-preview.rp-premium9:not([data-hstyle="full-bleed"]) .rp-contact-link:hover,
+.resume-preview.rp-premium9:not([data-hstyle="full-bleed"]) .header-link:hover {
+  color: #1d4ed8 !important;
+  text-decoration: underline !important;
+}
+
+.resume-preview.rp-premium9[data-hstyle="full-bleed"] .rp-contact a,
+.resume-preview.rp-premium9[data-hstyle="full-bleed"] .rp-contact span:not(.rp-contact-sep),
+.resume-preview.rp-premium9[data-hstyle="full-bleed"] .rp-contact-link,
+.resume-preview.rp-premium9[data-hstyle="full-bleed"] .header-link {
+  color: var(--on-accent, #ffffff) !important;
+  text-decoration: underline !important;
+}
+
+.resume-preview.rp-premium9[data-hstyle="full-bleed"] .rp-contact a:hover,
+.resume-preview.rp-premium9[data-hstyle="full-bleed"] .rp-contact span:not(.rp-contact-sep):hover,
+.resume-preview.rp-premium9[data-hstyle="full-bleed"] .rp-contact-link:hover,
+.resume-preview.rp-premium9[data-hstyle="full-bleed"] .header-link:hover {
+  opacity: 0.8 !important;
+  text-decoration: underline !important;
+}
+
 .rp-premium9 .rp-photo { width: 80px; height: 80px; }
 
 
