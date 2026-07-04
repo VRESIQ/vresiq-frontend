@@ -348,12 +348,12 @@ const renderParsedSkillText = (nameText) => {
     const skills = nameText.substring(colonIdx + 1);
     return (
       <>
-        <span className="rp-skill-category" style={{ fontWeight: 700 }}>{category}</span>
-        <span className="rp-skill-items" style={{ fontWeight: 400 }}>{skills}</span>
+        <strong className="rp-skill-category" style={{ fontWeight: 700 }}>{category}</strong>
+        <span className="rp-skill-values" style={{ fontWeight: 400 }}>{skills}</span>
       </>
     );
   }
-  return <span className="rp-skill-items" style={{ fontWeight: 400 }}>{nameText}</span>;
+  return <span className="rp-skill-values" style={{ fontWeight: 400 }}>{nameText}</span>;
 };
 
 const SkillBar = ({ name, progress = 0, style }) => {
@@ -430,10 +430,8 @@ const ProgressSection = ({ title, items = [], style, showIcon, dec, templateId, 
         <STitle showIcon={showIcon} dec={dec} sectionNumber={sectionNumber}>{title}</STitle>
         <Wrapper className={wrapperClass}>
           {items.map((item, i) => (
-            <ItemWrapper key={i} style={hasBullets ? { marginBottom: "6px" } : {}}>
-              <div className="rp-skill-row">
-                {renderParsedSkillText(item.name)}
-              </div>
+            <ItemWrapper key={i} className="rp-skill-item" style={hasBullets ? { marginBottom: "6px" } : {}}>
+              {renderParsedSkillText(item.name)}
             </ItemWrapper>
           ))}
         </Wrapper>
