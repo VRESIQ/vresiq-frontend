@@ -2839,7 +2839,7 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-engineer-header {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: auto;
   box-sizing: border-box;
   margin: 0 0 12px;
   padding: 0;
