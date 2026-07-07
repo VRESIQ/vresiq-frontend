@@ -393,7 +393,10 @@ a.rp-inline-link,
 [data-hstyle="card"] .rp-ats-header-left,
 [data-hstyle="card"] .rp-academic-header,
 [data-hstyle="card"] .rp-engineer-header {
-  margin: -12px -16px 14px !important;
+  margin-top: calc(-1 * var(--ats-pad-top, 32px) + 20px) !important;
+  margin-left: calc(-1 * var(--ats-pad-side, 40px) + 24px) !important;
+  margin-right: calc(-1 * var(--ats-pad-side, 40px) + 24px) !important;
+  margin-bottom: 14px !important;
   border: 1.5px solid var(--accent) !important;
   border-radius: 12px !important;
   background: #fff !important;
@@ -2257,7 +2260,10 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 
 /* Base container for all ATS layouts to enforce proper font and spacing constraints */
 .rp-ats-container {
-  padding: 32px 40px;
+  --ats-pad-top: 32px;
+  --ats-pad-side: 40px;
+  --ats-pad-bottom: 32px;
+  padding: var(--ats-pad-top) var(--ats-pad-side) var(--ats-pad-bottom) !important;
   background-color: #ffffff;
   color: #111111;
   font-family: var(--rp-font-body, "Inter", sans-serif);
@@ -2766,14 +2772,18 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 
 /* Template-specific container page padding restoration to fix top-spacing layout regression */
 .rp-consulting-bcg {
-  padding: 30px 45px 15px !important;
+  --ats-pad-top: 30px;
+  --ats-pad-side: 45px;
+  --ats-pad-bottom: 15px;
 }
 .rp-consulting-bcg .rp-ats-header {
   margin-bottom: 22px;
 }
 
 .rp-tech-faang {
-  padding: 30px 45px 15px !important;
+  --ats-pad-top: 30px;
+  --ats-pad-side: 45px;
+  --ats-pad-bottom: 15px;
 }
 .rp-tech-faang .rp-ats-header-left {
   margin-bottom: 22px;
@@ -2789,7 +2799,9 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 }
 
 .rp-harvard-ats {
-  padding: 32px 48px 12px !important;
+  --ats-pad-top: 32px;
+  --ats-pad-side: 48px;
+  --ats-pad-bottom: 12px;
 }
 .rp-harvard-ats .rp-ats-header {
   margin-bottom: 16px;
@@ -2799,7 +2811,9 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 }
 
 .rp-swiss-minimal {
-  padding: 35px 45px 15px !important;
+  --ats-pad-top: 35px;
+  --ats-pad-side: 45px;
+  --ats-pad-bottom: 15px;
 }
 .rp-swiss-minimal .rp-ats-header-left {
   margin-bottom: 24px;
@@ -2810,11 +2824,15 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 }
 
 .rp-engineer-ats {
-  padding: 32px 40px !important;
+  --ats-pad-top: 32px;
+  --ats-pad-side: 40px;
+  --ats-pad-bottom: 40px;
 }
 
 .rp-academic-cv {
-  padding: 32px 40px !important;
+  --ats-pad-top: 32px;
+  --ats-pad-side: 40px;
+  --ats-pad-bottom: 40px;
 }
 
 /* Frame (engineer_ats) Header Visual Layout Reconstruction (DevGuru style) */
