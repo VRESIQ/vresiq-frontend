@@ -31,7 +31,7 @@ export const sanitizeTextOnly = (value = "") => {
     .replace(/\s{2,}/g, " ");
 
   if (!filtered) return "";
-  return filtered.replace(/\b[a-z]/g, c => c.toUpperCase());
+  return filtered.replace(/(^|[^'])\b([a-z])/g, (match, p1, p2) => p1 + p2.toUpperCase());
 };
 
 export const sanitizeStrictText = (value = "") => {
@@ -63,7 +63,7 @@ export const sanitizeName = (value = "") => {
     .replace(/\s{2,}/g, " ");
   
   if (!filtered) return "";
-  return filtered.replace(/\b[a-z]/g, c => c.toUpperCase());
+  return filtered.replace(/(^|[^'])\b([a-z])/g, (match, p1, p2) => p1 + p2.toUpperCase());
 };
 
 export const sanitizeRole = (value = "") => {
@@ -77,7 +77,7 @@ export const sanitizeRole = (value = "") => {
     .replace(/\s{2,}/g, " ");
 
   if (!filtered) return "";
-  return filtered.replace(/\b[a-z]/g, c => c.toUpperCase());
+  return filtered.replace(/(^|[^'])\b([a-z])/g, (match, p1, p2) => p1 + p2.toUpperCase());
 };
 
 export const sanitizeURL = (value = "") => {
@@ -106,7 +106,7 @@ export const sanitizeLocation = (value = "") => {
     .replace(/\s{2,}/g, " ");
   
   if (!filtered) return "";
-  return filtered.replace(/\b[a-z]/g, c => c.toUpperCase());
+  return filtered.replace(/(^|[^'])\b([a-z])/g, (match, p1, p2) => p1 + p2.toUpperCase());
 };
 
 export const sanitizeFlexibleDate = (value = "") => {
@@ -116,7 +116,7 @@ export const sanitizeFlexibleDate = (value = "") => {
     .replace(/\s{2,}/g, " ");
   
   if (!filtered) return "";
-  return filtered.replace(/\b[a-z]/g, c => c.toUpperCase());
+  return filtered.replace(/(^|[^'])\b([a-z])/g, (match, p1, p2) => p1 + p2.toUpperCase());
 };
 
 /**
