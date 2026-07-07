@@ -158,22 +158,42 @@
   padding: 0 4px;
 }
 
-/* Underlined & Blue when Professional Hyperlink is OFF */
-.resume-preview:not([data-lstyle="professional"]):not(.rp-premium1):not(.rp-premium9):not(.rp-tech-faang) .rp-contact a,
-.resume-preview:not([data-lstyle="professional"]):not(.rp-premium1):not(.rp-premium9):not(.rp-tech-faang) .rp-ats-contact a,
-.resume-preview:not([data-lstyle="professional"]):not(.rp-premium1):not(.rp-premium9):not(.rp-tech-faang) .rp-contact-link,
-.resume-preview:not([data-lstyle="professional"]):not(.rp-premium1):not(.rp-premium9):not(.rp-tech-faang) .header-link {
+/* Underlined & Blue when Professional Hyperlink is OFF and not Full Bleed */
+.resume-preview:not([data-lstyle="professional"]):not([data-hstyle="full-bleed"]):not(.rp-premium1):not(.rp-premium9):not(.rp-tech-faang) .rp-contact a,
+.resume-preview:not([data-lstyle="professional"]):not([data-hstyle="full-bleed"]):not(.rp-premium1):not(.rp-premium9):not(.rp-tech-faang) .rp-ats-contact a,
+.resume-preview:not([data-lstyle="professional"]):not([data-hstyle="full-bleed"]):not(.rp-premium1):not(.rp-premium9):not(.rp-tech-faang) .rp-contact-link,
+.resume-preview:not([data-lstyle="professional"]):not([data-hstyle="full-bleed"]):not(.rp-premium1):not(.rp-premium9):not(.rp-tech-faang) .header-link {
   color: #2563EB !important;
   text-decoration: underline !important;
   text-decoration-thickness: 0.5px !important;
   text-underline-offset: 1.5px !important;
 }
 
-.resume-preview:not([data-lstyle="professional"]):not(.rp-premium1):not(.rp-premium9):not(.rp-tech-faang) .rp-contact a:hover,
-.resume-preview:not([data-lstyle="professional"]):not(.rp-premium1):not(.rp-premium9):not(.rp-tech-faang) .rp-ats-contact a:hover,
-.resume-preview:not([data-lstyle="professional"]):not(.rp-premium1):not(.rp-premium9):not(.rp-tech-faang) .rp-contact-link:hover,
-.resume-preview:not([data-lstyle="professional"]):not(.rp-premium1):not(.rp-premium9):not(.rp-tech-faang) .header-link:hover {
+.resume-preview:not([data-lstyle="professional"]):not([data-hstyle="full-bleed"]):not(.rp-premium1):not(.rp-premium9):not(.rp-tech-faang) .rp-contact a:hover,
+.resume-preview:not([data-lstyle="professional"]):not([data-hstyle="full-bleed"]):not(.rp-premium1):not(.rp-premium9):not(.rp-tech-faang) .rp-ats-contact a:hover,
+.resume-preview:not([data-lstyle="professional"]):not([data-hstyle="full-bleed"]):not(.rp-premium1):not(.rp-premium9):not(.rp-tech-faang) .rp-contact-link:hover,
+.resume-preview:not([data-lstyle="professional"]):not([data-hstyle="full-bleed"]):not(.rp-premium1):not(.rp-premium9):not(.rp-tech-faang) .header-link:hover {
   color: #1d4ed8 !important;
+  text-decoration: underline !important;
+}
+
+/* Underlined & White when Professional Hyperlink is OFF and Header Style is Full Bleed */
+.resume-preview:not([data-lstyle="professional"])[data-hstyle="full-bleed"] .rp-contact a,
+.resume-preview:not([data-lstyle="professional"])[data-hstyle="full-bleed"] .rp-ats-contact a,
+.resume-preview:not([data-lstyle="professional"])[data-hstyle="full-bleed"] .rp-contact-link,
+.resume-preview:not([data-lstyle="professional"])[data-hstyle="full-bleed"] .header-link {
+  color: var(--on-accent, #ffffff) !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 0.5px !important;
+  text-underline-offset: 1.5px !important;
+}
+
+.resume-preview:not([data-lstyle="professional"])[data-hstyle="full-bleed"] .rp-contact a:hover,
+.resume-preview:not([data-lstyle="professional"])[data-hstyle="full-bleed"] .rp-ats-contact a:hover,
+.resume-preview:not([data-lstyle="professional"])[data-hstyle="full-bleed"] .rp-contact-link:hover,
+.resume-preview:not([data-lstyle="professional"])[data-hstyle="full-bleed"] .header-link:hover {
+  color: var(--on-accent, #ffffff) !important;
+  opacity: 0.8 !important;
   text-decoration: underline !important;
 }
 
