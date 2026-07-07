@@ -7,50 +7,46 @@ async function main() {
   console.log("Navigating to http://localhost:5173/test-preview...");
   await page.goto('http://localhost:5173/test-preview');
   
-  // Wait for the resume preview to render
   await page.waitForSelector('.resume-preview');
   
-  console.log("Checking elements...");
-  const emailLink = await page.waitForSelector('.rp-contact-link-email');
-  const sidebarHeader = await page.waitForSelector('.rp-sidebar-header');
-  const sidebarName = await page.waitForSelector('.rp-sidebar-name');
-  const sidebarRole = await page.waitForSelector('.rp-sidebar-role');
+  const borderStyles = await page.evaluate(() => {
+    const preview = document.querySelector('.resume-preview');
+    
+    // Create a temporary test container inside preview
+    const testDiv = document.createElement('div');
+    preview.appendChild(testDiv);
+    
+    const getBorderTop = (tpl, hstyle) => {
+      // Set hstyle attribute on preview
+      preview.setAttribute('data-hstyle', hstyle);
+      // Set template class on testDiv
+      testDiv.className = `rp-ats-container rp-${tpl}`;
+      
+      const computed = window.getComputedStyle(testDiv);
+      const borderTop = computed.borderTop;
+      const borderTopWidth = computed.borderTopWidth;
+      const borderTopStyle = computed.borderTopStyle;
+      
+      return { borderTop, borderTopWidth, borderTopStyle };
+    };
+    
+    const results = {
+      classicCard: getBorderTop('ats-classic', 'card'),
+      classicMinimal: getBorderTop('ats-classic', 'minimal'),
+      classicFullBleed: getBorderTop('ats-classic', 'full-bleed'),
+      seniorCard: getBorderTop('ats-senior', 'card'),
+      seniorMinimal: getBorderTop('ats-senior', 'minimal'),
+      seniorFullBleed: getBorderTop('ats-senior', 'full-bleed'),
+    };
+    
+    // Clean up
+    testDiv.remove();
+    preview.removeAttribute('data-hstyle');
+    
+    return results;
+  });
   
-  // Evaluate the computed style
-  const linkStyles = await page.evaluate((el) => {
-    const computed = window.getComputedStyle(el);
-    return {
-      color: computed.color,
-      textDecoration: computed.textDecoration,
-    };
-  }, emailLink);
-  
-  const headerStyles = await page.evaluate((el) => {
-    const computed = window.getComputedStyle(el);
-    return {
-      backgroundColor: computed.backgroundColor,
-      color: computed.color,
-    };
-  }, sidebarHeader);
-
-  const nameStyles = await page.evaluate((el) => {
-    const computed = window.getComputedStyle(el);
-    return {
-      color: computed.color,
-    };
-  }, sidebarName);
-
-  const roleStyles = await page.evaluate((el) => {
-    const computed = window.getComputedStyle(el);
-    return {
-      color: computed.color,
-    };
-  }, sidebarRole);
-  
-  console.log("Computed styles of email link:", linkStyles);
-  console.log("Computed styles of sidebar header:", headerStyles);
-  console.log("Computed styles of sidebar name:", nameStyles);
-  console.log("Computed styles of sidebar role:", roleStyles);
+  console.log("Verification results:", JSON.stringify(borderStyles, null, 2));
   
   await browser.close();
 }

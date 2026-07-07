@@ -417,6 +417,11 @@ a.rp-inline-link,
   z-index: 10;
 }
 
+[data-hstyle="card"] .rp-ats-classic,
+[data-hstyle="card"] .rp-ats-senior {
+  border-top: none !important;
+}
+
 [data-hstyle="card"] .rp-header h1,
 [data-hstyle="card"] .rp-header-classic h1,
 [data-hstyle="card"] .rp-header-accentbar h1,
