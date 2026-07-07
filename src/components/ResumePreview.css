@@ -21,6 +21,7 @@
   --fb-pad-bottom: 40px;
   --fb-bg: var(--accent);
   --fb-color: var(--on-accent);
+  --fb-link-color: #ffffff;
   --fb-border-bottom: 0;
   --fb-text-align: inherit;
 }
@@ -191,7 +192,7 @@
 .resume-preview:not([data-lstyle="professional"])[data-hstyle="full-bleed"] .rp-ats-contact a,
 .resume-preview:not([data-lstyle="professional"])[data-hstyle="full-bleed"] .rp-contact-link,
 .resume-preview:not([data-lstyle="professional"])[data-hstyle="full-bleed"] .header-link {
-  color: var(--on-accent, #ffffff) !important;
+  color: var(--fb-link-color, #ffffff) !important;
   text-decoration: underline !important;
   text-decoration-thickness: 0.5px !important;
   text-underline-offset: 1.5px !important;
@@ -201,7 +202,7 @@
 .resume-preview:not([data-lstyle="professional"])[data-hstyle="full-bleed"] .rp-ats-contact a:hover,
 .resume-preview:not([data-lstyle="professional"])[data-hstyle="full-bleed"] .rp-contact-link:hover,
 .resume-preview:not([data-lstyle="professional"])[data-hstyle="full-bleed"] .header-link:hover {
-  color: var(--on-accent, #ffffff) !important;
+  color: var(--fb-link-color, #ffffff) !important;
   opacity: 0.8 !important;
   text-decoration: underline !important;
 }
@@ -541,7 +542,7 @@ a.rp-inline-link,
 
 [data-hstyle="full-bleed"] .rp-contact a,
 [data-hstyle="full-bleed"] .rp-ats-contact a {
-  color: var(--on-accent) !important;
+  color: var(--fb-link-color, #ffffff) !important;
 }
 
 /* full-bleed on Signature template: also make the rule white */
@@ -1192,7 +1193,7 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .resume-preview.rp-premium1[data-hstyle="full-bleed"] .rp-contact span:not(.rp-contact-sep),
 .resume-preview.rp-premium1[data-hstyle="full-bleed"] .rp-contact-link,
 .resume-preview.rp-premium1[data-hstyle="full-bleed"] .header-link {
-  color: var(--on-accent, #ffffff) !important;
+  color: var(--fb-link-color, #ffffff) !important;
   text-decoration: underline !important;
 }
 
@@ -1753,7 +1754,7 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .resume-preview.rp-premium9[data-hstyle="full-bleed"] .rp-contact a,
 .resume-preview.rp-premium9[data-hstyle="full-bleed"] .rp-contact .rp-contact-link,
 .resume-preview.rp-premium9[data-hstyle="full-bleed"] .rp-contact .header-link {
-  color: var(--on-accent, #ffffff) !important;
+  color: var(--fb-link-color, #ffffff) !important;
   text-decoration: underline !important;
 }
 
