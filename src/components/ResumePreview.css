@@ -14,6 +14,15 @@
   font-family: var(--rp-font-body, 'Inter', sans-serif);
   box-shadow: 0 18px 50px rgba(0,0,0,0.1);
   border: var(--page-border, none);
+
+  /* Full Bleed default tokens for standard templates */
+  --fb-pad-top: 40px;
+  --fb-pad-side: 48px;
+  --fb-pad-bottom: 40px;
+  --fb-bg: var(--accent);
+  --fb-color: var(--on-accent);
+  --fb-border-bottom: 0;
+  --fb-text-align: inherit;
 }
 
 /* Align text layout rendering between screen preview and printed PDF */
@@ -450,24 +459,31 @@ a.rp-inline-link,
 [data-hstyle="full-bleed"] .rp-header-executive,
 [data-hstyle="full-bleed"] .rp-header-centered,
 [data-hstyle="full-bleed"] .rp-header-tech {
-  background: var(--accent) !important;
-  color: var(--on-accent) !important;
+  background: var(--fb-bg, var(--accent)) !important;
+  color: var(--fb-color, var(--on-accent)) !important;
   margin: 0 !important;
-  padding: 40px 48px !important;
-  border: 0 !important;
+  padding: var(--fb-pad-top, 40px) var(--fb-pad-side, 48px) var(--fb-pad-bottom, 40px) !important;
+  border: var(--fb-border, 0) !important;
+  border-top: var(--fb-border-top, 0) !important;
+  border-bottom: var(--fb-border-bottom, 0) !important;
   border-radius: 0 !important;
   box-shadow: none !important;
   width: 100% !important;
+  text-align: var(--fb-text-align, inherit) !important;
 }
 
 [data-hstyle="full-bleed"] .rp-ats-header,
 [data-hstyle="full-bleed"] .rp-ats-header-left,
 [data-hstyle="full-bleed"] .rp-academic-header,
 [data-hstyle="full-bleed"] .rp-engineer-header {
-  background: var(--accent) !important;
-  color: var(--on-accent) !important;
-  padding: 20px 18px !important;
-  margin: -8px -8px 14px !important;
+  background: var(--fb-bg, var(--accent)) !important;
+  color: var(--fb-color, var(--on-accent)) !important;
+  padding: var(--fb-pad-top, 20px) var(--fb-pad-side, 18px) var(--fb-pad-bottom, 20px) !important;
+  margin: -8px -8px var(--fb-margin-bottom, 14px) !important;
+  border: var(--fb-border, 0) !important;
+  border-top: var(--fb-border-top, 0) !important;
+  border-bottom: var(--fb-border-bottom, 0) !important;
+  text-align: var(--fb-text-align, center) !important;
 }
 
 [data-hstyle="full-bleed"] .rp-ats-header .rp-ats-name,
@@ -476,7 +492,7 @@ a.rp-inline-link,
 [data-hstyle="full-bleed"] .rp-ats-header-left .rp-ats-name-serif,
 [data-hstyle="full-bleed"] .rp-academic-header .rp-academic-name,
 [data-hstyle="full-bleed"] .rp-engineer-header .rp-engineer-name {
-  color: var(--on-accent) !important;
+  color: var(--fb-name-color, var(--on-accent)) !important;
 }
 
 [data-hstyle="full-bleed"] .rp-ats-header .rp-ats-role,
@@ -489,7 +505,7 @@ a.rp-inline-link,
 [data-hstyle="full-bleed"] .rp-academic-header .rp-academic-bullet,
 [data-hstyle="full-bleed"] .rp-engineer-header .rp-ats-role,
 [data-hstyle="full-bleed"] .rp-engineer-header .rp-engineer-contacts-row {
-  color: var(--on-accent-soft) !important;
+  color: var(--fb-role-color, var(--on-accent-soft)) !important;
 }
 
 [data-hstyle="full-bleed"] .rp-ats-badge,
@@ -508,19 +524,19 @@ a.rp-inline-link,
 [data-hstyle="full-bleed"] .rp-header-executive .rp-executive-name,
 [data-hstyle="full-bleed"] .rp-header-centered .rp-centered-name,
 [data-hstyle="full-bleed"] .rp-header-tech h1 {
-  color: var(--on-accent) !important;
+  color: var(--fb-name-color, var(--on-accent)) !important;
 }
 
 [data-hstyle="full-bleed"] .rp-role,
 [data-hstyle="full-bleed"] .rp-executive-role,
 [data-hstyle="full-bleed"] .rp-sig-role,
 [data-hstyle="full-bleed"] .rp-centered-role {
-  color: var(--on-accent-muted) !important;
+  color: var(--fb-role-color, var(--on-accent-soft)) !important;
 }
 
 [data-hstyle="full-bleed"] .rp-contact,
 [data-hstyle="full-bleed"] .rp-sig-contact .rp-contact {
-  color: var(--on-accent-soft) !important;
+  color: var(--fb-contact-color, var(--on-accent-soft)) !important;
 }
 
 [data-hstyle="full-bleed"] .rp-contact a,
@@ -986,6 +1002,10 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   display: flex;
   gap: 20px;
   align-items: center;
+  --fb-pad-top: 28px;
+  --fb-pad-side: 36px;
+  --fb-pad-bottom: 22px;
+  --fb-border-bottom: 2px solid var(--on-accent-line, rgba(255,255,255,0.2));
 }
 
 .rp-template1 h1 {
@@ -1193,6 +1213,9 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   text-align: center;
   padding: 32px 36px 18px;
   border-bottom: 0;
+  --fb-pad-top: 32px;
+  --fb-pad-side: 36px;
+  --fb-pad-bottom: 18px;
 }
 
 .rp-header-executive .rp-photo {
@@ -2267,6 +2290,15 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   background-color: #ffffff;
   color: #111111;
   font-family: var(--rp-font-body, "Inter", sans-serif);
+
+  /* Full Bleed default tokens for ATS templates */
+  --fb-pad-top: 20px;
+  --fb-pad-side: 18px;
+  --fb-pad-bottom: 20px;
+  --fb-bg: var(--accent);
+  --fb-color: var(--on-accent);
+  --fb-border-bottom: 0;
+  --fb-text-align: center;
   
   /* ATS Typographic Design System Scale */
   --rp-fs-base: 11px;
@@ -2301,6 +2333,7 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-ats-header-left {
   text-align: left;
   margin-bottom: 18px;
+  --fb-text-align: left;
 }
 
 .rp-ats-name {
@@ -2425,18 +2458,35 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-ats-classic { border-top: 4px solid var(--accent); }
 .rp-ats-classic .rp-ats-header { text-align: center; }
 
-.rp-ats-entry { border-left: 5px solid var(--accent); padding-left: 32px; }
+.rp-ats-entry {
+  border-left: 5px solid var(--accent);
+  padding-left: 32px;
+  --fb-border-bottom: 1px solid var(--on-accent-line, rgba(255,255,255,0.2));
+}
 .rp-ats-entry .rp-ats-header-left { border-bottom: 1px solid rgba(0,0,0,0.12); padding-bottom: 8px; }
 
-.rp-ats-senior { border-top: 2px solid var(--accent); border-bottom: 2px solid var(--accent); }
+.rp-ats-senior {
+  border-top: 2px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
+  --fb-border-bottom: 3px double var(--on-accent-line, rgba(255,255,255,0.2));
+}
 .rp-ats-senior .rp-ats-header { border-bottom: 3px double rgba(0,0,0,0.12); padding-bottom: 10px; }
 
 .rp-ats-lead .rp-ats-body { border-left: 1.5px solid color-mix(in srgb, var(--accent) 30%, #e5e7eb); padding-left: 14px; }
 .rp-ats-lead .rp-ats-header-left { display: grid; gap: 4px; }
 
+.rp-ats-intern {
+  --fb-border-top: 3px solid var(--on-accent-line, rgba(255,255,255,0.2));
+}
 .rp-ats-intern .rp-ats-body { background: linear-gradient(180deg, rgba(0,0,0,0.015), transparent); padding: 8px 10px; }
 .rp-ats-intern .rp-ats-header { border-top: 3px solid var(--accent); padding-top: 8px; }
 
+.rp-ats-experienced {
+  --fb-border: 1px dashed var(--on-accent-line, rgba(255,255,255,0.2));
+  --fb-pad-top: 10px;
+  --fb-pad-side: 12px;
+  --fb-pad-bottom: 10px;
+}
 .rp-ats-experienced .rp-ats-body .rp-section { border-bottom: 1px solid rgba(0,0,0,0.09); padding-bottom: 8px; }
 .rp-ats-experienced .rp-ats-header-left { border: 1px dashed rgba(0,0,0,0.2); padding: 10px 12px; }
 
@@ -2775,6 +2825,10 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   --ats-pad-top: 30px;
   --ats-pad-side: 45px;
   --ats-pad-bottom: 15px;
+  --fb-pad-top: 30px;
+  --fb-pad-side: 45px;
+  --fb-pad-bottom: 15px;
+  --fb-margin-bottom: 22px;
 }
 .rp-consulting-bcg .rp-ats-header {
   margin-bottom: 22px;
@@ -2784,6 +2838,10 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   --ats-pad-top: 30px;
   --ats-pad-side: 45px;
   --ats-pad-bottom: 15px;
+  --fb-pad-top: 30px;
+  --fb-pad-side: 45px;
+  --fb-pad-bottom: 15px;
+  --fb-margin-bottom: 22px;
 }
 .rp-tech-faang .rp-ats-header-left {
   margin-bottom: 22px;
@@ -2802,6 +2860,11 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   --ats-pad-top: 32px;
   --ats-pad-side: 48px;
   --ats-pad-bottom: 12px;
+  --fb-border-bottom: 3px double var(--on-accent-line, rgba(255,255,255,0.2));
+  --fb-pad-top: 32px;
+  --fb-pad-side: 48px;
+  --fb-pad-bottom: 12px;
+  --fb-margin-bottom: 16px;
 }
 .rp-harvard-ats .rp-ats-header {
   margin-bottom: 16px;
@@ -2814,11 +2877,18 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   --ats-pad-top: 35px;
   --ats-pad-side: 45px;
   --ats-pad-bottom: 15px;
+  --fb-pad-top: 35px;
+  --fb-pad-side: 45px;
+  --fb-pad-bottom: 15px;
+  --fb-margin-bottom: 24px;
 }
 .rp-swiss-minimal .rp-ats-header-left {
   margin-bottom: 24px;
 }
 
+.rp-ats-classic {
+  --fb-margin-bottom: 22px;
+}
 .rp-ats-classic .rp-ats-header {
   margin-bottom: 22px;
 }
