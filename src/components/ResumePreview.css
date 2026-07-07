@@ -390,7 +390,9 @@ a.rp-inline-link,
 }
 
 [data-hstyle="card"] .rp-ats-header,
-[data-hstyle="card"] .rp-ats-header-left {
+[data-hstyle="card"] .rp-ats-header-left,
+[data-hstyle="card"] .rp-academic-header,
+[data-hstyle="card"] .rp-engineer-header {
   border: 1.5px solid var(--accent) !important;
   border-radius: 10px !important;
   padding: 18px 16px !important;
@@ -405,6 +407,8 @@ a.rp-inline-link,
 [data-hstyle="card"] .rp-sig-name,
 [data-hstyle="card"] .rp-header-executive .rp-executive-name,
 [data-hstyle="card"] .rp-header-centered .rp-centered-name,
+[data-hstyle="card"] .rp-academic-name,
+[data-hstyle="card"] .rp-engineer-name,
 [data-hstyle="card"] .rp-header-tech h1 {
   color: #111410 !important;
 }
@@ -412,7 +416,8 @@ a.rp-inline-link,
 [data-hstyle="card"] .rp-role,
 [data-hstyle="card"] .rp-executive-role,
 [data-hstyle="card"] .rp-sig-role,
-[data-hstyle="card"] .rp-centered-role {
+[data-hstyle="card"] .rp-centered-role,
+[data-hstyle="card"] .rp-academic-role {
   color: var(--accent-readable) !important;
 }
 
@@ -422,7 +427,8 @@ a.rp-inline-link,
 }
 
 [data-hstyle="card"] .rp-ats-badge,
-[data-hstyle="card"] .rp-ats-badge-left {
+[data-hstyle="card"] .rp-ats-badge-left,
+[data-hstyle="card"] .rp-academic-badge {
   background: var(--accent) !important;
   color: var(--on-accent) !important;
   border-color: transparent !important;
@@ -448,7 +454,9 @@ a.rp-inline-link,
 }
 
 [data-hstyle="full-bleed"] .rp-ats-header,
-[data-hstyle="full-bleed"] .rp-ats-header-left {
+[data-hstyle="full-bleed"] .rp-ats-header-left,
+[data-hstyle="full-bleed"] .rp-academic-header,
+[data-hstyle="full-bleed"] .rp-engineer-header {
   background: var(--accent) !important;
   color: var(--on-accent) !important;
   padding: 20px 18px !important;
@@ -458,7 +466,9 @@ a.rp-inline-link,
 [data-hstyle="full-bleed"] .rp-ats-header .rp-ats-name,
 [data-hstyle="full-bleed"] .rp-ats-header-left .rp-ats-name,
 [data-hstyle="full-bleed"] .rp-ats-header .rp-ats-name-serif,
-[data-hstyle="full-bleed"] .rp-ats-header-left .rp-ats-name-serif {
+[data-hstyle="full-bleed"] .rp-ats-header-left .rp-ats-name-serif,
+[data-hstyle="full-bleed"] .rp-academic-header .rp-academic-name,
+[data-hstyle="full-bleed"] .rp-engineer-header .rp-engineer-name {
   color: var(--on-accent) !important;
 }
 
@@ -466,12 +476,18 @@ a.rp-inline-link,
 [data-hstyle="full-bleed"] .rp-ats-header-left .rp-ats-role-left,
 [data-hstyle="full-bleed"] .rp-ats-header .rp-ats-role-serif,
 [data-hstyle="full-bleed"] .rp-ats-header .rp-ats-contact,
-[data-hstyle="full-bleed"] .rp-ats-header-left .rp-ats-contact {
+[data-hstyle="full-bleed"] .rp-ats-header-left .rp-ats-contact,
+[data-hstyle="full-bleed"] .rp-academic-header .rp-academic-role,
+[data-hstyle="full-bleed"] .rp-academic-header .rp-academic-contact,
+[data-hstyle="full-bleed"] .rp-academic-header .rp-academic-bullet,
+[data-hstyle="full-bleed"] .rp-engineer-header .rp-ats-role,
+[data-hstyle="full-bleed"] .rp-engineer-header .rp-engineer-contacts-row {
   color: var(--on-accent-soft) !important;
 }
 
 [data-hstyle="full-bleed"] .rp-ats-badge,
-[data-hstyle="full-bleed"] .rp-ats-badge-left {
+[data-hstyle="full-bleed"] .rp-ats-badge-left,
+[data-hstyle="full-bleed"] .rp-academic-badge {
   background: var(--on-accent) !important;
   color: var(--accent-readable) !important;
   border-color: transparent !important;
