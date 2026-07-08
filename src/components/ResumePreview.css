@@ -2396,8 +2396,6 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   margin: 6px 0 0;
 }
 
-.rp-swiss-minimal .rp-ats-contact,
-.rp-ats-lead .rp-ats-contact,
 .rp-ats-experienced .rp-ats-contact {
   justify-content: center !important;
 }
