@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState, useRef, useLayoutEffect } from "react";
 import { loadTemplateFont, getFontVars, FONT_MAP } from "../utils/fonts";
+import { getTemplateDefaultAccent } from "../constants/templates";
 import "./ResumePreview.css";
 import { formatPartialDate, formatDateRange } from "../utils/formatters";
 
@@ -1153,7 +1154,7 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
   }, [resume, dec.highDensity, templateId]);
 
   const useCustomAccent = dec.useCustomAccent === "true";
-  const accent = (useCustomAccent && dec.accentColor) ? dec.accentColor : getDefaultAccent(templateId);
+  const accent = (useCustomAccent && dec.accentColor) ? dec.accentColor : getTemplateDefaultAccent(templateId);
   const accentText = getAccentTextColors(accent);
   const accentReadable = getReadableAccent(accent);
   const isBWTemplate = [
@@ -1982,36 +1983,7 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
   }
 }
 
-// ─── Default accent colors per template ──────────────────────────────────────
-function getDefaultAccent(templateId) {
-  const map = {
-    template1: "#111410",
-    template2: "#2d6a4f",
-    template3: "#1d3557",
-    premium1:  "#3a7d44",
-    premium2:  "#5c4033",
-    premium3:  "#0d3b66",
-    premium4:  "#222222",
-    premium5:  "#c1121f",
-    premium6:  "#14213d",
-    premium7:  "#7b2d8b",
-    premium8:  "#e76f51",
-    premium9:  "#2c6e49",
-    premium10: "#1b4332",
-    ats_classic: "#111111",
-    ats_entry: "#111111",
-    ats_senior: "#111111",
-    ats_lead: "#111111",
-    ats_intern: "#111111",
-    ats_experienced: "#111111",
-    consulting_bcg: "#000000",
-    tech_faang: "#1a5fb4",
-    harvard_ats: "#000000",
-    swiss_minimal: "#2b2b2b",
-    engineer_ats: "#111111",
-  };
-  return map[templateId] || "#111111";
-}
+
 
 function getAccentTextColors(hex) {
   const fallback = onAccentPalette("light");

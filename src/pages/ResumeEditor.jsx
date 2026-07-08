@@ -1294,7 +1294,7 @@ const ResumeEditor = () => {
 
   const chooseTemplate = (templateId, locked) => {
     if (locked) return;
-    setResume((prev) => ({ ...prev, template: templateId }));
+    setResume((prev) => ({ ...prev, template: templateId, fontPairing: "default" }));
   };
 
   if (loading) {
@@ -2187,6 +2187,7 @@ const ResumeEditor = () => {
                     decoratives={resume.decoratives || {}}
                     onChange={(dec) => setResume((prev) => ({ ...prev, decoratives: dec }))}
                     skillsMode={skillsMode}
+                    templateId={resume.template}
                   />
                 </div>
               )}

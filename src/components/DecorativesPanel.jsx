@@ -1,5 +1,6 @@
 import "./DecorativesPanel.css";
 import ToggleSwitch from "./common/ToggleSwitch";
+import { getTemplateDefaultAccent } from "../constants/templates";
 
 const DIVIDER_OPTIONS = [
   { value: "line",     label: "Line" },
@@ -64,53 +65,73 @@ const getContrastRatioAgainstWhite = (hex) => {
   }
 };
 
-const DecorativesPanel = ({ decoratives = {}, onChange, skillsMode = "individual" }) => {
+const DecorativesPanel = ({ decoratives = {}, onChange, skillsMode = "individual", templateId = "template1" }) => {
   const set = (key, value) => onChange({ ...decoratives, [key]: value });
 
   const useCustomAccent = decoratives.useCustomAccent === "true";
-  const activeColor = decoratives.accentColor || "#111410";
+  const defaultAccentColor = getTemplateDefaultAccent(templateId);
+  const activeColor = useCustomAccent ? (decoratives.accentColor || defaultAccentColor) : defaultAccentColor;
   const contrast = getContrastRatioAgainstWhite(activeColor);
   const isLowContrast = contrast < 4.5;
 
   return (
     <div className="dec-panel">
       <div className="dec-group">
-        <div style={{ marginBottom: useCustomAccent ? "12px" : "0" }}>
+        <div style={{ marginBottom: "12px" }}>
           <ToggleSwitch
             id="use-custom-accent"
             label="Use Custom Accent Color"
             checked={useCustomAccent}
-            onChange={(e) => set("useCustomAccent", e.target.checked ? "true" : "false")}
+            onChange={(e) => {
+              const isChecked = e.target.checked;
+              if (isChecked) {
+                onChange({
+                  ...decoratives,
+                  useCustomAccent: "true",
+                  accentColor: decoratives.accentColor || defaultAccentColor
+                });
+              } else {
+                onChange({
+                  ...decoratives,
+                  useCustomAccent: "false"
+                });
+              }
+            }}
           />
         </div>
 
-        {useCustomAccent && (
-          <div className="dec-color-picker-block" style={{ marginTop: "8px" }}>
-            <label className="dec-label">Accent color</label>
-            <div className="dec-color-row">
-              <input
-                type="color"
-                value={activeColor}
-                onChange={(e) => set("accentColor", e.target.value)}
-                className="dec-color-input"
-              />
-              <span className="dec-color-hex">{activeColor}</span>
-            </div>
-            {isLowContrast && (
-              <div className="dec-contrast-warning" style={{
-                marginTop: "8px",
-                padding: "8px 12px",
-                background: "rgba(249, 115, 22, 0.1)",
-                border: "1px solid rgba(249, 115, 22, 0.2)",
-                borderRadius: "6px",
-                fontSize: "0.75rem",
-                color: "#fdba74"
-              }}>
-                Contrast Warning: {contrast.toFixed(1)}:1. WCAG AA requires at least 4.5:1 for readable body text on light backgrounds.
-              </div>
-            )}
+        <div className="dec-color-picker-block" style={{ marginTop: "8px" }}>
+          <label className="dec-label">Accent color</label>
+          <div className="dec-color-row">
+            <input
+              type="color"
+              value={activeColor}
+              onChange={(e) => {
+                if (useCustomAccent) {
+                  set("accentColor", e.target.value);
+                }
+              }}
+              disabled={!useCustomAccent}
+              className={`dec-color-input ${!useCustomAccent ? "disabled" : ""}`}
+            />
+            <span className="dec-color-hex" style={{ opacity: useCustomAccent ? 1 : 0.6 }}>
+              {activeColor}
+            </span>
           </div>
-        )}
+          {useCustomAccent && isLowContrast && (
+            <div className="dec-contrast-warning" style={{
+              marginTop: "8px",
+              padding: "8px 12px",
+              background: "rgba(249, 115, 22, 0.1)",
+              border: "1px solid rgba(249, 115, 22, 0.2)",
+              borderRadius: "6px",
+              fontSize: "0.75rem",
+              color: "#fdba74"
+            }}>
+              Contrast Warning: {contrast.toFixed(1)}:1. WCAG AA requires at least 4.5:1 for readable body text on light backgrounds.
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="dec-group">
