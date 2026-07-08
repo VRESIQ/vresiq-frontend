@@ -111,6 +111,48 @@ export const FONT_MAP = {
     heading: "'Jost', sans-serif",
     body: "'Jost', sans-serif",
   },
+  ats_classic: {
+    name: "Inter",
+    url: null,
+    heading: "'Inter', sans-serif",
+    body: "'Inter', sans-serif",
+  },
+  ats_entry: {
+    name: "Inter",
+    url: null,
+    heading: "'Inter', sans-serif",
+    body: "'Inter', sans-serif",
+  },
+  ats_senior: {
+    name: "Georgia",
+    url: null,
+    heading: "Georgia, serif",
+    body: "Georgia, serif",
+  },
+  ats_lead: {
+    name: "Inter",
+    url: null,
+    heading: "'Inter', sans-serif",
+    body: "'Inter', sans-serif",
+  },
+  ats_intern: {
+    name: "Inter",
+    url: null,
+    heading: "'Inter', sans-serif",
+    body: "'Inter', sans-serif",
+  },
+  ats_experienced: {
+    name: "Inter",
+    url: null,
+    heading: "'Inter', sans-serif",
+    body: "'Inter', sans-serif",
+  },
+  engineer_ats: {
+    name: "Inter",
+    url: null,
+    heading: "'Inter', sans-serif",
+    body: "'Inter', sans-serif",
+  },
 };
 
 const loadedFonts = new Set(["template1"]);

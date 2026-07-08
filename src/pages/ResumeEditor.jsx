@@ -76,6 +76,7 @@ import { FREE_TEMPLATES, PREMIUM_TEMPLATES } from "../constants/templates";
 
 // Font options for Pro users — shown as a picker in the Templates section
 const FONT_OPTIONS = [
+  { id: "default",     label: "Default",              heading: "inherit",                       body: "inherit",                      url: null, desc: "Original font designed specifically for this template" },
   { id: "inter",       label: "Corporate Sans",       heading: "'Inter', sans-serif",           body: "'Inter', sans-serif",          url: null, desc: "Modern, high-contrast, optimal for ATS scanners" },
   { id: "sora",        label: "Modern Sans",            heading: "'Sora', sans-serif",            body: "'Inter', sans-serif",          url: "https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&display=swap", desc: "Contemporary, aesthetic, geometric headings" },
   { id: "playfair",    label: "Signature Serif",    heading: "'Playfair Display', serif",     body: "'Lato', sans-serif",           url: "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800&family=Lato:wght@300;400;700&display=swap", desc: "Bold, elegant, high-impact branding" },
@@ -2160,7 +2161,7 @@ const ResumeEditor = () => {
                           document.head.appendChild(link);
                         }
                       }
-                      const isActive = (resume.fontPairing || 'inter') === font.id;
+                      const isActive = (resume.fontPairing || 'default') === font.id;
                       return (
                         <button
                           key={font.id}

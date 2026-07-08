@@ -1218,9 +1218,10 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
   // If a Pro user picked a custom font, override the template's default.
   // We build the font vars from the FONT_OPTIONS in the editor — same data source.
   let fontVars = getFontVars(templateId);
-  if (resume.fontPairing && resume.fontPairing !== 'inter') {
+  if (resume.fontPairing && resume.fontPairing !== 'default') {
     // Map the fontPairing ID back to CSS font families
     const FONT_OVERRIDE_MAP = {
+      inter:       { heading: "'Inter', sans-serif",            body: "'Inter', sans-serif" },
       sora:        { heading: "'Sora', sans-serif",             body: "'Inter', sans-serif" },
       playfair:    { heading: "'Playfair Display', serif",      body: "'Lato', sans-serif" },
       outfit:      { heading: "'Outfit', sans-serif",           body: "'DM Sans', sans-serif" },
