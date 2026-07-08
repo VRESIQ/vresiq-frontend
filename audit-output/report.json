@@ -1,0 +1,1662 @@
+{
+  "generatedAt": "2026-07-08T16:41:56.854Z",
+  "executionTimeMs": 155523,
+  "executionTimeSec": "155.5s",
+  "totalCases": 75,
+  "passed": 75,
+  "failed": 0,
+  "passRate": "100.0%",
+  "averageDiffPercentage": "0.0000%",
+  "results": [
+    {
+      "template": "template1",
+      "caseId": "case_a",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "false",
+        "accentColor": "default",
+        "highDensity": "false",
+        "headerStyle": "minimal",
+        "photo": "circle",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "very_short",
+          "description": "Brief profile, single educational entry, no projects"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./template1/case_a/preview_current.png",
+      "pdfImage": "./template1/case_a/pdf_pages/pdf_page_1.png",
+      "diffImage": "./template1/case_a/diff_current.png"
+    },
+    {
+      "template": "template1",
+      "caseId": "case_b",
+      "config": {
+        "fontPairing": "inter",
+        "useCustomAccent": "true",
+        "accentColor": "#2563eb",
+        "highDensity": "true",
+        "headerStyle": "card",
+        "photo": "none",
+        "linkStyle": "standard",
+        "contentProfile": {
+          "type": "medium",
+          "description": "Standard details, medium experience, typical bullet points"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./template1/case_b/preview_current.png",
+      "pdfImage": "./template1/case_b/pdf_pages/pdf_page_1.png",
+      "diffImage": "./template1/case_b/diff_current.png"
+    },
+    {
+      "template": "template1",
+      "caseId": "case_c",
+      "config": {
+        "fontPairing": "sora",
+        "useCustomAccent": "true",
+        "accentColor": "#16a34a",
+        "highDensity": "false",
+        "headerStyle": "full-bleed",
+        "photo": "circle",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "long",
+          "description": "Robust multiple-page profile with projects and certifications"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./template1/case_c/preview_current.png",
+      "pdfImage": "./template1/case_c/pdf_pages/pdf_page_1.png",
+      "diffImage": "./template1/case_c/diff_current.png"
+    },
+    {
+      "template": "template2",
+      "caseId": "case_a",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "false",
+        "accentColor": "default",
+        "highDensity": "false",
+        "headerStyle": "card",
+        "photo": "none",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "medium",
+          "description": "Standard details, medium experience, typical bullet points"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./template2/case_a/preview_current.png",
+      "pdfImage": "./template2/case_a/pdf_pages/pdf_page_1.png",
+      "diffImage": "./template2/case_a/diff_current.png"
+    },
+    {
+      "template": "template2",
+      "caseId": "case_b",
+      "config": {
+        "fontPairing": "sora",
+        "useCustomAccent": "true",
+        "accentColor": "#16a34a",
+        "highDensity": "true",
+        "headerStyle": "full-bleed",
+        "photo": "circle",
+        "linkStyle": "standard",
+        "contentProfile": {
+          "type": "long",
+          "description": "Robust multiple-page profile with projects and certifications"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./template2/case_b/preview_current.png",
+      "pdfImage": "./template2/case_b/pdf_pages/pdf_page_1.png",
+      "diffImage": "./template2/case_b/diff_current.png"
+    },
+    {
+      "template": "template2",
+      "caseId": "case_c",
+      "config": {
+        "fontPairing": "playfair",
+        "useCustomAccent": "true",
+        "accentColor": "#7c3aed",
+        "highDensity": "false",
+        "headerStyle": "minimal",
+        "photo": "none",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "very_long",
+          "description": "Three-page profile, lengthy URLs, publications, and awards"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./template2/case_c/preview_current.png",
+      "pdfImage": "./template2/case_c/pdf_pages/pdf_page_1.png",
+      "diffImage": "./template2/case_c/diff_current.png"
+    },
+    {
+      "template": "template3",
+      "caseId": "case_a",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "false",
+        "accentColor": "default",
+        "highDensity": "false",
+        "headerStyle": "full-bleed",
+        "photo": "circle",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "long",
+          "description": "Robust multiple-page profile with projects and certifications"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./template3/case_a/preview_current.png",
+      "pdfImage": "./template3/case_a/pdf_pages/pdf_page_1.png",
+      "diffImage": "./template3/case_a/diff_current.png"
+    },
+    {
+      "template": "template3",
+      "caseId": "case_b",
+      "config": {
+        "fontPairing": "playfair",
+        "useCustomAccent": "true",
+        "accentColor": "#7c3aed",
+        "highDensity": "true",
+        "headerStyle": "minimal",
+        "photo": "none",
+        "linkStyle": "standard",
+        "contentProfile": {
+          "type": "very_long",
+          "description": "Three-page profile, lengthy URLs, publications, and awards"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./template3/case_b/preview_current.png",
+      "pdfImage": "./template3/case_b/pdf_pages/pdf_page_1.png",
+      "diffImage": "./template3/case_b/diff_current.png"
+    },
+    {
+      "template": "template3",
+      "caseId": "case_c",
+      "config": {
+        "fontPairing": "outfit",
+        "useCustomAccent": "true",
+        "accentColor": "#ea580c",
+        "highDensity": "false",
+        "headerStyle": "card",
+        "photo": "circle",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "only_education",
+          "description": "Academic profile with credentials but zero experience"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./template3/case_c/preview_current.png",
+      "pdfImage": "./template3/case_c/pdf_pages/pdf_page_1.png",
+      "diffImage": "./template3/case_c/diff_current.png"
+    },
+    {
+      "template": "premium1",
+      "caseId": "case_a",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "false",
+        "accentColor": "default",
+        "highDensity": "false",
+        "headerStyle": "minimal",
+        "photo": "none",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "very_long",
+          "description": "Three-page profile, lengthy URLs, publications, and awards"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium1/case_a/preview_current.png",
+      "pdfImage": "./premium1/case_a/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium1/case_a/diff_current.png"
+    },
+    {
+      "template": "premium1",
+      "caseId": "case_b",
+      "config": {
+        "fontPairing": "outfit",
+        "useCustomAccent": "true",
+        "accentColor": "#ea580c",
+        "highDensity": "true",
+        "headerStyle": "card",
+        "photo": "circle",
+        "linkStyle": "standard",
+        "contentProfile": {
+          "type": "only_education",
+          "description": "Academic profile with credentials but zero experience"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium1/case_b/preview_current.png",
+      "pdfImage": "./premium1/case_b/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium1/case_b/diff_current.png"
+    },
+    {
+      "template": "premium1",
+      "caseId": "case_c",
+      "config": {
+        "fontPairing": "lora",
+        "useCustomAccent": "true",
+        "accentColor": "#1f2937",
+        "highDensity": "false",
+        "headerStyle": "full-bleed",
+        "photo": "none",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "no_summary",
+          "description": "Professional profile completely skipping the summary section"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium1/case_c/preview_current.png",
+      "pdfImage": "./premium1/case_c/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium1/case_c/diff_current.png"
+    },
+    {
+      "template": "premium2",
+      "caseId": "case_a",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "false",
+        "accentColor": "default",
+        "highDensity": "false",
+        "headerStyle": "card",
+        "photo": "circle",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "only_education",
+          "description": "Academic profile with credentials but zero experience"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium2/case_a/preview_current.png",
+      "pdfImage": "./premium2/case_a/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium2/case_a/diff_current.png"
+    },
+    {
+      "template": "premium2",
+      "caseId": "case_b",
+      "config": {
+        "fontPairing": "lora",
+        "useCustomAccent": "true",
+        "accentColor": "#1f2937",
+        "highDensity": "true",
+        "headerStyle": "full-bleed",
+        "photo": "none",
+        "linkStyle": "standard",
+        "contentProfile": {
+          "type": "no_summary",
+          "description": "Professional profile completely skipping the summary section"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium2/case_b/preview_current.png",
+      "pdfImage": "./premium2/case_b/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium2/case_b/diff_current.png"
+    },
+    {
+      "template": "premium2",
+      "caseId": "case_c",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "true",
+        "accentColor": "default",
+        "highDensity": "false",
+        "headerStyle": "minimal",
+        "photo": "circle",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "very_short",
+          "description": "Brief profile, single educational entry, no projects"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium2/case_c/preview_current.png",
+      "pdfImage": "./premium2/case_c/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium2/case_c/diff_current.png"
+    },
+    {
+      "template": "premium3",
+      "caseId": "case_a",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "false",
+        "accentColor": "default",
+        "highDensity": "false",
+        "headerStyle": "full-bleed",
+        "photo": "none",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "no_summary",
+          "description": "Professional profile completely skipping the summary section"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium3/case_a/preview_current.png",
+      "pdfImage": "./premium3/case_a/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium3/case_a/diff_current.png"
+    },
+    {
+      "template": "premium3",
+      "caseId": "case_b",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "true",
+        "accentColor": "default",
+        "highDensity": "true",
+        "headerStyle": "minimal",
+        "photo": "circle",
+        "linkStyle": "standard",
+        "contentProfile": {
+          "type": "very_short",
+          "description": "Brief profile, single educational entry, no projects"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium3/case_b/preview_current.png",
+      "pdfImage": "./premium3/case_b/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium3/case_b/diff_current.png"
+    },
+    {
+      "template": "premium3",
+      "caseId": "case_c",
+      "config": {
+        "fontPairing": "inter",
+        "useCustomAccent": "true",
+        "accentColor": "#2563eb",
+        "highDensity": "false",
+        "headerStyle": "card",
+        "photo": "none",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "medium",
+          "description": "Standard details, medium experience, typical bullet points"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium3/case_c/preview_current.png",
+      "pdfImage": "./premium3/case_c/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium3/case_c/diff_current.png"
+    },
+    {
+      "template": "premium4",
+      "caseId": "case_a",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "false",
+        "accentColor": "default",
+        "highDensity": "false",
+        "headerStyle": "minimal",
+        "photo": "circle",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "very_short",
+          "description": "Brief profile, single educational entry, no projects"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium4/case_a/preview_current.png",
+      "pdfImage": "./premium4/case_a/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium4/case_a/diff_current.png"
+    },
+    {
+      "template": "premium4",
+      "caseId": "case_b",
+      "config": {
+        "fontPairing": "inter",
+        "useCustomAccent": "true",
+        "accentColor": "#2563eb",
+        "highDensity": "true",
+        "headerStyle": "card",
+        "photo": "none",
+        "linkStyle": "standard",
+        "contentProfile": {
+          "type": "medium",
+          "description": "Standard details, medium experience, typical bullet points"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium4/case_b/preview_current.png",
+      "pdfImage": "./premium4/case_b/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium4/case_b/diff_current.png"
+    },
+    {
+      "template": "premium4",
+      "caseId": "case_c",
+      "config": {
+        "fontPairing": "sora",
+        "useCustomAccent": "true",
+        "accentColor": "#16a34a",
+        "highDensity": "false",
+        "headerStyle": "full-bleed",
+        "photo": "circle",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "long",
+          "description": "Robust multiple-page profile with projects and certifications"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium4/case_c/preview_current.png",
+      "pdfImage": "./premium4/case_c/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium4/case_c/diff_current.png"
+    },
+    {
+      "template": "premium5",
+      "caseId": "case_a",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "false",
+        "accentColor": "default",
+        "highDensity": "false",
+        "headerStyle": "card",
+        "photo": "none",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "medium",
+          "description": "Standard details, medium experience, typical bullet points"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium5/case_a/preview_current.png",
+      "pdfImage": "./premium5/case_a/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium5/case_a/diff_current.png"
+    },
+    {
+      "template": "premium5",
+      "caseId": "case_b",
+      "config": {
+        "fontPairing": "sora",
+        "useCustomAccent": "true",
+        "accentColor": "#16a34a",
+        "highDensity": "true",
+        "headerStyle": "full-bleed",
+        "photo": "circle",
+        "linkStyle": "standard",
+        "contentProfile": {
+          "type": "long",
+          "description": "Robust multiple-page profile with projects and certifications"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium5/case_b/preview_current.png",
+      "pdfImage": "./premium5/case_b/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium5/case_b/diff_current.png"
+    },
+    {
+      "template": "premium5",
+      "caseId": "case_c",
+      "config": {
+        "fontPairing": "playfair",
+        "useCustomAccent": "true",
+        "accentColor": "#7c3aed",
+        "highDensity": "false",
+        "headerStyle": "minimal",
+        "photo": "none",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "very_long",
+          "description": "Three-page profile, lengthy URLs, publications, and awards"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium5/case_c/preview_current.png",
+      "pdfImage": "./premium5/case_c/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium5/case_c/diff_current.png"
+    },
+    {
+      "template": "premium6",
+      "caseId": "case_a",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "false",
+        "accentColor": "default",
+        "highDensity": "false",
+        "headerStyle": "full-bleed",
+        "photo": "circle",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "long",
+          "description": "Robust multiple-page profile with projects and certifications"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium6/case_a/preview_current.png",
+      "pdfImage": "./premium6/case_a/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium6/case_a/diff_current.png"
+    },
+    {
+      "template": "premium6",
+      "caseId": "case_b",
+      "config": {
+        "fontPairing": "playfair",
+        "useCustomAccent": "true",
+        "accentColor": "#7c3aed",
+        "highDensity": "true",
+        "headerStyle": "minimal",
+        "photo": "none",
+        "linkStyle": "standard",
+        "contentProfile": {
+          "type": "very_long",
+          "description": "Three-page profile, lengthy URLs, publications, and awards"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium6/case_b/preview_current.png",
+      "pdfImage": "./premium6/case_b/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium6/case_b/diff_current.png"
+    },
+    {
+      "template": "premium6",
+      "caseId": "case_c",
+      "config": {
+        "fontPairing": "outfit",
+        "useCustomAccent": "true",
+        "accentColor": "#ea580c",
+        "highDensity": "false",
+        "headerStyle": "card",
+        "photo": "circle",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "only_education",
+          "description": "Academic profile with credentials but zero experience"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium6/case_c/preview_current.png",
+      "pdfImage": "./premium6/case_c/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium6/case_c/diff_current.png"
+    },
+    {
+      "template": "premium7",
+      "caseId": "case_a",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "false",
+        "accentColor": "default",
+        "highDensity": "false",
+        "headerStyle": "minimal",
+        "photo": "none",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "very_long",
+          "description": "Three-page profile, lengthy URLs, publications, and awards"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium7/case_a/preview_current.png",
+      "pdfImage": "./premium7/case_a/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium7/case_a/diff_current.png"
+    },
+    {
+      "template": "premium7",
+      "caseId": "case_b",
+      "config": {
+        "fontPairing": "outfit",
+        "useCustomAccent": "true",
+        "accentColor": "#ea580c",
+        "highDensity": "true",
+        "headerStyle": "card",
+        "photo": "circle",
+        "linkStyle": "standard",
+        "contentProfile": {
+          "type": "only_education",
+          "description": "Academic profile with credentials but zero experience"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium7/case_b/preview_current.png",
+      "pdfImage": "./premium7/case_b/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium7/case_b/diff_current.png"
+    },
+    {
+      "template": "premium7",
+      "caseId": "case_c",
+      "config": {
+        "fontPairing": "lora",
+        "useCustomAccent": "true",
+        "accentColor": "#1f2937",
+        "highDensity": "false",
+        "headerStyle": "full-bleed",
+        "photo": "none",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "no_summary",
+          "description": "Professional profile completely skipping the summary section"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium7/case_c/preview_current.png",
+      "pdfImage": "./premium7/case_c/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium7/case_c/diff_current.png"
+    },
+    {
+      "template": "premium8",
+      "caseId": "case_a",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "false",
+        "accentColor": "default",
+        "highDensity": "false",
+        "headerStyle": "card",
+        "photo": "circle",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "only_education",
+          "description": "Academic profile with credentials but zero experience"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium8/case_a/preview_current.png",
+      "pdfImage": "./premium8/case_a/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium8/case_a/diff_current.png"
+    },
+    {
+      "template": "premium8",
+      "caseId": "case_b",
+      "config": {
+        "fontPairing": "lora",
+        "useCustomAccent": "true",
+        "accentColor": "#1f2937",
+        "highDensity": "true",
+        "headerStyle": "full-bleed",
+        "photo": "none",
+        "linkStyle": "standard",
+        "contentProfile": {
+          "type": "no_summary",
+          "description": "Professional profile completely skipping the summary section"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium8/case_b/preview_current.png",
+      "pdfImage": "./premium8/case_b/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium8/case_b/diff_current.png"
+    },
+    {
+      "template": "premium8",
+      "caseId": "case_c",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "true",
+        "accentColor": "default",
+        "highDensity": "false",
+        "headerStyle": "minimal",
+        "photo": "circle",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "very_short",
+          "description": "Brief profile, single educational entry, no projects"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium8/case_c/preview_current.png",
+      "pdfImage": "./premium8/case_c/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium8/case_c/diff_current.png"
+    },
+    {
+      "template": "premium9",
+      "caseId": "case_a",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "false",
+        "accentColor": "default",
+        "highDensity": "false",
+        "headerStyle": "full-bleed",
+        "photo": "none",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "no_summary",
+          "description": "Professional profile completely skipping the summary section"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium9/case_a/preview_current.png",
+      "pdfImage": "./premium9/case_a/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium9/case_a/diff_current.png"
+    },
+    {
+      "template": "premium9",
+      "caseId": "case_b",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "true",
+        "accentColor": "default",
+        "highDensity": "true",
+        "headerStyle": "minimal",
+        "photo": "circle",
+        "linkStyle": "standard",
+        "contentProfile": {
+          "type": "very_short",
+          "description": "Brief profile, single educational entry, no projects"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium9/case_b/preview_current.png",
+      "pdfImage": "./premium9/case_b/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium9/case_b/diff_current.png"
+    },
+    {
+      "template": "premium9",
+      "caseId": "case_c",
+      "config": {
+        "fontPairing": "inter",
+        "useCustomAccent": "true",
+        "accentColor": "#2563eb",
+        "highDensity": "false",
+        "headerStyle": "card",
+        "photo": "none",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "medium",
+          "description": "Standard details, medium experience, typical bullet points"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium9/case_c/preview_current.png",
+      "pdfImage": "./premium9/case_c/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium9/case_c/diff_current.png"
+    },
+    {
+      "template": "premium10",
+      "caseId": "case_a",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "false",
+        "accentColor": "default",
+        "highDensity": "false",
+        "headerStyle": "minimal",
+        "photo": "circle",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "very_short",
+          "description": "Brief profile, single educational entry, no projects"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium10/case_a/preview_current.png",
+      "pdfImage": "./premium10/case_a/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium10/case_a/diff_current.png"
+    },
+    {
+      "template": "premium10",
+      "caseId": "case_b",
+      "config": {
+        "fontPairing": "inter",
+        "useCustomAccent": "true",
+        "accentColor": "#2563eb",
+        "highDensity": "true",
+        "headerStyle": "card",
+        "photo": "none",
+        "linkStyle": "standard",
+        "contentProfile": {
+          "type": "medium",
+          "description": "Standard details, medium experience, typical bullet points"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium10/case_b/preview_current.png",
+      "pdfImage": "./premium10/case_b/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium10/case_b/diff_current.png"
+    },
+    {
+      "template": "premium10",
+      "caseId": "case_c",
+      "config": {
+        "fontPairing": "sora",
+        "useCustomAccent": "true",
+        "accentColor": "#16a34a",
+        "highDensity": "false",
+        "headerStyle": "full-bleed",
+        "photo": "circle",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "long",
+          "description": "Robust multiple-page profile with projects and certifications"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./premium10/case_c/preview_current.png",
+      "pdfImage": "./premium10/case_c/pdf_pages/pdf_page_1.png",
+      "diffImage": "./premium10/case_c/diff_current.png"
+    },
+    {
+      "template": "consulting_bcg",
+      "caseId": "case_a",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "false",
+        "accentColor": "default",
+        "highDensity": "false",
+        "headerStyle": "card",
+        "photo": "none",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "medium",
+          "description": "Standard details, medium experience, typical bullet points"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./consulting_bcg/case_a/preview_current.png",
+      "pdfImage": "./consulting_bcg/case_a/pdf_pages/pdf_page_1.png",
+      "diffImage": "./consulting_bcg/case_a/diff_current.png"
+    },
+    {
+      "template": "consulting_bcg",
+      "caseId": "case_b",
+      "config": {
+        "fontPairing": "sora",
+        "useCustomAccent": "true",
+        "accentColor": "#16a34a",
+        "highDensity": "true",
+        "headerStyle": "full-bleed",
+        "photo": "circle",
+        "linkStyle": "standard",
+        "contentProfile": {
+          "type": "long",
+          "description": "Robust multiple-page profile with projects and certifications"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./consulting_bcg/case_b/preview_current.png",
+      "pdfImage": "./consulting_bcg/case_b/pdf_pages/pdf_page_1.png",
+      "diffImage": "./consulting_bcg/case_b/diff_current.png"
+    },
+    {
+      "template": "consulting_bcg",
+      "caseId": "case_c",
+      "config": {
+        "fontPairing": "playfair",
+        "useCustomAccent": "true",
+        "accentColor": "#7c3aed",
+        "highDensity": "false",
+        "headerStyle": "minimal",
+        "photo": "none",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "very_long",
+          "description": "Three-page profile, lengthy URLs, publications, and awards"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./consulting_bcg/case_c/preview_current.png",
+      "pdfImage": "./consulting_bcg/case_c/pdf_pages/pdf_page_1.png",
+      "diffImage": "./consulting_bcg/case_c/diff_current.png"
+    },
+    {
+      "template": "tech_faang",
+      "caseId": "case_a",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "false",
+        "accentColor": "default",
+        "highDensity": "false",
+        "headerStyle": "full-bleed",
+        "photo": "circle",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "long",
+          "description": "Robust multiple-page profile with projects and certifications"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./tech_faang/case_a/preview_current.png",
+      "pdfImage": "./tech_faang/case_a/pdf_pages/pdf_page_1.png",
+      "diffImage": "./tech_faang/case_a/diff_current.png"
+    },
+    {
+      "template": "tech_faang",
+      "caseId": "case_b",
+      "config": {
+        "fontPairing": "playfair",
+        "useCustomAccent": "true",
+        "accentColor": "#7c3aed",
+        "highDensity": "true",
+        "headerStyle": "minimal",
+        "photo": "none",
+        "linkStyle": "standard",
+        "contentProfile": {
+          "type": "very_long",
+          "description": "Three-page profile, lengthy URLs, publications, and awards"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./tech_faang/case_b/preview_current.png",
+      "pdfImage": "./tech_faang/case_b/pdf_pages/pdf_page_1.png",
+      "diffImage": "./tech_faang/case_b/diff_current.png"
+    },
+    {
+      "template": "tech_faang",
+      "caseId": "case_c",
+      "config": {
+        "fontPairing": "outfit",
+        "useCustomAccent": "true",
+        "accentColor": "#ea580c",
+        "highDensity": "false",
+        "headerStyle": "card",
+        "photo": "circle",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "only_education",
+          "description": "Academic profile with credentials but zero experience"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./tech_faang/case_c/preview_current.png",
+      "pdfImage": "./tech_faang/case_c/pdf_pages/pdf_page_1.png",
+      "diffImage": "./tech_faang/case_c/diff_current.png"
+    },
+    {
+      "template": "harvard_ats",
+      "caseId": "case_a",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "false",
+        "accentColor": "default",
+        "highDensity": "false",
+        "headerStyle": "minimal",
+        "photo": "none",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "very_long",
+          "description": "Three-page profile, lengthy URLs, publications, and awards"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./harvard_ats/case_a/preview_current.png",
+      "pdfImage": "./harvard_ats/case_a/pdf_pages/pdf_page_1.png",
+      "diffImage": "./harvard_ats/case_a/diff_current.png"
+    },
+    {
+      "template": "harvard_ats",
+      "caseId": "case_b",
+      "config": {
+        "fontPairing": "outfit",
+        "useCustomAccent": "true",
+        "accentColor": "#ea580c",
+        "highDensity": "true",
+        "headerStyle": "card",
+        "photo": "circle",
+        "linkStyle": "standard",
+        "contentProfile": {
+          "type": "only_education",
+          "description": "Academic profile with credentials but zero experience"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./harvard_ats/case_b/preview_current.png",
+      "pdfImage": "./harvard_ats/case_b/pdf_pages/pdf_page_1.png",
+      "diffImage": "./harvard_ats/case_b/diff_current.png"
+    },
+    {
+      "template": "harvard_ats",
+      "caseId": "case_c",
+      "config": {
+        "fontPairing": "lora",
+        "useCustomAccent": "true",
+        "accentColor": "#1f2937",
+        "highDensity": "false",
+        "headerStyle": "full-bleed",
+        "photo": "none",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "no_summary",
+          "description": "Professional profile completely skipping the summary section"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./harvard_ats/case_c/preview_current.png",
+      "pdfImage": "./harvard_ats/case_c/pdf_pages/pdf_page_1.png",
+      "diffImage": "./harvard_ats/case_c/diff_current.png"
+    },
+    {
+      "template": "swiss_minimal",
+      "caseId": "case_a",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "false",
+        "accentColor": "default",
+        "highDensity": "false",
+        "headerStyle": "card",
+        "photo": "circle",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "only_education",
+          "description": "Academic profile with credentials but zero experience"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./swiss_minimal/case_a/preview_current.png",
+      "pdfImage": "./swiss_minimal/case_a/pdf_pages/pdf_page_1.png",
+      "diffImage": "./swiss_minimal/case_a/diff_current.png"
+    },
+    {
+      "template": "swiss_minimal",
+      "caseId": "case_b",
+      "config": {
+        "fontPairing": "lora",
+        "useCustomAccent": "true",
+        "accentColor": "#1f2937",
+        "highDensity": "true",
+        "headerStyle": "full-bleed",
+        "photo": "none",
+        "linkStyle": "standard",
+        "contentProfile": {
+          "type": "no_summary",
+          "description": "Professional profile completely skipping the summary section"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./swiss_minimal/case_b/preview_current.png",
+      "pdfImage": "./swiss_minimal/case_b/pdf_pages/pdf_page_1.png",
+      "diffImage": "./swiss_minimal/case_b/diff_current.png"
+    },
+    {
+      "template": "swiss_minimal",
+      "caseId": "case_c",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "true",
+        "accentColor": "default",
+        "highDensity": "false",
+        "headerStyle": "minimal",
+        "photo": "circle",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "very_short",
+          "description": "Brief profile, single educational entry, no projects"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./swiss_minimal/case_c/preview_current.png",
+      "pdfImage": "./swiss_minimal/case_c/pdf_pages/pdf_page_1.png",
+      "diffImage": "./swiss_minimal/case_c/diff_current.png"
+    },
+    {
+      "template": "ats_classic",
+      "caseId": "case_a",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "false",
+        "accentColor": "default",
+        "highDensity": "false",
+        "headerStyle": "full-bleed",
+        "photo": "none",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "no_summary",
+          "description": "Professional profile completely skipping the summary section"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./ats_classic/case_a/preview_current.png",
+      "pdfImage": "./ats_classic/case_a/pdf_pages/pdf_page_1.png",
+      "diffImage": "./ats_classic/case_a/diff_current.png"
+    },
+    {
+      "template": "ats_classic",
+      "caseId": "case_b",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "true",
+        "accentColor": "default",
+        "highDensity": "true",
+        "headerStyle": "minimal",
+        "photo": "circle",
+        "linkStyle": "standard",
+        "contentProfile": {
+          "type": "very_short",
+          "description": "Brief profile, single educational entry, no projects"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./ats_classic/case_b/preview_current.png",
+      "pdfImage": "./ats_classic/case_b/pdf_pages/pdf_page_1.png",
+      "diffImage": "./ats_classic/case_b/diff_current.png"
+    },
+    {
+      "template": "ats_classic",
+      "caseId": "case_c",
+      "config": {
+        "fontPairing": "inter",
+        "useCustomAccent": "true",
+        "accentColor": "#2563eb",
+        "highDensity": "false",
+        "headerStyle": "card",
+        "photo": "none",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "medium",
+          "description": "Standard details, medium experience, typical bullet points"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./ats_classic/case_c/preview_current.png",
+      "pdfImage": "./ats_classic/case_c/pdf_pages/pdf_page_1.png",
+      "diffImage": "./ats_classic/case_c/diff_current.png"
+    },
+    {
+      "template": "ats_entry",
+      "caseId": "case_a",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "false",
+        "accentColor": "default",
+        "highDensity": "false",
+        "headerStyle": "minimal",
+        "photo": "circle",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "very_short",
+          "description": "Brief profile, single educational entry, no projects"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./ats_entry/case_a/preview_current.png",
+      "pdfImage": "./ats_entry/case_a/pdf_pages/pdf_page_1.png",
+      "diffImage": "./ats_entry/case_a/diff_current.png"
+    },
+    {
+      "template": "ats_entry",
+      "caseId": "case_b",
+      "config": {
+        "fontPairing": "inter",
+        "useCustomAccent": "true",
+        "accentColor": "#2563eb",
+        "highDensity": "true",
+        "headerStyle": "card",
+        "photo": "none",
+        "linkStyle": "standard",
+        "contentProfile": {
+          "type": "medium",
+          "description": "Standard details, medium experience, typical bullet points"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./ats_entry/case_b/preview_current.png",
+      "pdfImage": "./ats_entry/case_b/pdf_pages/pdf_page_1.png",
+      "diffImage": "./ats_entry/case_b/diff_current.png"
+    },
+    {
+      "template": "ats_entry",
+      "caseId": "case_c",
+      "config": {
+        "fontPairing": "sora",
+        "useCustomAccent": "true",
+        "accentColor": "#16a34a",
+        "highDensity": "false",
+        "headerStyle": "full-bleed",
+        "photo": "circle",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "long",
+          "description": "Robust multiple-page profile with projects and certifications"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./ats_entry/case_c/preview_current.png",
+      "pdfImage": "./ats_entry/case_c/pdf_pages/pdf_page_1.png",
+      "diffImage": "./ats_entry/case_c/diff_current.png"
+    },
+    {
+      "template": "ats_senior",
+      "caseId": "case_a",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "false",
+        "accentColor": "default",
+        "highDensity": "false",
+        "headerStyle": "card",
+        "photo": "none",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "medium",
+          "description": "Standard details, medium experience, typical bullet points"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./ats_senior/case_a/preview_current.png",
+      "pdfImage": "./ats_senior/case_a/pdf_pages/pdf_page_1.png",
+      "diffImage": "./ats_senior/case_a/diff_current.png"
+    },
+    {
+      "template": "ats_senior",
+      "caseId": "case_b",
+      "config": {
+        "fontPairing": "sora",
+        "useCustomAccent": "true",
+        "accentColor": "#16a34a",
+        "highDensity": "true",
+        "headerStyle": "full-bleed",
+        "photo": "circle",
+        "linkStyle": "standard",
+        "contentProfile": {
+          "type": "long",
+          "description": "Robust multiple-page profile with projects and certifications"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./ats_senior/case_b/preview_current.png",
+      "pdfImage": "./ats_senior/case_b/pdf_pages/pdf_page_1.png",
+      "diffImage": "./ats_senior/case_b/diff_current.png"
+    },
+    {
+      "template": "ats_senior",
+      "caseId": "case_c",
+      "config": {
+        "fontPairing": "playfair",
+        "useCustomAccent": "true",
+        "accentColor": "#7c3aed",
+        "highDensity": "false",
+        "headerStyle": "minimal",
+        "photo": "none",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "very_long",
+          "description": "Three-page profile, lengthy URLs, publications, and awards"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./ats_senior/case_c/preview_current.png",
+      "pdfImage": "./ats_senior/case_c/pdf_pages/pdf_page_1.png",
+      "diffImage": "./ats_senior/case_c/diff_current.png"
+    },
+    {
+      "template": "ats_lead",
+      "caseId": "case_a",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "false",
+        "accentColor": "default",
+        "highDensity": "false",
+        "headerStyle": "full-bleed",
+        "photo": "circle",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "long",
+          "description": "Robust multiple-page profile with projects and certifications"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./ats_lead/case_a/preview_current.png",
+      "pdfImage": "./ats_lead/case_a/pdf_pages/pdf_page_1.png",
+      "diffImage": "./ats_lead/case_a/diff_current.png"
+    },
+    {
+      "template": "ats_lead",
+      "caseId": "case_b",
+      "config": {
+        "fontPairing": "playfair",
+        "useCustomAccent": "true",
+        "accentColor": "#7c3aed",
+        "highDensity": "true",
+        "headerStyle": "minimal",
+        "photo": "none",
+        "linkStyle": "standard",
+        "contentProfile": {
+          "type": "very_long",
+          "description": "Three-page profile, lengthy URLs, publications, and awards"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./ats_lead/case_b/preview_current.png",
+      "pdfImage": "./ats_lead/case_b/pdf_pages/pdf_page_1.png",
+      "diffImage": "./ats_lead/case_b/diff_current.png"
+    },
+    {
+      "template": "ats_lead",
+      "caseId": "case_c",
+      "config": {
+        "fontPairing": "outfit",
+        "useCustomAccent": "true",
+        "accentColor": "#ea580c",
+        "highDensity": "false",
+        "headerStyle": "card",
+        "photo": "circle",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "only_education",
+          "description": "Academic profile with credentials but zero experience"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./ats_lead/case_c/preview_current.png",
+      "pdfImage": "./ats_lead/case_c/pdf_pages/pdf_page_1.png",
+      "diffImage": "./ats_lead/case_c/diff_current.png"
+    },
+    {
+      "template": "ats_intern",
+      "caseId": "case_a",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "false",
+        "accentColor": "default",
+        "highDensity": "false",
+        "headerStyle": "minimal",
+        "photo": "none",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "very_long",
+          "description": "Three-page profile, lengthy URLs, publications, and awards"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./ats_intern/case_a/preview_current.png",
+      "pdfImage": "./ats_intern/case_a/pdf_pages/pdf_page_1.png",
+      "diffImage": "./ats_intern/case_a/diff_current.png"
+    },
+    {
+      "template": "ats_intern",
+      "caseId": "case_b",
+      "config": {
+        "fontPairing": "outfit",
+        "useCustomAccent": "true",
+        "accentColor": "#ea580c",
+        "highDensity": "true",
+        "headerStyle": "card",
+        "photo": "circle",
+        "linkStyle": "standard",
+        "contentProfile": {
+          "type": "only_education",
+          "description": "Academic profile with credentials but zero experience"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./ats_intern/case_b/preview_current.png",
+      "pdfImage": "./ats_intern/case_b/pdf_pages/pdf_page_1.png",
+      "diffImage": "./ats_intern/case_b/diff_current.png"
+    },
+    {
+      "template": "ats_intern",
+      "caseId": "case_c",
+      "config": {
+        "fontPairing": "lora",
+        "useCustomAccent": "true",
+        "accentColor": "#1f2937",
+        "highDensity": "false",
+        "headerStyle": "full-bleed",
+        "photo": "none",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "no_summary",
+          "description": "Professional profile completely skipping the summary section"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./ats_intern/case_c/preview_current.png",
+      "pdfImage": "./ats_intern/case_c/pdf_pages/pdf_page_1.png",
+      "diffImage": "./ats_intern/case_c/diff_current.png"
+    },
+    {
+      "template": "ats_experienced",
+      "caseId": "case_a",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "false",
+        "accentColor": "default",
+        "highDensity": "false",
+        "headerStyle": "card",
+        "photo": "circle",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "only_education",
+          "description": "Academic profile with credentials but zero experience"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./ats_experienced/case_a/preview_current.png",
+      "pdfImage": "./ats_experienced/case_a/pdf_pages/pdf_page_1.png",
+      "diffImage": "./ats_experienced/case_a/diff_current.png"
+    },
+    {
+      "template": "ats_experienced",
+      "caseId": "case_b",
+      "config": {
+        "fontPairing": "lora",
+        "useCustomAccent": "true",
+        "accentColor": "#1f2937",
+        "highDensity": "true",
+        "headerStyle": "full-bleed",
+        "photo": "none",
+        "linkStyle": "standard",
+        "contentProfile": {
+          "type": "no_summary",
+          "description": "Professional profile completely skipping the summary section"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./ats_experienced/case_b/preview_current.png",
+      "pdfImage": "./ats_experienced/case_b/pdf_pages/pdf_page_1.png",
+      "diffImage": "./ats_experienced/case_b/diff_current.png"
+    },
+    {
+      "template": "ats_experienced",
+      "caseId": "case_c",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "true",
+        "accentColor": "default",
+        "highDensity": "false",
+        "headerStyle": "minimal",
+        "photo": "circle",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "very_short",
+          "description": "Brief profile, single educational entry, no projects"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./ats_experienced/case_c/preview_current.png",
+      "pdfImage": "./ats_experienced/case_c/pdf_pages/pdf_page_1.png",
+      "diffImage": "./ats_experienced/case_c/diff_current.png"
+    },
+    {
+      "template": "academic_cv",
+      "caseId": "case_a",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "false",
+        "accentColor": "default",
+        "highDensity": "false",
+        "headerStyle": "full-bleed",
+        "photo": "none",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "no_summary",
+          "description": "Professional profile completely skipping the summary section"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./academic_cv/case_a/preview_current.png",
+      "pdfImage": "./academic_cv/case_a/pdf_pages/pdf_page_1.png",
+      "diffImage": "./academic_cv/case_a/diff_current.png"
+    },
+    {
+      "template": "academic_cv",
+      "caseId": "case_b",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "true",
+        "accentColor": "default",
+        "highDensity": "true",
+        "headerStyle": "minimal",
+        "photo": "circle",
+        "linkStyle": "standard",
+        "contentProfile": {
+          "type": "very_short",
+          "description": "Brief profile, single educational entry, no projects"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./academic_cv/case_b/preview_current.png",
+      "pdfImage": "./academic_cv/case_b/pdf_pages/pdf_page_1.png",
+      "diffImage": "./academic_cv/case_b/diff_current.png"
+    },
+    {
+      "template": "academic_cv",
+      "caseId": "case_c",
+      "config": {
+        "fontPairing": "inter",
+        "useCustomAccent": "true",
+        "accentColor": "#2563eb",
+        "highDensity": "false",
+        "headerStyle": "card",
+        "photo": "none",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "medium",
+          "description": "Standard details, medium experience, typical bullet points"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./academic_cv/case_c/preview_current.png",
+      "pdfImage": "./academic_cv/case_c/pdf_pages/pdf_page_1.png",
+      "diffImage": "./academic_cv/case_c/diff_current.png"
+    },
+    {
+      "template": "engineer_ats",
+      "caseId": "case_a",
+      "config": {
+        "fontPairing": "default",
+        "useCustomAccent": "false",
+        "accentColor": "default",
+        "highDensity": "false",
+        "headerStyle": "minimal",
+        "photo": "circle",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "very_short",
+          "description": "Brief profile, single educational entry, no projects"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./engineer_ats/case_a/preview_current.png",
+      "pdfImage": "./engineer_ats/case_a/pdf_pages/pdf_page_1.png",
+      "diffImage": "./engineer_ats/case_a/diff_current.png"
+    },
+    {
+      "template": "engineer_ats",
+      "caseId": "case_b",
+      "config": {
+        "fontPairing": "inter",
+        "useCustomAccent": "true",
+        "accentColor": "#2563eb",
+        "highDensity": "true",
+        "headerStyle": "card",
+        "photo": "none",
+        "linkStyle": "standard",
+        "contentProfile": {
+          "type": "medium",
+          "description": "Standard details, medium experience, typical bullet points"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./engineer_ats/case_b/preview_current.png",
+      "pdfImage": "./engineer_ats/case_b/pdf_pages/pdf_page_1.png",
+      "diffImage": "./engineer_ats/case_b/diff_current.png"
+    },
+    {
+      "template": "engineer_ats",
+      "caseId": "case_c",
+      "config": {
+        "fontPairing": "sora",
+        "useCustomAccent": "true",
+        "accentColor": "#16a34a",
+        "highDensity": "false",
+        "headerStyle": "full-bleed",
+        "photo": "circle",
+        "linkStyle": "professional",
+        "contentProfile": {
+          "type": "long",
+          "description": "Robust multiple-page profile with projects and certifications"
+        }
+      },
+      "diffPercentage": 0,
+      "status": "PASS",
+      "previewImage": "./engineer_ats/case_c/preview_current.png",
+      "pdfImage": "./engineer_ats/case_c/pdf_pages/pdf_page_1.png",
+      "diffImage": "./engineer_ats/case_c/diff_current.png"
+    }
+  ]
+}

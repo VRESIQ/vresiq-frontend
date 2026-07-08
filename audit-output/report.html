@@ -1,0 +1,998 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VResIQ - Automated Validation Report</title>
+  <style>
+    body {
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0d0f12;
+      color: #e5e7eb;
+      margin: 0;
+      padding: 24px;
+    }
+    .header {
+      background: linear-gradient(135deg, #1f2937, #111827);
+      padding: 24px;
+      border-radius: 12px;
+      border: 1px solid #374151;
+      margin-bottom: 24px;
+    }
+    h1 { margin: 0 0 12px; color: #ffffff; font-size: 1.8rem; }
+    .meta { font-size: 0.9rem; color: #9ca3af; margin-bottom: 20px; }
+    .stats { display: flex; gap: 16px; margin-bottom: 20px; }
+    .card {
+      background: #1f2937;
+      padding: 16px 24px;
+      border-radius: 8px;
+      border: 1px solid #374151;
+      flex: 1;
+      text-align: center;
+    }
+    .card h3 { margin: 0 0 8px; color: #9ca3af; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .card .val { font-size: 2rem; font-weight: 700; color: #ffffff; }
+    .card.pass .val { color: #34d399; }
+    .card.fail .val { color: #f87171; }
+    .table-container {
+      background: #111827;
+      border-radius: 8px;
+      border: 1px solid #374151;
+      overflow: hidden;
+    }
+    table { width: 100%; border-collapse: collapse; text-align: left; }
+    th, td { padding: 16px; border-bottom: 1px solid #374151; }
+    th { background: #1f2937; font-weight: 600; color: #ffffff; }
+    tr:hover { background: #1f2937; }
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .badge.pass { background: rgba(52, 211, 153, 0.15); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.3); }
+    .badge.fail { background: rgba(248, 113, 113, 0.15); color: #f87171; border: 1px solid rgba(248, 113, 113, 0.3); }
+    .detail-btn {
+      background: #3b82f6;
+      color: #ffffff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.85rem;
+    }
+    .detail-btn:hover { background: #2563eb; }
+    .compare-container {
+      display: none;
+      margin-top: 24px;
+      background: #111827;
+      border-radius: 8px;
+      border: 1px solid #374151;
+      padding: 24px;
+    }
+    .compare-images {
+      display: flex;
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .image-box {
+      flex: 1;
+      text-align: center;
+      background: #1f2937;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid #374151;
+    }
+    .image-box h4 { margin: 0 0 12px; color: #ffffff; }
+    .image-box img { max-width: 100%; border-radius: 4px; border: 1px solid #4b5563; background: #ffffff; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>VResIQ Visual Regression & PDF Parity Validation</h1>
+    <div class="meta">Generated: 2026-07-08T16:41:56.854Z | Duration: 155.5s</div>
+    <div class="stats">
+      <div class="card">
+        <h3>Total Checked</h3>
+        <div class="val">75</div>
+      </div>
+      <div class="card pass">
+        <h3>Passed</h3>
+        <div class="val">75</div>
+      </div>
+      <div class="card fail">
+        <h3>Failed</h3>
+        <div class="val">0</div>
+      </div>
+      <div class="card">
+        <h3>Average Diff</h3>
+        <div class="val">0.0000%</div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Scenario Audit Log</h2>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Template</th>
+          <th>Case</th>
+          <th>Font</th>
+          <th>Accent</th>
+          <th>Density</th>
+          <th>Diff %</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+          <tr>
+            <td><strong>template1</strong></td>
+            <td><code style="color: #60a5fa;">case_a</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('0')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>template1</strong></td>
+            <td><code style="color: #60a5fa;">case_b</code></td>
+            <td><code>inter</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#2563eb;border-radius:50%;margin-right:4px;"></span><code>#2563eb</code></td>
+            <td><code>true</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('1')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>template1</strong></td>
+            <td><code style="color: #60a5fa;">case_c</code></td>
+            <td><code>sora</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#16a34a;border-radius:50%;margin-right:4px;"></span><code>#16a34a</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('2')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>template2</strong></td>
+            <td><code style="color: #60a5fa;">case_a</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('3')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>template2</strong></td>
+            <td><code style="color: #60a5fa;">case_b</code></td>
+            <td><code>sora</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#16a34a;border-radius:50%;margin-right:4px;"></span><code>#16a34a</code></td>
+            <td><code>true</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('4')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>template2</strong></td>
+            <td><code style="color: #60a5fa;">case_c</code></td>
+            <td><code>playfair</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#7c3aed;border-radius:50%;margin-right:4px;"></span><code>#7c3aed</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('5')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>template3</strong></td>
+            <td><code style="color: #60a5fa;">case_a</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('6')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>template3</strong></td>
+            <td><code style="color: #60a5fa;">case_b</code></td>
+            <td><code>playfair</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#7c3aed;border-radius:50%;margin-right:4px;"></span><code>#7c3aed</code></td>
+            <td><code>true</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('7')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>template3</strong></td>
+            <td><code style="color: #60a5fa;">case_c</code></td>
+            <td><code>outfit</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#ea580c;border-radius:50%;margin-right:4px;"></span><code>#ea580c</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('8')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium1</strong></td>
+            <td><code style="color: #60a5fa;">case_a</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('9')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium1</strong></td>
+            <td><code style="color: #60a5fa;">case_b</code></td>
+            <td><code>outfit</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#ea580c;border-radius:50%;margin-right:4px;"></span><code>#ea580c</code></td>
+            <td><code>true</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('10')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium1</strong></td>
+            <td><code style="color: #60a5fa;">case_c</code></td>
+            <td><code>lora</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#1f2937;border-radius:50%;margin-right:4px;"></span><code>#1f2937</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('11')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium2</strong></td>
+            <td><code style="color: #60a5fa;">case_a</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('12')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium2</strong></td>
+            <td><code style="color: #60a5fa;">case_b</code></td>
+            <td><code>lora</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#1f2937;border-radius:50%;margin-right:4px;"></span><code>#1f2937</code></td>
+            <td><code>true</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('13')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium2</strong></td>
+            <td><code style="color: #60a5fa;">case_c</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('14')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium3</strong></td>
+            <td><code style="color: #60a5fa;">case_a</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('15')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium3</strong></td>
+            <td><code style="color: #60a5fa;">case_b</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>true</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('16')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium3</strong></td>
+            <td><code style="color: #60a5fa;">case_c</code></td>
+            <td><code>inter</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#2563eb;border-radius:50%;margin-right:4px;"></span><code>#2563eb</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('17')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium4</strong></td>
+            <td><code style="color: #60a5fa;">case_a</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('18')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium4</strong></td>
+            <td><code style="color: #60a5fa;">case_b</code></td>
+            <td><code>inter</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#2563eb;border-radius:50%;margin-right:4px;"></span><code>#2563eb</code></td>
+            <td><code>true</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('19')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium4</strong></td>
+            <td><code style="color: #60a5fa;">case_c</code></td>
+            <td><code>sora</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#16a34a;border-radius:50%;margin-right:4px;"></span><code>#16a34a</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('20')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium5</strong></td>
+            <td><code style="color: #60a5fa;">case_a</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('21')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium5</strong></td>
+            <td><code style="color: #60a5fa;">case_b</code></td>
+            <td><code>sora</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#16a34a;border-radius:50%;margin-right:4px;"></span><code>#16a34a</code></td>
+            <td><code>true</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('22')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium5</strong></td>
+            <td><code style="color: #60a5fa;">case_c</code></td>
+            <td><code>playfair</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#7c3aed;border-radius:50%;margin-right:4px;"></span><code>#7c3aed</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('23')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium6</strong></td>
+            <td><code style="color: #60a5fa;">case_a</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('24')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium6</strong></td>
+            <td><code style="color: #60a5fa;">case_b</code></td>
+            <td><code>playfair</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#7c3aed;border-radius:50%;margin-right:4px;"></span><code>#7c3aed</code></td>
+            <td><code>true</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('25')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium6</strong></td>
+            <td><code style="color: #60a5fa;">case_c</code></td>
+            <td><code>outfit</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#ea580c;border-radius:50%;margin-right:4px;"></span><code>#ea580c</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('26')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium7</strong></td>
+            <td><code style="color: #60a5fa;">case_a</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('27')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium7</strong></td>
+            <td><code style="color: #60a5fa;">case_b</code></td>
+            <td><code>outfit</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#ea580c;border-radius:50%;margin-right:4px;"></span><code>#ea580c</code></td>
+            <td><code>true</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('28')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium7</strong></td>
+            <td><code style="color: #60a5fa;">case_c</code></td>
+            <td><code>lora</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#1f2937;border-radius:50%;margin-right:4px;"></span><code>#1f2937</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('29')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium8</strong></td>
+            <td><code style="color: #60a5fa;">case_a</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('30')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium8</strong></td>
+            <td><code style="color: #60a5fa;">case_b</code></td>
+            <td><code>lora</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#1f2937;border-radius:50%;margin-right:4px;"></span><code>#1f2937</code></td>
+            <td><code>true</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('31')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium8</strong></td>
+            <td><code style="color: #60a5fa;">case_c</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('32')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium9</strong></td>
+            <td><code style="color: #60a5fa;">case_a</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('33')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium9</strong></td>
+            <td><code style="color: #60a5fa;">case_b</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>true</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('34')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium9</strong></td>
+            <td><code style="color: #60a5fa;">case_c</code></td>
+            <td><code>inter</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#2563eb;border-radius:50%;margin-right:4px;"></span><code>#2563eb</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('35')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium10</strong></td>
+            <td><code style="color: #60a5fa;">case_a</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('36')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium10</strong></td>
+            <td><code style="color: #60a5fa;">case_b</code></td>
+            <td><code>inter</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#2563eb;border-radius:50%;margin-right:4px;"></span><code>#2563eb</code></td>
+            <td><code>true</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('37')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>premium10</strong></td>
+            <td><code style="color: #60a5fa;">case_c</code></td>
+            <td><code>sora</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#16a34a;border-radius:50%;margin-right:4px;"></span><code>#16a34a</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('38')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>consulting_bcg</strong></td>
+            <td><code style="color: #60a5fa;">case_a</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('39')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>consulting_bcg</strong></td>
+            <td><code style="color: #60a5fa;">case_b</code></td>
+            <td><code>sora</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#16a34a;border-radius:50%;margin-right:4px;"></span><code>#16a34a</code></td>
+            <td><code>true</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('40')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>consulting_bcg</strong></td>
+            <td><code style="color: #60a5fa;">case_c</code></td>
+            <td><code>playfair</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#7c3aed;border-radius:50%;margin-right:4px;"></span><code>#7c3aed</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('41')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>tech_faang</strong></td>
+            <td><code style="color: #60a5fa;">case_a</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('42')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>tech_faang</strong></td>
+            <td><code style="color: #60a5fa;">case_b</code></td>
+            <td><code>playfair</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#7c3aed;border-radius:50%;margin-right:4px;"></span><code>#7c3aed</code></td>
+            <td><code>true</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('43')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>tech_faang</strong></td>
+            <td><code style="color: #60a5fa;">case_c</code></td>
+            <td><code>outfit</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#ea580c;border-radius:50%;margin-right:4px;"></span><code>#ea580c</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('44')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>harvard_ats</strong></td>
+            <td><code style="color: #60a5fa;">case_a</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('45')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>harvard_ats</strong></td>
+            <td><code style="color: #60a5fa;">case_b</code></td>
+            <td><code>outfit</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#ea580c;border-radius:50%;margin-right:4px;"></span><code>#ea580c</code></td>
+            <td><code>true</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('46')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>harvard_ats</strong></td>
+            <td><code style="color: #60a5fa;">case_c</code></td>
+            <td><code>lora</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#1f2937;border-radius:50%;margin-right:4px;"></span><code>#1f2937</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('47')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>swiss_minimal</strong></td>
+            <td><code style="color: #60a5fa;">case_a</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('48')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>swiss_minimal</strong></td>
+            <td><code style="color: #60a5fa;">case_b</code></td>
+            <td><code>lora</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#1f2937;border-radius:50%;margin-right:4px;"></span><code>#1f2937</code></td>
+            <td><code>true</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('49')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>swiss_minimal</strong></td>
+            <td><code style="color: #60a5fa;">case_c</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('50')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>ats_classic</strong></td>
+            <td><code style="color: #60a5fa;">case_a</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('51')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>ats_classic</strong></td>
+            <td><code style="color: #60a5fa;">case_b</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>true</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('52')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>ats_classic</strong></td>
+            <td><code style="color: #60a5fa;">case_c</code></td>
+            <td><code>inter</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#2563eb;border-radius:50%;margin-right:4px;"></span><code>#2563eb</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('53')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>ats_entry</strong></td>
+            <td><code style="color: #60a5fa;">case_a</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('54')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>ats_entry</strong></td>
+            <td><code style="color: #60a5fa;">case_b</code></td>
+            <td><code>inter</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#2563eb;border-radius:50%;margin-right:4px;"></span><code>#2563eb</code></td>
+            <td><code>true</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('55')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>ats_entry</strong></td>
+            <td><code style="color: #60a5fa;">case_c</code></td>
+            <td><code>sora</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#16a34a;border-radius:50%;margin-right:4px;"></span><code>#16a34a</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('56')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>ats_senior</strong></td>
+            <td><code style="color: #60a5fa;">case_a</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('57')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>ats_senior</strong></td>
+            <td><code style="color: #60a5fa;">case_b</code></td>
+            <td><code>sora</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#16a34a;border-radius:50%;margin-right:4px;"></span><code>#16a34a</code></td>
+            <td><code>true</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('58')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>ats_senior</strong></td>
+            <td><code style="color: #60a5fa;">case_c</code></td>
+            <td><code>playfair</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#7c3aed;border-radius:50%;margin-right:4px;"></span><code>#7c3aed</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('59')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>ats_lead</strong></td>
+            <td><code style="color: #60a5fa;">case_a</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('60')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>ats_lead</strong></td>
+            <td><code style="color: #60a5fa;">case_b</code></td>
+            <td><code>playfair</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#7c3aed;border-radius:50%;margin-right:4px;"></span><code>#7c3aed</code></td>
+            <td><code>true</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('61')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>ats_lead</strong></td>
+            <td><code style="color: #60a5fa;">case_c</code></td>
+            <td><code>outfit</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#ea580c;border-radius:50%;margin-right:4px;"></span><code>#ea580c</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('62')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>ats_intern</strong></td>
+            <td><code style="color: #60a5fa;">case_a</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('63')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>ats_intern</strong></td>
+            <td><code style="color: #60a5fa;">case_b</code></td>
+            <td><code>outfit</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#ea580c;border-radius:50%;margin-right:4px;"></span><code>#ea580c</code></td>
+            <td><code>true</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('64')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>ats_intern</strong></td>
+            <td><code style="color: #60a5fa;">case_c</code></td>
+            <td><code>lora</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#1f2937;border-radius:50%;margin-right:4px;"></span><code>#1f2937</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('65')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>ats_experienced</strong></td>
+            <td><code style="color: #60a5fa;">case_a</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('66')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>ats_experienced</strong></td>
+            <td><code style="color: #60a5fa;">case_b</code></td>
+            <td><code>lora</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#1f2937;border-radius:50%;margin-right:4px;"></span><code>#1f2937</code></td>
+            <td><code>true</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('67')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>ats_experienced</strong></td>
+            <td><code style="color: #60a5fa;">case_c</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('68')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>academic_cv</strong></td>
+            <td><code style="color: #60a5fa;">case_a</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('69')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>academic_cv</strong></td>
+            <td><code style="color: #60a5fa;">case_b</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>true</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('70')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>academic_cv</strong></td>
+            <td><code style="color: #60a5fa;">case_c</code></td>
+            <td><code>inter</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#2563eb;border-radius:50%;margin-right:4px;"></span><code>#2563eb</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('71')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>engineer_ats</strong></td>
+            <td><code style="color: #60a5fa;">case_a</code></td>
+            <td><code>default</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:default;border-radius:50%;margin-right:4px;"></span><code>default</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('72')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>engineer_ats</strong></td>
+            <td><code style="color: #60a5fa;">case_b</code></td>
+            <td><code>inter</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#2563eb;border-radius:50%;margin-right:4px;"></span><code>#2563eb</code></td>
+            <td><code>true</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('73')">View Comparison</button></td>
+          </tr>
+        
+          <tr>
+            <td><strong>engineer_ats</strong></td>
+            <td><code style="color: #60a5fa;">case_c</code></td>
+            <td><code>sora</code></td>
+            <td><span style="display:inline-block;width:10px;height:10px;background:#16a34a;border-radius:50%;margin-right:4px;"></span><code>#16a34a</code></td>
+            <td><code>false</code></td>
+            <td>0.000%</td>
+            <td><span class="badge pass">PASS</span></td>
+            <td><button class="detail-btn" onclick="showCompare('74')">View Comparison</button></td>
+          </tr>
+        
+      </tbody>
+    </table>
+  </div>
+
+  <div id="compare-section" class="compare-container">
+    <h3 id="compare-title">Comparison</h3>
+    <div class="compare-images">
+      <div class="image-box">
+        <h4>Baseline / Live Preview</h4>
+        <img id="img-preview" src="" alt="Preview">
+      </div>
+      <div class="image-box">
+        <h4>Rendered PDF</h4>
+        <img id="img-pdf" src="" alt="PDF Page">
+      </div>
+      <div class="image-box">
+        <h4>Visual Diff (magenta indicates deviations)</h4>
+        <img id="img-diff" src="" alt="Visual Diff">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const cases = [{"template":"template1","caseId":"case_a","config":{"fontPairing":"default","useCustomAccent":"false","accentColor":"default","highDensity":"false","headerStyle":"minimal","photo":"circle","linkStyle":"professional","contentProfile":{"type":"very_short","description":"Brief profile, single educational entry, no projects"}},"diffPercentage":0,"status":"PASS","previewImage":"./template1/case_a/preview_current.png","pdfImage":"./template1/case_a/pdf_pages/pdf_page_1.png","diffImage":"./template1/case_a/diff_current.png"},{"template":"template1","caseId":"case_b","config":{"fontPairing":"inter","useCustomAccent":"true","accentColor":"#2563eb","highDensity":"true","headerStyle":"card","photo":"none","linkStyle":"standard","contentProfile":{"type":"medium","description":"Standard details, medium experience, typical bullet points"}},"diffPercentage":0,"status":"PASS","previewImage":"./template1/case_b/preview_current.png","pdfImage":"./template1/case_b/pdf_pages/pdf_page_1.png","diffImage":"./template1/case_b/diff_current.png"},{"template":"template1","caseId":"case_c","config":{"fontPairing":"sora","useCustomAccent":"true","accentColor":"#16a34a","highDensity":"false","headerStyle":"full-bleed","photo":"circle","linkStyle":"professional","contentProfile":{"type":"long","description":"Robust multiple-page profile with projects and certifications"}},"diffPercentage":0,"status":"PASS","previewImage":"./template1/case_c/preview_current.png","pdfImage":"./template1/case_c/pdf_pages/pdf_page_1.png","diffImage":"./template1/case_c/diff_current.png"},{"template":"template2","caseId":"case_a","config":{"fontPairing":"default","useCustomAccent":"false","accentColor":"default","highDensity":"false","headerStyle":"card","photo":"none","linkStyle":"professional","contentProfile":{"type":"medium","description":"Standard details, medium experience, typical bullet points"}},"diffPercentage":0,"status":"PASS","previewImage":"./template2/case_a/preview_current.png","pdfImage":"./template2/case_a/pdf_pages/pdf_page_1.png","diffImage":"./template2/case_a/diff_current.png"},{"template":"template2","caseId":"case_b","config":{"fontPairing":"sora","useCustomAccent":"true","accentColor":"#16a34a","highDensity":"true","headerStyle":"full-bleed","photo":"circle","linkStyle":"standard","contentProfile":{"type":"long","description":"Robust multiple-page profile with projects and certifications"}},"diffPercentage":0,"status":"PASS","previewImage":"./template2/case_b/preview_current.png","pdfImage":"./template2/case_b/pdf_pages/pdf_page_1.png","diffImage":"./template2/case_b/diff_current.png"},{"template":"template2","caseId":"case_c","config":{"fontPairing":"playfair","useCustomAccent":"true","accentColor":"#7c3aed","highDensity":"false","headerStyle":"minimal","photo":"none","linkStyle":"professional","contentProfile":{"type":"very_long","description":"Three-page profile, lengthy URLs, publications, and awards"}},"diffPercentage":0,"status":"PASS","previewImage":"./template2/case_c/preview_current.png","pdfImage":"./template2/case_c/pdf_pages/pdf_page_1.png","diffImage":"./template2/case_c/diff_current.png"},{"template":"template3","caseId":"case_a","config":{"fontPairing":"default","useCustomAccent":"false","accentColor":"default","highDensity":"false","headerStyle":"full-bleed","photo":"circle","linkStyle":"professional","contentProfile":{"type":"long","description":"Robust multiple-page profile with projects and certifications"}},"diffPercentage":0,"status":"PASS","previewImage":"./template3/case_a/preview_current.png","pdfImage":"./template3/case_a/pdf_pages/pdf_page_1.png","diffImage":"./template3/case_a/diff_current.png"},{"template":"template3","caseId":"case_b","config":{"fontPairing":"playfair","useCustomAccent":"true","accentColor":"#7c3aed","highDensity":"true","headerStyle":"minimal","photo":"none","linkStyle":"standard","contentProfile":{"type":"very_long","description":"Three-page profile, lengthy URLs, publications, and awards"}},"diffPercentage":0,"status":"PASS","previewImage":"./template3/case_b/preview_current.png","pdfImage":"./template3/case_b/pdf_pages/pdf_page_1.png","diffImage":"./template3/case_b/diff_current.png"},{"template":"template3","caseId":"case_c","config":{"fontPairing":"outfit","useCustomAccent":"true","accentColor":"#ea580c","highDensity":"false","headerStyle":"card","photo":"circle","linkStyle":"professional","contentProfile":{"type":"only_education","description":"Academic profile with credentials but zero experience"}},"diffPercentage":0,"status":"PASS","previewImage":"./template3/case_c/preview_current.png","pdfImage":"./template3/case_c/pdf_pages/pdf_page_1.png","diffImage":"./template3/case_c/diff_current.png"},{"template":"premium1","caseId":"case_a","config":{"fontPairing":"default","useCustomAccent":"false","accentColor":"default","highDensity":"false","headerStyle":"minimal","photo":"none","linkStyle":"professional","contentProfile":{"type":"very_long","description":"Three-page profile, lengthy URLs, publications, and awards"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium1/case_a/preview_current.png","pdfImage":"./premium1/case_a/pdf_pages/pdf_page_1.png","diffImage":"./premium1/case_a/diff_current.png"},{"template":"premium1","caseId":"case_b","config":{"fontPairing":"outfit","useCustomAccent":"true","accentColor":"#ea580c","highDensity":"true","headerStyle":"card","photo":"circle","linkStyle":"standard","contentProfile":{"type":"only_education","description":"Academic profile with credentials but zero experience"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium1/case_b/preview_current.png","pdfImage":"./premium1/case_b/pdf_pages/pdf_page_1.png","diffImage":"./premium1/case_b/diff_current.png"},{"template":"premium1","caseId":"case_c","config":{"fontPairing":"lora","useCustomAccent":"true","accentColor":"#1f2937","highDensity":"false","headerStyle":"full-bleed","photo":"none","linkStyle":"professional","contentProfile":{"type":"no_summary","description":"Professional profile completely skipping the summary section"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium1/case_c/preview_current.png","pdfImage":"./premium1/case_c/pdf_pages/pdf_page_1.png","diffImage":"./premium1/case_c/diff_current.png"},{"template":"premium2","caseId":"case_a","config":{"fontPairing":"default","useCustomAccent":"false","accentColor":"default","highDensity":"false","headerStyle":"card","photo":"circle","linkStyle":"professional","contentProfile":{"type":"only_education","description":"Academic profile with credentials but zero experience"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium2/case_a/preview_current.png","pdfImage":"./premium2/case_a/pdf_pages/pdf_page_1.png","diffImage":"./premium2/case_a/diff_current.png"},{"template":"premium2","caseId":"case_b","config":{"fontPairing":"lora","useCustomAccent":"true","accentColor":"#1f2937","highDensity":"true","headerStyle":"full-bleed","photo":"none","linkStyle":"standard","contentProfile":{"type":"no_summary","description":"Professional profile completely skipping the summary section"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium2/case_b/preview_current.png","pdfImage":"./premium2/case_b/pdf_pages/pdf_page_1.png","diffImage":"./premium2/case_b/diff_current.png"},{"template":"premium2","caseId":"case_c","config":{"fontPairing":"default","useCustomAccent":"true","accentColor":"default","highDensity":"false","headerStyle":"minimal","photo":"circle","linkStyle":"professional","contentProfile":{"type":"very_short","description":"Brief profile, single educational entry, no projects"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium2/case_c/preview_current.png","pdfImage":"./premium2/case_c/pdf_pages/pdf_page_1.png","diffImage":"./premium2/case_c/diff_current.png"},{"template":"premium3","caseId":"case_a","config":{"fontPairing":"default","useCustomAccent":"false","accentColor":"default","highDensity":"false","headerStyle":"full-bleed","photo":"none","linkStyle":"professional","contentProfile":{"type":"no_summary","description":"Professional profile completely skipping the summary section"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium3/case_a/preview_current.png","pdfImage":"./premium3/case_a/pdf_pages/pdf_page_1.png","diffImage":"./premium3/case_a/diff_current.png"},{"template":"premium3","caseId":"case_b","config":{"fontPairing":"default","useCustomAccent":"true","accentColor":"default","highDensity":"true","headerStyle":"minimal","photo":"circle","linkStyle":"standard","contentProfile":{"type":"very_short","description":"Brief profile, single educational entry, no projects"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium3/case_b/preview_current.png","pdfImage":"./premium3/case_b/pdf_pages/pdf_page_1.png","diffImage":"./premium3/case_b/diff_current.png"},{"template":"premium3","caseId":"case_c","config":{"fontPairing":"inter","useCustomAccent":"true","accentColor":"#2563eb","highDensity":"false","headerStyle":"card","photo":"none","linkStyle":"professional","contentProfile":{"type":"medium","description":"Standard details, medium experience, typical bullet points"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium3/case_c/preview_current.png","pdfImage":"./premium3/case_c/pdf_pages/pdf_page_1.png","diffImage":"./premium3/case_c/diff_current.png"},{"template":"premium4","caseId":"case_a","config":{"fontPairing":"default","useCustomAccent":"false","accentColor":"default","highDensity":"false","headerStyle":"minimal","photo":"circle","linkStyle":"professional","contentProfile":{"type":"very_short","description":"Brief profile, single educational entry, no projects"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium4/case_a/preview_current.png","pdfImage":"./premium4/case_a/pdf_pages/pdf_page_1.png","diffImage":"./premium4/case_a/diff_current.png"},{"template":"premium4","caseId":"case_b","config":{"fontPairing":"inter","useCustomAccent":"true","accentColor":"#2563eb","highDensity":"true","headerStyle":"card","photo":"none","linkStyle":"standard","contentProfile":{"type":"medium","description":"Standard details, medium experience, typical bullet points"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium4/case_b/preview_current.png","pdfImage":"./premium4/case_b/pdf_pages/pdf_page_1.png","diffImage":"./premium4/case_b/diff_current.png"},{"template":"premium4","caseId":"case_c","config":{"fontPairing":"sora","useCustomAccent":"true","accentColor":"#16a34a","highDensity":"false","headerStyle":"full-bleed","photo":"circle","linkStyle":"professional","contentProfile":{"type":"long","description":"Robust multiple-page profile with projects and certifications"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium4/case_c/preview_current.png","pdfImage":"./premium4/case_c/pdf_pages/pdf_page_1.png","diffImage":"./premium4/case_c/diff_current.png"},{"template":"premium5","caseId":"case_a","config":{"fontPairing":"default","useCustomAccent":"false","accentColor":"default","highDensity":"false","headerStyle":"card","photo":"none","linkStyle":"professional","contentProfile":{"type":"medium","description":"Standard details, medium experience, typical bullet points"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium5/case_a/preview_current.png","pdfImage":"./premium5/case_a/pdf_pages/pdf_page_1.png","diffImage":"./premium5/case_a/diff_current.png"},{"template":"premium5","caseId":"case_b","config":{"fontPairing":"sora","useCustomAccent":"true","accentColor":"#16a34a","highDensity":"true","headerStyle":"full-bleed","photo":"circle","linkStyle":"standard","contentProfile":{"type":"long","description":"Robust multiple-page profile with projects and certifications"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium5/case_b/preview_current.png","pdfImage":"./premium5/case_b/pdf_pages/pdf_page_1.png","diffImage":"./premium5/case_b/diff_current.png"},{"template":"premium5","caseId":"case_c","config":{"fontPairing":"playfair","useCustomAccent":"true","accentColor":"#7c3aed","highDensity":"false","headerStyle":"minimal","photo":"none","linkStyle":"professional","contentProfile":{"type":"very_long","description":"Three-page profile, lengthy URLs, publications, and awards"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium5/case_c/preview_current.png","pdfImage":"./premium5/case_c/pdf_pages/pdf_page_1.png","diffImage":"./premium5/case_c/diff_current.png"},{"template":"premium6","caseId":"case_a","config":{"fontPairing":"default","useCustomAccent":"false","accentColor":"default","highDensity":"false","headerStyle":"full-bleed","photo":"circle","linkStyle":"professional","contentProfile":{"type":"long","description":"Robust multiple-page profile with projects and certifications"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium6/case_a/preview_current.png","pdfImage":"./premium6/case_a/pdf_pages/pdf_page_1.png","diffImage":"./premium6/case_a/diff_current.png"},{"template":"premium6","caseId":"case_b","config":{"fontPairing":"playfair","useCustomAccent":"true","accentColor":"#7c3aed","highDensity":"true","headerStyle":"minimal","photo":"none","linkStyle":"standard","contentProfile":{"type":"very_long","description":"Three-page profile, lengthy URLs, publications, and awards"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium6/case_b/preview_current.png","pdfImage":"./premium6/case_b/pdf_pages/pdf_page_1.png","diffImage":"./premium6/case_b/diff_current.png"},{"template":"premium6","caseId":"case_c","config":{"fontPairing":"outfit","useCustomAccent":"true","accentColor":"#ea580c","highDensity":"false","headerStyle":"card","photo":"circle","linkStyle":"professional","contentProfile":{"type":"only_education","description":"Academic profile with credentials but zero experience"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium6/case_c/preview_current.png","pdfImage":"./premium6/case_c/pdf_pages/pdf_page_1.png","diffImage":"./premium6/case_c/diff_current.png"},{"template":"premium7","caseId":"case_a","config":{"fontPairing":"default","useCustomAccent":"false","accentColor":"default","highDensity":"false","headerStyle":"minimal","photo":"none","linkStyle":"professional","contentProfile":{"type":"very_long","description":"Three-page profile, lengthy URLs, publications, and awards"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium7/case_a/preview_current.png","pdfImage":"./premium7/case_a/pdf_pages/pdf_page_1.png","diffImage":"./premium7/case_a/diff_current.png"},{"template":"premium7","caseId":"case_b","config":{"fontPairing":"outfit","useCustomAccent":"true","accentColor":"#ea580c","highDensity":"true","headerStyle":"card","photo":"circle","linkStyle":"standard","contentProfile":{"type":"only_education","description":"Academic profile with credentials but zero experience"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium7/case_b/preview_current.png","pdfImage":"./premium7/case_b/pdf_pages/pdf_page_1.png","diffImage":"./premium7/case_b/diff_current.png"},{"template":"premium7","caseId":"case_c","config":{"fontPairing":"lora","useCustomAccent":"true","accentColor":"#1f2937","highDensity":"false","headerStyle":"full-bleed","photo":"none","linkStyle":"professional","contentProfile":{"type":"no_summary","description":"Professional profile completely skipping the summary section"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium7/case_c/preview_current.png","pdfImage":"./premium7/case_c/pdf_pages/pdf_page_1.png","diffImage":"./premium7/case_c/diff_current.png"},{"template":"premium8","caseId":"case_a","config":{"fontPairing":"default","useCustomAccent":"false","accentColor":"default","highDensity":"false","headerStyle":"card","photo":"circle","linkStyle":"professional","contentProfile":{"type":"only_education","description":"Academic profile with credentials but zero experience"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium8/case_a/preview_current.png","pdfImage":"./premium8/case_a/pdf_pages/pdf_page_1.png","diffImage":"./premium8/case_a/diff_current.png"},{"template":"premium8","caseId":"case_b","config":{"fontPairing":"lora","useCustomAccent":"true","accentColor":"#1f2937","highDensity":"true","headerStyle":"full-bleed","photo":"none","linkStyle":"standard","contentProfile":{"type":"no_summary","description":"Professional profile completely skipping the summary section"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium8/case_b/preview_current.png","pdfImage":"./premium8/case_b/pdf_pages/pdf_page_1.png","diffImage":"./premium8/case_b/diff_current.png"},{"template":"premium8","caseId":"case_c","config":{"fontPairing":"default","useCustomAccent":"true","accentColor":"default","highDensity":"false","headerStyle":"minimal","photo":"circle","linkStyle":"professional","contentProfile":{"type":"very_short","description":"Brief profile, single educational entry, no projects"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium8/case_c/preview_current.png","pdfImage":"./premium8/case_c/pdf_pages/pdf_page_1.png","diffImage":"./premium8/case_c/diff_current.png"},{"template":"premium9","caseId":"case_a","config":{"fontPairing":"default","useCustomAccent":"false","accentColor":"default","highDensity":"false","headerStyle":"full-bleed","photo":"none","linkStyle":"professional","contentProfile":{"type":"no_summary","description":"Professional profile completely skipping the summary section"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium9/case_a/preview_current.png","pdfImage":"./premium9/case_a/pdf_pages/pdf_page_1.png","diffImage":"./premium9/case_a/diff_current.png"},{"template":"premium9","caseId":"case_b","config":{"fontPairing":"default","useCustomAccent":"true","accentColor":"default","highDensity":"true","headerStyle":"minimal","photo":"circle","linkStyle":"standard","contentProfile":{"type":"very_short","description":"Brief profile, single educational entry, no projects"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium9/case_b/preview_current.png","pdfImage":"./premium9/case_b/pdf_pages/pdf_page_1.png","diffImage":"./premium9/case_b/diff_current.png"},{"template":"premium9","caseId":"case_c","config":{"fontPairing":"inter","useCustomAccent":"true","accentColor":"#2563eb","highDensity":"false","headerStyle":"card","photo":"none","linkStyle":"professional","contentProfile":{"type":"medium","description":"Standard details, medium experience, typical bullet points"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium9/case_c/preview_current.png","pdfImage":"./premium9/case_c/pdf_pages/pdf_page_1.png","diffImage":"./premium9/case_c/diff_current.png"},{"template":"premium10","caseId":"case_a","config":{"fontPairing":"default","useCustomAccent":"false","accentColor":"default","highDensity":"false","headerStyle":"minimal","photo":"circle","linkStyle":"professional","contentProfile":{"type":"very_short","description":"Brief profile, single educational entry, no projects"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium10/case_a/preview_current.png","pdfImage":"./premium10/case_a/pdf_pages/pdf_page_1.png","diffImage":"./premium10/case_a/diff_current.png"},{"template":"premium10","caseId":"case_b","config":{"fontPairing":"inter","useCustomAccent":"true","accentColor":"#2563eb","highDensity":"true","headerStyle":"card","photo":"none","linkStyle":"standard","contentProfile":{"type":"medium","description":"Standard details, medium experience, typical bullet points"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium10/case_b/preview_current.png","pdfImage":"./premium10/case_b/pdf_pages/pdf_page_1.png","diffImage":"./premium10/case_b/diff_current.png"},{"template":"premium10","caseId":"case_c","config":{"fontPairing":"sora","useCustomAccent":"true","accentColor":"#16a34a","highDensity":"false","headerStyle":"full-bleed","photo":"circle","linkStyle":"professional","contentProfile":{"type":"long","description":"Robust multiple-page profile with projects and certifications"}},"diffPercentage":0,"status":"PASS","previewImage":"./premium10/case_c/preview_current.png","pdfImage":"./premium10/case_c/pdf_pages/pdf_page_1.png","diffImage":"./premium10/case_c/diff_current.png"},{"template":"consulting_bcg","caseId":"case_a","config":{"fontPairing":"default","useCustomAccent":"false","accentColor":"default","highDensity":"false","headerStyle":"card","photo":"none","linkStyle":"professional","contentProfile":{"type":"medium","description":"Standard details, medium experience, typical bullet points"}},"diffPercentage":0,"status":"PASS","previewImage":"./consulting_bcg/case_a/preview_current.png","pdfImage":"./consulting_bcg/case_a/pdf_pages/pdf_page_1.png","diffImage":"./consulting_bcg/case_a/diff_current.png"},{"template":"consulting_bcg","caseId":"case_b","config":{"fontPairing":"sora","useCustomAccent":"true","accentColor":"#16a34a","highDensity":"true","headerStyle":"full-bleed","photo":"circle","linkStyle":"standard","contentProfile":{"type":"long","description":"Robust multiple-page profile with projects and certifications"}},"diffPercentage":0,"status":"PASS","previewImage":"./consulting_bcg/case_b/preview_current.png","pdfImage":"./consulting_bcg/case_b/pdf_pages/pdf_page_1.png","diffImage":"./consulting_bcg/case_b/diff_current.png"},{"template":"consulting_bcg","caseId":"case_c","config":{"fontPairing":"playfair","useCustomAccent":"true","accentColor":"#7c3aed","highDensity":"false","headerStyle":"minimal","photo":"none","linkStyle":"professional","contentProfile":{"type":"very_long","description":"Three-page profile, lengthy URLs, publications, and awards"}},"diffPercentage":0,"status":"PASS","previewImage":"./consulting_bcg/case_c/preview_current.png","pdfImage":"./consulting_bcg/case_c/pdf_pages/pdf_page_1.png","diffImage":"./consulting_bcg/case_c/diff_current.png"},{"template":"tech_faang","caseId":"case_a","config":{"fontPairing":"default","useCustomAccent":"false","accentColor":"default","highDensity":"false","headerStyle":"full-bleed","photo":"circle","linkStyle":"professional","contentProfile":{"type":"long","description":"Robust multiple-page profile with projects and certifications"}},"diffPercentage":0,"status":"PASS","previewImage":"./tech_faang/case_a/preview_current.png","pdfImage":"./tech_faang/case_a/pdf_pages/pdf_page_1.png","diffImage":"./tech_faang/case_a/diff_current.png"},{"template":"tech_faang","caseId":"case_b","config":{"fontPairing":"playfair","useCustomAccent":"true","accentColor":"#7c3aed","highDensity":"true","headerStyle":"minimal","photo":"none","linkStyle":"standard","contentProfile":{"type":"very_long","description":"Three-page profile, lengthy URLs, publications, and awards"}},"diffPercentage":0,"status":"PASS","previewImage":"./tech_faang/case_b/preview_current.png","pdfImage":"./tech_faang/case_b/pdf_pages/pdf_page_1.png","diffImage":"./tech_faang/case_b/diff_current.png"},{"template":"tech_faang","caseId":"case_c","config":{"fontPairing":"outfit","useCustomAccent":"true","accentColor":"#ea580c","highDensity":"false","headerStyle":"card","photo":"circle","linkStyle":"professional","contentProfile":{"type":"only_education","description":"Academic profile with credentials but zero experience"}},"diffPercentage":0,"status":"PASS","previewImage":"./tech_faang/case_c/preview_current.png","pdfImage":"./tech_faang/case_c/pdf_pages/pdf_page_1.png","diffImage":"./tech_faang/case_c/diff_current.png"},{"template":"harvard_ats","caseId":"case_a","config":{"fontPairing":"default","useCustomAccent":"false","accentColor":"default","highDensity":"false","headerStyle":"minimal","photo":"none","linkStyle":"professional","contentProfile":{"type":"very_long","description":"Three-page profile, lengthy URLs, publications, and awards"}},"diffPercentage":0,"status":"PASS","previewImage":"./harvard_ats/case_a/preview_current.png","pdfImage":"./harvard_ats/case_a/pdf_pages/pdf_page_1.png","diffImage":"./harvard_ats/case_a/diff_current.png"},{"template":"harvard_ats","caseId":"case_b","config":{"fontPairing":"outfit","useCustomAccent":"true","accentColor":"#ea580c","highDensity":"true","headerStyle":"card","photo":"circle","linkStyle":"standard","contentProfile":{"type":"only_education","description":"Academic profile with credentials but zero experience"}},"diffPercentage":0,"status":"PASS","previewImage":"./harvard_ats/case_b/preview_current.png","pdfImage":"./harvard_ats/case_b/pdf_pages/pdf_page_1.png","diffImage":"./harvard_ats/case_b/diff_current.png"},{"template":"harvard_ats","caseId":"case_c","config":{"fontPairing":"lora","useCustomAccent":"true","accentColor":"#1f2937","highDensity":"false","headerStyle":"full-bleed","photo":"none","linkStyle":"professional","contentProfile":{"type":"no_summary","description":"Professional profile completely skipping the summary section"}},"diffPercentage":0,"status":"PASS","previewImage":"./harvard_ats/case_c/preview_current.png","pdfImage":"./harvard_ats/case_c/pdf_pages/pdf_page_1.png","diffImage":"./harvard_ats/case_c/diff_current.png"},{"template":"swiss_minimal","caseId":"case_a","config":{"fontPairing":"default","useCustomAccent":"false","accentColor":"default","highDensity":"false","headerStyle":"card","photo":"circle","linkStyle":"professional","contentProfile":{"type":"only_education","description":"Academic profile with credentials but zero experience"}},"diffPercentage":0,"status":"PASS","previewImage":"./swiss_minimal/case_a/preview_current.png","pdfImage":"./swiss_minimal/case_a/pdf_pages/pdf_page_1.png","diffImage":"./swiss_minimal/case_a/diff_current.png"},{"template":"swiss_minimal","caseId":"case_b","config":{"fontPairing":"lora","useCustomAccent":"true","accentColor":"#1f2937","highDensity":"true","headerStyle":"full-bleed","photo":"none","linkStyle":"standard","contentProfile":{"type":"no_summary","description":"Professional profile completely skipping the summary section"}},"diffPercentage":0,"status":"PASS","previewImage":"./swiss_minimal/case_b/preview_current.png","pdfImage":"./swiss_minimal/case_b/pdf_pages/pdf_page_1.png","diffImage":"./swiss_minimal/case_b/diff_current.png"},{"template":"swiss_minimal","caseId":"case_c","config":{"fontPairing":"default","useCustomAccent":"true","accentColor":"default","highDensity":"false","headerStyle":"minimal","photo":"circle","linkStyle":"professional","contentProfile":{"type":"very_short","description":"Brief profile, single educational entry, no projects"}},"diffPercentage":0,"status":"PASS","previewImage":"./swiss_minimal/case_c/preview_current.png","pdfImage":"./swiss_minimal/case_c/pdf_pages/pdf_page_1.png","diffImage":"./swiss_minimal/case_c/diff_current.png"},{"template":"ats_classic","caseId":"case_a","config":{"fontPairing":"default","useCustomAccent":"false","accentColor":"default","highDensity":"false","headerStyle":"full-bleed","photo":"none","linkStyle":"professional","contentProfile":{"type":"no_summary","description":"Professional profile completely skipping the summary section"}},"diffPercentage":0,"status":"PASS","previewImage":"./ats_classic/case_a/preview_current.png","pdfImage":"./ats_classic/case_a/pdf_pages/pdf_page_1.png","diffImage":"./ats_classic/case_a/diff_current.png"},{"template":"ats_classic","caseId":"case_b","config":{"fontPairing":"default","useCustomAccent":"true","accentColor":"default","highDensity":"true","headerStyle":"minimal","photo":"circle","linkStyle":"standard","contentProfile":{"type":"very_short","description":"Brief profile, single educational entry, no projects"}},"diffPercentage":0,"status":"PASS","previewImage":"./ats_classic/case_b/preview_current.png","pdfImage":"./ats_classic/case_b/pdf_pages/pdf_page_1.png","diffImage":"./ats_classic/case_b/diff_current.png"},{"template":"ats_classic","caseId":"case_c","config":{"fontPairing":"inter","useCustomAccent":"true","accentColor":"#2563eb","highDensity":"false","headerStyle":"card","photo":"none","linkStyle":"professional","contentProfile":{"type":"medium","description":"Standard details, medium experience, typical bullet points"}},"diffPercentage":0,"status":"PASS","previewImage":"./ats_classic/case_c/preview_current.png","pdfImage":"./ats_classic/case_c/pdf_pages/pdf_page_1.png","diffImage":"./ats_classic/case_c/diff_current.png"},{"template":"ats_entry","caseId":"case_a","config":{"fontPairing":"default","useCustomAccent":"false","accentColor":"default","highDensity":"false","headerStyle":"minimal","photo":"circle","linkStyle":"professional","contentProfile":{"type":"very_short","description":"Brief profile, single educational entry, no projects"}},"diffPercentage":0,"status":"PASS","previewImage":"./ats_entry/case_a/preview_current.png","pdfImage":"./ats_entry/case_a/pdf_pages/pdf_page_1.png","diffImage":"./ats_entry/case_a/diff_current.png"},{"template":"ats_entry","caseId":"case_b","config":{"fontPairing":"inter","useCustomAccent":"true","accentColor":"#2563eb","highDensity":"true","headerStyle":"card","photo":"none","linkStyle":"standard","contentProfile":{"type":"medium","description":"Standard details, medium experience, typical bullet points"}},"diffPercentage":0,"status":"PASS","previewImage":"./ats_entry/case_b/preview_current.png","pdfImage":"./ats_entry/case_b/pdf_pages/pdf_page_1.png","diffImage":"./ats_entry/case_b/diff_current.png"},{"template":"ats_entry","caseId":"case_c","config":{"fontPairing":"sora","useCustomAccent":"true","accentColor":"#16a34a","highDensity":"false","headerStyle":"full-bleed","photo":"circle","linkStyle":"professional","contentProfile":{"type":"long","description":"Robust multiple-page profile with projects and certifications"}},"diffPercentage":0,"status":"PASS","previewImage":"./ats_entry/case_c/preview_current.png","pdfImage":"./ats_entry/case_c/pdf_pages/pdf_page_1.png","diffImage":"./ats_entry/case_c/diff_current.png"},{"template":"ats_senior","caseId":"case_a","config":{"fontPairing":"default","useCustomAccent":"false","accentColor":"default","highDensity":"false","headerStyle":"card","photo":"none","linkStyle":"professional","contentProfile":{"type":"medium","description":"Standard details, medium experience, typical bullet points"}},"diffPercentage":0,"status":"PASS","previewImage":"./ats_senior/case_a/preview_current.png","pdfImage":"./ats_senior/case_a/pdf_pages/pdf_page_1.png","diffImage":"./ats_senior/case_a/diff_current.png"},{"template":"ats_senior","caseId":"case_b","config":{"fontPairing":"sora","useCustomAccent":"true","accentColor":"#16a34a","highDensity":"true","headerStyle":"full-bleed","photo":"circle","linkStyle":"standard","contentProfile":{"type":"long","description":"Robust multiple-page profile with projects and certifications"}},"diffPercentage":0,"status":"PASS","previewImage":"./ats_senior/case_b/preview_current.png","pdfImage":"./ats_senior/case_b/pdf_pages/pdf_page_1.png","diffImage":"./ats_senior/case_b/diff_current.png"},{"template":"ats_senior","caseId":"case_c","config":{"fontPairing":"playfair","useCustomAccent":"true","accentColor":"#7c3aed","highDensity":"false","headerStyle":"minimal","photo":"none","linkStyle":"professional","contentProfile":{"type":"very_long","description":"Three-page profile, lengthy URLs, publications, and awards"}},"diffPercentage":0,"status":"PASS","previewImage":"./ats_senior/case_c/preview_current.png","pdfImage":"./ats_senior/case_c/pdf_pages/pdf_page_1.png","diffImage":"./ats_senior/case_c/diff_current.png"},{"template":"ats_lead","caseId":"case_a","config":{"fontPairing":"default","useCustomAccent":"false","accentColor":"default","highDensity":"false","headerStyle":"full-bleed","photo":"circle","linkStyle":"professional","contentProfile":{"type":"long","description":"Robust multiple-page profile with projects and certifications"}},"diffPercentage":0,"status":"PASS","previewImage":"./ats_lead/case_a/preview_current.png","pdfImage":"./ats_lead/case_a/pdf_pages/pdf_page_1.png","diffImage":"./ats_lead/case_a/diff_current.png"},{"template":"ats_lead","caseId":"case_b","config":{"fontPairing":"playfair","useCustomAccent":"true","accentColor":"#7c3aed","highDensity":"true","headerStyle":"minimal","photo":"none","linkStyle":"standard","contentProfile":{"type":"very_long","description":"Three-page profile, lengthy URLs, publications, and awards"}},"diffPercentage":0,"status":"PASS","previewImage":"./ats_lead/case_b/preview_current.png","pdfImage":"./ats_lead/case_b/pdf_pages/pdf_page_1.png","diffImage":"./ats_lead/case_b/diff_current.png"},{"template":"ats_lead","caseId":"case_c","config":{"fontPairing":"outfit","useCustomAccent":"true","accentColor":"#ea580c","highDensity":"false","headerStyle":"card","photo":"circle","linkStyle":"professional","contentProfile":{"type":"only_education","description":"Academic profile with credentials but zero experience"}},"diffPercentage":0,"status":"PASS","previewImage":"./ats_lead/case_c/preview_current.png","pdfImage":"./ats_lead/case_c/pdf_pages/pdf_page_1.png","diffImage":"./ats_lead/case_c/diff_current.png"},{"template":"ats_intern","caseId":"case_a","config":{"fontPairing":"default","useCustomAccent":"false","accentColor":"default","highDensity":"false","headerStyle":"minimal","photo":"none","linkStyle":"professional","contentProfile":{"type":"very_long","description":"Three-page profile, lengthy URLs, publications, and awards"}},"diffPercentage":0,"status":"PASS","previewImage":"./ats_intern/case_a/preview_current.png","pdfImage":"./ats_intern/case_a/pdf_pages/pdf_page_1.png","diffImage":"./ats_intern/case_a/diff_current.png"},{"template":"ats_intern","caseId":"case_b","config":{"fontPairing":"outfit","useCustomAccent":"true","accentColor":"#ea580c","highDensity":"true","headerStyle":"card","photo":"circle","linkStyle":"standard","contentProfile":{"type":"only_education","description":"Academic profile with credentials but zero experience"}},"diffPercentage":0,"status":"PASS","previewImage":"./ats_intern/case_b/preview_current.png","pdfImage":"./ats_intern/case_b/pdf_pages/pdf_page_1.png","diffImage":"./ats_intern/case_b/diff_current.png"},{"template":"ats_intern","caseId":"case_c","config":{"fontPairing":"lora","useCustomAccent":"true","accentColor":"#1f2937","highDensity":"false","headerStyle":"full-bleed","photo":"none","linkStyle":"professional","contentProfile":{"type":"no_summary","description":"Professional profile completely skipping the summary section"}},"diffPercentage":0,"status":"PASS","previewImage":"./ats_intern/case_c/preview_current.png","pdfImage":"./ats_intern/case_c/pdf_pages/pdf_page_1.png","diffImage":"./ats_intern/case_c/diff_current.png"},{"template":"ats_experienced","caseId":"case_a","config":{"fontPairing":"default","useCustomAccent":"false","accentColor":"default","highDensity":"false","headerStyle":"card","photo":"circle","linkStyle":"professional","contentProfile":{"type":"only_education","description":"Academic profile with credentials but zero experience"}},"diffPercentage":0,"status":"PASS","previewImage":"./ats_experienced/case_a/preview_current.png","pdfImage":"./ats_experienced/case_a/pdf_pages/pdf_page_1.png","diffImage":"./ats_experienced/case_a/diff_current.png"},{"template":"ats_experienced","caseId":"case_b","config":{"fontPairing":"lora","useCustomAccent":"true","accentColor":"#1f2937","highDensity":"true","headerStyle":"full-bleed","photo":"none","linkStyle":"standard","contentProfile":{"type":"no_summary","description":"Professional profile completely skipping the summary section"}},"diffPercentage":0,"status":"PASS","previewImage":"./ats_experienced/case_b/preview_current.png","pdfImage":"./ats_experienced/case_b/pdf_pages/pdf_page_1.png","diffImage":"./ats_experienced/case_b/diff_current.png"},{"template":"ats_experienced","caseId":"case_c","config":{"fontPairing":"default","useCustomAccent":"true","accentColor":"default","highDensity":"false","headerStyle":"minimal","photo":"circle","linkStyle":"professional","contentProfile":{"type":"very_short","description":"Brief profile, single educational entry, no projects"}},"diffPercentage":0,"status":"PASS","previewImage":"./ats_experienced/case_c/preview_current.png","pdfImage":"./ats_experienced/case_c/pdf_pages/pdf_page_1.png","diffImage":"./ats_experienced/case_c/diff_current.png"},{"template":"academic_cv","caseId":"case_a","config":{"fontPairing":"default","useCustomAccent":"false","accentColor":"default","highDensity":"false","headerStyle":"full-bleed","photo":"none","linkStyle":"professional","contentProfile":{"type":"no_summary","description":"Professional profile completely skipping the summary section"}},"diffPercentage":0,"status":"PASS","previewImage":"./academic_cv/case_a/preview_current.png","pdfImage":"./academic_cv/case_a/pdf_pages/pdf_page_1.png","diffImage":"./academic_cv/case_a/diff_current.png"},{"template":"academic_cv","caseId":"case_b","config":{"fontPairing":"default","useCustomAccent":"true","accentColor":"default","highDensity":"true","headerStyle":"minimal","photo":"circle","linkStyle":"standard","contentProfile":{"type":"very_short","description":"Brief profile, single educational entry, no projects"}},"diffPercentage":0,"status":"PASS","previewImage":"./academic_cv/case_b/preview_current.png","pdfImage":"./academic_cv/case_b/pdf_pages/pdf_page_1.png","diffImage":"./academic_cv/case_b/diff_current.png"},{"template":"academic_cv","caseId":"case_c","config":{"fontPairing":"inter","useCustomAccent":"true","accentColor":"#2563eb","highDensity":"false","headerStyle":"card","photo":"none","linkStyle":"professional","contentProfile":{"type":"medium","description":"Standard details, medium experience, typical bullet points"}},"diffPercentage":0,"status":"PASS","previewImage":"./academic_cv/case_c/preview_current.png","pdfImage":"./academic_cv/case_c/pdf_pages/pdf_page_1.png","diffImage":"./academic_cv/case_c/diff_current.png"},{"template":"engineer_ats","caseId":"case_a","config":{"fontPairing":"default","useCustomAccent":"false","accentColor":"default","highDensity":"false","headerStyle":"minimal","photo":"circle","linkStyle":"professional","contentProfile":{"type":"very_short","description":"Brief profile, single educational entry, no projects"}},"diffPercentage":0,"status":"PASS","previewImage":"./engineer_ats/case_a/preview_current.png","pdfImage":"./engineer_ats/case_a/pdf_pages/pdf_page_1.png","diffImage":"./engineer_ats/case_a/diff_current.png"},{"template":"engineer_ats","caseId":"case_b","config":{"fontPairing":"inter","useCustomAccent":"true","accentColor":"#2563eb","highDensity":"true","headerStyle":"card","photo":"none","linkStyle":"standard","contentProfile":{"type":"medium","description":"Standard details, medium experience, typical bullet points"}},"diffPercentage":0,"status":"PASS","previewImage":"./engineer_ats/case_b/preview_current.png","pdfImage":"./engineer_ats/case_b/pdf_pages/pdf_page_1.png","diffImage":"./engineer_ats/case_b/diff_current.png"},{"template":"engineer_ats","caseId":"case_c","config":{"fontPairing":"sora","useCustomAccent":"true","accentColor":"#16a34a","highDensity":"false","headerStyle":"full-bleed","photo":"circle","linkStyle":"professional","contentProfile":{"type":"long","description":"Robust multiple-page profile with projects and certifications"}},"diffPercentage":0,"status":"PASS","previewImage":"./engineer_ats/case_c/preview_current.png","pdfImage":"./engineer_ats/case_c/pdf_pages/pdf_page_1.png","diffImage":"./engineer_ats/case_c/diff_current.png"}];
+    function showCompare(idx) {
+      const c = cases[idx];
+      document.getElementById('compare-section').style.display = 'block';
+      document.getElementById('compare-title').innerText = 'Comparison: ' + c.template + ' (' + c.caseId + ')';
+      document.getElementById('img-preview').src = c.previewImage;
+      document.getElementById('img-pdf').src = c.pdfImage;
+      document.getElementById('img-diff').src = c.diffImage;
+      
+      // Scroll to view
+      document.getElementById('compare-section').scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
+  
