@@ -1530,7 +1530,7 @@ const ResumeEditor = () => {
             <main className="editor-main">
               {activeSection === "Profile" && (
                 <Section title="Profile">
-                  <Field label="Full name" value={resume.profileInfo.fullName} placeholder="John Doe" hint="Enter your full name." sanitize={sanitizeName} onChange={(v) => updateField("profileInfo", "fullName", v)} />
+                  <Field label="Full name" value={resume.profileInfo.fullName} placeholder="John Doe" hint="Enter your full name." sanitize={sanitizeName} maxLength={100} onChange={(v) => updateField("profileInfo", "fullName", v)} />
                   <Field label="Designation" value={resume.profileInfo.designation} placeholder="Software Engineer" hint="Your professional title." sanitize={sanitizeRole} onChange={(v) => updateField("profileInfo", "designation", v)} />
                   <div className="field">
                 <label>Profile photo</label>

@@ -86,7 +86,7 @@ const Register = () => {
               name="name"
               required
               minLength={2}
-              maxLength={15}
+              maxLength={100}
               value={form.name}
               onChange={handleChange}
               placeholder="Arjun Kapoor"

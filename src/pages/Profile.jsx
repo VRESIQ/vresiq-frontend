@@ -201,7 +201,7 @@ const Profile = () => {
                 onChange={(e) => setName(sanitizeStrictText(e.target.value))}
                 required
                 minLength={2}
-                maxLength={40}
+                maxLength={100}
                 placeholder="Enter your name"
               />
             </div>
