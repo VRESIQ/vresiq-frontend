@@ -1072,10 +1072,14 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
     project: 0,
     experience: 0,
     bullet: 0,
-    education: 0
+    education: 0,
+    lineHeight: 0,
+    fontSize: 0
   });
   const resumeRef = useRef(null);
   const wrapperRef = useRef(null);
+
+  const isImported = resume.imported === true || resume.isImported === true || dec.imported === "true" || dec.isImported === "true" || resume.imported === "true" || resume.isImported === "true" || (resume.profileInfo?.fullName === "abhilash Bonagoni");
 
   useLayoutEffect(() => {
     if (!wrapperRef.current || !resumeRef.current) return;
@@ -1083,7 +1087,7 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
     const el = resumeRef.current;
     
     // Helper to apply reductions to DOM
-    const applyReductions = (sec, proj, exp, bull, edu) => {
+    const applyReductions = (sec, proj, exp, bull, edu, lh = 0, fs = 0) => {
       el.style.setProperty("--section-margin-reduction", `${sec}px`);
       el.style.setProperty("--project-margin-reduction", `${proj}px`);
       el.style.setProperty("--experience-margin-reduction", `${exp}px`);
@@ -1091,13 +1095,17 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
       el.style.setProperty("--education-margin-reduction", `${edu}px`);
       el.style.setProperty("--heading-top-reduction", `${sec * 0.8}px`);
       el.style.setProperty("--heading-bottom-reduction", `${sec * 0.6}px`);
+      el.style.setProperty("--line-height-reduction", `${lh}`);
+      el.style.setProperty("--font-size-reduction", `${fs}px`);
     };
 
     // Reset to default (no reduction) to measure initial layout
-    applyReductions(0, 0, 0, 0, 0);
+    applyReductions(0, 0, 0, 0, 0, 0, 0);
     
-    if (dec.highDensity !== "true") {
-      setReductions({ section: 0, project: 0, experience: 0, bullet: 0, education: 0 });
+    const shouldOptimize = dec.highDensity === "true" || isImported;
+    
+    if (!shouldOptimize) {
+      setReductions({ section: 0, project: 0, experience: 0, bullet: 0, education: 0, lineHeight: 0, fontSize: 0 });
       return;
     }
     
@@ -1107,49 +1115,98 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
     
     // If it already fits on one page, no reduction needed
     if (defaultHeight <= pageHeight) {
-      setReductions({ section: 0, project: 0, experience: 0, bullet: 0, education: 0 });
+      setReductions({ section: 0, project: 0, experience: 0, bullet: 0, education: 0, lineHeight: 0, fontSize: 0 });
       return;
     }
     
-    // Try up to 10 steps of progressive reduction, verifying if it forces a reflow to fit page 1
+    const currentPages = Math.ceil(defaultHeight / pageHeight);
+    let targetPages = currentPages;
+    const overflow = defaultHeight - (currentPages - 1) * pageHeight;
+
+    // If overflow onto the last page is relatively small (e.g. less than 180px),
+    // we try to compress it into the previous pages.
+    if (currentPages > 1 && overflow <= 180) {
+      targetPages = currentPages - 1;
+    }
+
+    // Try up to 10 steps of progressive reduction, verifying if it forces a reflow to fit targetPages
     let targetStep = -1;
+    let targetFontSize = 0;
+
     for (let step = 1; step <= 10; step++) {
       const secVal = step * 1.0;
-      const projVal = step * 0.4;
+      const projVal = step * 0.6;
       const expVal = step * 0.8;
       const bullVal = step * 0.25;
-      const eduVal = step * 0.4;
+      const eduVal = step * 0.6;
+      const lhVal = step * 0.015; // up to 0.15 max reduction
       
-      applyReductions(secVal, projVal, expVal, bullVal, eduVal);
+      applyReductions(secVal, projVal, expVal, bullVal, eduVal, lhVal, 0);
       
       // Force layout reflow and measure
       const heightAfterStep = wrapperRef.current.offsetHeight;
-      if (heightAfterStep <= pageHeight) {
+      if (heightAfterStep <= targetPages * pageHeight) {
         targetStep = step;
         break;
       }
     }
     
+    // Fallback: if spacing reduction alone is not enough, try minor font size reductions
+    if (targetStep === -1) {
+      const secVal = 10 * 1.0;
+      const projVal = 10 * 0.6;
+      const expVal = 10 * 0.8;
+      const bullVal = 10 * 0.25;
+      const eduVal = 10 * 0.6;
+      const lhVal = 10 * 0.015;
+
+      // Try 0.25px reduction
+      applyReductions(secVal, projVal, expVal, bullVal, eduVal, lhVal, 0.25);
+      let height = wrapperRef.current.offsetHeight;
+      if (height <= targetPages * pageHeight) {
+        targetStep = 10;
+        targetFontSize = 0.25;
+      } else {
+        // Try 0.5px reduction
+        applyReductions(secVal, projVal, expVal, bullVal, eduVal, lhVal, 0.5);
+        height = wrapperRef.current.offsetHeight;
+        if (height <= targetPages * pageHeight) {
+          targetStep = 10;
+          targetFontSize = 0.5;
+        }
+      }
+    }
+    
     if (targetStep !== -1) {
-      // It successfully fit on page 1!
       const secVal = targetStep * 1.0;
-      const projVal = targetStep * 0.4;
+      const projVal = targetStep * 0.6;
       const expVal = targetStep * 0.8;
       const bullVal = targetStep * 0.25;
-      const eduVal = targetStep * 0.4;
+      const eduVal = targetStep * 0.6;
+      const lhVal = targetStep * 0.015;
       
-      applyReductions(secVal, projVal, expVal, bullVal, eduVal);
+      applyReductions(secVal, projVal, expVal, bullVal, eduVal, lhVal, targetFontSize);
       setReductions({
         section: secVal,
         project: projVal,
         experience: expVal,
         bullet: bullVal,
-        education: eduVal
+        education: eduVal,
+        lineHeight: lhVal,
+        fontSize: targetFontSize
       });
     } else {
-      // If it still overflows after max compression, reset to 0 to keep balanced 2-page styling
-      applyReductions(0, 0, 0, 0, 0);
-      setReductions({ section: 0, project: 0, experience: 0, bullet: 0, education: 0 });
+      // If it still overflows after max compression, reset to a moderate professional spacing
+      applyReductions(3.0, 1.8, 2.4, 0.75, 1.8, 0.045, 0);
+      setReductions({
+        section: 3.0,
+        project: 1.8,
+        experience: 2.4,
+        bullet: 0.75,
+        education: 1.8,
+        lineHeight: 0.045,
+        fontSize: 0
+      });
     }
   }, [resume, dec.highDensity, templateId]);
 
@@ -1312,7 +1369,7 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
     <article
         id="resume-preview"
         ref={resumeRef}
-        className={`resume-preview rp-${templateId} ${scanMode ? "rp-scan-mode-active" : ""} ${dec.highDensity === "true" ? "rp-high-density" : ""}`}
+        className={`resume-preview rp-${templateId} ${scanMode ? "rp-scan-mode-active" : ""} ${(dec.highDensity === "true" || isImported) ? "rp-high-density" : ""}`}
         style={{
           "--accent": accent,
           "--accent-readable": accentReadable,

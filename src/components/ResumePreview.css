@@ -2079,14 +2079,14 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 
   /* Allow experience/project containers to split naturally, preventing massive gaps */
   .rp-item {
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
+    page-break-inside: auto !important;
+    break-inside: auto !important;
   }
 
   /* Keep sections together whenever possible */
   .rp-section, section {
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
+    page-break-inside: auto !important;
+    break-inside: auto !important;
   }
 
   .rp-desc-list,
@@ -2667,6 +2667,16 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 
 .resume-preview.rp-high-density {
   /* High-density active class base container rules */
+  --rp-fs-base: calc(12px - var(--font-size-reduction, 0px)) !important;
+  --rp-fs-name: calc(26px - var(--font-size-reduction, 0px) * 2) !important;
+  --rp-fs-role: calc(13px - var(--font-size-reduction, 0px)) !important;
+  --rp-fs-stitle: calc(13.5px - var(--font-size-reduction, 0px)) !important;
+  --rp-fs-item-title: calc(12.5px - var(--font-size-reduction, 0px)) !important;
+  --rp-fs-item-sub: calc(11.5px - var(--font-size-reduction, 0px)) !important;
+  --rp-fs-body: calc(11.5px - var(--font-size-reduction, 0px)) !important;
+  --rp-fs-meta: calc(10.5px - var(--font-size-reduction, 0px)) !important;
+  --rp-lh-body: calc(1.55 - var(--line-height-reduction, 0)) !important;
+  --rp-lh-summary: calc(1.6 - var(--line-height-reduction, 0)) !important;
 }
 
 .resume-preview.rp-high-density .rp-section,
