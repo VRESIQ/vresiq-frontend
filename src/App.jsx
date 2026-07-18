@@ -71,6 +71,7 @@ const lazyWithRetry = (importFn) => {
 
 const ResumeEditor = lazyWithRetry(() => import("./pages/ResumeEditor"));
 const AdminDashboard = lazyWithRetry(() => import("./pages/AdminDashboard"));
+const ResumeReconstructionStudio = lazyWithRetry(() => import("./pages/ResumeReconstructionStudio"));
 
 // Register global error listeners for Vite CSS preload errors
 const handlePreloadFailure = (msg) => {
@@ -181,6 +182,16 @@ function App() {
                 <PrivateRoute>
                   <AdminRoute>
                     <AdminDashboard />
+                  </AdminRoute>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/admin/reconstruct"
+              element={
+                <PrivateRoute>
+                  <AdminRoute>
+                    <ResumeReconstructionStudio />
                   </AdminRoute>
                 </PrivateRoute>
               }

@@ -147,3 +147,16 @@ export const deleteAdminResume = (resumeId) => axiosInstance.delete(`/api/admin/
 export const getAdminPayments = () => axiosInstance.get("/api/admin/payments", { skipLoader: true });
 export const getAdminAiStats = () => axiosInstance.get("/api/admin/ai-stats", { skipLoader: true });
 export const updateAdminSubscription = (userId, plan) => axiosInstance.put(`/api/admin/users/${userId}/subscription?plan=${plan}`, {}, { skipLoader: true });
+
+// ─── ADMIN RECONSTRUCTION STUDIO ─────────────────────────
+export const uploadReconstructResume = (file, profile) => {
+  const form = new FormData();
+  form.append("file", file);
+  form.append("profile", profile);
+  return axiosInstance.post("/api/admin/reconstruct/upload", form, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+};
+
+export const enhanceReconstructBullet = (bulletText, tone) =>
+  axiosInstance.post("/api/admin/reconstruct/enhance-bullet", { bulletText, tone });

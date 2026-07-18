@@ -161,6 +161,7 @@ const AdminDashboard = () => {
       <nav className="dash-nav">
         <NavLogo className="dash-logo" />
         <div className="dash-nav-right">
+          <Link to="/admin/reconstruct" className="nav-link">Reconstruction Studio</Link>
           <Link to="/dashboard" className="nav-link">User Dashboard</Link>
           <Link to="/profile" className="nav-link">Profile</Link>
           <ThemeToggle />
