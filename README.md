@@ -1,4 +1,4 @@
-# VResIQ Frontend
+# VRESIQ Frontend
 
 [![Root Docs](https://img.shields.io/badge/Root%20Docs-Read%20me-111827?style=for-the-badge)](../README.md)
 [![Backend](https://img.shields.io/badge/Backend-Spring%20Boot-6DB33F?style=for-the-badge)](../vresiq-backend/README.md)
