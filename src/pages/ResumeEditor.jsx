@@ -1035,7 +1035,9 @@ const ResumeEditor = () => {
               width: 816px !important; /* Force exact same width as desktop live preview */
               max-width: 816px !important;
               height: auto !important;
-              min-height: 1056px !important; /* Maintain standard Letter sheet aspect ratio */
+              /* The PDF footer reserves part of the Letter page.  A 1056px floor
+                 therefore overflows the printable area and creates a blank page. */
+              min-height: 0 !important;
               margin: 0 auto !important;
               padding: 0 !important; /* Retain only the template's internal spacing to align text & photos */
               box-shadow: none !important;
@@ -1044,6 +1046,13 @@ const ResumeEditor = () => {
               visibility: visible !important;
               box-sizing: border-box !important;
               background-color: #ffffff !important;
+            }
+
+            /* The page-break guide is a preview-only decoration.  Keep it out of
+               the serialized export even if a browser does not apply its media rule. */
+            #resume-preview::after,
+            .resume-preview::after {
+              display: none !important;
             }
             
             /* Ensure headers, icons, and text are visible and retain their template display behaviors (flex, grid, etc.) */
