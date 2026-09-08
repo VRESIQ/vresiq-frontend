@@ -1048,13 +1048,6 @@ const ResumeEditor = () => {
               background-color: #ffffff !important;
             }
 
-            /* The page-break guide is a preview-only decoration.  Keep it out of
-               the serialized export even if a browser does not apply its media rule. */
-            #resume-preview::after,
-            .resume-preview::after {
-              display: none !important;
-            }
-            
             /* Ensure headers, icons, and text are visible and retain their template display behaviors (flex, grid, etc.) */
             header, .rp-header, .rp-ats-header, .rp-ats-header-left, .rp-academic-header {
               visibility: visible !important;

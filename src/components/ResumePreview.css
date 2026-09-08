@@ -104,34 +104,6 @@
   line-height: var(--rp-lh-body);
 }
 
-/* ── Page-break guide line (screen only) ────────────────────────────────────
-   Draws a subtle dashed line at every 1056 px so users can see exactly where
-   page breaks will fall in the exported PDF.  The line is purely decorative:
-   pointer-events:none, display:none in @media print, no layout impact.
-   ─────────────────────────────────────────────────────────────────────────── */
-.resume-preview::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  background-image: 
-    linear-gradient(to bottom, transparent 1007px, rgba(180, 180, 180, 0.45) 1007px, rgba(180, 180, 180, 0.45) 1008px, transparent 1008px),
-    linear-gradient(to bottom, transparent 1975px, rgba(180, 180, 180, 0.45) 1975px, rgba(180, 180, 180, 0.45) 1976px, transparent 1976px),
-    linear-gradient(to bottom, transparent 2943px, rgba(180, 180, 180, 0.45) 2943px, rgba(180, 180, 180, 0.45) 2944px, transparent 2944px),
-    linear-gradient(to bottom, transparent 3911px, rgba(180, 180, 180, 0.45) 3911px, rgba(180, 180, 180, 0.45) 3912px, transparent 3912px);
-  background-repeat: no-repeat;
-  z-index: 50;
-}
-
-@media print {
-  .resume-preview::after {
-    display: none !important;
-  }
-}
-
 /* ── Text selection inside preview — soft blue, never browser-default black */
 .resume-preview ::selection {
   background: rgba(26, 95, 180, 0.18);
