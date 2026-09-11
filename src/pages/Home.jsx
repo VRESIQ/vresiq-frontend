@@ -267,7 +267,7 @@ const Home = () => {
           <FeatureCard
             index={4} delay={240}
             title="One-click PDF"
-            desc="High-fidelity PDF export matching the live preview exactly. Free users get a minimal watermark; Pro exports are clean."
+            desc="High-fidelity PDF export matching the live preview exactly. Clean exports with no watermark."
           />
           <FeatureCard
             index={5} delay={320}
