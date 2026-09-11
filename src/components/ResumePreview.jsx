@@ -1434,6 +1434,12 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
           </>
         )}
 
+        {isFreePlan && (
+          <div className="watermark-footer" aria-hidden="true">
+            Made with VRESIQ
+          </div>
+        )}
+
       </article>
   );
 };
