@@ -593,11 +593,32 @@ const boldCandidateName = (text, fullName) => {
 };
 
 // Formats descriptions and parses newlines/bullets into semantic list items
-const renderDescription = (text, fullName, scanMode) => {
+const renderDescription = (text, fullName, scanMode, preserveWrappedLines = false) => {
   if (!text) return null;
   const strText = String(text);
   const lines = strText.split('\n').map(l => l.trim()).filter(Boolean);
   const isBulletList = lines.some(l => l.startsWith('•') || l.startsWith('-') || l.startsWith('*'));
+
+  if (preserveWrappedLines) {
+    const items = [];
+    let hasExplicitBullet = false;
+    for (const line of lines) {
+      const bullet = line.match(/^[•\-*]\s*/);
+      if (bullet) {
+        hasExplicitBullet = true;
+        items.push(line.replace(/^[•\-*]\s*/, ''));
+      } else if (items.length) {
+        items[items.length - 1] += ` ${line}`;
+      } else {
+        items.push(line);
+      }
+    }
+    if (hasExplicitBullet) {
+      return <ul className="rp-desc-list">{items.map((line, idx) => <li key={idx}>{linkifyElements(boldCandidateName(line, fullName))}</li>)}</ul>;
+    }
+    const paragraph = items.join(' ');
+    return <span className="rp-desc-text">{linkifyElements(boldCandidateName(paragraph, fullName))}</span>;
+  }
   
   if (isBulletList || lines.length > 1) {
     return (
@@ -617,7 +638,7 @@ const renderDescription = (text, fullName, scanMode) => {
   return <span className="rp-desc-text">{linkifyElements(boldCandidateName(strText, fullName))}</span>;
 };
 
-const ExperienceSection = ({ items = [], showIcon, dec, isTimeline = false, scanMode = false, sectionNumber, fullName, title = "Experience", hasBullets = true }) => {
+const ExperienceSection = ({ items = [], showIcon, dec, isTimeline = false, scanMode = false, sectionNumber, fullName, title = "Experience", hasBullets = true, preserveWrappedLines = false }) => {
   if (!items.length) return null;
   const Wrapper = hasBullets ? "ul" : "div";
   const ItemWrapper = hasBullets ? "li" : "div";
@@ -642,7 +663,7 @@ const ExperienceSection = ({ items = [], showIcon, dec, isTimeline = false, scan
             </div>
             {hasText(item.description) && (
               <div className="rp-item-desc">
-                {renderDescription(item.description, fullName, scanMode)}
+                {renderDescription(item.description, fullName, scanMode, preserveWrappedLines)}
               </div>
             )}
           </ItemWrapper>
@@ -652,7 +673,7 @@ const ExperienceSection = ({ items = [], showIcon, dec, isTimeline = false, scan
   );
 };
 
-const EducationSection = ({ items = [], showIcon, dec, sectionNumber, fullName, scanMode, hasBullets = true }) => {
+const EducationSection = ({ items = [], showIcon, dec, sectionNumber, fullName, scanMode, hasBullets = true, preserveWrappedLines = false }) => {
   if (!items.length) return null;
   const Wrapper = hasBullets ? "ul" : "div";
   const ItemWrapper = hasBullets ? "li" : "div";
@@ -679,7 +700,7 @@ const EducationSection = ({ items = [], showIcon, dec, sectionNumber, fullName, 
             )}
             {hasText(item.description) && (
               <div className="rp-item-desc" style={{ marginTop: "4px" }}>
-                {renderDescription(item.description, fullName, scanMode)}
+                {renderDescription(item.description, fullName, scanMode, preserveWrappedLines)}
               </div>
             )}
           </ItemWrapper>
@@ -689,7 +710,7 @@ const EducationSection = ({ items = [], showIcon, dec, sectionNumber, fullName, 
   );
 };
 
-const ProjectsSection = ({ items = [], showIcon, dec, scanMode = false, sectionNumber, fullName, hasBullets = true }) => {
+const ProjectsSection = ({ items = [], showIcon, dec, scanMode = false, sectionNumber, fullName, hasBullets = true, preserveWrappedLines = false }) => {
   if (!items.length) return null;
   const Wrapper = hasBullets ? "ul" : "div";
   const ItemWrapper = hasBullets ? "li" : "div";
@@ -718,7 +739,7 @@ const ProjectsSection = ({ items = [], showIcon, dec, scanMode = false, sectionN
             })()}
             {hasText(item.description) && (
               <div className="rp-item-desc">
-                {renderDescription(item.description, fullName, scanMode)}
+                {renderDescription(item.description, fullName, scanMode, preserveWrappedLines)}
               </div>
             )}
             {[item.github, item.liveDemo].filter(hasText).length > 0 && (
@@ -782,12 +803,12 @@ const CertsSection = ({ items = [], showIcon, dec, sectionNumber, hasBullets = t
   );
 };
 
-const SummarySection = ({ profileInfo = {}, showIcon, dec, scanMode = false, sectionNumber, fullName }) =>
+const SummarySection = ({ profileInfo = {}, showIcon, dec, scanMode = false, sectionNumber, fullName, preserveWrappedLines = false }) =>
   hasText(profileInfo.summary) ? (
     <section className="rp-section">
       <STitle showIcon={showIcon} dec={dec} sectionNumber={sectionNumber}>Summary</STitle>
       <div className="rp-summary" style={{ fontSize: "var(--rp-fs-body)", lineHeight: "var(--rp-lh-body)" }}>
-        {renderDescription(profileInfo.summary, fullName, scanMode)}
+        {renderDescription(profileInfo.summary, fullName, scanMode, preserveWrappedLines)}
       </div>
     </section>
   ) : null;
@@ -821,7 +842,7 @@ const InterestsSection = ({ items = [], showIcon, dec, sectionNumber, hasBullets
   );
 };
 
-const CustomSection = ({ title, items = [], showIcon, dec, scanMode = false, sectionNumber, fullName, hasBullets = true }) => {
+const CustomSection = ({ title, items = [], showIcon, dec, scanMode = false, sectionNumber, fullName, hasBullets = true, preserveWrappedLines = false }) => {
   const filled = (items || []).filter(item => hasText(item.title) || hasText(item.description));
   if (!filled.length) return null;
   const Wrapper = hasBullets ? "ul" : "div";
@@ -841,10 +862,10 @@ const CustomSection = ({ title, items = [], showIcon, dec, scanMode = false, sec
             {hasText(item.subtitle) && <p className="rp-item-sub">{renderLinkOrText(item.subtitle, "rp-custom-link")}</p>}
             {hasText(item.description) && (
               <div className="rp-item-desc">
-                {renderDescription(item.description, fullName, scanMode)}
+                {renderDescription(item.description, fullName, scanMode, preserveWrappedLines)}
               </div>
             )}
-            {hasText(item.url) && (
+            {hasText(item.url) && !(isUrl(item.title) && isUrl(item.url) && item.title.trim().replace(/^(https?:\/\/)?(www\.)?/i, "").replace(/\/$/, "").toLowerCase() === item.url.trim().replace(/^(https?:\/\/)?(www\.)?/i, "").replace(/\/$/, "").toLowerCase()) && (
               <div className="rp-item-url" style={{ marginTop: "2px", fontSize: "var(--rp-fs-meta)" }}>
                 <a
                   href={formatUrl(item.url)}
@@ -863,7 +884,7 @@ const CustomSection = ({ title, items = [], showIcon, dec, scanMode = false, sec
   );
 };
 
-const PublicationsSection = ({ title, items = [], fullName, dec, sectionNumber, hasBullets = true }) => {
+const PublicationsSection = ({ title, items = [], fullName, dec, sectionNumber, hasBullets = true, preserveWrappedLines = false }) => {
   const filled = (items || []).filter(item => hasText(item.title));
   if (!filled.length) return null;
   const Wrapper = hasBullets ? "ul" : "div";
@@ -908,7 +929,7 @@ const PublicationsSection = ({ title, items = [], fullName, dec, sectionNumber, 
                 {/* 4. Abstract — falls back to description if abstract field is absent (custom section schema) */}
                 {(hasText(item.abstract) || hasText(item.description)) && (
                   <div className="rp-publication-abstract" style={{ fontSize: "var(--rp-fs-body)", color: "var(--rp-body-color, #333)", marginTop: "4px" }}>
-                    {renderDescription(item.abstract || item.description, fullName)}
+                    {renderDescription(item.abstract || item.description, fullName, false, preserveWrappedLines)}
                   </div>
                 )}
 
@@ -929,7 +950,7 @@ const PublicationsSection = ({ title, items = [], fullName, dec, sectionNumber, 
   );
 };
 
-const PatentsSection = ({ title, items = [], fullName, dec, sectionNumber, hasBullets = true }) => {
+const PatentsSection = ({ title, items = [], fullName, dec, sectionNumber, hasBullets = true, preserveWrappedLines = false }) => {
   const filled = (items || []).filter(item => hasText(item.title));
   if (!filled.length) return null;
   const Wrapper = hasBullets ? "ul" : "div";
@@ -950,7 +971,7 @@ const PatentsSection = ({ title, items = [], fullName, dec, sectionNumber, hasBu
               {hasText(item.date) && <span className="rp-citation-date"> ({formatPartialDate(item.date)})</span>}
               {hasText(item.description) && (
                 <div className="rp-citation-authors" style={{ marginTop: "2px", fontSize: "var(--rp-fs-meta)", color: "#555" }}>
-                  {renderDescription(item.description, fullName)}
+                  {renderDescription(item.description, fullName, false, preserveWrappedLines)}
                 </div>
               )}
             </div>
@@ -961,7 +982,7 @@ const PatentsSection = ({ title, items = [], fullName, dec, sectionNumber, hasBu
   );
 };
 
-const AwardsSection = ({ title, items = [], dec, sectionNumber, hasBullets = true }) => {
+const AwardsSection = ({ title, items = [], dec, sectionNumber, hasBullets = true, preserveWrappedLines = false }) => {
   const filled = (items || []).filter(item => hasText(item.title));
   if (!filled.length) return null;
   const Wrapper = hasBullets ? "ul" : "div";
@@ -983,7 +1004,7 @@ const AwardsSection = ({ title, items = [], dec, sectionNumber, hasBullets = tru
             )}
             {hasText(item.description) && (
               <div className="rp-item-desc">
-                {renderDescription(item.description, undefined)}
+                {renderDescription(item.description, undefined, false, preserveWrappedLines)}
               </div>
             )}
           </ItemWrapper>
@@ -994,7 +1015,7 @@ const AwardsSection = ({ title, items = [], dec, sectionNumber, hasBullets = tru
 };
 
 
-const TechnicalProfilesSection = ({ title, items = [], dec, sectionNumber, fullName, hasBullets = true }) => {
+const TechnicalProfilesSection = ({ title, items = [], dec, sectionNumber, fullName, hasBullets = true, preserveWrappedLines = false }) => {
   const filled = (items || []).filter(item => hasText(item.title));
   if (!filled.length) return null;
   const Wrapper = hasBullets ? "ul" : "div";
@@ -1034,7 +1055,7 @@ const TechnicalProfilesSection = ({ title, items = [], dec, sectionNumber, fullN
               </div>
               {hasText(item.description) && (
                 <div className="rp-item-desc rp-tech-profile-desc rp-tech-profile-highlight rp-tech-profile-ranking" style={{ marginTop: "2px" }}>
-                  {renderDescription(item.description, fullName)}
+                  {renderDescription(item.description, fullName, false, preserveWrappedLines)}
                 </div>
               )}
             </ItemWrapper>
@@ -1045,7 +1066,7 @@ const TechnicalProfilesSection = ({ title, items = [], dec, sectionNumber, fullN
   );
 };
 
-const MembershipsSection = ({ title, items = [], dec, sectionNumber, fullName, hasBullets = true }) => {
+const MembershipsSection = ({ title, items = [], dec, sectionNumber, fullName, hasBullets = true, preserveWrappedLines = false }) => {
   const filled = (items || []).filter(item => hasText(item.title));
   if (!filled.length) return null;
   const Wrapper = hasBullets ? "ul" : "div";
@@ -1076,7 +1097,7 @@ const MembershipsSection = ({ title, items = [], dec, sectionNumber, fullName, h
             </div>
             {hasText(item.description) && (
               <div className="rp-item-desc" style={{ marginTop: "2px" }}>
-                {renderDescription(item.description, fullName)}
+                {renderDescription(item.description, fullName, false, preserveWrappedLines)}
               </div>
             )}
           </ItemWrapper>
@@ -1330,7 +1351,14 @@ const ResumePreview = ({ resume = {}, isFreePlan = false, paginationMode = "defa
   }
 
   const scanMode = false;
-  const commonProps = { showIcon: showIcons, dec, scanMode, templateId, fullName: resume.profileInfo?.fullName };
+  const commonProps = {
+    showIcon: showIcons,
+    dec,
+    scanMode,
+    templateId,
+    fullName: resume.profileInfo?.fullName,
+    preserveWrappedLines: paginationMode === "flow",
+  };
 
   // Parse Section Order
   const isFresher = (res) => {

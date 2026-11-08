@@ -153,3 +153,4 @@ proof-edge.out.log
 split-audit.html
 src/audit/
 output/split-audit/
+tools/reconstruction-quality/canada-tester-evidence/

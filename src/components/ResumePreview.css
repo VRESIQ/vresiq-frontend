@@ -2712,7 +2712,9 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
     margin: 0 !important;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
-    --rp-section-margin-bottom: 16px;
+    /* Leave enough page-fragmentation slack for near-full imported resumes;
+       otherwise a trailing blank PDF page can result from sub-pixel overflow. */
+    --rp-section-margin-bottom: 12px;
     --rp-item-margin-bottom: 10px;
   }
 
