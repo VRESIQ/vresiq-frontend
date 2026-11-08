@@ -1,0 +1,14 @@
+import { chromium } from 'playwright';
+const BASE='http://localhost:5180';
+const b=await chromium.launch({headless:true});
+const p=await b.newPage({viewport:{width:1400,height:900}});
+p.on('response', async r => { if (r.url().includes('/api/auth')) { let t=''; try{t=await r.text();}catch{}; console.log('RESP', r.status(), r.url(), t.slice(0,300)); }});
+await p.goto(BASE+'/login',{waitUntil:'domcontentloaded'});
+await p.waitForTimeout(2000);
+await p.fill('input[type="email"]','admin@vresiq.com');
+await p.fill('input[type="password"]','admin2026@vresiq2026');
+await p.click('button[type="submit"]');
+await p.waitForTimeout(6000);
+console.log('URL',p.url());
+console.log('BODY', (await p.evaluate(()=>document.body.innerText)).slice(0,500));
+await b.close();

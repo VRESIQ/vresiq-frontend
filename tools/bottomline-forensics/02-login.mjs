@@ -1,0 +1,24 @@
+import { chromium } from 'playwright';
+const BASE = 'http://localhost:5180';
+const b = await chromium.launch({ headless: true });
+const p = await b.newPage({ viewport: { width: 1600, height: 1000 } });
+p.on('console', m => { if (m.type()==='error') console.log('CERR', m.text().slice(0,180)); });
+p.on('requestfailed', r => console.log('REQFAIL', r.url().slice(0,120), r.failure()?.errorText));
+await p.goto(BASE + '/login', { waitUntil: 'domcontentloaded' });
+await p.waitForTimeout(2500);
+console.log('TITLE', await p.title(), '| URL', p.url());
+console.log('INPUTS', await p.evaluate(()=>[...document.querySelectorAll('input')].map(i=>i.type+':'+i.name+':'+i.placeholder)));
+await p.fill('input[type="email"]', 'admin@vresiq.com');
+await p.fill('input[type="password"]', 'admin2026@vresiq2026');
+await p.click('button[type="submit"]');
+await p.waitForTimeout(7000);
+console.log('AFTER URL', p.url());
+const list = await p.evaluate(async () => {
+  const t = sessionStorage.getItem('token');
+  if (!t) return { noToken: true };
+  const r = await fetch('/api/resumes', { headers: { Authorization: 'Bearer ' + t } });
+  const txt = await r.text();
+  return { status: r.status, body: txt.slice(0, 1200) };
+});
+console.log('LIST', JSON.stringify(list));
+await b.close();

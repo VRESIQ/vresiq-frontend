@@ -2431,8 +2431,13 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-ats-entry .rp-ats-header-left { border-bottom: 1px solid rgba(0,0,0,0.12); padding-bottom: 8px; }
 
 .rp-ats-senior {
+  /* Top rule only. This container wraps the entire resume, so a border-bottom
+     here renders as a full-width rule immediately after the final section and
+     above the page's remaining blank space — in the live preview and in the
+     exported PDF (see VRESIQ_BOTTOM_LINE_FORENSIC_REPORT.md). The accent
+     defaults to #111111 for this template, which made it read as a solid black
+     line. Section-title dividers and the header's double rule are unaffected. */
   border-top: 2px solid var(--accent);
-  border-bottom: 2px solid var(--accent);
   --fb-border-bottom: 3px double var(--on-accent-line, rgba(255,255,255,0.2));
 }
 .rp-ats-senior .rp-ats-header { border-bottom: 3px double rgba(0,0,0,0.12); padding-bottom: 10px; }

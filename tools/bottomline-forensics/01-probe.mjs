@@ -1,0 +1,20 @@
+import { chromium } from 'playwright';
+const browser = await chromium.launch({ headless: true });
+const page = await browser.newPage({ viewport: { width: 1600, height: 1000 } });
+page.on('console', m => { if (m.type()==='error') console.log('CONSOLE_ERR', m.text().slice(0,200)); });
+await page.goto('http://localhost:5173/login', { waitUntil: 'domcontentloaded' });
+await page.waitForTimeout(1500);
+await page.fill('input[type="email"]', 'admin@vresiq.com');
+await page.fill('input[type="password"]', 'admin2026@vresiq2026');
+await page.click('button[type="submit"]');
+await page.waitForTimeout(6000);
+console.log('URL', page.url());
+const list = await page.evaluate(async () => {
+  const t = sessionStorage.getItem('token') || localStorage.getItem('token');
+  if (!t) return { noToken: true };
+  const r = await fetch('/api/resumes', { headers: { Authorization: 'Bearer ' + t } });
+  const txt = await r.text();
+  return { status: r.status, body: txt.slice(0, 600) };
+});
+console.log('LIST', JSON.stringify(list));
+await browser.close();
