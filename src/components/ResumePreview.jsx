@@ -828,6 +828,18 @@ const CustomSection = ({ title, items = [], showIcon, dec, scanMode = false, sec
                 {renderDescription(item.description, fullName, scanMode)}
               </div>
             )}
+            {hasText(item.url) && (
+              <div className="rp-item-url" style={{ marginTop: "2px", fontSize: "var(--rp-fs-meta)" }}>
+                <a
+                  href={formatUrl(item.url)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="resume-link rp-custom-url rp-compact-url"
+                >
+                  {String(item.url).trim().replace(/^(https?:\/\/)?(www\.)?/i, "")} <span className="external-link-icon">↗</span>
+                </a>
+              </div>
+            )}
           </ItemWrapper>
         ))}
       </Wrapper>
@@ -1323,7 +1335,7 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
 
   // Add optional/custom sections to the order if they are not already present
   const allPossibleOptionalIds = [
-    "experience", "internships", "languages", "interests",
+    "experience", "internships", "training", "languages", "interests",
     "achievements", "publications", "volunteering", "leadership", "hackathons", 
     "openSource", "awards", "workshops", "coursework", 
     "technicalProfiles", "extracurriculars", "patents", "researchExperience"
@@ -1514,6 +1526,7 @@ const renderSectionsForColumn = (columnType, order, visibility, resume, commonPr
       openSource: "Open Source Contributions",
       awards: "Awards",
       internships: "Internships",
+      training: "Training",
       workshops: "Workshops",
       coursework: "Coursework",
       extracurriculars: "Extracurricular Activities",

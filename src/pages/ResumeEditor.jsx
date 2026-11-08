@@ -143,7 +143,7 @@ const isFresher = (resume) => {
 };
 
 const allPossibleOptionalIds = [
-  "experience", "internships", "languages", "interests",
+  "experience", "internships", "training", "languages", "interests",
   "achievements", "publications", "volunteering", "leadership", "hackathons", 
   "openSource", "awards", "workshops", "coursework", 
   "technicalProfiles", "extracurriculars", "patents", "researchExperience"
@@ -198,7 +198,15 @@ const SECTION_FIELDS_CONFIG = {
     title: { label: "Internship Role", placeholder: "e.g. Software Engineering Intern", hint: "Your title or role during this internship.", sanitizeType: "role" },
     subtitle: { label: "Company / Team", placeholder: "e.g. Google Cloud Platform", hint: "Company or team where you interned.", sanitizeType: "strict" },
     date: { label: "Internship Dates", placeholder: "e.g. June 2025 - August 2025", hint: "Enter internship timeframe (e.g. June 2025 - August 2025).", sanitizeType: "date" },
-    description: { label: "Key Projects & Learnings", placeholder: "e.g. Developed serverless log streaming pipelines in Go, processing 5TB daily.", hint: "Focus on specific features built, languages used, and mentorship received.", sanitizeType: "strict" }
+    description: { label: "Key Projects & Learnings", placeholder: "e.g. Developed serverless log streaming pipelines in Go, processing 5TB daily.", hint: "Focus on specific features built, languages used, and mentorship received.", sanitizeType: "strict" },
+    url: { label: "Relevant URL (optional)", placeholder: "e.g. https://company.com/internships or certificate link", hint: "Optional link to a certificate, internship page, or project/demo.", sanitizeType: "url" }
+  },
+  training: {
+    title: { label: "Training / Course Name", placeholder: "e.g. Advanced Java Programming", hint: "Name of the training program or course.", sanitizeType: "strict" },
+    subtitle: { label: "Training Provider / Institution", placeholder: "e.g. NPTEL", hint: "Provider, institution or platform that delivered the training.", sanitizeType: "strict" },
+    date: { label: "Training Dates / Duration", placeholder: "e.g. January 2026 - March 2026", hint: "Enter training timeframe or duration (e.g. Jan 2026 - Mar 2026, or 8 weeks).", sanitizeType: "date" },
+    description: { label: "Key Skills & Learnings", placeholder: "e.g. Covered Java, OOP, Collections, Multithreading and built a capstone project.", hint: "Highlight the skills acquired and any hands-on work completed.", sanitizeType: "strict" },
+    url: { label: "Relevant URL (optional)", placeholder: "e.g. https://nptel.ac.in/certificate or course link", hint: "Optional link to a certificate or the course page.", sanitizeType: "url" }
   },
   workshops: {
     title: { label: "Workshop / Course Title", placeholder: "e.g. Advanced Distributed Systems", hint: "Title of the workshop or course.", sanitizeType: "strict" },
@@ -236,6 +244,8 @@ const SECTION_FIELDS_CONFIG = {
     description: { label: "Methodology, Findings & Tools", placeholder: "e.g. Designed unsupervised LSTM models with PyTorch. Improved edge detection by 14%.", hint: "Detail the scientific methodology, tools utilized, and resulting papers.", sanitizeType: "strict" }
   }
 };
+
+const hasConfiguredField = (secId, fieldKey) => Boolean(SECTION_FIELDS_CONFIG[secId]?.[fieldKey]);
 
 const getSectionFieldProps = (secId, fieldKey) => {
   const sectionConfig = SECTION_FIELDS_CONFIG[secId] || {};
@@ -279,6 +289,7 @@ const getSectionLabel = (id) => {
     openSource: "Open Source Contributions",
     awards: "Awards",
     internships: "Internships",
+    training: "Training",
     workshops: "Workshops",
     coursework: "Coursework",
     extracurriculars: "Extracurricular Activities",
@@ -2391,7 +2402,10 @@ const ResumeEditor = () => {
                   ? { title: "", subtitle: "", date: "", authors: "", abstract: "", paperUrl: "" }
                   : optionalSectionEntry === "technicalProfiles"
                     ? { title: "", date: "", description: "" }
-                    : { title: "", subtitle: "", date: "", description: "" };
+                    : {
+                        title: "", subtitle: "", date: "", description: "",
+                        ...(hasConfiguredField(optionalSectionEntry, "url") ? { url: "" } : {})
+                      };
                 const nextList = [...currentList, newItemTemplate];
                 setResume(prev => ({
                   ...prev,
@@ -2682,6 +2696,36 @@ const ResumeEditor = () => {
                             }));
                           }}
                         />
+                        {hasConfiguredField(optionalSectionEntry, "url") && (() => {
+                          const urlProps = getSectionFieldProps(optionalSectionEntry, "url");
+                          return (
+                            <Field
+                              label={urlProps.label}
+                              value={item.url}
+                              placeholder={urlProps.placeholder}
+                              hint={urlProps.hint}
+                              sanitize={getSanitizer(urlProps.sanitizeType)}
+                              onBlur={(e) => {
+                                const val = e.target.value.trim();
+                                const normalized = val && !/^https?:\/\//i.test(val) ? `https://${val}` : val;
+                                const currentList = [...(resume.customSections?.[optionalSectionEntry] || [])];
+                                currentList[index] = { ...currentList[index], url: normalized };
+                                setResume(prev => ({
+                                  ...prev,
+                                  customSections: { ...(prev.customSections || {}), [optionalSectionEntry]: currentList }
+                                }));
+                              }}
+                              onChange={(v) => {
+                                const currentList = [...(resume.customSections?.[optionalSectionEntry] || [])];
+                                currentList[index] = { ...currentList[index], url: v };
+                                setResume(prev => ({
+                                  ...prev,
+                                  customSections: { ...(prev.customSections || {}), [optionalSectionEntry]: currentList }
+                                }));
+                              }}
+                            />
+                          );
+                        })()}
                       </>
                     );
                   })()}
