@@ -162,6 +162,27 @@
   align-items: start;
 }
 
+.original-document-frame {
+  display: block;
+  width: 100%;
+  height: min(72vh, 900px);
+  min-height: 540px;
+  margin-top: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.original-document-placeholder {
+  margin-top: 1rem;
+  padding: 1.25rem;
+  border: 1px dashed rgba(148, 163, 184, 0.45);
+  border-radius: 8px;
+}
+
+.original-document-placeholder a { color: #60a5fa; }
+.original-compare-hint { margin-top: 0.75rem; color: #94a3b8; font-size: 0.8rem; }
+
 .workspace-left {
   background: rgba(30, 41, 59, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.05);

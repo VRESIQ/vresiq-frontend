@@ -103,7 +103,7 @@
   min-height: 140px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: rgba(255, 254, 249, 0.76);
+  background: rgba(255, 255, 255, 0.76);
   padding: 1.1rem;
   display: flex;
   flex-direction: column;
@@ -122,7 +122,7 @@
 
 .upgrade-strip {
   border: 1px solid rgba(100, 140, 0, 0.22);
-  background: rgba(184, 255, 44, 0.14);
+  background: rgba(184, 255, 44, 0.08);
   border-radius: var(--radius);
   padding: 0.9rem 1rem;
   display: flex;
@@ -154,7 +154,7 @@
 
 /* Glassmorphism nav — matches landing page */
 .dash-nav {
-  background: rgba(255, 254, 249, 0.82) !important;
+  background: rgba(255, 255, 255, 0.82) !important;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid rgba(17, 20, 16, 0.08);
@@ -209,7 +209,7 @@
 
 .resume-thumb-wrap {
   height: 210px;
-  background: #f0eee4;
+  background: var(--wash);
   border-bottom: 1px solid var(--line);
 }
 
@@ -224,7 +224,7 @@
   display: grid;
   place-items: center;
   background:
-    linear-gradient(135deg, rgba(184, 255, 44, 0.2), transparent 42%),
+    linear-gradient(135deg, rgba(23, 23, 23, 0.05), transparent 42%),
     var(--wash);
 }
 
@@ -370,7 +370,7 @@
   border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: 0.7rem;
-  background: #fffef9;
+  background: var(--paper);
   text-align: left;
   cursor: pointer;
   flex: 0 0 120px;
@@ -495,7 +495,7 @@
 
 .skeleton-thumb {
   background:
-    linear-gradient(90deg, #ebe8dd 25%, #f4f2ea 50%, #ebe8dd 75%);
+    linear-gradient(90deg, var(--wash-2) 25%, var(--wash) 50%, var(--wash-2) 75%);
   background-size: 600px 100%;
   animation: shimmer 1.4s infinite linear;
 }
@@ -505,7 +505,7 @@
   border-radius: 99px;
   margin: 10px 0;
   background:
-    linear-gradient(90deg, #ebe8dd 25%, #f4f2ea 50%, #ebe8dd 75%);
+    linear-gradient(90deg, var(--wash-2) 25%, var(--wash) 50%, var(--wash-2) 75%);
   background-size: 600px 100%;
   animation: shimmer 1.4s infinite linear;
 }

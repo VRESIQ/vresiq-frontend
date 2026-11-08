@@ -4,7 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: var(--paper, #fffef9);
+  background: var(--paper, #ffffff);
   transition: background 0.3s ease;
 }
 

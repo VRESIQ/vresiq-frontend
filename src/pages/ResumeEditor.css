@@ -61,7 +61,7 @@
 
 .editor-sidebar {
   border-right: 1px solid var(--line);
-  background: rgba(255, 254, 249, 0.72);
+  background: rgba(255, 255, 255, 0.72);
   padding: 1.25rem 0.75rem;
   display: flex;
   flex-direction: column;
@@ -261,7 +261,7 @@
 .editor-template {
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: rgba(255, 254, 249, 0.86);
+  background: rgba(255, 255, 255, 0.86);
   padding: 0.75rem;
   text-align: left;
   cursor: pointer;
@@ -293,7 +293,7 @@
   display: block;
   height: 6px;
   border-radius: 99px;
-  background: #d8d5ca;
+  background: var(--line);
 }
 
 .editor-template-art i:first-child {
@@ -413,7 +413,7 @@
 }
 
 .editor-preview-panel {
-  background: #f2f0e8;
+  background: var(--wash);
 }
 
 .preview-actions {
@@ -603,7 +603,7 @@
   padding: 0.65rem 0.85rem;
   border-radius: var(--radius);
   border: 1px solid var(--line);
-  background: rgba(255,254,249,0.72);
+  background: rgba(255,255,255,0.72);
   font: inherit;
   color: var(--ink);
   resize: vertical;
@@ -694,7 +694,7 @@
   padding: 0.65rem 0.85rem;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: rgba(255,254,249,0.72);
+  background: rgba(255,255,255,0.72);
   color: var(--ink);
   cursor: pointer;
   text-align: left;

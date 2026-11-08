@@ -3,7 +3,7 @@
   display: grid;
   place-items: center;
   background:
-    linear-gradient(180deg, rgba(184, 255, 44, 0.12), rgba(255, 254, 249, 0) 22rem),
+    linear-gradient(180deg, var(--wash), rgba(255, 255, 255, 0) 22rem),
     var(--paper);
   padding: clamp(1.25rem, 4vw, 3rem);
 }

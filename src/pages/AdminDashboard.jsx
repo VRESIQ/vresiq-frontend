@@ -22,6 +22,7 @@ const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("analytics");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
 
   const [analytics, setAnalytics] = useState(null);
   const [users, setUsers] = useState([]);
@@ -123,11 +124,30 @@ const AdminDashboard = () => {
     }
     setActioningUser(userId);
     setError("");
+    setNotice("");
     try {
       const res = await updateAdminSubscription(userId, newPlan);
       setUsers((prev) =>
-        prev.map((u) => (u._id === userId ? { ...u, subscriptionPlan: res.data.subscriptionPlan } : u))
+        prev.map((u) => (u._id === userId ? {
+          ...u,
+          subscriptionPlan: res.data.subscriptionPlan,
+          premiumEmailNotificationStatus: res.data.premiumEmailNotificationStatus
+        } : u))
       );
+      const emailStatus = res.data.premiumEmailNotificationStatus;
+      if (newPlan === "premium" && emailStatus === "ACCEPTED") {
+        setNotice("Membership updated. The email provider accepted the confirmation; delivery status is pending.");
+      } else if (newPlan === "premium" && emailStatus === "DELIVERED") {
+        setNotice("Membership updated and the provider reported the confirmation as delivered.");
+      } else if (newPlan === "premium" && emailStatus === "RETRY") {
+        setNotice("Membership updated. Email delivery was rejected temporarily and a retry is scheduled.");
+      } else if (newPlan === "premium" && emailStatus === "UNKNOWN") {
+        setNotice("Membership updated. Email outcome is unclear; automatic resend is paused to prevent duplicates.");
+      } else if (newPlan === "premium" && emailStatus === "FAILED") {
+        setNotice("Membership updated, but the confirmation email failed. Check provider configuration and logs.");
+      } else {
+        setNotice("Membership updated.");
+      }
     } catch (err) {
       setError(err.response?.data?.message || "Failed to update user subscription.");
       fetchData();
@@ -182,6 +202,7 @@ const AdminDashboard = () => {
         </header>
 
         {error && <div className="admin-error-banner">{error}</div>}
+        {notice && <div className="admin-notice-banner" role="status">{notice}</div>}
 
         {/* Tab Controls */}
         <div className="admin-tabs">
@@ -311,6 +332,11 @@ const AdminDashboard = () => {
                                 <option value="basic">Basic</option>
                                 <option value="premium">Premium</option>
                               </select>
+                              {u.premiumEmailNotificationStatus && (
+                                <small className={`admin-email-status admin-email-status-${u.premiumEmailNotificationStatus.toLowerCase()}`}>
+                                  Email: {u.premiumEmailNotificationStatus.toLowerCase().replaceAll("_", " ")}
+                                </small>
+                              )}
                             </td>
                             <td>{u.emailVerified ? "Yes" : "No"}</td>
                             <td>

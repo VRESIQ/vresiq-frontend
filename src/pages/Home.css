@@ -21,7 +21,7 @@
   height: 72px;
   padding: 0 clamp(1.25rem, 4vw, 4rem);
   /* Glassmorphism nav — blurs whatever is behind it */
-  background: rgba(255, 254, 249, 0.82);
+  background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid rgba(17, 20, 16, 0.08);
@@ -238,7 +238,7 @@
   border-radius: 999px;
   padding: 0.35rem 0.7rem;
   color: var(--muted);
-  background: rgba(255, 254, 249, 0.7);
+  background: rgba(255, 255, 255, 0.7);
   font-size: 0.76rem;
   font-weight: 560;
   transition: border-color 0.2s;
@@ -264,21 +264,26 @@
   will-change: transform;
 }
 
-/* Green glow blob — moves with the card tilt */
+/* Green glow blob — moves with the card tilt.
+   Intensity is tokenised: light mode keeps only a whisper of lime so the page
+   stays neutral white instead of reading as a yellow wash; dark mode keeps the
+   original stronger glow. */
 .card-glow {
   position: absolute;
   inset: 5% -6% 8% 18%;
   background: var(--accent);
   border-radius: 999px;
   filter: blur(55px);
-  opacity: 0.28;
+  --glow-min: 0.10;
+  --glow-max: 0.14;
+  opacity: var(--glow-min);
   z-index: 0;
   animation: glowPulse 6s ease-in-out infinite;
 }
 
 @keyframes glowPulse {
-  0%, 100% { opacity: 0.28; transform: scale(1); }
-  50%       { opacity: 0.36; transform: scale(1.04); }
+  0%, 100% { opacity: var(--glow-min, 0.28); transform: scale(1); }
+  50%       { opacity: var(--glow-max, 0.36); transform: scale(1.04); }
 }
 
 .resume-paper {
@@ -344,7 +349,7 @@
   width: 100%;
   height: 7px;
   border-radius: 99px;
-  background: #e8e7df;
+  background: #e5e7eb;
   margin-bottom: 0.65rem;
 }
 
@@ -428,7 +433,7 @@
 
 /* Placeholder lines — light gray on white */
 [data-theme="dark"] .paper-line {
-  background: #e8e7df !important;
+  background: #e5e7eb !important;
 }
 
 /* Section labels */
@@ -438,7 +443,7 @@
 
 /* Skill bar track — light gray, NOT dark */
 [data-theme="dark"] .skill-bar {
-  background: #e8e7df !important;
+  background: #e5e7eb !important;
 }
 
 /* Skill bar fill — stays lime green (correct) */
@@ -456,7 +461,7 @@
   padding: 0.8rem 1rem;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: rgba(255, 254, 249, 0.94);
+  background: rgba(255, 255, 255, 0.94);
   box-shadow: 0 4px 24px rgba(0,0,0,0.1);
   animation: badgeIn 0.8s 0.7s cubic-bezier(0.23, 1, 0.32, 1) both;
 }
@@ -778,7 +783,9 @@
 }
 
 [data-theme="dark"] .card-glow {
-  opacity: 0.5;    /* stronger lime glow in dark mode */
+  --glow-min: 0.28;  /* unchanged effective dark-mode glow */
+  --glow-max: 0.36;
+  opacity: 0.28;     /* stronger lime glow in dark mode */
   filter: blur(60px);
 }
 

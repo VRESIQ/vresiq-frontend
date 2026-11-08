@@ -1,10 +1,16 @@
+/* ── Light theme (default) ─────────────────────────────────────────────────
+   Neutral white/gray surfaces with lime as the only brand accent. The palette
+   is deliberately warm-free: every neutral is a true gray (equal RGB channels
+   or a standard cool gray scale), so no surface can read as cream/yellow.
+   Dark mode redefines the same tokens in the [data-theme="dark"] block below.
+   ───────────────────────────────────────────────────────────────────────── */
 :root {
-  --ink: #111410;
-  --muted: #697067;
-  --line: rgba(17, 20, 16, 0.1);
-  --paper: #fffef9;
-  --wash: #f4f2ea;
-  --wash-2: #ebe8dd;
+  --ink: #171717;          /* primary text */
+  --muted: #666666;        /* secondary text */
+  --line: #e5e7eb;         /* borders */
+  --paper: #ffffff;        /* page + card background */
+  --wash: #f7f8fa;         /* secondary background */
+  --wash-2: #eef0f3;       /* subtle fills, hover, skeletons */
   --accent: #b8ff2c;
   --accent-dark: #648c00;
   --danger: #ba2b2b;
@@ -47,8 +53,10 @@ button {
 
 .premium-shell {
   min-height: 100vh;
+  /* Neutral top fade only — a lime wash here tinted the whole app yellow in
+     light mode. The accent stays on interactive elements, not on backgrounds. */
   background:
-    linear-gradient(180deg, rgba(184, 255, 44, 0.14), rgba(255, 254, 249, 0) 24rem),
+    linear-gradient(180deg, var(--wash), rgba(255, 255, 255, 0) 24rem),
     var(--paper);
   color: var(--ink);
 }
@@ -212,7 +220,7 @@ button {
 .dash-nav,
 .profile-nav,
 .editor-topbar {
-  background: rgba(255, 254, 249, 0.75) !important;
+  background: rgba(255, 255, 255, 0.75) !important;
   backdrop-filter: blur(20px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
   border-bottom: 1px solid rgba(17, 20, 16, 0.08) !important;
@@ -315,7 +323,7 @@ button {
 .list-card {
   border-radius: var(--radius);
   border: 1px solid var(--line);
-  background: rgba(255, 254, 249, 0.92);
+  background: rgba(255, 255, 255, 0.92);
   box-shadow: none;
 }
 
@@ -341,7 +349,7 @@ button {
 .modal input[type="text"] {
   border-radius: var(--radius);
   border: 1px solid var(--line);
-  background: rgba(255, 254, 249, 0.72);
+  background: rgba(255, 255, 255, 0.72);
   color: var(--ink);
 }
 

@@ -10,7 +10,7 @@
   align-items: stretch;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: rgba(255,254,249,0.72);
+  background: rgba(255,255,255,0.72);
   transition: border-color 0.15s, box-shadow 0.15s;
   margin-top: 0.4rem;
 }
@@ -113,7 +113,7 @@
 }
 
 .phone-country-option:hover { background: var(--wash); }
-.phone-country-option.active { background: #f0eed6; font-weight: 650; }
+.phone-country-option.active { background: var(--wash-2); font-weight: 650; }
 .phone-country-option .phone-dial { margin-left: auto; color: var(--muted); font-size: 0.78rem; }
 
 /* ── Date Range Picker ───────────────────────────────────────── */
@@ -148,7 +148,7 @@
   padding: 0.5rem 0.5rem;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: rgba(255,254,249,0.72);
+  background: rgba(255,255,255,0.72);
   color: var(--ink);
   font: inherit;
   font-size: 0.86rem;
@@ -203,7 +203,7 @@
   align-items: center;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: rgba(255,254,249,0.72);
+  background: rgba(255,255,255,0.72);
   overflow: hidden;
   transition: border-color 0.15s, box-shadow 0.15s;
 }
@@ -384,7 +384,7 @@
   border-radius: var(--radius);
   border: 1px solid var(--line);
   font-size: 0.85rem;
-  background: rgba(255,254,249,0.72);
+  background: rgba(255,255,255,0.72);
   color: var(--ink);
   outline: none;
 }

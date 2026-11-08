@@ -149,12 +149,13 @@ export const getAdminAiStats = () => axiosInstance.get("/api/admin/ai-stats", { 
 export const updateAdminSubscription = (userId, plan) => axiosInstance.put(`/api/admin/users/${userId}/subscription?plan=${plan}`, {}, { skipLoader: true });
 
 // ─── ADMIN RECONSTRUCTION STUDIO ─────────────────────────
-export const uploadReconstructResume = (file, profile) => {
+export const uploadReconstructResume = (file, profile, onUploadProgress) => {
   const form = new FormData();
   form.append("file", file);
   form.append("profile", profile);
   return axiosInstance.post("/api/admin/reconstruct/upload", form, {
     headers: { "Content-Type": "multipart/form-data" },
+    onUploadProgress,
   });
 };
 

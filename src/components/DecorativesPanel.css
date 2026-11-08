@@ -92,7 +92,7 @@
 
 /* Inactive chip — subtle dark border, muted text */
 [data-theme="dark"] .dec-chip {
-  background: rgba(255, 254, 249, 0.03) !important;
+  background: rgba(255, 255, 255, 0.03) !important;
   border-color: var(--line) !important;
   color: var(--muted) !important;
 }
@@ -120,7 +120,7 @@
 /* Color swatch border */
 [data-theme="dark"] .dec-color-input {
   border-color: var(--line) !important;
-  background: rgba(255, 254, 249, 0.05) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
 }
 
 [data-theme="dark"] .dec-toggle {

@@ -98,6 +98,36 @@
   margin-bottom: 24px;
 }
 
+.admin-notice-banner {
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(91, 101, 216, 0.28);
+  border-radius: 8px;
+  background: rgba(91, 101, 216, 0.08);
+  color: var(--text-color, #24304a);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.admin-email-status {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--muted, #7a8291);
+  font-size: 0.72rem;
+  line-height: 1.3;
+  text-transform: capitalize;
+}
+
+.admin-email-status-failed,
+.admin-email-status-delivery_failed,
+.admin-email-status-unknown {
+  color: #c15a42;
+}
+
+.admin-email-status-delivered {
+  color: #237a54;
+}
+
 /* Tabs */
 .admin-tabs {
   display: flex;

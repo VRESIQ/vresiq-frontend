@@ -2699,6 +2699,45 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   display: list-item !important;
 }
 
+/* Reconstruction Studio uses browser page fragmentation instead of global
+   height-based compression. Flow content naturally through printable pages. */
+@media print {
+  #resume-preview.rp-content-flow {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    min-height: 0 !important;
+    height: auto !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    --rp-section-margin-bottom: 16px;
+    --rp-item-margin-bottom: 10px;
+  }
+
+  .rp-content-flow .rp-stitle {
+    break-after: avoid-page !important;
+    page-break-after: avoid !important;
+  }
+
+  .rp-content-flow .rp-item {
+    break-inside: auto !important;
+    page-break-inside: auto !important;
+  }
+
+  .rp-content-flow .rp-item-head,
+  .rp-content-flow .rp-item-sub {
+    break-after: avoid-page !important;
+    page-break-after: avoid !important;
+  }
+
+  .rp-content-flow .rp-item-desc li {
+    break-inside: auto !important;
+    page-break-inside: auto !important;
+  }
+}
+
 /* ── Bullet style overrides via data-bullet attribute on .resume-preview ────── */
 /* Uses !important to beat any template-specific or ATS list-style-type rules.  */
 /* Targets both .rp-desc-list (all templates) and plain ul inside .rp-item-desc */

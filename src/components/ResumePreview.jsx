@@ -393,6 +393,22 @@ const SkillBar = ({ name, progress = 0, style }) => {
 const ProgressSection = ({ title, items = [], style, showIcon, dec, templateId, sectionNumber, hasBullets = true, skillsMode = "individual" }) => {
   if (!items.length) return null;
   const isAts = templateId && templateId.startsWith("ats_");
+  const hasMeasuredLevels = items.some((item) => item.progress !== null && item.progress !== undefined && item.progress !== "" && Number.isFinite(Number(item.progress)));
+
+  // Imported resumes often provide names but no validated proficiency scores.
+  // In that case render plain labels instead of implying invented skill levels.
+  if (!hasMeasuredLevels) {
+    const Wrapper = hasBullets ? "ul" : "div";
+    const ItemWrapper = hasBullets ? "li" : "div";
+    return (
+      <section className="rp-section">
+        <STitle showIcon={showIcon} dec={dec} sectionNumber={sectionNumber}>{title}</STitle>
+        <Wrapper className="rp-desc-list rp-skill-list">
+          {items.map((item, index) => <ItemWrapper key={index}>{renderParsedSkillText(item.name)}</ItemWrapper>)}
+        </Wrapper>
+      </section>
+    );
+  }
 
   if (isAts) {
     if (!hasBullets) {
@@ -1076,7 +1092,7 @@ const Photo = ({ src, shape = "circle" }) =>
 
 
 // ─── Main ResumePreview ───────────────────────────────────────────────────────
-const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
+const ResumePreview = ({ resume = {}, isFreePlan = false, paginationMode = "default" }) => {
   const templateId = resume.template || "template1";
   const dec = normalizeDecoratives(resume.decoratives || {});
   const [reductions, setReductions] = useState({
@@ -1091,7 +1107,7 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
   const resumeRef = useRef(null);
   const wrapperRef = useRef(null);
 
-  const isImported = resume.imported === true || resume.isImported === true || dec.imported === "true" || dec.isImported === "true" || resume.imported === "true" || resume.isImported === "true" || (resume.profileInfo?.fullName === "abhilash Bonagoni");
+  const isImported = resume.imported === true || resume.isImported === true || dec.imported === "true" || dec.isImported === "true" || resume.imported === "true" || resume.isImported === "true";
 
   useLayoutEffect(() => {
     if (!wrapperRef.current || !resumeRef.current) return;
@@ -1114,7 +1130,7 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
     // Reset to default (no reduction) to measure initial layout
     applyReductions(0, 0, 0, 0, 0, 0, 0);
     
-    const shouldOptimize = dec.highDensity === "true" || isImported;
+    const shouldOptimize = dec.highDensity === "true" || (isImported && paginationMode !== "flow");
     
     if (!shouldOptimize) {
       setReductions({ section: 0, project: 0, experience: 0, bullet: 0, education: 0, lineHeight: 0, fontSize: 0 });
@@ -1220,7 +1236,7 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
         fontSize: 0
       });
     }
-  }, [resume, dec.highDensity, templateId]);
+  }, [resume, dec.highDensity, templateId, isImported, paginationMode]);
 
   const useCustomAccent = dec.useCustomAccent === "true";
   const accent = (useCustomAccent && dec.accentColor) ? dec.accentColor : getTemplateDefaultAccent(templateId);
@@ -1338,14 +1354,13 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
     "experience", "internships", "training", "languages", "interests",
     "achievements", "publications", "volunteering", "leadership", "hackathons", 
     "openSource", "awards", "workshops", "coursework", 
-    "technicalProfiles", "extracurriculars", "patents", "researchExperience"
+    "technicalProfiles", "extracurriculars", "patents", "researchExperience", "links", "additional"
   ];
   allPossibleOptionalIds.forEach(id => {
     if (!order.includes(id)) {
       order.push(id);
     }
   });
-
   // Parse Section Visibility
   const visibility = {
     summary: true,
@@ -1371,6 +1386,10 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
       }
     }
   });
+  if (paginationMode === "flow") {
+    // A reconstruction preview must show every section the parser found.
+    allPossibleOptionalIds.forEach(id => { visibility[id] = true; });
+  }
 
   // Helper inside ResumePreview to build content based on columns
   const getSections = (columnType) => {
@@ -1381,7 +1400,7 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
     <article
         id="resume-preview"
         ref={resumeRef}
-        className={`resume-preview rp-${templateId} ${scanMode ? "rp-scan-mode-active" : ""} ${(dec.highDensity === "true" || isImported) ? "rp-high-density" : ""}`}
+        className={`resume-preview rp-${templateId} ${scanMode ? "rp-scan-mode-active" : ""} ${(dec.highDensity === "true" || (isImported && paginationMode !== "flow")) ? "rp-high-density" : ""} ${paginationMode === "flow" ? "rp-content-flow" : ""}`}
         style={{
           "--accent": accent,
           "--accent-readable": accentReadable,
@@ -1422,7 +1441,8 @@ const ResumePreview = ({ resume = {}, isFreePlan = false }) => {
             dec,
             commonProps,
             resume,
-            progressStyle
+            progressStyle,
+            suppressPlaceholder: paginationMode === "flow"
           })}
         </div>
 
@@ -1531,6 +1551,8 @@ const renderSectionsForColumn = (columnType, order, visibility, resume, commonPr
       coursework: "Coursework",
       extracurriculars: "Extracurricular Activities",
       technicalProfiles: "Technical Profiles",
+      links: "Links",
+      additional: "Additional Information",
       patents: "Patents",
       researchExperience: "Research Experience"
     };
@@ -1585,9 +1607,9 @@ const renderSectionsForColumn = (columnType, order, visibility, resume, commonPr
 };
 
 // ─── Template Renderers ───────────────────────────────────────────────────────
-function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShape, getSections, dec, commonProps, resume, progressStyle }) {
-  const name = profileInfo.fullName || "Your Name";
-  const role = profileInfo.designation || "Role or Designation";
+function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShape, getSections, dec, commonProps, resume, progressStyle, suppressPlaceholder = false }) {
+  const name = profileInfo.fullName || (suppressPlaceholder ? "" : "Your Name");
+  const role = profileInfo.designation || (suppressPlaceholder ? "" : "Role or Designation");
 
   switch (templateId) {
 

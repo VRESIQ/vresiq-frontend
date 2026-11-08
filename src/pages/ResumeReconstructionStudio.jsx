@@ -1,9 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import NavLogo from "../components/NavLogo";
 import ThemeToggle from "../components/ThemeToggle";
 import ResumePreview from "../components/ResumePreview";
-import { uploadReconstructResume, enhanceReconstructBullet } from "../api";
+import { uploadReconstructResume, enhanceReconstructBullet, exportResumePdf } from "../api";
 import "./ResumeReconstructionStudio.css";
 
 const ResumeReconstructionStudio = () => {
@@ -19,6 +19,13 @@ const ResumeReconstructionStudio = () => {
 
   const [reconstructData, setReconstructData] = useState(null); // ReconstructionResponse
   const [activeLeftTab, setActiveLeftTab] = useState("editor"); // editor | original | quality | explain
+  const [originalFile, setOriginalFile] = useState(null);
+  const [isExporting, setIsExporting] = useState(false);
+  const [unclassifiedTargets, setUnclassifiedTargets] = useState({});
+
+  useEffect(() => () => {
+    if (originalFile?.url) URL.revokeObjectURL(originalFile.url);
+  }, [originalFile?.url]);
 
   // Bullet point enhancer states
   const [enhancingIndex, setEnhancingIndex] = useState(null);
@@ -53,28 +60,22 @@ const ResumeReconstructionStudio = () => {
 
   const processFile = async (file) => {
     setStatus("uploading");
-    setProgressText("Uploading document securely...");
+    setProgressText("Uploading document: 0%");
     setErrorMsg("");
+    setOriginalFile({ name: file.name, type: file.type, url: URL.createObjectURL(file) });
 
     try {
-      // Simulate progress ticks
-      const progressInterval = setInterval(() => {
-        setProgressText((prev) => {
-          if (prev.includes("Uploading")) return "Parsing PDF layout structure...";
-          if (prev.includes("Parsing")) return "Extracting raw text segments...";
-          if (prev.includes("Extracting")) return "Standardizing dates & contact details...";
-          if (prev.includes("Standardizing")) return "Running LLM semantic enrichment...";
-          return "Finalizing resume schema...";
-        });
-      }, 1500);
-
-      const res = await uploadReconstructResume(file, profileName);
-      clearInterval(progressInterval);
+      const res = await uploadReconstructResume(file, profileName, (event) => {
+        if (event.total) {
+          const percent = Math.min(100, Math.round((event.loaded / event.total) * 100));
+          setProgressText(percent === 100 ? "Uploaded. Extracting and mapping resume sections..." : `Uploading document: ${percent}%`);
+          if (percent === 100) setStatus("processing");
+        }
+      });
 
       setReconstructData(res.data);
       setStatus("done");
     } catch (err) {
-      console.error(err);
       setErrorMsg(err.response?.data?.message || "Ingestion and reconstruction pipeline failed. Please verify format.");
       setStatus("error");
     }
@@ -121,6 +122,104 @@ const ResumeReconstructionStudio = () => {
       updated.resume.skills = updatedSkills;
       return updated;
     });
+  };
+
+  const handleListChange = (section, index, field, value) => {
+    setReconstructData((prev) => {
+      const updated = { ...prev, resume: { ...prev.resume } };
+      const rows = [...(updated.resume[section] || [])];
+      rows[index] = { ...rows[index], [field]: value };
+      updated.resume[section] = rows;
+      return updated;
+    });
+  };
+
+  const handleCustomSectionChange = (section, index, field, value) => {
+    setReconstructData((prev) => {
+      const updated = { ...prev, resume: { ...prev.resume } };
+      const sections = { ...(updated.resume.customSections || {}) };
+      const rows = [...(sections[section] || [])];
+      rows[index] = { ...rows[index], [field]: value };
+      sections[section] = rows;
+      updated.resume.customSections = sections;
+      return updated;
+    });
+  };
+
+  const handleUnclassifiedChange = (index, value) => {
+    setReconstructData((prev) => {
+      const lines = [...(prev.unclassifiedContent || [])];
+      lines[index] = value;
+      return { ...prev, unclassifiedContent: lines };
+    });
+  };
+
+  const assignUnclassified = (index) => {
+    const line = reconstructData.unclassifiedContent?.[index];
+    if (!line?.trim()) return;
+    const destination = unclassifiedTargets[index] || "additional";
+    setReconstructData((prev) => {
+      const resume = { ...prev.resume };
+      const remaining = [...(prev.unclassifiedContent || [])];
+      remaining.splice(index, 1);
+      if (destination === "summary") {
+        const profileInfo = { ...(resume.profileInfo || {}) };
+        profileInfo.summary = [profileInfo.summary, line].filter(Boolean).join("\n");
+        resume.profileInfo = profileInfo;
+      } else if (destination === "experience") {
+        resume.workExperience = [...(resume.workExperience || []), { description: line }];
+      } else if (destination === "education") {
+        resume.education = [...(resume.education || []), { description: line }];
+      } else if (destination === "projects") {
+        resume.projects = [...(resume.projects || []), { title: line }];
+      } else if (destination === "certifications") {
+        resume.certifications = [...(resume.certifications || []), { title: line }];
+      } else {
+        const section = destination === "publications" ? "publications" : "additional";
+        const customSections = { ...(resume.customSections || {}) };
+        customSections[section] = [...(customSections[section] || []), { title: line }];
+        resume.customSections = customSections;
+      }
+      return { ...prev, resume, unclassifiedContent: remaining };
+    });
+    setUnclassifiedTargets((prev) => {
+      const updated = { ...prev };
+      delete updated[index];
+      return updated;
+    });
+  };
+
+  const downloadReconstructedPdf = async () => {
+    const element = document.getElementById("resume-preview");
+    if (!element) return setErrorMsg("Resume preview is not ready for export.");
+    setIsExporting(true);
+    setErrorMsg("");
+    try {
+      let css = "";
+      const links = [];
+      for (const sheet of document.styleSheets) {
+        try {
+          css += Array.from(sheet.cssRules || []).map((rule) => rule.cssText).join("\n") + "\n";
+        } catch {
+          if (sheet.href) links.push(`<link rel="stylesheet" href="${new URL(sheet.href, window.location.href).href}">`);
+        }
+      }
+      css = css.replace(/@media\s*\(\s*max-width\s*:\s*900px\s*\)/g, "@media (max-width: 500px)");
+      const html = `<!doctype html><html><head><meta charset="utf-8"><title>VResIQ reconstructed resume</title>${links.join("")}<style>${css}</style><style>html,body{margin:0;padding:0;background:#fff}body *{visibility:visible!important}#resume-preview{position:relative!important;top:auto!important;left:auto!important;min-height:auto!important;height:auto!important;margin:0!important;width:100%!important;max-width:100%!important;overflow:visible!important;box-shadow:none!important}</style></head><body>${element.outerHTML}</body></html>`;
+      const response = await exportResumePdf("reconstruction-draft", html, false);
+      const url = URL.createObjectURL(response.data);
+      const anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.download = `${(originalFile?.name || "reconstructed-resume").replace(/\.[^.]+$/, "")}-vresiq.pdf`;
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      URL.revokeObjectURL(url);
+    } catch {
+      setErrorMsg("PDF export failed. The reconstruction is still available in the editor; retry after checking the export service.");
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   const handleTemplateChange = (val) => {
@@ -261,6 +360,12 @@ const ResumeReconstructionStudio = () => {
                   Form Editor
                 </button>
                 <button
+                  className={`tab-btn ${activeLeftTab === "original" ? "active" : ""}`}
+                  onClick={() => setActiveLeftTab("original")}
+                >
+                  Original
+                </button>
+                <button
                   className={`tab-btn ${activeLeftTab === "quality" ? "active" : ""}`}
                   onClick={() => setActiveLeftTab("quality")}
                 >
@@ -303,6 +408,23 @@ const ResumeReconstructionStudio = () => {
                         onChange={(e) => handleProfileInfoChange("summary", e.target.value)}
                       />
                     </div>
+                  </div>
+
+                  <div className="form-section">
+                    <h3>Contact Details</h3>
+                    {["email", "phone", "location", "linkedIn", "github", "website"].map((field) => {
+                      const value = reconstructData.resume.contactInfo?.[field];
+                      return (
+                        <div className="form-group" key={field}>
+                          <label>{field === "linkedIn" ? "LinkedIn" : field === "github" ? "GitHub" : field[0].toUpperCase() + field.slice(1)}</label>
+                          <input
+                            type="text"
+                            value={typeof value === "string" || typeof value === "number" ? value : value?.url || ""}
+                            onChange={(e) => handleContactInfoChange(field, e.target.value)}
+                          />
+                        </div>
+                      );
+                    })}
                   </div>
 
                   {/* Experiences */}
@@ -388,12 +510,81 @@ const ResumeReconstructionStudio = () => {
                       ))}
                     </div>
                   </div>
+
+                  <div className="form-section">
+                    <h3>Education</h3>
+                    {(reconstructData.resume.education || []).map((item, idx) => (
+                      <div key={idx} className="form-section" style={{ marginTop: "1rem" }}>
+                        {["degree", "institution", "startDate", "endDate", "location", "gpa"].map((field) => (
+                          <div className="form-group" key={field}>
+                            <label>{field.replace(/([A-Z])/g, " $1")}</label>
+                            <input value={item[field] || ""} onChange={(e) => handleListChange("education", idx, field, e.target.value)} />
+                          </div>
+                        ))}
+                        <label>Description</label>
+                        <textarea rows={3} value={item.description || ""} onChange={(e) => handleListChange("education", idx, "description", e.target.value)} />
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="form-section">
+                    <h3>Projects</h3>
+                    {(reconstructData.resume.projects || []).map((item, idx) => (
+                      <div className="form-group" key={idx}>
+                        <label>Extracted line {idx + 1}</label>
+                        <textarea rows={2} value={item.title || ""} onChange={(e) => handleListChange("projects", idx, "title", e.target.value)} />
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="form-section">
+                    <h3>Certifications</h3>
+                    {(reconstructData.resume.certifications || []).map((item, idx) => (
+                      <div className="form-group" key={idx}>
+                        <label>Extracted line {idx + 1}</label>
+                        <input value={item.title || ""} onChange={(e) => handleListChange("certifications", idx, "title", e.target.value)} />
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="form-section">
+                    <h3>Publications and Other Sections</h3>
+                    {Object.entries(reconstructData.resume.customSections || {}).map(([section, rows]) => (
+                      <div key={section} style={{ marginTop: "1rem" }}>
+                        <h4>{section}</h4>
+                        {rows.map((item, idx) => (
+                          <div className="form-group" key={`${section}-${idx}`}>
+                            <label>Extracted line {idx + 1}</label>
+                            <textarea rows={2} value={item.title || item.description || item.url || ""} onChange={(e) => handleCustomSectionChange(section, idx, "title", e.target.value)} />
+                          </div>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {activeLeftTab === "original" && (
+                <div className="tab-panel">
+                  <h3>Original document{originalFile?.name ? `: ${originalFile.name}` : ""}</h3>
+                  {originalFile?.type === "application/pdf" ? (
+                    <iframe className="original-document-frame" title="Original resume PDF" src={originalFile.url} />
+                  ) : originalFile ? (
+                    <div className="original-document-placeholder">
+                      <p>DOCX preview is not available in this browser. Open the source file and compare it with the reconstructed preview.</p>
+                      <a href={originalFile.url} download={originalFile.name}>Download original DOCX</a>
+                    </div>
+                  ) : <p>The source document is unavailable for preview.</p>}
+                  <p className="original-compare-hint">The reconstructed document remains visible beside this panel.</p>
                 </div>
               )}
 
               {activeLeftTab === "quality" && (
                 <div className="tab-panel">
                   <h3>Quality Gates</h3>
+                  <p style={{ color: "#fbbf24", fontSize: "0.85rem", marginTop: "0.5rem" }}>
+                    Parse checks are heuristic. ATS scoring is not run during reconstruction.
+                  </p>
                   <div style={{ marginTop: "1rem" }}>
                     <div className="gate-item">
                       <span className={`gate-icon ${reconstructData.qualityGates.requiredSectionsExist ? "passed" : "failed"}`}>
@@ -414,14 +605,54 @@ const ResumeReconstructionStudio = () => {
                         <p style={{ fontSize: "0.8rem", color: "#94a3b8" }}>Assert candidate email or phone digits parsed successfully.</p>
                       </div>
                     </div>
+                    <div className="gate-item">
+                      <span className={`gate-icon ${reconstructData.qualityGates.noDuplicateSections ? "passed" : "failed"}`}>
+                        {reconstructData.qualityGates.noDuplicateSections ? "✓" : "!"}
+                      </span>
+                      <div>
+                        <strong>Repeated Sections</strong>
+                        <p style={{ fontSize: "0.8rem", color: "#94a3b8" }}>Repeated headings and content are retained and flagged.</p>
+                      </div>
+                    </div>
                   </div>
 
+                  {(reconstructData.warnings || []).length > 0 && (
+                    <div className="form-section" style={{ marginTop: "1.25rem" }}>
+                      <h3>Review Warnings</h3>
+                      <ul>{reconstructData.warnings.map((warning, idx) => <li key={idx}>{warning}</li>)}</ul>
+                    </div>
+                  )}
+                  {(reconstructData.unclassifiedContent || []).length > 0 && (
+                    <div className="form-section">
+                      <h3>Unclassified Content</h3>
+                      <p style={{ color: "#94a3b8", fontSize: "0.8rem" }}>Edit each source line, then assign it to a resume section.</p>
+                      {(reconstructData.unclassifiedContent || []).map((line, idx) => (
+                        <div key={idx} className="form-group" style={{ marginTop: "0.75rem", paddingTop: "0.75rem", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+                          <textarea rows={2} value={line} onChange={(e) => handleUnclassifiedChange(idx, e.target.value)} />
+                          <div style={{ display: "flex", gap: "0.5rem" }}>
+                            <select value={unclassifiedTargets[idx] || "additional"} onChange={(e) => setUnclassifiedTargets((prev) => ({ ...prev, [idx]: e.target.value }))}>
+                              <option value="additional">Additional information</option>
+                              <option value="summary">Summary</option>
+                              <option value="experience">Experience</option>
+                              <option value="education">Education</option>
+                              <option value="projects">Projects</option>
+                              <option value="certifications">Certifications</option>
+                              <option value="publications">Publications</option>
+                            </select>
+                            <button type="button" className="btn-refresh" onClick={() => assignUnclassified(idx)} style={{ width: "auto" }}>Assign line</button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
                   <h3 style={{ marginTop: "2rem" }}>Confidence Report</h3>
+                  <p style={{ color: "#94a3b8", fontSize: "0.8rem" }}>Found means a value was parsed; factual accuracy is not verified.</p>
                   <div style={{ marginTop: "1rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
                     {Object.entries(reconstructData.confidenceReport).map(([sec, score]) => (
                       <div key={sec} style={{ display: "flex", justifyContent: "space-between", background: "rgba(15,23,42,0.4)", padding: "0.75rem", borderRadius: "6px" }}>
                         <span>{sec}</span>
-                        <strong style={{ color: score >= 0.8 ? "#10b981" : "#f59e0b" }}>{(score * 100).toFixed(0)}%</strong>
+                        <strong style={{ color: score === 1 ? "#10b981" : "#f59e0b" }}>{score === 1 ? "Found" : "Not detected"}</strong>
                       </div>
                     ))}
                   </div>
@@ -475,7 +706,7 @@ const ResumeReconstructionStudio = () => {
               <div className="preview-header-bar">
                 <div>
                   <h3 style={{ color: "#111" }}>Reconstructed Live View</h3>
-                  <span style={{ fontSize: "0.8rem", color: "#666" }}>ATS Score: {reconstructData.resume.lastAtsScore}/100</span>
+                  <span style={{ fontSize: "0.8rem", color: "#666" }}>ATS analysis not run</span>
                 </div>
 
                 <div style={{ display: "flex", gap: "0.5rem" }}>
@@ -487,21 +718,24 @@ const ResumeReconstructionStudio = () => {
                     <option value="engineer_ats">Frame Template (ATS)</option>
                     <option value="consulting_bcg">Summit Template (BCG)</option>
                     <option value="swiss_minimal">Metro Template</option>
+                    <option value="harvard_ats">Harvard ATS</option>
                   </select>
                 </div>
               </div>
 
               <div style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: "8px", overflow: "hidden" }}>
-                <ResumePreview resume={reconstructData.resume} isFreePlan={false} />
+                <ResumePreview resume={reconstructData.resume} isFreePlan={false} paginationMode="flow" />
               </div>
 
+              {errorMsg && <p role="alert" style={{ color: "#ef4444", marginTop: "1rem" }}>{errorMsg}</p>}
               <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>
                 <button
-                  onClick={() => alert("Reconstructed resume successfully saved to Database! (In production, this creates a draft and navigates back)")}
+                  onClick={downloadReconstructedPdf}
+                  disabled={isExporting}
                   className="btn-refresh"
                   style={{ width: "100%", background: "#10b981", color: "#fff" }}
                 >
-                  Save to Database
+                  {isExporting ? "Generating PDF…" : "Download Reconstructed PDF"}
                 </button>
               </div>
             </div>
