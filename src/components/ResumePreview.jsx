@@ -2010,10 +2010,13 @@ function renderTemplate({ templateId, profileInfo, contactInfo, photo, photoShap
     case "harvard_ats":
       return (
         <div className="rp-ats-container rp-harvard-ats">
-          <header className="rp-ats-header">
-            <h1 className="rp-ats-name-serif">{name}</h1>
-            {role && <p className="rp-ats-role-serif">{role}</p>}
-            <AtsContactRow c={contactInfo} />
+          <header className={`rp-ats-header${photo ? " rp-has-photo" : ""}`}>
+            {photo && <div className="rp-ats-photo-wrap"><Photo src={photo} shape={photoShape} /></div>}
+            <div className="rp-ats-header-text">
+              <h1 className="rp-ats-name-serif">{name}</h1>
+              {role && <p className="rp-ats-role-serif">{role}</p>}
+              <AtsContactRow c={contactInfo} />
+            </div>
           </header>
           <hr className="rp-rule" />
           <main className="rp-ats-body">{getSections('all')}</main>

@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import NavLogo from "../components/NavLogo";
 import ThemeToggle from "../components/ThemeToggle";
 import ResumePreview from "../components/ResumePreview";
-import { uploadReconstructResume, enhanceReconstructBullet, exportResumePdf } from "../api";
+import { uploadReconstructResume, enhanceReconstructBullet, exportResumePdf, analyzeReconstruction } from "../api";
 import "./ResumeReconstructionStudio.css";
 
 const ResumeReconstructionStudio = () => {
@@ -22,6 +22,27 @@ const ResumeReconstructionStudio = () => {
   const [originalFile, setOriginalFile] = useState(null);
   const [isExporting, setIsExporting] = useState(false);
   const [unclassifiedTargets, setUnclassifiedTargets] = useState({});
+
+  // ATS intelligence + tailoring state. Reports are computed on the server from the
+  // current draft; every tailoring item stays a proposal until the user accepts it.
+  const [atsData, setAtsData] = useState(null);
+  const [atsLoading, setAtsLoading] = useState(false);
+  const [atsError, setAtsError] = useState("");
+  const [jobDescription, setJobDescription] = useState("");
+  const [originalSnapshot, setOriginalSnapshot] = useState(null);
+  const [appliedChanges, setAppliedChanges] = useState([]);
+  const [dismissedSuggestions, setDismissedSuggestions] = useState({});
+  const [jsonNotice, setJsonNotice] = useState("");
+  const portraitInputRef = useRef(null);
+
+  const deepClone = (value) => JSON.parse(JSON.stringify(value));
+
+  // The backend serializes the photo as "ProfilePreviewUrl" (historical casing) while the
+  // editor writes "profilePreviewUrl". Read both so a detected portrait is never ignored.
+  const portraitUrl =
+    reconstructData?.resume?.profileInfo?.profilePreviewUrl ||
+    reconstructData?.resume?.profileInfo?.ProfilePreviewUrl ||
+    "";
 
   useEffect(() => () => {
     if (originalFile?.url) URL.revokeObjectURL(originalFile.url);
@@ -74,6 +95,10 @@ const ResumeReconstructionStudio = () => {
       });
 
       setReconstructData(res.data);
+      setOriginalSnapshot(deepClone(res.data));
+      setAtsData(null);
+      setAppliedChanges([]);
+      setDismissedSuggestions({});
       setStatus("done");
     } catch (err) {
       setErrorMsg(err.response?.data?.message || "Ingestion and reconstruction pipeline failed. Please verify format.");
@@ -189,6 +214,228 @@ const ResumeReconstructionStudio = () => {
     });
   };
 
+  // ── ATS intelligence ────────────────────────────────────────────────────
+  const runAnalysis = async () => {
+    if (!reconstructData?.resume) return;
+    setAtsLoading(true);
+    setAtsError("");
+    try {
+      const res = await analyzeReconstruction(reconstructData.resume, jobDescription);
+      setAtsData(res.data);
+    } catch (err) {
+      setAtsError(err.response?.data?.error || "ATS analysis could not be completed. Verify the backend service and try again.");
+    } finally {
+      setAtsLoading(false);
+    }
+  };
+
+  /**
+   * Finds the closest rendered element for a finding's field path. Some findings are
+   * section-level ("workExperience", "skills") and some point at a sub-field that the
+   * reconstruction editor renders at item level ("projects[0].description"), so fall back
+   * from the exact path to its parent item and finally to the section container.
+   */
+  const resolveFieldElement = (fieldPath) => {
+    const candidates = [fieldPath];
+    let current = fieldPath;
+    while (true) {
+      const dot = current.lastIndexOf(".");
+      if (dot > 0) {
+        current = current.slice(0, dot);
+        candidates.push(current);
+        continue;
+      }
+      const bracket = current.lastIndexOf("[");
+      if (bracket > 0) {
+        current = current.slice(0, bracket);
+        candidates.push(current);
+        continue;
+      }
+      break;
+    }
+    for (const candidate of candidates) {
+      const element = document.querySelector(`[data-field="${candidate}"]`);
+      if (element) return element;
+    }
+    return null;
+  };
+
+  /** Opens the Form Editor at the exact field a finding refers to. */
+  const goToField = (fieldPath) => {
+    if (!fieldPath) return;
+    setActiveLeftTab("editor");
+    window.setTimeout(() => {
+      const element = resolveFieldElement(fieldPath);
+      if (!element) return;
+      element.scrollIntoView({ behavior: "smooth", block: "center" });
+      const focusable = element.matches("input, textarea, select")
+        ? element
+        : element.querySelector("input, textarea, select");
+      if (focusable && typeof focusable.focus === "function") {
+        focusable.focus({ preventScroll: true });
+      }
+    }, 120);
+  };
+
+  // ── Tailoring: user-approved changes only ───────────────────────────────
+  const applySuggestion = (suggestion) => {
+    const previous = deepClone(reconstructData.resume);
+    const next = deepClone(reconstructData.resume);
+    let label = "";
+
+    if (suggestion.type === "keyword") {
+      next.skills = [...(next.skills || []), { name: suggestion.proposal }];
+      label = `Added “${suggestion.proposal}” to Skills`;
+    } else if (suggestion.type === "summary") {
+      next.profileInfo = { ...(next.profileInfo || {}) };
+      next.profileInfo.summary = [next.profileInfo.summary, suggestion.proposal].filter(Boolean).join("\n");
+      label = "Appended an evidenced strengths sentence to the summary";
+    } else if (suggestion.type === "bullet") {
+      const match = /workExperience\[(\d+)\]/.exec(suggestion.fieldPath || "");
+      const index = match ? Number(match[1]) : -1;
+      if (index >= 0 && next.workExperience?.[index]) {
+        const current = next.workExperience[index].description || "";
+        next.workExperience[index] = {
+          ...next.workExperience[index],
+          description: current.includes(suggestion.evidence)
+            ? current.replace(suggestion.evidence, suggestion.proposal)
+            : suggestion.proposal,
+        };
+        label = `Rewrote one bullet in Experience ${index + 1}`;
+      }
+    } else if (suggestion.type === "reorder") {
+      const match = /(\d+)/.exec(suggestion.proposal || "");
+      const index = match ? Number(match[1]) : 0;
+      if (index > 0 && next.workExperience?.[index]) {
+        const copy = [...next.workExperience];
+        const [moved] = copy.splice(index, 1);
+        copy.unshift(moved);
+        next.workExperience = copy;
+        label = `Moved Experience ${index + 1} to the top`;
+      }
+    }
+
+    if (!label) return;
+    setReconstructData((prev) => ({ ...prev, resume: next }));
+    setAppliedChanges((prev) => [
+      ...prev,
+      { id: suggestion.id, label, undo: () => setReconstructData((prevData) => ({ ...prevData, resume: previous })) },
+    ]);
+  };
+
+  const undoLastChange = () => {
+    if (!appliedChanges.length) return;
+    const last = appliedChanges[appliedChanges.length - 1];
+    if (typeof last.undo === "function") last.undo();
+    setAppliedChanges(appliedChanges.slice(0, -1));
+  };
+
+  const resetToOriginal = () => {
+    if (!originalSnapshot?.resume) return;
+    setReconstructData((prev) => ({ ...prev, resume: deepClone(originalSnapshot.resume) }));
+    setAppliedChanges([]);
+  };
+
+  // ── Portrait: confirm, replace or remove the auto-detected image ────────
+  const setPortrait = (dataUrl) => {
+    const previous = deepClone(reconstructData.resume);
+    setReconstructData((prev) => ({
+      ...prev,
+      resume: {
+        ...prev.resume,
+        profileInfo: {
+          ...(prev.resume.profileInfo || {}),
+          profilePreviewUrl: dataUrl,
+          ProfilePreviewUrl: dataUrl,
+        },
+      },
+    }));
+    setAppliedChanges((prev) => [
+      ...prev,
+      {
+        id: `portrait-${Date.now()}`,
+        label: dataUrl ? "Updated the profile photo" : "Removed the profile photo",
+        undo: () => setReconstructData((prevData) => ({ ...prevData, resume: previous })),
+      },
+    ]);
+  };
+
+  const handlePortraitFile = (file) => {
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      setErrorMsg("Choose an image file (PNG or JPG) for the portrait.");
+      return;
+    }
+    if (file.size > 3 * 1024 * 1024) {
+      setErrorMsg("Portrait images must be smaller than 3 MB.");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => setPortrait(String(reader.result || ""));
+    reader.readAsDataURL(file);
+  };
+
+  // ── JSON backup and restore ─────────────────────────────────────────────
+  const DRAFT_KEYS = ["title", "template", "fontPairing", "decoratives", "profileInfo", "contactInfo", "workExperience", "education", "skills", "projects", "certifications", "languages", "interests", "customSections"];
+  const TEMPLATES = ["template1", "template2", "template3", "premium1", "premium2", "premium3", "premium4", "premium5", "premium6", "premium7", "premium8", "premium9", "premium10", "ats_classic", "ats_entry", "ats_senior", "ats_lead", "ats_intern", "ats_experienced", "academic_cv", "engineer_ats", "consulting_bcg", "tech_faang", "harvard_ats", "swiss_minimal"];
+
+  const exportDraftJson = () => {
+    if (!reconstructData?.resume) return;
+    const clean = {};
+    for (const key of DRAFT_KEYS) clean[key] = reconstructData.resume[key];
+    const payload = {
+      schemaVersion: 2,
+      exportedAt: new Date().toISOString(),
+      sourceDocument: originalFile?.name || "",
+      resume: clean,
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = `${(originalFile?.name || "reconstructed-resume").replace(/\.[^.]+$/, "")}-vresiq-draft.json`;
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    URL.revokeObjectURL(url);
+    setJsonNotice("Draft exported. The file contains resume content only — no account details, tokens or credentials.");
+  };
+
+  const importDraftJson = async (file) => {
+    if (!file) return;
+    setJsonNotice("");
+    if (file.size > 2 * 1024 * 1024) {
+      setJsonNotice("Import rejected: file is larger than 2 MB.");
+      return;
+    }
+    try {
+      const parsed = JSON.parse(await file.text());
+      const candidate = parsed?.resume ?? parsed;
+      if (!candidate || typeof candidate !== "object" || Array.isArray(candidate)) {
+        throw new Error("shape");
+      }
+      for (const unsafe of ["__proto__", "constructor", "prototype"]) {
+        if (Object.prototype.hasOwnProperty.call(candidate, unsafe)) throw new Error("unsafe");
+      }
+      const cleaned = {};
+      for (const key of DRAFT_KEYS) if (key in candidate) cleaned[key] = candidate[key];
+      const hasContent = ["profileInfo", "contactInfo", "workExperience", "education", "skills", "projects", "certifications", "customSections"]
+        .some((key) => cleaned[key] && (Array.isArray(cleaned[key]) ? cleaned[key].length : Object.keys(cleaned[key]).length));
+      if (!hasContent && !cleaned.profileInfo) throw new Error("empty");
+      if (cleaned.template && !TEMPLATES.includes(cleaned.template)) cleaned.template = "harvard_ats";
+      setReconstructData((prev) => ({ ...prev, resume: cleaned }));
+      setAppliedChanges([]);
+      setJsonNotice("Draft imported. Review every section before exporting; the file was validated against the VResIQ schema but its content was not verified.");
+    } catch (err) {
+      const reason = err?.message === "unsafe"
+        ? "the file contains unsafe object keys"
+        : err?.message === "empty"
+        ? "no recognised resume content was found"
+        : "the file is not valid JSON or not a VResIQ draft";
+      setJsonNotice(`Import rejected: ${reason}.`);
+    }
+  };
+
   const downloadReconstructedPdf = async () => {
     const element = document.getElementById("resume-preview");
     if (!element) return setErrorMsg("Resume preview is not ready for export.");
@@ -205,7 +452,7 @@ const ResumeReconstructionStudio = () => {
         }
       }
       css = css.replace(/@media\s*\(\s*max-width\s*:\s*900px\s*\)/g, "@media (max-width: 500px)");
-      const html = `<!doctype html><html><head><meta charset="utf-8"><title>VResIQ reconstructed resume</title>${links.join("")}<style>${css}</style><style>html,body{margin:0;padding:0;background:#fff}body *{visibility:visible!important}#resume-preview{position:relative!important;top:auto!important;left:auto!important;min-height:auto!important;height:auto!important;margin:0!important;width:100%!important;max-width:100%!important;overflow:visible!important;box-shadow:none!important}</style></head><body>${element.outerHTML}</body></html>`;
+      const html = `<!doctype html><html><head><meta charset="utf-8"><title>VResIQ reconstructed resume</title>${links.join("")}<style>${css}</style><style>html,body{margin:0;padding:0;background:#fff}body *{visibility:visible!important}#resume-preview{position:relative!important;top:auto!important;left:auto!important;min-height:0!important;height:auto!important;margin:0!important;padding-bottom:0!important;width:100%!important;max-width:100%!important;overflow:visible!important;box-shadow:none!important}#resume-preview>*:last-child,#resume-preview .rp-section:last-child,#resume-preview section:last-child,#resume-preview .rp-item:last-child{margin-bottom:0!important;padding-bottom:0!important}</style></head><body>${element.outerHTML}</body></html>`;
       const response = await exportResumePdf("reconstruction-draft", html, false);
       const url = URL.createObjectURL(response.data);
       const anchor = document.createElement("a");
@@ -360,6 +607,18 @@ const ResumeReconstructionStudio = () => {
                   Form Editor
                 </button>
                 <button
+                  className={`tab-btn ${activeLeftTab === "ats" ? "active" : ""}`}
+                  onClick={() => setActiveLeftTab("ats")}
+                >
+                  ATS Report
+                </button>
+                <button
+                  className={`tab-btn ${activeLeftTab === "tailor" ? "active" : ""}`}
+                  onClick={() => setActiveLeftTab("tailor")}
+                >
+                  Tailor to Job
+                </button>
+                <button
                   className={`tab-btn ${activeLeftTab === "original" ? "active" : ""}`}
                   onClick={() => setActiveLeftTab("original")}
                 >
@@ -379,15 +638,92 @@ const ResumeReconstructionStudio = () => {
                 </button>
               </div>
 
+              <div className="studio-draft-toolbar">
+                <span className="studio-draft-toolbar-label">Draft tools</span>
+                <button type="button" className="studio-mini-btn" onClick={exportDraftJson}>Export JSON</button>
+                <label className="studio-mini-btn" style={{ cursor: "pointer" }}>
+                  Import JSON
+                  <input
+                    type="file"
+                    accept="application/json,.json"
+                    style={{ display: "none" }}
+                    onChange={(event) => {
+                      importDraftJson(event.target.files?.[0]);
+                      event.target.value = "";
+                    }}
+                  />
+                </label>
+                <button
+                  type="button"
+                  className="studio-mini-btn"
+                  onClick={undoLastChange}
+                  disabled={!appliedChanges.length}
+                >
+                  Undo last change
+                </button>
+                <button
+                  type="button"
+                  className="studio-mini-btn"
+                  onClick={resetToOriginal}
+                  disabled={!originalSnapshot?.resume}
+                >
+                  Reset to original
+                </button>
+              </div>
+              {appliedChanges.length > 0 && (
+                <p className="studio-change-log">
+                  {appliedChanges.length} approved change{appliedChanges.length === 1 ? "" : "s"} applied. Last: {appliedChanges[appliedChanges.length - 1].label}.
+                </p>
+              )}
+              {jsonNotice && <p className="studio-json-notice" role="status">{jsonNotice}</p>}
+
               {activeLeftTab === "editor" && (
                 <div className="tab-panel">
                   {/* Summary & Name */}
                   <div className="form-section">
                     <h3>Profile Info</h3>
+                    <div className="studio-portrait-row" data-field="profileInfo.profilePreviewUrl">
+                      {portraitUrl ? (
+                        <img
+                          className="studio-portrait-thumb"
+                          src={portraitUrl}
+                          alt="Extracted candidate portrait"
+                        />
+                      ) : (
+                        <div className="studio-portrait-thumb studio-portrait-empty">No photo</div>
+                      )}
+                      <div>
+                        <strong style={{ display: "block", fontSize: "0.85rem" }}>
+                          {portraitUrl ? "Portrait from the uploaded file" : "No portrait detected"}
+                        </strong>
+                        <span style={{ fontSize: "0.75rem", color: "#94a3b8", display: "block", marginTop: "0.25rem" }}>
+                          Confirm this is the candidate, replace it with a clearer image, or remove it. Photos are optional and may be inappropriate for some ATS-first applications.
+                        </span>
+                        <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.5rem" }}>
+                          <button type="button" className="studio-mini-btn" onClick={() => portraitInputRef.current?.click()}>
+                            {portraitUrl ? "Replace photo" : "Upload photo"}
+                          </button>
+                          {portraitUrl && (
+                            <button type="button" className="studio-mini-btn" onClick={() => setPortrait("")}>Remove</button>
+                          )}
+                        </div>
+                        <input
+                          ref={portraitInputRef}
+                          type="file"
+                          accept="image/png,image/jpeg,image/webp"
+                          style={{ display: "none" }}
+                          onChange={(event) => {
+                            handlePortraitFile(event.target.files?.[0]);
+                            event.target.value = "";
+                          }}
+                        />
+                      </div>
+                    </div>
                     <div className="form-group" style={{ marginTop: "1rem" }}>
                       <label>Full Name</label>
                       <input
                         type="text"
+                        data-field="profileInfo.fullName"
                         value={reconstructData.resume.profileInfo?.fullName || ""}
                         onChange={(e) => handleProfileInfoChange("fullName", e.target.value)}
                       />
@@ -396,6 +732,7 @@ const ResumeReconstructionStudio = () => {
                       <label>Designation</label>
                       <input
                         type="text"
+                        data-field="profileInfo.designation"
                         value={reconstructData.resume.profileInfo?.designation || ""}
                         onChange={(e) => handleProfileInfoChange("designation", e.target.value)}
                       />
@@ -404,6 +741,7 @@ const ResumeReconstructionStudio = () => {
                       <label>Recruiter Summary</label>
                       <textarea
                         rows={4}
+                        data-field="profileInfo.summary"
                         value={reconstructData.resume.profileInfo?.summary || ""}
                         onChange={(e) => handleProfileInfoChange("summary", e.target.value)}
                       />
@@ -419,6 +757,7 @@ const ResumeReconstructionStudio = () => {
                           <label>{field === "linkedIn" ? "LinkedIn" : field === "github" ? "GitHub" : field[0].toUpperCase() + field.slice(1)}</label>
                           <input
                             type="text"
+                            data-field={`contactInfo.${field}`}
                             value={typeof value === "string" || typeof value === "number" ? value : value?.url || ""}
                             onChange={(e) => handleContactInfoChange(field, e.target.value)}
                           />
@@ -428,7 +767,7 @@ const ResumeReconstructionStudio = () => {
                   </div>
 
                   {/* Experiences */}
-                  <div className="form-section">
+                  <div className="form-section" data-field="workExperience">
                     <h3>Work Experiences</h3>
                     {(reconstructData.resume.workExperience || []).map((exp, idx) => (
                       <div key={idx} style={{ marginTop: "1.5rem", borderTop: "1px solid rgba(255,255,255,0.05)", paddingTop: "1rem" }}>
@@ -437,6 +776,7 @@ const ResumeReconstructionStudio = () => {
                             <label>Company</label>
                             <input
                               type="text"
+                              data-field={`workExperience[${idx}].company`}
                               value={exp.company || ""}
                               onChange={(e) => handleExperienceChange(idx, "company", e.target.value)}
                             />
@@ -445,6 +785,7 @@ const ResumeReconstructionStudio = () => {
                             <label>Role</label>
                             <input
                               type="text"
+                              data-field={`workExperience[${idx}].role`}
                               value={exp.role || ""}
                               onChange={(e) => handleExperienceChange(idx, "role", e.target.value)}
                             />
@@ -455,6 +796,7 @@ const ResumeReconstructionStudio = () => {
                             <label>Start Date</label>
                             <input
                               type="text"
+                              data-field={`workExperience[${idx}].startDate`}
                               value={exp.startDate || ""}
                               onChange={(e) => handleExperienceChange(idx, "startDate", e.target.value)}
                             />
@@ -463,6 +805,7 @@ const ResumeReconstructionStudio = () => {
                             <label>End Date</label>
                             <input
                               type="text"
+                              data-field={`workExperience[${idx}].endDate`}
                               value={exp.endDate || ""}
                               onChange={(e) => handleExperienceChange(idx, "endDate", e.target.value)}
                             />
@@ -481,6 +824,7 @@ const ResumeReconstructionStudio = () => {
                           </div>
                           <textarea
                             rows={5}
+                            data-field={`workExperience[${idx}].description`}
                             value={exp.description || ""}
                             onChange={(e) => handleExperienceChange(idx, "description", e.target.value)}
                           />
@@ -490,13 +834,14 @@ const ResumeReconstructionStudio = () => {
                   </div>
 
                   {/* Skills */}
-                  <div className="form-section">
+                  <div className="form-section" data-field="skills">
                     <h3>Skills</h3>
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginTop: "1rem" }}>
                       {(reconstructData.resume.skills || []).map((s, idx) => (
                         <input
                           key={idx}
                           type="text"
+                          data-field={`skills[${idx}].name`}
                           value={s.name || ""}
                           onChange={(e) => handleSkillChange(idx, e.target.value)}
                           style={{
@@ -511,38 +856,38 @@ const ResumeReconstructionStudio = () => {
                     </div>
                   </div>
 
-                  <div className="form-section">
+                  <div className="form-section" data-field="education">
                     <h3>Education</h3>
                     {(reconstructData.resume.education || []).map((item, idx) => (
                       <div key={idx} className="form-section" style={{ marginTop: "1rem" }}>
                         {["degree", "institution", "startDate", "endDate", "location", "gpa"].map((field) => (
                           <div className="form-group" key={field}>
                             <label>{field.replace(/([A-Z])/g, " $1")}</label>
-                            <input value={item[field] || ""} onChange={(e) => handleListChange("education", idx, field, e.target.value)} />
+                            <input data-field={`education[${idx}].${field}`} value={item[field] || ""} onChange={(e) => handleListChange("education", idx, field, e.target.value)} />
                           </div>
                         ))}
                         <label>Description</label>
-                        <textarea rows={3} value={item.description || ""} onChange={(e) => handleListChange("education", idx, "description", e.target.value)} />
+                        <textarea rows={3} data-field={`education[${idx}].description`} value={item.description || ""} onChange={(e) => handleListChange("education", idx, "description", e.target.value)} />
                       </div>
                     ))}
                   </div>
 
-                  <div className="form-section">
+                  <div className="form-section" data-field="projects">
                     <h3>Projects</h3>
                     {(reconstructData.resume.projects || []).map((item, idx) => (
                       <div className="form-group" key={idx}>
                         <label>Extracted line {idx + 1}</label>
-                        <textarea rows={2} value={item.title || ""} onChange={(e) => handleListChange("projects", idx, "title", e.target.value)} />
+                        <textarea rows={2} data-field={`projects[${idx}].title`} value={item.title || ""} onChange={(e) => handleListChange("projects", idx, "title", e.target.value)} />
                       </div>
                     ))}
                   </div>
 
-                  <div className="form-section">
+                  <div className="form-section" data-field="certifications">
                     <h3>Certifications</h3>
                     {(reconstructData.resume.certifications || []).map((item, idx) => (
                       <div className="form-group" key={idx}>
                         <label>Extracted line {idx + 1}</label>
-                        <input value={item.title || ""} onChange={(e) => handleListChange("certifications", idx, "title", e.target.value)} />
+                        <input data-field={`certifications[${idx}].title`} value={item.title || ""} onChange={(e) => handleListChange("certifications", idx, "title", e.target.value)} />
                       </div>
                     ))}
                   </div>
@@ -561,6 +906,246 @@ const ResumeReconstructionStudio = () => {
                       </div>
                     ))}
                   </div>
+                </div>
+              )}
+
+              {activeLeftTab === "ats" && (
+                <div className="tab-panel">
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "1rem" }}>
+                    <div>
+                      <h3>ATS Intelligence</h3>
+                      <p style={{ color: "#94a3b8", fontSize: "0.8rem", marginTop: "0.25rem" }}>
+                        Two separate reports: what the uploaded file exposes, and what the editable draft contains.
+                      </p>
+                    </div>
+                    <button type="button" className="studio-mini-btn primary" onClick={runAnalysis} disabled={atsLoading} style={{ whiteSpace: "nowrap" }}>
+                      {atsLoading ? "Analysing…" : "Run ATS analysis"}
+                    </button>
+                  </div>
+
+                  {atsError && <p role="alert" style={{ color: "#f87171", marginTop: "0.75rem" }}>{atsError}</p>}
+
+                  {!atsData && !atsLoading && (
+                    <p style={{ color: "#94a3b8", fontSize: "0.85rem", marginTop: "1rem" }}>
+                      Run the analysis to score this draft, list actionable findings, and compare against the uploaded file.
+                    </p>
+                  )}
+
+                  {atsData?.draft && (
+                    <div className="form-section" style={{ marginTop: "1.25rem" }}>
+                      <h3>Draft report</h3>
+                      <div className="ats-score-row">
+                        <strong className="ats-score-value">{atsData.draft.score}<span>/100</span></strong>
+                        <div>
+                          <span className={`ats-readiness ats-${atsData.draft.readiness}`}>{String(atsData.draft.readiness || "unknown").replace("_", " ")}</span>
+                          {atsData.draft.category ? <p style={{ fontSize: "0.78rem", color: "#94a3b8", marginTop: "0.25rem" }}>Detected category: {atsData.draft.category}</p> : null}
+                        </div>
+                      </div>
+                      {atsData.draft.summary && <p className="ats-summary">{atsData.draft.summary}</p>}
+
+                      {(atsData.draft.findings || []).length === 0 ? (
+                        <p style={{ color: "#34d399", fontSize: "0.85rem" }}>No draft-level issues were flagged by the deterministic checks.</p>
+                      ) : (
+                        <div className="ats-finding-list">
+                          {atsData.draft.findings.map((finding) => (
+                            <div key={finding.id} className={`ats-finding ats-sev-${finding.severity}`}>
+                              <div className="ats-finding-head">
+                                <span className={`ats-sev-badge ats-sev-${finding.severity}`}>{finding.severity}</span>
+                                <strong>{finding.section || "General"}</strong>
+                                {typeof finding.points === "number" && finding.points > 0 && (
+                                  <span className="ats-points">−{finding.points}</span>
+                                )}
+                              </div>
+                              {finding.original && <p className="ats-finding-original">“{finding.original}”</p>}
+                              <p className="ats-finding-message">{finding.message}</p>
+                              {finding.recommendation && finding.recommendation !== finding.message && (
+                                <p className="ats-finding-reco">{finding.recommendation}</p>
+                              )}
+                              {finding.fieldPath && (
+                                <button type="button" className="ats-goto" onClick={() => goToField(finding.fieldPath)}>
+                                  Open this field →
+                                </button>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {reconstructData.sourceAtsReport && (
+                    <div className="form-section">
+                      <h3>Uploaded file report</h3>
+                      {!reconstructData.sourceAtsReport.available ? (
+                        <p style={{ color: "#fbbf24", fontSize: "0.85rem" }}>{reconstructData.sourceAtsReport.summary}</p>
+                      ) : (
+                        <>
+                          <p style={{ color: "#94a3b8", fontSize: "0.8rem" }}>
+                            {reconstructData.sourceAtsReport.extractedCharacters.toLocaleString()} non-space characters extracted;{" "}
+                            {reconstructData.sourceAtsReport.foundSections} standard section heading(s) recognised.
+                          </p>
+                          <div className="ats-finding-list">
+                            {(reconstructData.sourceAtsReport.findings || []).map((finding) => (
+                              <div key={finding.id} className={`ats-finding ats-sev-${finding.severity}`}>
+                                <div className="ats-finding-head">
+                                  <span className={`ats-sev-badge ats-sev-${finding.severity}`}>{finding.severity}</span>
+                                  <strong>{finding.section || "Document"}</strong>
+                                </div>
+                                {finding.original && <p className="ats-finding-original">{finding.original}</p>}
+                                <p className="ats-finding-message">{finding.message}</p>
+                                {finding.recommendation && <p className="ats-finding-reco">{finding.recommendation}</p>}
+                                {finding.fieldPath && (
+                                  <button type="button" className="ats-goto" onClick={() => goToField(finding.fieldPath)}>
+                                    Open this field →
+                                  </button>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                          {(reconstructData.sourceAtsReport.missingSectionHeadings || []).length > 0 && (
+                            <p style={{ fontSize: "0.78rem", color: "#94a3b8", marginTop: "0.75rem" }}>
+                              Headings not detected in the file: {reconstructData.sourceAtsReport.missingSectionHeadings.join(", ")}. A missing heading can simply mean the candidate used a different name.
+                            </p>
+                          )}
+                        </>
+                      )}
+                      {(reconstructData.sourceAtsReport.notes || []).map((note, index) => (
+                        <p key={index} className="ats-note">{note}</p>
+                      ))}
+                    </div>
+                  )}
+
+                  {atsData?.disclaimer && <p className="ats-note ats-disclaimer">{atsData.disclaimer}</p>}
+                </div>
+              )}
+
+              {activeLeftTab === "tailor" && (
+                <div className="tab-panel">
+                  <h3>Tailor to a job description</h3>
+                  <p style={{ color: "#94a3b8", fontSize: "0.8rem", marginTop: "0.25rem" }}>
+                    Matching uses only text already in this resume. Nothing is added until you accept it, and every accepted change can be undone.
+                  </p>
+                  <div className="form-group" style={{ marginTop: "1rem" }}>
+                    <label>Target job description</label>
+                    <textarea
+                      rows={8}
+                      data-field="jobDescription"
+                      value={jobDescription}
+                      onChange={(event) => setJobDescription(event.target.value)}
+                      placeholder="Paste the full job posting here (responsibilities, required and preferred qualifications)."
+                    />
+                  </div>
+                  <button type="button" className="studio-mini-btn primary" onClick={runAnalysis} disabled={atsLoading}>
+                    {atsLoading ? "Analysing…" : "Compare with this job"}
+                  </button>
+                  {atsError && <p role="alert" style={{ color: "#f87171", marginTop: "0.75rem" }}>{atsError}</p>}
+
+                  {atsData?.tailor && !atsData.tailor.available && (
+                    <p style={{ color: "#fbbf24", fontSize: "0.85rem", marginTop: "1rem" }}>
+                      {atsData.tailor.summary || "Paste a job description to enable tailoring."}
+                    </p>
+                  )}
+
+                  {atsData?.tailor?.available && (
+                    <div style={{ marginTop: "1.25rem" }}>
+                      {atsData.tailor.detectedRole && (
+                        <p style={{ fontSize: "0.85rem" }}><strong>Detected role:</strong> {atsData.tailor.detectedRole}</p>
+                      )}
+                      <p style={{ fontSize: "0.82rem", color: "#94a3b8", marginTop: "0.35rem" }}>{atsData.tailor.summary}</p>
+
+                      <h4 style={{ marginTop: "1.25rem" }}>Required keywords</h4>
+                      <div className="ats-keyword-grid">
+                        {(atsData.tailor.requiredKeywords || []).map((match) => (
+                          <button
+                            type="button"
+                            key={`req-${match.keyword}`}
+                            className={`ats-keyword ${match.present ? "present" : "missing"}`}
+                            title={match.present ? match.evidence : "No supporting evidence found in this resume"}
+                            onClick={() => match.present && match.fieldPath && goToField(match.fieldPath)}
+                          >
+                            {match.keyword}
+                          </button>
+                        ))}
+                      </div>
+
+                      {(atsData.tailor.preferredKeywords || []).length > 0 && (
+                        <>
+                          <h4 style={{ marginTop: "1rem" }}>Preferred keywords</h4>
+                          <div className="ats-keyword-grid">
+                            {atsData.tailor.preferredKeywords.map((match) => (
+                              <button
+                                type="button"
+                                key={`pref-${match.keyword}`}
+                                className={`ats-keyword ${match.present ? "present" : "missing"}`}
+                                title={match.present ? match.evidence : "No supporting evidence found in this resume"}
+                                onClick={() => match.present && match.fieldPath && goToField(match.fieldPath)}
+                              >
+                                {match.keyword}
+                              </button>
+                            ))}
+                          </div>
+                        </>
+                      )}
+
+                      {(atsData.tailor.unsupported || []).length > 0 && (
+                        <div className="ats-unsupported">
+                          <strong>Not added — no supporting evidence:</strong> {atsData.tailor.unsupported.join(", ")}
+                          <p style={{ marginTop: "0.35rem" }}>
+                            These were deliberately left out. Only claim a qualification you genuinely hold.
+                          </p>
+                        </div>
+                      )}
+
+                      <h4 style={{ marginTop: "1.25rem" }}>Proposed changes</h4>
+                      {(atsData.tailor.suggestions || []).filter((s) => !dismissedSuggestions[s.id]).length === 0 ? (
+                        <p style={{ color: "#94a3b8", fontSize: "0.85rem" }}>
+                          No further changes are proposed. The draft already surfaces the keywords it can support.
+                        </p>
+                      ) : (
+                        <div className="ats-suggestion-list">
+                          {(atsData.tailor.suggestions || [])
+                            .filter((s) => !dismissedSuggestions[s.id])
+                            .map((suggestion) => {
+                              const applied = appliedChanges.some((change) => change.id === suggestion.id);
+                              return (
+                                <div key={suggestion.id} className="ats-suggestion">
+                                  <div className="ats-suggestion-head">
+                                    <span className="ats-type-badge">{suggestion.type}</span>
+                                    <strong>{suggestion.section}</strong>
+                                    {suggestion.requiresConfirmation && <span className="ats-confirm-badge">confirm first</span>}
+                                  </div>
+                                  {suggestion.evidence && <p className="ats-finding-original">Your text: “{suggestion.evidence}”</p>}
+                                  <p className="ats-suggestion-proposal">{suggestion.proposal}</p>
+                                  <p className="ats-finding-reco">{suggestion.rationale}</p>
+                                  <div className="ats-suggestion-actions">
+                                    <button
+                                      type="button"
+                                      className="studio-mini-btn primary"
+                                      disabled={applied}
+                                      onClick={() => applySuggestion(suggestion)}
+                                    >
+                                      {applied ? "Applied" : suggestion.requiresConfirmation ? "I confirm this is accurate — apply" : "Apply"}
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className="studio-mini-btn"
+                                      disabled={applied}
+                                      onClick={() => setDismissedSuggestions((prev) => ({ ...prev, [suggestion.id]: true }))}
+                                    >
+                                      Dismiss
+                                    </button>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                        </div>
+                      )}
+
+                      {(atsData.tailor.notes || []).map((note, index) => (
+                        <p key={index} className="ats-note">{note}</p>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
 

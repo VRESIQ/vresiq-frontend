@@ -2890,6 +2890,24 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
 .rp-harvard-ats .rp-ats-header {
   margin-bottom: 16px;
 }
+/* Harvard stays centered and text-only unless the candidate supplied a portrait.
+   When one exists it sits beside the name block so the header stays balanced. */
+.rp-harvard-ats .rp-ats-header.rp-has-photo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+.rp-harvard-ats .rp-ats-header.rp-has-photo .rp-ats-photo-wrap {
+  flex: 0 0 auto;
+}
+.rp-harvard-ats .rp-ats-header.rp-has-photo .rp-photo {
+  width: 84px;
+  height: 84px;
+}
+.rp-harvard-ats .rp-ats-header.rp-has-photo .rp-ats-header-text {
+  text-align: center;
+}
 .rp-harvard-ats .rp-rule {
   margin: 12px 0 20px;
 }

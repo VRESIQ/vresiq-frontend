@@ -161,3 +161,8 @@ export const uploadReconstructResume = (file, profile, onUploadProgress) => {
 
 export const enhanceReconstructBullet = (bulletText, tone) =>
   axiosInstance.post("/api/admin/reconstruct/enhance-bullet", { bulletText, tone });
+
+// Draft-side ATS analysis plus optional job-description tailoring. Deterministic and
+// read-only on the server: nothing is persisted and no proposal is auto-applied.
+export const analyzeReconstruction = (resume, jobDescription) =>
+  axiosInstance.post("/api/admin/reconstruct/analyze", { resume, jobDescription }, { skipLoader: true });

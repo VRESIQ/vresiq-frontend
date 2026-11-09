@@ -837,7 +837,27 @@ const ResumeEditor = () => {
             }
 
             ${fullBleedPageStyle}
-            
+
+            /* Export page geometry. The PDF page margins already provide the sheet edges, so
+               the on-screen preview's minimum height and bottom padding must be removed here.
+               Leaving them in lets empty space spill past the last text and produce a blank
+               trailing page that the preview never shows. */
+            #resume-preview {
+              min-height: 0 !important;
+              padding-bottom: 0 !important;
+              margin: 0 !important;
+              width: 100% !important;
+              max-width: 100% !important;
+              box-shadow: none !important;
+            }
+            #resume-preview > *:last-child,
+            #resume-preview .rp-section:last-child,
+            #resume-preview section:last-child,
+            #resume-preview .rp-item:last-child {
+              margin-bottom: 0 !important;
+              padding-bottom: 0 !important;
+            }
+
             /* Ensure all contents are visible in the print view */
             body * {
               visibility: visible !important;
