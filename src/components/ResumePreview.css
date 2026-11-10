@@ -696,7 +696,7 @@ a.rp-inline-link,
   display: flow-root !important;
   clear: both !important;
   width: 100% !important;
-  margin-bottom: 22px;
+  margin-bottom: var(--rp-section-margin-bottom, 22px);
 }
 
 /* ── Item ────────────────────────────────────────────────────────────────── */
@@ -706,7 +706,7 @@ a.rp-inline-link,
   display: flow-root !important;
   clear: both !important;
   width: 100% !important;
-  margin-bottom: 14px;
+  margin-bottom: var(--rp-item-margin-bottom, 14px);
   font-size: var(--rp-fs-body);     /* Consistent base for every item block */
   font-weight: 400;                  /* Normal weight — only titles are bold */
 }
@@ -1806,7 +1806,8 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
   @page {
     size: letter;
     margin-top: 40px;
-    margin-bottom: 48px;
+    /* The PDF generator reserves the footer band through page.pdf margin.bottom. */
+    margin-bottom: 0;
     margin-left: 0;
     margin-right: 0;
   }
@@ -2714,13 +2715,16 @@ ul.rp-skill-list li { display: list-item; margin-bottom: 6px; }
     padding-bottom: 0 !important;
     /* Leave enough page-fragmentation slack for near-full imported resumes;
        otherwise a trailing blank PDF page can result from sub-pixel overflow. */
-    --rp-section-margin-bottom: 12px;
-    --rp-item-margin-bottom: 10px;
+    --rp-section-margin-bottom: 6px;
+    --rp-item-margin-bottom: 6px;
+    --rp-lh-body: 1.45;
+    --rp-lh-summary: 1.5;
   }
 
   .rp-content-flow .rp-stitle {
     break-after: avoid-page !important;
     page-break-after: avoid !important;
+    margin-bottom: 8px !important;
   }
 
   .rp-content-flow .rp-item {
